@@ -10,8 +10,6 @@ import javax.validation.constraints.NotNull;
 public class MonthInputDTO {
 
     @NotNull
-    @Min(value = 1)
-    @Max(value = 12)
     private MonthName monthName;
 
     public MonthInputDTO() {

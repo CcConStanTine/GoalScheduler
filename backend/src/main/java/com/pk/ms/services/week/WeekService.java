@@ -6,9 +6,11 @@ import com.pk.ms.dto.week.WeekInputDTO;
 import com.pk.ms.dto.week.WeekWithBasicDayDTO;
 import com.pk.ms.entities.day.Day;
 import com.pk.ms.entities.week.Week;
+import com.pk.ms.exceptions.EntityAlreadyExistException;
 import com.pk.ms.mappers.day.DayMapService;
 import com.pk.ms.services.day.DayService;
 import com.pk.ms.services.year.YearService;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import java.sql.Date;
@@ -21,20 +23,17 @@ public class WeekService {
 
     private final IWeekRepository weekRepo;
 
-    private YearService yearService;
+    private final YearService yearService;
 
     private final DayMapService dayMapService;
 
     private final DayService dayService;
 
-    public WeekService(IWeekRepository weekRepo, DayMapService dayMapService, DayService dayService) {
+    public WeekService(IWeekRepository weekRepo, @Lazy YearService yearService, DayMapService dayMapService, DayService dayService) {
         this.weekRepo = weekRepo;
+        this.yearService = yearService;
         this.dayMapService = dayMapService;
         this.dayService = dayService;
-    }
-
-    public void setYearService(YearService yearService) {
-        this.yearService = yearService;
     }
 
     public Week saveWeek(Week week) {
@@ -55,7 +54,17 @@ public class WeekService {
         return weekRepo.findByYearIdAndDate(yearId, aDate, aDate);
     }
 
+    public boolean existsByYearIdAndDate(long yearId, WeekInputDTO weekInputDTO) {
+        if (weekRepo.findYearIncludingDatesBetweenStartDateAndEndDate(yearId, weekInputDTO.getStartDate(), weekInputDTO.getEndDate()) != null) {
+            return true;
+        }
+        else
+            return false;
+    }
+
     public Week createWeek(long yearId, WeekInputDTO weekInputDTO) {
+        if (existsByYearIdAndDate(yearId, weekInputDTO))
+            throw new EntityAlreadyExistException(weekInputDTO);
         return saveWeek(new Week(weekInputDTO.getStartDate(), weekInputDTO.getEndDate(),
                 yearService.getYearById(yearId)));
     }

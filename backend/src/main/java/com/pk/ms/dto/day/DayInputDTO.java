@@ -14,8 +14,6 @@ public class DayInputDTO {
     private Date dayDate;
 
     @NotNull
-    @Min(value = 1)
-    @Max(value = 7)
     private DayName dayName;
 
     public DayInputDTO() {

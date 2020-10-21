@@ -10,6 +10,7 @@ import com.pk.ms.exceptions.EntityAlreadyExistException;
 import com.pk.ms.mappers.day.DayMapService;
 import com.pk.ms.services.day.DayService;
 import com.pk.ms.services.year.YearService;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -21,20 +22,17 @@ public class MonthService {
 
     private final IMonthRepository monthRepo;
 
-    private YearService yearService;
+    private final YearService yearService;
 
     private final DayService dayService;
 
     private final DayMapService dayMapService;
 
-    public MonthService(IMonthRepository monthRepo, DayService dayService, DayMapService dayMapService) {
+    public MonthService(IMonthRepository monthRepo, @Lazy YearService yearService, DayService dayService, DayMapService dayMapService) {
         this.monthRepo = monthRepo;
+        this.yearService = yearService;
         this.dayService = dayService;
         this.dayMapService = dayMapService;
-    }
-
-    public void setYearService(YearService yearService) {
-        this.yearService = yearService;
     }
 
     public Month saveMonth(Month month) {

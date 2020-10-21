@@ -7,6 +7,7 @@ import com.pk.ms.entities.schedule.LongTermPlan;
 import com.pk.ms.entities.schedule.Schedule;
 import com.pk.ms.entities.user.MyScheduleUser;
 import com.pk.ms.entities.year.Year;
+import com.pk.ms.exceptions.UniqueValuesAlreadyExistsException;
 import com.pk.ms.mappers.user.UserInfoMapService;
 import com.pk.ms.services.schedule.ScheduleService;
 import org.springframework.stereotype.Service;
@@ -34,7 +35,24 @@ public class UserService {
 
     public MyScheduleUser getUserById(long id) {return userRepo.findById(id);}
 
+    public boolean checkForUniqueNick(String nick) {
+        if (userRepo.findByNick(nick) == null)
+            return false;
+        return true;
+    }
+
+    public boolean checkForUniqueEmail(String email) {
+        if (userRepo.findByEmail(email) == null)
+            return false;
+        return true;
+    }
+
     public MyScheduleUser createUser(UserInputDTO userInputDTO) {
+        if(checkForUniqueNick(userInputDTO.getNick()))
+            throw new UniqueValuesAlreadyExistsException(userInputDTO);
+        if(checkForUniqueEmail(userInputDTO.getEmail()))
+            throw new UniqueValuesAlreadyExistsException(userInputDTO.getEmail());
+
         MyScheduleUser user = new MyScheduleUser(userInputDTO.getFirstName(), userInputDTO.getLastName(),
                 userInputDTO.getNick(), userInputDTO.getEmail());
         Schedule schedule = new Schedule(user, new ArrayList<Year>(), new ArrayList<LongTermPlan>());
