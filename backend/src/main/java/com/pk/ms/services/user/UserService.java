@@ -68,6 +68,12 @@ public class UserService {
 
     public UserInfoDTO updateUser(long id, UserInputDTO userInputDTO) {
 
+        if(checkForUniqueNick(userInputDTO.getNick()))
+                throw new UniqueValuesAlreadyExistsException(userInputDTO);
+
+        if(checkForUniqueEmail(userInputDTO.getEmail()))
+                throw new UniqueValuesAlreadyExistsException(userInputDTO.getEmail());
+
         MyScheduleUser user = getUserById(id);
 
         if(userInputDTO.getFirstName() != null)

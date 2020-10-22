@@ -46,4 +46,11 @@ public class LongTermPlanController {
         return ResponseEntity.ok("Long-term plan was successfully deleted. ");
     }
 
+    // change the fulfilled status
+    @PatchMapping("/long_term_plans/{long_term_plan_id}/fulfilled")
+    public ResponseEntity<String> updateFulfilledStatus(@PathVariable("long_term_plan_id") long yearPlanId) {
+        longTermPlanService.updateFulfilledStatus(yearPlanId);
+        return ResponseEntity.ok("Changed successfully. ");
+    }
+
 }

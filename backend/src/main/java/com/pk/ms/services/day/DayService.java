@@ -3,10 +3,14 @@ package com.pk.ms.services.day;
 import com.pk.ms.dao.day.IDayRepository;
 import com.pk.ms.dto.day.DayInputDTO;
 import com.pk.ms.entities.day.Day;
+import com.pk.ms.entities.month.Month;
+import com.pk.ms.entities.year.Year;
 import com.pk.ms.exceptions.EntityAlreadyExistException;
 import com.pk.ms.exceptions.NotValidDataException;
 import com.pk.ms.services.month.MonthService;
 import com.pk.ms.services.week.WeekService;
+import com.pk.ms.services.year.YearService;
+import org.apache.tomcat.jni.Local;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
@@ -19,12 +23,15 @@ public class DayService {
 
     private final IDayRepository dayRepo;
 
+    private final YearService yearService;
+
     private final WeekService weekService;
 
     private final MonthService monthService;
 
-    public DayService(IDayRepository dayRepo, @Lazy WeekService weekService, @Lazy MonthService monthService) {
+    public DayService(IDayRepository dayRepo, @Lazy YearService yearService, @Lazy WeekService weekService, @Lazy MonthService monthService) {
         this.dayRepo = dayRepo;
+        this.yearService = yearService;
         this.weekService = weekService;
         this.monthService = monthService;
     }
@@ -70,7 +77,12 @@ public class DayService {
             return false;
     }
 
-    public Day createDay(long monthId, long weekId, DayInputDTO reqDayInputDTO) {
+    public Day createDay(long scheduleId, long weekId, DayInputDTO reqDayInputDTO) {
+        LocalDate localDate = reqDayInputDTO.getDayDate().toLocalDate();
+        Year year = yearService.getActualYear(localDate, scheduleId);
+        Month month = monthService.getActualMonth(localDate, year.getYearId());
+        long monthId = month.getMonthId();
+
         if(!dataContainProperMonth(monthId, reqDayInputDTO))
             throw new NotValidDataException(reqDayInputDTO);
         if(existsInWeek(weekId, reqDayInputDTO))

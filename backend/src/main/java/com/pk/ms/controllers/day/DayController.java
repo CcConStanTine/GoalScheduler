@@ -18,10 +18,11 @@ public class DayController {
     }
 
     // create Day
-    @PostMapping(path = "/months/{month_id}/weeks/{week_id}/days", consumes = "application/json")
-    public ResponseEntity<Day> createDay(@PathVariable("month_id") long monthId, @PathVariable("week_id") long weekId,
+    @PostMapping(path = "/schedule/{schedule_id}/weeks/{week_id}/days", consumes = "application/json")
+    public ResponseEntity<Day> createDay(@PathVariable("week_id") long weekId,
+                                         @PathVariable("schedule_id") long scheduleId,
                                          @Valid @RequestBody DayInputDTO reqDayInputDTO) {
-        return ResponseEntity.ok(dayService.createDay(monthId, weekId, reqDayInputDTO));
+        return ResponseEntity.ok(dayService.createDay(scheduleId,weekId, reqDayInputDTO));
     }
 
     // get particular Day (with its plans)

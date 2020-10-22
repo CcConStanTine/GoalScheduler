@@ -53,4 +53,15 @@ public class LongTermPlanService {
         return save(longTermPlan);
     }
 
+    public void updateFulfilledStatus(long longTermPlanId) {
+        LongTermPlan longTermPlan = getLTPById(longTermPlanId);
+        boolean fullfilled = longTermPlan.isFulfilled();
+        if(!fullfilled)
+            fullfilled = true;
+        else
+            fullfilled = false;
+        longTermPlan.setFulfilled(fullfilled);
+        save(longTermPlan);
+    }
+
 }
