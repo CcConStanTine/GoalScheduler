@@ -118,8 +118,13 @@ public class AuthService {
     }
 
     public MyScheduleUser createNewUserAccount(SignupRequest signUpRequest) {
-        MyScheduleUser user = new MyScheduleUser(signUpRequest.getFirstName(), signUpRequest.getLastName(),
-                signUpRequest.getUsername(), signUpRequest.getEmail(), encoder.encode(signUpRequest.getPassword()));
+        MyScheduleUser user = new MyScheduleUser(
+                signUpRequest.getFirstName(),
+                signUpRequest.getLastName(),
+                signUpRequest.getUsername(),
+                signUpRequest.getEmail(),
+                encoder.encode(signUpRequest.getPassword())
+        );
         Schedule schedule = new Schedule(user, new ArrayList<Year>(), new ArrayList<LongTermPlan>());
         user = userService.save(user);
         scheduleService.save(schedule);

@@ -21,13 +21,11 @@ public class SignupRequest {
     private String email;
 
     @NotBlank
-    @Email
-    @Size
+    @Size(max = 50)
     private String firstName;
 
     @NotBlank
-    @Email
-    @Size
+    @Size(max = 50)
     private String lastName;
 
     private Set<String> role;
