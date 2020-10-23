@@ -13,4 +13,7 @@ public interface IUserRepository extends CrudRepository<MyScheduleUser, Long> {
 
     public MyScheduleUser findByEmail(String email);
 
+    boolean existsByNick(String nick);
+
+    boolean existsByEmail(String email);
 }
