@@ -12,7 +12,6 @@ import javax.validation.Valid;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
-@RequestMapping("/home")
 public class AuthController {
 
     private final AuthService authService;

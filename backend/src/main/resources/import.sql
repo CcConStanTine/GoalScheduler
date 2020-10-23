@@ -1,8 +1,20 @@
-insert into my_schedule_user (user_id, email, first_name, last_name, nick) values (NEXTVAL('myscheduleuser_seq'), 'pawel@gmail.com', 'Pawel', 'Karpiel', 'CcConstantine');
+insert into my_schedule_user (user_id, email, first_name, last_name, nick, password) values (NEXTVAL('myscheduleuser_seq'), 'pawel@gmail.com', 'Pawel', 'Karpiel', 'CcConstantine', 'haslo123');
 
-insert into my_schedule_user (user_id, email, first_name, last_name, nick) values (NEXTVAL('myscheduleuser_seq'), 'konradduleba@gmail.com', 'Konrad', 'Duleba', 'duUuleb');
+insert into my_schedule_user (user_id, email, first_name, last_name, nick, password) values (NEXTVAL('myscheduleuser_seq'), 'konradduleba@gmail.com', 'Konrad', 'Duleba', 'duUuleb', 'haslo123');
 
-insert into my_schedule_user (user_id, email, first_name, last_name, nick) values (NEXTVAL('myscheduleuser_seq'), 'krzysiek@gmail.com', 'Krzysztof', 'Janowicz', 'krzys');
+insert into my_schedule_user (user_id, email, first_name, last_name, nick, password) values (NEXTVAL('myscheduleuser_seq'), 'krzysiek@gmail.com', 'Krzysztof', 'Janowicz', 'krzys', 'haslo123');
+
+insert into role (id, name) values (NEXTVAL('role_seq'), 'ROLE_USER');
+
+insert into role (id, name) values (NEXTVAL('role_seq'), 'ROLE_MODERATOR');
+
+insert into role (id, name) values (NEXTVAL('role_seq'), 'ROLE_ADMIN');
+
+insert into my_schedule_user_roles (my_schedule_user_id, role_id) values (1, 1);
+
+insert into my_schedule_user_roles (my_schedule_user_id, role_id) values (2, 1);
+
+insert into my_schedule_user_roles (my_schedule_user_id, role_id) values (3, 1);
 
 insert into schedule (schedule_id, user_id) values (NEXTVAL('schedule_seq'), 1);
 

@@ -1,16 +1,20 @@
 package com.pk.ms.services.user;
 
-import com.pk.ms.dao.user.IUserRepository;
 import com.pk.ms.dao.user.RoleRepository;
+import com.pk.ms.entities.schedule.LongTermPlan;
+import com.pk.ms.entities.schedule.Schedule;
 import com.pk.ms.entities.user.MyScheduleUser;
 import com.pk.ms.entities.user.Role;
 import com.pk.ms.entities.user.UserRole;
+import com.pk.ms.entities.year.Year;
+import com.pk.ms.exceptions.UniqueValuesAlreadyExistsException;
 import com.pk.ms.security.jwt.JwtUtils;
 import com.pk.ms.security.request.LoginRequest;
 import com.pk.ms.security.request.SignupRequest;
 import com.pk.ms.security.response.JwtResponse;
 import com.pk.ms.security.response.MessageResponse;
 import com.pk.ms.security.services.UserDetailsImpl;
+import com.pk.ms.services.schedule.ScheduleService;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -20,6 +24,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -34,18 +39,24 @@ public class AuthService {
 
     private final PasswordEncoder encoder;
 
-    private final IUserRepository userRepository;
-
     private final RoleRepository roleRepository;
 
+    private final UserService userService;
+
+    private final ScheduleService scheduleService;
+
     public AuthService(AuthenticationManager authenticationManager,
-                       JwtUtils jwtUtils, IUserRepository userRepository,
-                       RoleRepository roleRepository, PasswordEncoder encoder) {
+                       JwtUtils jwtUtils,
+                       RoleRepository roleRepository,
+                       PasswordEncoder encoder,
+                       UserService userService,
+                       ScheduleService scheduleService) {
         this.authenticationManager = authenticationManager;
         this.jwtUtils = jwtUtils;
-        this.userRepository = userRepository;
         this.roleRepository = roleRepository;
         this.encoder = encoder;
+        this.userService = userService;
+        this.scheduleService = scheduleService;
     }
 
     public JwtResponse authenticateUser(LoginRequest loginRequest) {
@@ -60,7 +71,7 @@ public class AuthService {
 
         List<String> roles = createNamesOfRoles(userDetails);
 
-        return  new JwtResponse(jwt,
+        return new JwtResponse(jwt,
                 userDetails.getId(),
                 userDetails.getUsername(),
                 userDetails.getEmail(),
@@ -95,32 +106,24 @@ public class AuthService {
 
         assignUserRole(user);
 
-        userRepository.save(user);
-
         return new MessageResponse("User registered successfully!");
     }
 
 
     public void validateRequest(SignupRequest signUpRequest) {
-
-        String nick = signUpRequest.getUsername();
-        if (userRepository.existsByNick(nick)) {
-            throw new IllegalArgumentException("Username is already existed");
-        }
-
-        String email = signUpRequest.getEmail();
-        if (userRepository.existsByEmail(email)) {
-            throw new IllegalArgumentException("E-mail is already existed");
-        }
+        if(userService.checkForUniqueNick(signUpRequest.getUsername()))
+            throw new UniqueValuesAlreadyExistsException(signUpRequest);
+        if(userService.checkForUniqueEmail(signUpRequest.getEmail()))
+            throw new UniqueValuesAlreadyExistsException(signUpRequest.getEmail());
     }
 
     public MyScheduleUser createNewUserAccount(SignupRequest signUpRequest) {
-
-        return new MyScheduleUser("need to add firstname " + signUpRequest.getUsername(),
-                "need to add lastname",
-                signUpRequest.getUsername(),
-                signUpRequest.getEmail(),
-                encoder.encode(signUpRequest.getPassword()));
+        MyScheduleUser user = new MyScheduleUser(signUpRequest.getFirstName(), signUpRequest.getLastName(),
+                signUpRequest.getUsername(), signUpRequest.getEmail(), encoder.encode(signUpRequest.getPassword()));
+        Schedule schedule = new Schedule(user, new ArrayList<Year>(), new ArrayList<LongTermPlan>());
+        user = userService.save(user);
+        scheduleService.save(schedule);
+        return user;
     }
 
     public void assignUserRole(MyScheduleUser user){
