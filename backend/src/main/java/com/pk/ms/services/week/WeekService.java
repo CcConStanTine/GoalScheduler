@@ -5,7 +5,10 @@ import com.pk.ms.dto.day.DayBasicInfoDTO;
 import com.pk.ms.dto.week.WeekInputDTO;
 import com.pk.ms.dto.week.WeekWithBasicDayDTO;
 import com.pk.ms.entities.day.Day;
+import com.pk.ms.entities.month.Month;
 import com.pk.ms.entities.week.Week;
+import com.pk.ms.entities.year.Year;
+import com.pk.ms.exceptions.AccessDeniedException;
 import com.pk.ms.exceptions.EntityAlreadyExistException;
 import com.pk.ms.mappers.day.DayMapService;
 import com.pk.ms.services.day.DayService;
@@ -46,7 +49,14 @@ public class WeekService {
 
     public List<Week> getWeeksByMonthId(long id) { return weekRepo.findAllByYearId(id); }
 
-    public void deleteWeek(long id) { weekRepo.deleteById(id); }
+    public String deleteWeek(long scheduleId, long weekId) {
+        if (hasAccess(scheduleId, getWeekById(weekId))) {
+            weekRepo.deleteById(weekId);
+            return "Week deleted successfully. ";
+        }
+        else
+            throw new AccessDeniedException("This user cannot delete this resource. ");
+    }
 
 
     public Week getActualWeek(long yearId, LocalDate date) {
@@ -62,21 +72,33 @@ public class WeekService {
             return false;
     }
 
-    public Week createWeek(long yearId, WeekInputDTO weekInputDTO) {
-        if (existsByYearIdAndDate(yearId, weekInputDTO))
-            throw new EntityAlreadyExistException(weekInputDTO);
-        return saveWeek(new Week(weekInputDTO.getStartDate(), weekInputDTO.getEndDate(),
-                yearService.getYearById(yearId)));
+    public Week createWeek(long scheduleId, long yearId, WeekInputDTO weekInputDTO) {
+        Year year = yearService.getYearById(yearId);
+        if(yearService.hasAccess(scheduleId, year)) {
+            if (existsByYearIdAndDate(yearId, weekInputDTO))
+                throw new EntityAlreadyExistException(weekInputDTO);
+            return saveWeek(new Week(weekInputDTO.getStartDate(), weekInputDTO.getEndDate(), year));
+        }
+        else
+            throw new AccessDeniedException("This user cannot create Week in this Year. ");
     }
 
-    public WeekWithBasicDayDTO getWeek(long weekId) {
+    public WeekWithBasicDayDTO getWeek(long scheduleId, long weekId) {
         Week week = getWeekById(weekId);
-        List<Day> dayList = dayService.getDaysByWeekId(weekId);
-        List<DayBasicInfoDTO> dayBasicInfoDTOList = new ArrayList<>();
-        for(Day day : dayList)
-            dayBasicInfoDTOList.add(dayMapService.mapToDTO(day));
-        return new WeekWithBasicDayDTO(week.getWeekId(), week.getStartDate(), week.getEndDate(),
-                dayBasicInfoDTOList, week.getWeekPlansList());
+        if(hasAccess(scheduleId, week)) {
+            List<Day> dayList = dayService.getDaysByWeekId(weekId);
+            List<DayBasicInfoDTO> dayBasicInfoDTOList = new ArrayList<>();
+            for (Day day : dayList)
+                dayBasicInfoDTOList.add(dayMapService.mapToDTO(day));
+            return new WeekWithBasicDayDTO(week.getWeekId(), week.getStartDate(), week.getEndDate(),
+                    dayBasicInfoDTOList, week.getWeekPlansList());
+        }
+        else
+            throw new AccessDeniedException("This user cannot access this resource. ");
+    }
+
+    public boolean hasAccess(long scheduleId, Week week) {
+        return week.getYear().getSchedule().getScheduleId() == scheduleId;
     }
 
 }

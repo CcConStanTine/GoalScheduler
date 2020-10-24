@@ -104,8 +104,6 @@ public class AuthService {
 
         MyScheduleUser user = createNewUserAccount(signUpRequest);
 
-        assignUserRole(user);
-
         return new MessageResponse("User registered successfully!");
     }
 
@@ -126,6 +124,7 @@ public class AuthService {
                 encoder.encode(signUpRequest.getPassword())
         );
         Schedule schedule = new Schedule(user, new ArrayList<Year>(), new ArrayList<LongTermPlan>());
+        assignUserRole(user);
         user = userService.save(user);
         scheduleService.save(schedule);
         return user;

@@ -6,6 +6,9 @@ import com.pk.ms.dto.month.MonthInputDTO;
 import com.pk.ms.dto.month.MonthWithBasicDayDTO;
 import com.pk.ms.entities.day.Day;
 import com.pk.ms.entities.month.Month;
+import com.pk.ms.entities.year.Year;
+import com.pk.ms.entities.year.YearPlan;
+import com.pk.ms.exceptions.AccessDeniedException;
 import com.pk.ms.exceptions.EntityAlreadyExistException;
 import com.pk.ms.mappers.day.DayMapService;
 import com.pk.ms.services.day.DayService;
@@ -45,7 +48,14 @@ public class MonthService {
 
     public List<Month> getMonthsByYearId(long id) { return monthRepo.findAllByYearId(id); }
 
-    public void delete(long id) { monthRepo.deleteById(id); }
+    public String delete(long scheduleId, long monthId) {
+        if(hasAccess(scheduleId, getMonthById(monthId))) {
+            monthRepo.deleteById(monthId);
+            return "Month deleted successfully. ";
+        }
+        else
+            throw new AccessDeniedException("This user cannot delete this resource. ");
+    }
 
     public Month getActualMonth(LocalDate date, long yearId) {
         return monthRepo.findByYearIdAndMonthName(yearId, date.getMonthValue());
@@ -58,22 +68,35 @@ public class MonthService {
             return false;
     }
 
-    public Month createMonth(long yearId, MonthInputDTO monthInputDTO) {
-        if (existsByYearIdAndMonthName(yearId, monthInputDTO))
-            throw new EntityAlreadyExistException(monthInputDTO.getMonthName());
-        return saveMonth(new Month(monthInputDTO.getMonthName(),
-                yearService.getYearById(yearId)));
+    public Month createMonth(long scheduleId, long yearId, MonthInputDTO monthInputDTO) {
+        Year year = yearService.getYearById(yearId);
+        if(yearService.hasAccess(scheduleId, year)) {
+            if (existsByYearIdAndMonthName(yearId, monthInputDTO))
+                throw new EntityAlreadyExistException(monthInputDTO.getMonthName());
+            return saveMonth(new Month(monthInputDTO.getMonthName(),
+                    year));
+        }
+        else
+            throw new AccessDeniedException("This user cannot create Month in this Year. ");
     }
 
 
-    public MonthWithBasicDayDTO getMonth(long monthId) {
+    public MonthWithBasicDayDTO getMonth(long scheduleId, long monthId) {
         Month month = getMonthById(monthId);
-        List<Day> dayList = dayService.getDaysByMonthId(monthId);
-        List<DayBasicInfoDTO> dayBasicInfoDTOList = new ArrayList<>();
-        for(Day day : dayList)
-            dayBasicInfoDTOList.add(dayMapService.mapToDTO(day));
-        return new MonthWithBasicDayDTO(month.getMonthId(), month.getMonthName(), month.getDaysAmount(),
-                dayBasicInfoDTOList, month.getMonthPlansList());
+        if(hasAccess(scheduleId, month)) {
+            List<Day> dayList = dayService.getDaysByMonthId(monthId);
+            List<DayBasicInfoDTO> dayBasicInfoDTOList = new ArrayList<>();
+            for (Day day : dayList)
+                dayBasicInfoDTOList.add(dayMapService.mapToDTO(day));
+            return new MonthWithBasicDayDTO(month.getMonthId(), month.getMonthName(), month.getDaysAmount(),
+                    dayBasicInfoDTOList, month.getMonthPlansList());
+        }
+        else
+            throw new AccessDeniedException("This user cannot access this resource. ");
+    }
+
+    public boolean hasAccess(long scheduleId, Month month) {
+        return month.getYear().getSchedule().getScheduleId() == scheduleId;
     }
 
 }

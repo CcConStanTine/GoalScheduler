@@ -12,31 +12,31 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @SpringBootApplication
 public class MyScheduleApplication {
 
-	@Autowired
-	UserService userService;
-
-	@Autowired
-	PasswordEncoder encoder;
+//	@Autowired
+//	UserService userService;
+//
+//	@Autowired
+//	PasswordEncoder encoder;
 
 	public static void main(String[] args) {
 		SpringApplication.run(MyScheduleApplication.class, args);
 	}
 
-	@Bean
-	CommandLineRunner runner() {
-		return args -> {
-			MyScheduleUser user1 = userService.getUserById(1);
-			MyScheduleUser user2 = userService.getUserById(2);
-			MyScheduleUser user3 = userService.getUserById(3);
-
-			user1.setPassword(encoder.encode(user1.getPassword()));
-			userService.save(user1);
-
-			user2.setPassword(encoder.encode(user2.getPassword()));
-			userService.save(user2);
-
-			user3.setPassword(encoder.encode(user3.getPassword()));
-			userService.save(user3);
-		};
-	}
+//	@Bean
+//	CommandLineRunner runner() {
+//		return args -> {
+//			MyScheduleUser user1 = userService.getUserById(1);
+//			MyScheduleUser user2 = userService.getUserById(2);
+//			MyScheduleUser user3 = userService.getUserById(3);
+//
+//			user1.setPassword(encoder.encode(user1.getPassword()));
+//			userService.save(user1);
+//
+//			user2.setPassword(encoder.encode(user2.getPassword()));
+//			userService.save(user2);
+//
+//			user3.setPassword(encoder.encode(user3.getPassword()));
+//			userService.save(user3);
+//		};
+//	}
 }

@@ -4,8 +4,8 @@ import com.pk.ms.dao.month.IMonthSummaryRepository;
 import com.pk.ms.entities.month.Month;
 import com.pk.ms.entities.month.MonthPlan;
 import com.pk.ms.entities.month.MonthSummary;
+import com.pk.ms.exceptions.AccessDeniedException;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PathVariable;
 
 @Service
 public class MonthSummaryService {
@@ -17,6 +17,14 @@ public class MonthSummaryService {
     public MonthSummaryService(IMonthSummaryRepository monthSummaryRepo, MonthService monthService) {
         this.monthSummaryRepo = monthSummaryRepo;
         this.monthService = monthService;
+    }
+
+    public MonthSummary getMonthSummary(long scheduleId, long monthSummaryId) {
+        MonthSummary monthSummary = getMonthSummaryById(monthSummaryId);
+        if(hasAccess(scheduleId, monthSummary))
+            return monthSummary;
+        else
+            throw new AccessDeniedException("This user cannot access this resource. ");
     }
 
     public MonthSummary getMonthSummaryById(long id) {
@@ -40,9 +48,16 @@ public class MonthSummaryService {
         return month.getMonthPlansList().size() - getFullfilledAmount(month);
     }
 
-    public MonthSummary createMonthSummary(@PathVariable("month_id") long monthId) {
+    public MonthSummary createMonthSummary(long scheduleId, long monthId) {
         Month month = monthService.getMonthById(monthId);
-        return saveMonthSummary(new MonthSummary(getFullfilledAmount(month), getFailedAmount(month), month));
+        if(monthService.hasAccess(scheduleId, month))
+            return saveMonthSummary(new MonthSummary(getFullfilledAmount(month), getFailedAmount(month), month));
+        else
+            throw new AccessDeniedException("This user cannot create summary in this Month. ");
+    }
+
+    private boolean hasAccess(long scheduleId, MonthSummary monthSummary) {
+        return monthSummary.getMonth().getYear().getSchedule().getScheduleId() == scheduleId;
     }
 
 }

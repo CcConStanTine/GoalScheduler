@@ -4,6 +4,7 @@ import com.pk.ms.dao.day.IDaySummaryRepository;
 import com.pk.ms.entities.day.Day;
 import com.pk.ms.entities.day.DayPlan;
 import com.pk.ms.entities.day.DaySummary;
+import com.pk.ms.exceptions.AccessDeniedException;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -19,8 +20,16 @@ public class DaySummaryService {
         this.dayService = dayService;
     }
 
-    public DaySummary getDaySummaryById(long id) {
-        return daySummaryRepo.findById(id);
+    public DaySummary getDaySummary(long scheduleId, long daySummaryId) {
+        DaySummary daySummary = getDaySummaryById(daySummaryId);
+        if(hasAccess(scheduleId, daySummary))
+            return daySummary;
+        else
+            throw new AccessDeniedException("This user cannot access this resource. ");
+    }
+
+    public DaySummary getDaySummaryById(long daySummaryId) {
+        return daySummaryRepo.findById(daySummaryId);
     }
 
     public DaySummary saveDay(DaySummary daySummary) {
@@ -40,9 +49,16 @@ public class DaySummaryService {
         return day.getDayPlansList().size() - getFullfilledAmount(day);
     }
 
-    public DaySummary createDaySummary(long id) {
-        Day day = dayService.getDayById(id);
-        return saveDay(new DaySummary(getFullfilledAmount(day), getFailedAmount(day), day));
+    public DaySummary createDaySummary(long scheduleId, long dayId) {
+        Day day = dayService.getDayById(dayId);
+        if(dayService.hasAccess(scheduleId,day))
+            return saveDay(new DaySummary(getFullfilledAmount(day), getFailedAmount(day), day));
+        else
+            throw new AccessDeniedException("This user cannot create summary in this Day. ");
+    }
+
+    private boolean hasAccess(long scheduleId, DaySummary daySummary) {
+        return daySummary.getDay().getWeek().getYear().getSchedule().getScheduleId() == scheduleId;
     }
 
 }
