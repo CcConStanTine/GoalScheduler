@@ -1,4 +1,93 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat&display=swap');
+
 *{
     margin: 0;
     padding: 0;
+}
+
+:root{
+    font-family: 'Montserrat', sans-serif;
+}
+
+.landing-page-wrapper{
+    .main-view{
+        width: 100%;
+        height: 90vh;
+        background-image: url("../images/planner.jpg");
+        background-position: top;
+        background-repeat: no-repeat;
+        background-size: cover;
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+
+        nav{
+            margin-top: 80px;
+            background-color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 70%;
+            height: 80px;
+
+            .image-and-logo{
+                height: 60%;
+                margin-left: 20px;
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                color: blue;
+                cursor: pointer;
+
+                img{
+                    height: 100%;
+                }
+            }
+
+            ul{
+                list-style: none;
+                z-index: 1;
+
+                a{
+                    text-decoration: unset;
+                    padding: 10px 20px;
+                    margin: 10px;
+                    color: darkgray;
+
+                    &:hover{
+                        color: rgb(105, 103, 103);
+                    }
+                }
+            }
+
+            .login-or-register{
+                display: flex;
+                flex-direction: row;
+
+                p{
+                    height: 80px;
+                    width: 150px;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    transition: background-color .2s ease-in;
+                    cursor: pointer;
+                    color: darkgray;
+
+                    &:hover{
+                        color: rgb(105, 103, 103);
+                    }
+
+                    &:nth-last-child(1){
+                        background-color: #F0C48A;
+                        color: white;
+
+                        &:hover{
+                            background-color: lightblue;
+                        }
+                    }
+                }
+            }
+        }
+    }
 }
