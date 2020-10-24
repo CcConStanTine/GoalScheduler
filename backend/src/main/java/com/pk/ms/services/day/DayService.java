@@ -3,8 +3,16 @@ package com.pk.ms.services.day;
 import com.pk.ms.dao.day.IDayRepository;
 import com.pk.ms.dto.day.DayInputDTO;
 import com.pk.ms.entities.day.Day;
+import com.pk.ms.entities.month.Month;
+import com.pk.ms.entities.week.Week;
+import com.pk.ms.entities.year.Year;
+import com.pk.ms.exceptions.AccessDeniedException;
+import com.pk.ms.exceptions.EntityAlreadyExistException;
+import com.pk.ms.exceptions.NotValidDataException;
 import com.pk.ms.services.month.MonthService;
 import com.pk.ms.services.week.WeekService;
+import com.pk.ms.services.year.YearService;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import java.sql.Date;
@@ -16,19 +24,16 @@ public class DayService {
 
     private final IDayRepository dayRepo;
 
-    private WeekService weekService;
+    private final YearService yearService;
 
-    private MonthService monthService;
+    private final WeekService weekService;
 
-    public DayService(IDayRepository dayRepo) {
+    private final MonthService monthService;
+
+    public DayService(IDayRepository dayRepo, @Lazy YearService yearService, @Lazy WeekService weekService, @Lazy MonthService monthService) {
         this.dayRepo = dayRepo;
-    }
-
-    public void setWeekService(WeekService weekService) {
+        this.yearService = yearService;
         this.weekService = weekService;
-    }
-
-    public void setMonthService(MonthService monthService) {
         this.monthService = monthService;
     }
 
@@ -36,8 +41,16 @@ public class DayService {
         return dayRepo.save(day);
     }
 
-    public Day getDayById(long id) {
-        return dayRepo.findById(id);
+    public Day getDay(long scheduleId, long dayId) {
+        Day day = getDayById(dayId);
+        if(hasAccess(scheduleId, day))
+            return day;
+        else
+            throw new AccessDeniedException("This user cannot access this resource. ");
+    }
+
+    public Day getDayById(long dayId) {
+        return dayRepo.findById(dayId);
     }
 
     public List<Day> getDaysByWeekId(long id) {
@@ -48,15 +61,65 @@ public class DayService {
         return dayRepo.getDaysByMonthId(id);
     }
 
-    public void deleteDay(long id) { dayRepo.deleteById(id); }
+    public String deleteDay(long scheduleId, long dayId) {
+        if (hasAccess(scheduleId, getDayById(dayId))) {
+            dayRepo.deleteById(dayId);
+            return "Day deleted successfully. ";
+        }
+        else
+            throw new AccessDeniedException("This user cannot delete this resource. ");
 
-    public Day createDay(long monthId, long weekId, DayInputDTO reqDayInputDTO) {
-        return saveDay(new Day(reqDayInputDTO.getDayDate(), reqDayInputDTO.getDayName(),
-                weekService.getWeekById(weekId), monthService.getMonthById(monthId)));
+    }
+
+    public boolean existsInWeek(long weekId, DayInputDTO dayInputDTO) {
+        if (dayRepo.findByWeekIdAndDayName(weekId, dayInputDTO.getDayName().getDayNumber()) != null)
+            return true;
+        else
+            return false;
+    }
+
+    public boolean existsInMonthByDate(long monthId, DayInputDTO dayInputDTO) {
+        if (dayRepo.findByMonthIdAndDayDate(monthId, dayInputDTO.getDayDate()) != null)
+            return true;
+        else
+            return false;
+    }
+
+    public boolean dataContainProperMonth(long monthId, DayInputDTO dayInputDTO) {
+        Date date = dayInputDTO.getDayDate();
+        LocalDate localDate = date.toLocalDate();
+        if (monthService.getMonthById(monthId).getMonthName().getMonthNumber() == localDate.getMonthValue())
+            return true;
+        else
+            return false;
+    }
+
+    public Day createDay(long scheduleId, long weekId, DayInputDTO reqDayInputDTO) {
+        if(weekService.hasAccess(scheduleId, weekService.getWeekById(weekId))) {
+            LocalDate localDate = reqDayInputDTO.getDayDate().toLocalDate();
+            Year year = yearService.getActualYear(localDate, scheduleId);
+            Month month = monthService.getActualMonth(localDate, year.getYearId());
+            long monthId = month.getMonthId();
+
+            if (!dataContainProperMonth(monthId, reqDayInputDTO))
+                throw new NotValidDataException(reqDayInputDTO);
+            if (existsInWeek(weekId, reqDayInputDTO))
+                throw new EntityAlreadyExistException(reqDayInputDTO.getDayName());
+            if (existsInMonthByDate(monthId, reqDayInputDTO))
+                throw new EntityAlreadyExistException(reqDayInputDTO.getDayDate());
+
+            return saveDay(new Day(reqDayInputDTO.getDayDate(), reqDayInputDTO.getDayName(),
+                    weekService.getWeekById(weekId), monthService.getMonthById(monthId)));
+        }
+        else
+            throw new AccessDeniedException("This user cannot create Day in this Week. ");
     }
 
     public Day getActualDay(long monthId, LocalDate date) {
         return dayRepo.findByMonthIdAndDayDate(monthId, Date.valueOf(date));
     }
 
+    public boolean hasAccess(long scheduleId, Day day) {
+        return day.getWeek().getYear().getSchedule().getScheduleId() == scheduleId;
+    }
 }

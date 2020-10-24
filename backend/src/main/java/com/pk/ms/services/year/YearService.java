@@ -9,6 +9,7 @@ import com.pk.ms.dto.year.YearWithBasicMonthAndWeekDTO;
 import com.pk.ms.entities.month.Month;
 import com.pk.ms.entities.week.Week;
 import com.pk.ms.entities.year.Year;
+import com.pk.ms.exceptions.AccessDeniedException;
 import com.pk.ms.exceptions.EntityAlreadyExistException;
 import com.pk.ms.mappers.month.MonthMapService;
 import com.pk.ms.mappers.week.WeekMapService;
@@ -17,9 +18,7 @@ import com.pk.ms.services.month.MonthService;
 import com.pk.ms.services.schedule.ScheduleService;
 import com.pk.ms.services.week.WeekService;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PathVariable;
 
-import javax.persistence.EntityExistsException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -37,7 +36,7 @@ public class YearService {
 
     private final MonthMapService monthMapService;
 
-    private final  WeekService weekService;
+    private final WeekService weekService;
 
     private final WeekMapService weekMapService;
 
@@ -63,8 +62,13 @@ public class YearService {
         return yearRepo.findAllByScheduleId(id);
     }
 
-    public void deleteYear(long id) {
-        yearRepo.deleteById(id);
+    public String deleteYear(long scheduleId, long yearId) {
+        if(hasAccess(scheduleId, getYearById(yearId))) {
+            yearRepo.deleteById(yearId);
+            return "Year deleted successfully. ";
+        }
+        else
+            throw new AccessDeniedException("This user cannot delete this resource. ");
     }
 
     public Year getActualYear(LocalDate date, long scheduleId) {
@@ -93,20 +97,35 @@ public class YearService {
         return yearBasicInfoDTOList;
     }
 
-    public YearWithBasicMonthAndWeekDTO getYear(@PathVariable("year_id") long yearId) {
+    public YearWithBasicMonthAndWeekDTO getYear(long scheduleId, long yearId) {
         Year year = getYearById(yearId);
-        List<Month> monthList = monthService.getMonthsByYearId(yearId);
-        List<Week> weekList = weekService.getWeeksByMonthId(yearId);
-        List<MonthBasicInfoDTO> monthBasicInfoDTOList = new ArrayList<>();
-        List<WeekBasicInfoDTO> weekBasicInfoDTOList = new ArrayList<>();
+        if (hasAccess(scheduleId, year)) {
+            List<Month> monthList = monthService.getMonthsByYearId(yearId);
+            List<Week> weekList = weekService.getWeeksByMonthId(yearId);
+            List<MonthBasicInfoDTO> monthBasicInfoDTOList = new ArrayList<>();
+            List<WeekBasicInfoDTO> weekBasicInfoDTOList = new ArrayList<>();
 
-        for (Month month : monthList)
-            monthBasicInfoDTOList.add(monthMapService.mapToDTO(month));
-        for (Week week : weekList)
-            weekBasicInfoDTOList.add(weekMapService.mapToDTO(week));
+            for (Month month : monthList)
+                monthBasicInfoDTOList.add(monthMapService.mapToDTO(month));
+            for (Week week : weekList)
+                weekBasicInfoDTOList.add(weekMapService.mapToDTO(week));
 
-        return new YearWithBasicMonthAndWeekDTO(year.getYearId(), year.getYearNumber(), year.isLeapYear(),
-                year.getDaysAmount(), monthBasicInfoDTOList, weekBasicInfoDTOList, year.getYearPlansList());
+            return new YearWithBasicMonthAndWeekDTO(
+                    year.getYearId(),
+                    year.getYearNumber(),
+                    year.isLeapYear(),
+                    year.getDaysAmount(),
+                    monthBasicInfoDTOList,
+                    weekBasicInfoDTOList,
+                    year.getYearPlansList()
+            );
+        }
+        else
+            throw new AccessDeniedException("This user cannot access this resource. ");
+    }
+
+    public boolean hasAccess(long scheduleId, Year year) {
+        return year.getSchedule().getScheduleId() == scheduleId;
     }
 
 }

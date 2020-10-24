@@ -9,4 +9,11 @@ public interface IUserRepository extends CrudRepository<MyScheduleUser, Long> {
 
     public MyScheduleUser findById(long id);
 
+    public MyScheduleUser findByNick(String nick);
+
+    public MyScheduleUser findByEmail(String email);
+
+    boolean existsByNick(String nick);
+
+    boolean existsByEmail(String email);
 }

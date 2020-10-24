@@ -4,11 +4,13 @@ import com.pk.ms.dto.year.YearPlanInputDTO;
 import com.pk.ms.entities.year.YearPlan;
 import com.pk.ms.services.year.YearPlanService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
 @RestController
+@PreAuthorize("hasRole('ROLE_ADMIN') or authentication.principal.id == #scheduleId")
 public class YearPlanController {
 
     private final YearPlanService yearPlanService;
@@ -18,30 +20,32 @@ public class YearPlanController {
     }
 
     // create a new YearPlan by passing content, startDate and endDate
-    @PostMapping(value="/years/{year_id}/year_plans", consumes = "application/json")
-    public ResponseEntity<YearPlan> createYearPlan(@PathVariable("year_id") long yearId, @Valid @RequestBody YearPlanInputDTO yearPlanInputDTO) {
-        return ResponseEntity.ok(yearPlanService.createYearPlan(yearId, yearPlanInputDTO));
+    @PostMapping(value="/schedules/{schedule_id}/years/{year_id}/year_plans", consumes = "application/json")
+    public ResponseEntity<YearPlan> createYearPlan(@PathVariable("schedule_id") long scheduleId,
+                                                   @PathVariable("year_id") long yearId,
+                                                   @Valid @RequestBody YearPlanInputDTO yearPlanInputDTO) {
+        return ResponseEntity.ok(yearPlanService.createYearPlan(scheduleId, yearId, yearPlanInputDTO));
     }
 
     // update existing YearPlan
-    @PatchMapping(value="/year_plans/{year_plan_id}", consumes = "application/json")
-    public ResponseEntity<YearPlan> updateYearPlan(@PathVariable("year_plan_id") long yearPlanId, @Valid @RequestBody YearPlanInputDTO yearPlanInputDTO) {
-        return ResponseEntity.ok(yearPlanService.updateYearPlan(yearPlanId, yearPlanInputDTO));
-    }
-
-    // delete existing YearPlan
-    @DeleteMapping("/year_plans/{year_plan_id}")
-    public ResponseEntity<String> deleteYearPlan(@PathVariable("year_plan_id") long yearPlanId) {
-        yearPlanService.deleteYearPlan(yearPlanId);
-        return ResponseEntity.ok("Year plan was successfully deleted. ");
+    @PatchMapping(value="/schedules/{schedule_id}/year_plans/{year_plan_id}", consumes = "application/json")
+    public ResponseEntity<YearPlan> updateYearPlan(@PathVariable("schedule_id") long scheduleId,
+                                                   @PathVariable("year_plan_id") long yearPlanId,
+                                                   @Valid @RequestBody YearPlanInputDTO yearPlanInputDTO) {
+        return ResponseEntity.ok(yearPlanService.updateYearPlan(scheduleId, yearPlanId, yearPlanInputDTO));
     }
 
     // change the fulfilled status
-    @PatchMapping("/year_plans/{year_plan_id}/fulfilled")
-    public ResponseEntity<String> updateFulfilledStatus(@PathVariable("year_plan_id") long yearPlanId) {
-        yearPlanService.updateFulfilledStatus(yearPlanId);
-        return ResponseEntity.ok("Changed successfully. ");
+    @PatchMapping("/schedules/{schedule_id}/year_plans/{year_plan_id}/fulfilled")
+    public ResponseEntity<YearPlan> updateFulfilledStatus(@PathVariable("schedule_id") long scheduleId,
+                                                          @PathVariable("year_plan_id") long yearPlanId) {
+        return ResponseEntity.ok(yearPlanService.updateFulfilledStatus(scheduleId, yearPlanId));
     }
 
-
+    // delete existing YearPlan
+    @DeleteMapping("/schedules/{schedule_id}/year_plans/{year_plan_id}")
+    public ResponseEntity<String> deleteYearPlan(@PathVariable("schedule_id") long scheduleId,
+                                                 @PathVariable("year_plan_id") long yearPlanId) {
+        return ResponseEntity.ok(yearPlanService.deleteYearPlan(scheduleId, yearPlanId));
+    }
 }

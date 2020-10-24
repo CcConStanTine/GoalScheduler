@@ -3,6 +3,8 @@ package com.pk.ms.entities.user;
 import com.pk.ms.entities.schedule.Schedule;
 
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 public class MyScheduleUser {
@@ -21,10 +23,27 @@ public class MyScheduleUser {
 
     private String email;
 
+    private String password;
+
+
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable( name = "my_schedule_user_roles",
+            joinColumns = @JoinColumn(name = "my_schedule_user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id"))
+    private Set<Role> roles = new HashSet<>();
+
     @OneToOne(mappedBy = "user")
     private Schedule schedule;
     public MyScheduleUser() {
 
+    }
+
+    public MyScheduleUser(String firstName, String lastName, String nick, String email, String password) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.nick = nick;
+        this.email = email;
+        this.password = password;
     }
 
     public MyScheduleUser(String firstName, String lastName, String nick, String email) {
@@ -73,9 +92,27 @@ public class MyScheduleUser {
     public void setEmail(String email) {
         this.email = email;
     }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public Set<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
+    }
+
     public Schedule getSchedule() {
         return schedule;
     }
+
     public void setSchedule(Schedule schedule) {
         this.schedule = schedule;
     }

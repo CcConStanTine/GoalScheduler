@@ -7,11 +7,13 @@ import com.pk.ms.dto.week.ActualWeekHomePageDTO;
 import com.pk.ms.dto.year.ActualYearHomePageDTO;
 import com.pk.ms.entities.schedule.LongTermPlan;
 
+import java.util.List;
+
 // Schedule DTO - Home Page of application, displaying list of long-term plans and
 // current year, month, week, day based on LocalDate
 public class ScheduleHomePageDTO {
 
-    private Iterable<LongTermPlan> longTermPlanList;
+    private List<LongTermPlan> longTermPlanList;
     private ActualYearHomePageDTO actualYear;
     private ActualMonthHomePageDTO actualMonth;
     private ActualWeekHomePageDTO actualWeek;
@@ -21,7 +23,7 @@ public class ScheduleHomePageDTO {
 
     }
 
-    public ScheduleHomePageDTO(Iterable<LongTermPlan> longTermPlanList, ActualYearHomePageDTO actualYear,
+    public ScheduleHomePageDTO(List<LongTermPlan> longTermPlanList, ActualYearHomePageDTO actualYear,
                                ActualMonthHomePageDTO actualMonth, ActualWeekHomePageDTO actualWeek,
                                ActualDayHomePageDTO actualDay) {
         this.longTermPlanList = longTermPlanList;
@@ -31,11 +33,11 @@ public class ScheduleHomePageDTO {
         this.actualDay = actualDay;
     }
 
-    public Iterable<LongTermPlan> getLongTermPlanList() {
+    public List<LongTermPlan> getLongTermPlanList() {
         return longTermPlanList;
     }
 
-    public void setLongTermPlanList(Iterable<LongTermPlan> longTermPlanList) {
+    public void setLongTermPlanList(List<LongTermPlan> longTermPlanList) {
         this.longTermPlanList = longTermPlanList;
     }
 

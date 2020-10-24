@@ -3,6 +3,7 @@ package com.pk.ms.services.schedule;
 import com.pk.ms.dao.schedule.ILongTermPlanRepository;
 import com.pk.ms.dto.schedule.LongTermPlanInputDTO;
 import com.pk.ms.entities.schedule.LongTermPlan;
+import com.pk.ms.exceptions.AccessDeniedException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -29,8 +30,13 @@ public class LongTermPlanService {
         return longTermPlanRepo.save(longTermPlan);
     }
 
-    public void deleteLongTermPlan(long id) {
-        longTermPlanRepo.delete(longTermPlanRepo.findById(id));
+    public String deleteLongTermPlan(long scheduleId, long ltpId) {
+        if(hasAccess(scheduleId, getLTPById(ltpId))) {
+            longTermPlanRepo.deleteById(ltpId);
+            return "Plan deleted successfully. ";
+        }
+        else
+            throw new AccessDeniedException("This user cannot delete this resource. ");
     }
 
     public LongTermPlan createLongTermPlan(long scheduleId, LongTermPlanInputDTO ltpInputDTO) {
@@ -39,18 +45,40 @@ public class LongTermPlanService {
                 scheduleService.getScheduleById(scheduleId)));
     }
 
-    public LongTermPlan updateLongTermPlan(long ltpId, LongTermPlanInputDTO ltpInputDTO) {
+    public LongTermPlan updateLongTermPlan(long scheduleId, long ltpId, LongTermPlanInputDTO ltpInputDTO) {
 
         LongTermPlan longTermPlan = getLTPById(ltpId);
 
-        if(ltpInputDTO.getContent() != null)
-            longTermPlan.setContent(ltpInputDTO.getContent());
-        if(ltpInputDTO.getStartDate() != null)
-            longTermPlan.setStartDate(ltpInputDTO.getStartDate());
-        if(ltpInputDTO.getEndDate() != null)
-            longTermPlan.setEndDate(ltpInputDTO.getEndDate());
+        if(hasAccess(scheduleId, longTermPlan)) {
+            if (ltpInputDTO.getContent() != null)
+                longTermPlan.setContent(ltpInputDTO.getContent());
+            if (ltpInputDTO.getStartDate() != null)
+                longTermPlan.setStartDate(ltpInputDTO.getStartDate());
+            if (ltpInputDTO.getEndDate() != null)
+                longTermPlan.setEndDate(ltpInputDTO.getEndDate());
+            return save(longTermPlan);
+        }
+        else
+            throw new AccessDeniedException("This user cannot update this resource. ");
+    }
 
-        return save(longTermPlan);
+    public LongTermPlan updateFulfilledStatus(long scheduleId, long longTermPlanId) {
+        LongTermPlan longTermPlan = getLTPById(longTermPlanId);
+        if(hasAccess(scheduleId, longTermPlan)) {
+            boolean fullfilled = longTermPlan.isFulfilled();
+            if (!fullfilled)
+                fullfilled = true;
+            else
+                fullfilled = false;
+            longTermPlan.setFulfilled(fullfilled);
+            return save(longTermPlan);
+        }
+        else
+            throw new AccessDeniedException("This user cannot update this resource. ");
+    }
+
+    private boolean hasAccess(long scheduleId, LongTermPlan longTermPlan) {
+        return longTermPlan.getSchedule().getScheduleId() == scheduleId;
     }
 
 }

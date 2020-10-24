@@ -24,6 +24,10 @@ public class UserInputDTO {
     @Email
     private String email;
 
+    @NotNull
+    @Size(min = 2, max = 100)
+    private String password;
+
     public UserInputDTO() {
     }
 

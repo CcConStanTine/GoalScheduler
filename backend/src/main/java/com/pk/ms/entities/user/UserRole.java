@@ -1,0 +1,7 @@
+package com.pk.ms.entities.user;
+
+public enum UserRole {
+    ROLE_USER,
+    ROLE_MODERATOR,
+    ROLE_ADMIN
+}
