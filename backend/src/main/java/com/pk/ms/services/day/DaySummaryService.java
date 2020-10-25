@@ -5,6 +5,7 @@ import com.pk.ms.entities.day.Day;
 import com.pk.ms.entities.day.DayPlan;
 import com.pk.ms.entities.day.DaySummary;
 import com.pk.ms.exceptions.AccessDeniedException;
+import com.pk.ms.exceptions.ResourceNotAvailableException;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -22,6 +23,8 @@ public class DaySummaryService {
 
     public DaySummary getDaySummary(long scheduleId, long daySummaryId) {
         DaySummary daySummary = getDaySummaryById(daySummaryId);
+        if(daySummary == null)
+            throw new ResourceNotAvailableException();
         if(hasAccess(scheduleId, daySummary))
             return daySummary;
         else
@@ -51,6 +54,8 @@ public class DaySummaryService {
 
     public DaySummary createDaySummary(long scheduleId, long dayId) {
         Day day = dayService.getDayById(dayId);
+        if(day == null)
+            throw new ResourceNotAvailableException();
         if(dayService.hasAccess(scheduleId,day))
             return saveDay(new DaySummary(getFullfilledAmount(day), getFailedAmount(day), day));
         else

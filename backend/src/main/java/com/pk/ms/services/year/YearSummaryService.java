@@ -5,6 +5,7 @@ import com.pk.ms.entities.year.Year;
 import com.pk.ms.entities.year.YearPlan;
 import com.pk.ms.entities.year.YearSummary;
 import com.pk.ms.exceptions.AccessDeniedException;
+import com.pk.ms.exceptions.ResourceNotAvailableException;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -21,6 +22,8 @@ public class YearSummaryService {
 
     public YearSummary getYearSummary(long scheduleId, long yearSummaryId) {
         YearSummary yearSummary = getYearSummaryById(yearSummaryId);
+        if(yearSummary == null)
+            throw new ResourceNotAvailableException();
         if(hasAccess(scheduleId, yearSummary))
             return yearSummaryRepo.findById(yearSummaryId);
         else
@@ -50,6 +53,8 @@ public class YearSummaryService {
 
     public YearSummary createYearSummary(long scheduleId, long yearId) {
         Year year = yearService.getYearById(yearId);
+        if(year == null)
+            throw new ResourceNotAvailableException();
         if(yearService.hasAccess(scheduleId, year))
             return saveYearSummary(new YearSummary(getFullfilledAmount(year), getFailedAmount(year), year));
         else

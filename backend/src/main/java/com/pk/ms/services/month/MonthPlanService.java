@@ -4,10 +4,9 @@ import com.pk.ms.dao.month.IMonthPlanRepository;
 import com.pk.ms.dto.month.MonthPlanInputDTO;
 import com.pk.ms.entities.month.Month;
 import com.pk.ms.entities.month.MonthPlan;
-import com.pk.ms.entities.year.YearPlan;
 import com.pk.ms.exceptions.AccessDeniedException;
+import com.pk.ms.exceptions.ResourceNotAvailableException;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PathVariable;
 
 @Service
 public class MonthPlanService {
@@ -26,7 +25,10 @@ public class MonthPlanService {
     public MonthPlan getMonthPlanById(long id) { return monthPlanRepo.findById(id); }
 
     public String deleteMonthPlan(long scheduleId, long monthPlanId) {
-        if(hasAccess(scheduleId, getMonthPlanById(monthPlanId))) {
+        MonthPlan monthPlan = getMonthPlanById(monthPlanId);
+        if(monthPlan == null)
+            throw new ResourceNotAvailableException();
+        if(hasAccess(scheduleId, monthPlan)) {
             monthPlanRepo.deleteById(monthPlanId);
             return "Plan deleted successfully. ";
         }
@@ -36,6 +38,8 @@ public class MonthPlanService {
 
     public MonthPlan createMonthPlan(long scheduleId, long monthId, MonthPlanInputDTO monthPlanInputDTO) {
         Month month = monthService.getMonthById(monthId);
+        if(month == null)
+            throw new ResourceNotAvailableException();
         if(monthService.hasAccess(scheduleId, month))
             return saveMonthPlan(new MonthPlan(monthPlanInputDTO.getContent(), monthPlanInputDTO.getStartDate(),
                 monthPlanInputDTO.getEndDate(), month));
@@ -44,8 +48,9 @@ public class MonthPlanService {
     }
 
     public MonthPlan updateMonthPlan(long scheduleId, long monthPlanId, MonthPlanInputDTO monthPlanInputDTO) {
-
         MonthPlan monthPlan = getMonthPlanById(monthPlanId);
+        if(monthPlan == null)
+            throw new ResourceNotAvailableException();
         if(hasAccess(scheduleId, monthPlan)) {
             if (monthPlanInputDTO.getContent() != null)
                 monthPlan.setContent(monthPlanInputDTO.getContent());
@@ -61,8 +66,9 @@ public class MonthPlanService {
     }
 
     public MonthPlan updateFulfilledStatus(long scheduleId, long monthPlanId) {
-
         MonthPlan monthPlan = getMonthPlanById(monthPlanId);
+        if(monthPlan == null)
+            throw new ResourceNotAvailableException();
         if(hasAccess(scheduleId, monthPlan)) {
             boolean fullfilled = monthPlan.isFulfilled();
             if (!fullfilled)

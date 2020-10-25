@@ -19,25 +19,25 @@ public class DayController {
         this.dayService = dayService;
     }
 
-    // create Day
+    @GetMapping(value = "/schedules/{schedule_id}/days/{day_id}")
+    public ResponseEntity<Day> getDay(@PathVariable("schedule_id") long scheduleId,
+                                      @PathVariable("day_id") long dayId) {
+
+        return ResponseEntity.ok(dayService.getDay(scheduleId, dayId));
+    }
+
     @PostMapping(path = "/schedules/{schedule_id}/weeks/{week_id}/days", consumes = "application/json")
     public ResponseEntity<Day> createDay(@PathVariable("schedule_id") long scheduleId,
                                          @PathVariable("week_id") long weekId,
                                          @Valid @RequestBody DayInputDTO reqDayInputDTO) {
+
         return ResponseEntity.ok(dayService.createDay(scheduleId,weekId, reqDayInputDTO));
     }
 
-    // get particular Day (with its plans)
-    @GetMapping(value = "/schedules/{schedule_id}/days/{day_id}")
-    public ResponseEntity<Day> getDay(@PathVariable("schedule_id") long scheduleId,
-                                      @PathVariable("day_id") long dayId) {
-        return ResponseEntity.ok(dayService.getDay(scheduleId, dayId));
-    }
-
-    // delete Day
     @DeleteMapping("/schedules/{schedule_id}/days/{day_id}")
     public ResponseEntity<String> deleteDay(@PathVariable("schedule_id") long scheduleId,
                                             @PathVariable("day_id") long dayId) {
+
         return ResponseEntity.ok(dayService.deleteDay(scheduleId, dayId));
     }
 

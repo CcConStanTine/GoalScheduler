@@ -42,7 +42,7 @@ public class UserService {
         return userInfoMapService.mapToDTO(getUserById(id));
     }
 
-    public UserInfoDTO updateUser(long id, UserInputDTO userInputDTO) {
+    public UserInfoDTO updateUser(long userId, UserInputDTO userInputDTO) {
 
         if(checkForUniqueNick(userInputDTO.getNick()))
                 throw new UniqueValuesAlreadyExistsException(userInputDTO);
@@ -50,7 +50,7 @@ public class UserService {
         if(checkForUniqueEmail(userInputDTO.getEmail()))
                 throw new UniqueValuesAlreadyExistsException(userInputDTO.getEmail());
 
-        MyScheduleUser user = getUserById(id);
+        MyScheduleUser user = getUserById(userId);
 
         if(userInputDTO.getFirstName() != null)
             user.setFirstName(userInputDTO.getFirstName());
@@ -64,5 +64,4 @@ public class UserService {
         save(user);
         return userInfoMapService.mapToDTO(user);
     }
-
 }

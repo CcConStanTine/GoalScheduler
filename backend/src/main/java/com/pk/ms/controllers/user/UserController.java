@@ -20,16 +20,16 @@ public class UserController {
         this.userService = userService;
     }
 
-    // get particular User info
     @GetMapping("/{id}/info")
     public ResponseEntity<UserInfoDTO> getUserInfo(@PathVariable("id") long id) {
+
         return ResponseEntity.ok(userService.getUserInfo(id));
     }
 
-    // update a User
     @PatchMapping(path = "/{id}", consumes = "application/json")
     public ResponseEntity<UserInfoDTO> updateUser(@PathVariable("id") long id,
                                                   @Valid @RequestBody UserInputDTO userInputDTO) {
+
         return ResponseEntity.ok(userService.updateUser(id, userInputDTO));
     }
 

@@ -10,6 +10,7 @@ import com.pk.ms.entities.year.Year;
 import com.pk.ms.entities.year.YearPlan;
 import com.pk.ms.exceptions.AccessDeniedException;
 import com.pk.ms.exceptions.EntityAlreadyExistException;
+import com.pk.ms.exceptions.ResourceNotAvailableException;
 import com.pk.ms.mappers.day.DayMapService;
 import com.pk.ms.services.day.DayService;
 import com.pk.ms.services.year.YearService;
@@ -48,8 +49,11 @@ public class MonthService {
 
     public List<Month> getMonthsByYearId(long id) { return monthRepo.findAllByYearId(id); }
 
-    public String delete(long scheduleId, long monthId) {
-        if(hasAccess(scheduleId, getMonthById(monthId))) {
+    public String deleteMonth(long scheduleId, long monthId) {
+        Month month = getMonthById(monthId);
+        if(month == null)
+            throw new ResourceNotAvailableException();
+        if(hasAccess(scheduleId, month)) {
             monthRepo.deleteById(monthId);
             return "Month deleted successfully. ";
         }
@@ -70,6 +74,8 @@ public class MonthService {
 
     public Month createMonth(long scheduleId, long yearId, MonthInputDTO monthInputDTO) {
         Year year = yearService.getYearById(yearId);
+        if(year == null)
+            throw new ResourceNotAvailableException();
         if(yearService.hasAccess(scheduleId, year)) {
             if (existsByYearIdAndMonthName(yearId, monthInputDTO))
                 throw new EntityAlreadyExistException(monthInputDTO.getMonthName());
@@ -83,6 +89,8 @@ public class MonthService {
 
     public MonthWithBasicDayDTO getMonth(long scheduleId, long monthId) {
         Month month = getMonthById(monthId);
+        if(month == null)
+            throw new ResourceNotAvailableException();
         if(hasAccess(scheduleId, month)) {
             List<Day> dayList = dayService.getDaysByMonthId(monthId);
             List<DayBasicInfoDTO> dayBasicInfoDTOList = new ArrayList<>();

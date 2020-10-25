@@ -47,6 +47,7 @@ public class HomePageMapService {
 
     public ScheduleHomePageDTO getHomePage(LocalDate date, long scheduleId) {
 
+
         ScheduleHomePageDTO scheduleHomePageDTO = new ScheduleHomePageDTO();
 
         List<LongTermPlan> longTermPlanList = getLongTermPlans(scheduleId);

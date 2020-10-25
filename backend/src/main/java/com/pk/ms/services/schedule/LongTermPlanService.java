@@ -4,6 +4,7 @@ import com.pk.ms.dao.schedule.ILongTermPlanRepository;
 import com.pk.ms.dto.schedule.LongTermPlanInputDTO;
 import com.pk.ms.entities.schedule.LongTermPlan;
 import com.pk.ms.exceptions.AccessDeniedException;
+import com.pk.ms.exceptions.ResourceNotAvailableException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -31,7 +32,10 @@ public class LongTermPlanService {
     }
 
     public String deleteLongTermPlan(long scheduleId, long ltpId) {
-        if(hasAccess(scheduleId, getLTPById(ltpId))) {
+        LongTermPlan longTermPlan = getLTPById(ltpId);
+        if(longTermPlan == null)
+            throw new ResourceNotAvailableException();
+        if(hasAccess(scheduleId, longTermPlan)) {
             longTermPlanRepo.deleteById(ltpId);
             return "Plan deleted successfully. ";
         }
@@ -48,7 +52,8 @@ public class LongTermPlanService {
     public LongTermPlan updateLongTermPlan(long scheduleId, long ltpId, LongTermPlanInputDTO ltpInputDTO) {
 
         LongTermPlan longTermPlan = getLTPById(ltpId);
-
+        if(longTermPlan == null)
+            throw new ResourceNotAvailableException();
         if(hasAccess(scheduleId, longTermPlan)) {
             if (ltpInputDTO.getContent() != null)
                 longTermPlan.setContent(ltpInputDTO.getContent());
@@ -64,6 +69,8 @@ public class LongTermPlanService {
 
     public LongTermPlan updateFulfilledStatus(long scheduleId, long longTermPlanId) {
         LongTermPlan longTermPlan = getLTPById(longTermPlanId);
+        if(longTermPlan == null)
+            throw new ResourceNotAvailableException();
         if(hasAccess(scheduleId, longTermPlan)) {
             boolean fullfilled = longTermPlan.isFulfilled();
             if (!fullfilled)
