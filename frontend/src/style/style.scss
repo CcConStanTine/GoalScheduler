@@ -3,90 +3,129 @@
 *{
     margin: 0;
     padding: 0;
+    box-sizing: border-box;
 }
 
-:root{
+.welcome-page{
+    width: 100%;
     font-family: 'Montserrat', sans-serif;
-}
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 
-.landing-page-wrapper{
-    .main-view{
+    .navigation{
         width: 100%;
-        height: 90vh;
-        background-image: url("../images/planner.jpg");
-        background-position: top;
-        background-repeat: no-repeat;
-        background-size: cover;
         display: flex;
-        justify-content: center;
-        align-items: flex-start;
+        flex-direction: row;
+        align-items: center;
+        padding-top: 10px;
 
-        nav{
-            margin-top: 80px;
-            background-color: white;
+        img{
+            height: 50px;
+        }
+
+        p{
+            font-size: 20px;
+        }
+    }
+
+    .main{
+        margin: 30px 0 0;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+
+        .welcome-message{
+            width: 80%;
+        }
+
+        .login-or-register-buttons{
+            margin: 50px 0 30px;
+            width: 100%;
             display: flex;
-            justify-content: space-between;
-            align-items: center;
-            width: 70%;
-            height: 80px;
+            flex-direction: row;
+            justify-content: space-around;
 
-            .image-and-logo{
-                height: 60%;
-                margin-left: 20px;
+            button{
+                padding: 10px 40px;
+                border: unset;
+                outline: unset;
+                border-radius: 20px;
+                font-size: 15px;
+                background-color: navy;
+                color: white;
+
+                &:nth-child(1){
+                    background-color: orange;
+                }
+            }
+        }
+
+        .form-container{
+            width: 100%;
+
+            form{
+                width: 100%;
                 display: flex;
-                flex-direction: row;
+                flex-direction: column;
                 align-items: center;
-                color: blue;
-                cursor: pointer;
 
-                img{
-                    height: 100%;
-                }
-            }
-
-            ul{
-                list-style: none;
-                z-index: 1;
-
-                a{
-                    text-decoration: unset;
-                    padding: 10px 20px;
-                    margin: 10px;
-                    color: darkgray;
-
-                    &:hover{
-                        color: rgb(105, 103, 103);
-                    }
-                }
-            }
-
-            .login-or-register{
-                display: flex;
-                flex-direction: row;
-
-                p{
-                    height: 80px;
-                    width: 150px;
+                .input-container{
                     display: flex;
-                    justify-content: center;
+                    flex-direction: column;
                     align-items: center;
-                    transition: background-color .2s ease-in;
-                    cursor: pointer;
-                    color: darkgray;
+                    // margin-bottom: 10px;
 
-                    &:hover{
-                        color: rgb(105, 103, 103);
-                    }
-
-                    &:nth-last-child(1){
-                        background-color: #F0C48A;
-                        color: white;
-
-                        &:hover{
-                            background-color: lightblue;
-                        }
+                    span{
+                        width: 100%;
+                        height: 20px;
+                        color: red;
+                        text-align: center;
+                        font-size: 15px;
                     }
                 }
+
+                .database-message{
+                    color: green;
+                    margin-bottom: 10px;
+                }
+
+                input{
+                    padding: 10px 20px;
+                    outline: unset;
+                    font-size: 15px;
+                    border-radius: 20px;
+                    border: unset;
+                    background-color: rgb(240, 240, 240);
+
+                    &.send-form-button{
+                        width: 80%;
+                        margin: 10px 0 20px;
+                        color: white;
+                        background-color: green;
+                    }
+                }
+            }
+        }
+        
+        .login-without-register{
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+
+            span{
+                color: gray;
+                margin-bottom: 10px;
+            }
+
+            button{
+                border: none;
+                background-color: unset;
+                outline: unset;
+                font-size: 16px;
+                padding: 10px 20px;
+                color: #505050;
             }
         }
     }

@@ -1,13 +1,22 @@
-import React from 'react';
+import React, { useContext } from 'react';
 // import { Route,withRouter } from 'react-router-dom';
-import auth from '../../authentication/auth';
+import auth from '../../authentication/database';
+import { AppContext } from '../../authentication/AppContext';
+// import { Redirect } from 'react-router-dom';
 
 interface HomeInterface {
     history: any
 }
 
 const HomePage = ({ history }: HomeInterface) => {
-    const logout = () => auth.signout(() => history.push("/"))
+    const { setLoggedIn } = useContext(AppContext);
+
+    const logout = () => {
+        auth.signout();
+        if (setLoggedIn) setLoggedIn({
+            loggedIn: auth.isAuthenticated(),
+        });
+    }
 
     return (
         <>
