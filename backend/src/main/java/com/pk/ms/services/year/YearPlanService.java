@@ -5,6 +5,7 @@ import com.pk.ms.dto.year.YearPlanInputDTO;
 import com.pk.ms.entities.year.Year;
 import com.pk.ms.entities.year.YearPlan;
 import com.pk.ms.exceptions.AccessDeniedException;
+import com.pk.ms.exceptions.ResourceNotAvailableException;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -28,7 +29,10 @@ public class YearPlanService {
     }
 
     public String deleteYearPlan(long scheduleId, long yearPlanId) {
-        if(hasAccess(scheduleId, getYearPlanById(yearPlanId))) {
+        YearPlan yearPlan = getYearPlanById(yearPlanId);
+        if(yearPlan == null)
+            throw new ResourceNotAvailableException();
+        if(hasAccess(scheduleId, yearPlan)) {
             yearPlanRepo.deleteById(yearPlanId);
             return "Plan deleted successfully. ";
         }
@@ -38,6 +42,8 @@ public class YearPlanService {
 
     public YearPlan createYearPlan(long scheduleId, long yearId, YearPlanInputDTO yearPlanInputDTO) {
         Year year = yearService.getYearById(yearId);
+        if(year == null)
+            throw new ResourceNotAvailableException();
         if(yearService.hasAccess(scheduleId, year))
             return saveYearPlan(new YearPlan(yearPlanInputDTO.getContent(), yearPlanInputDTO.getStartDate(),
                     yearPlanInputDTO.getEndDate(), year));
@@ -48,6 +54,8 @@ public class YearPlanService {
     public YearPlan updateYearPlan(long scheduleId, long yearPlanId, YearPlanInputDTO yearPlanInputDTO) {
 
         YearPlan yearPlan = getYearPlanById(yearPlanId);
+        if(yearPlan == null)
+            throw new ResourceNotAvailableException();
         if(hasAccess(scheduleId, yearPlan)) {
             if (yearPlanInputDTO.getContent() != null)
                 yearPlan.setContent(yearPlanInputDTO.getContent());
@@ -64,6 +72,8 @@ public class YearPlanService {
 
     public YearPlan updateFulfilledStatus(long scheduleId, long yearPlanId) {
         YearPlan yearPlan = getYearPlanById(yearPlanId);
+        if(yearPlan == null)
+            throw new ResourceNotAvailableException();
         if(hasAccess(scheduleId, yearPlan)) {
             boolean fullfilled = yearPlan.isFulfilled();
             if (!fullfilled)

@@ -5,6 +5,7 @@ import com.pk.ms.dto.day.DayPlanInputDTO;
 import com.pk.ms.entities.day.Day;
 import com.pk.ms.entities.day.DayPlan;
 import com.pk.ms.exceptions.AccessDeniedException;
+import com.pk.ms.exceptions.ResourceNotAvailableException;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -27,9 +28,12 @@ public class DayPlanService {
         return dayPlanRepo.findById(id);
     }
 
-    public String deleteDayPlan(long scheduleId, long dayId) {
-        if(hasAccess(scheduleId, getDayPlanById(dayId))) {
-            dayPlanRepo.deleteById(dayId);
+    public String deleteDayPlan(long scheduleId, long dayPlanId) {
+        DayPlan dayPlan = getDayPlanById(dayPlanId);
+        if(dayPlan == null)
+            throw new ResourceNotAvailableException();
+        if(hasAccess(scheduleId, dayPlan)) {
+            dayPlanRepo.deleteById(dayPlanId);
             return "Plan deleted successfully. ";
         }
         else
@@ -38,6 +42,8 @@ public class DayPlanService {
 
     public DayPlan createDayPlan(long scheduleId, long dayId, DayPlanInputDTO dayPlanInputDTO) {
         Day day = dayService.getDayById(dayId);
+        if(day == null)
+            throw new ResourceNotAvailableException();
         if(dayService.hasAccess(scheduleId, day))
             return saveDayPlan(new DayPlan(dayPlanInputDTO.getContent(), dayPlanInputDTO.getStartDate(),
                 dayPlanInputDTO.getEndDate(), day));
@@ -47,6 +53,8 @@ public class DayPlanService {
 
     public DayPlan updateDayPlan(long scheduleId, long dayPlanId, DayPlanInputDTO dayPlanInputDTO) {
         DayPlan dayPlan = getDayPlanById(dayPlanId);
+        if(dayPlan == null)
+            throw new ResourceNotAvailableException();
         if(hasAccess(scheduleId, dayPlan)) {
             if (dayPlanInputDTO.getContent() != null)
                 dayPlan.setContent(dayPlanInputDTO.getContent());
@@ -63,6 +71,8 @@ public class DayPlanService {
 
     public DayPlan updateFulfilledStatus(long scheduleId, long dayPlanId) {
         DayPlan dayPlan = getDayPlanById(dayPlanId);
+        if(dayPlan == null)
+            throw new ResourceNotAvailableException();
         if(hasAccess(scheduleId, dayPlan)) {
             boolean fullfilled = dayPlan.isFulfilled();
             if (!fullfilled)

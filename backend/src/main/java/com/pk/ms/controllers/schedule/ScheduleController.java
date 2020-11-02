@@ -15,20 +15,16 @@ public class ScheduleController {
 
     private final HomePageMapService homePageMapService;
 
-    private final ScheduleService scheduleService;
-
     public ScheduleController(HomePageMapService homePageMapService, ScheduleService scheduleService) {
         this.homePageMapService = homePageMapService;
-        this.scheduleService = scheduleService;
     }
 
-    // ONE OF THE FINAL ENDPOINTS
-    // get a Home Page based on local date took from user system
     @GetMapping("/schedule/{schedule_id}/home")
     @PreAuthorize("hasRole('ROLE_ADMIN') or authentication.principal.id == #scheduleId")
     public ResponseEntity<ScheduleHomePageDTO> getHomePage(@PathVariable("schedule_id") long scheduleId,
                                                           @RequestParam("local_date")
                                                           @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) {
+
         return ResponseEntity.ok(homePageMapService.getHomePage(date, scheduleId));
     }
 }

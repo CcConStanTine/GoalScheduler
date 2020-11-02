@@ -19,7 +19,6 @@ public class DayPlanController {
         this.dayPlanService = dayPlanService;
     }
 
-    // create DayPlan
     @PostMapping(path = "/schedules/{schedule_id}/days/{day_id}/day_plans", consumes = "application/json")
     public ResponseEntity<DayPlan> createDayPlan(@PathVariable("schedule_id") long scheduleId,
                                                  @PathVariable("day_id") long dayId,
@@ -28,7 +27,6 @@ public class DayPlanController {
         return ResponseEntity.ok(dayPlanService.createDayPlan(scheduleId, dayId, dayPlanInputDTO));
     }
 
-    // update existing DayPlan
     @PatchMapping(value="/schedules/{schedule_id}/day_plans/{day_plan_id}", consumes = "application/json")
     public ResponseEntity<DayPlan> updateDayPlan(@PathVariable("schedule_id") long scheduleId,
                                                  @PathVariable("day_plan_id") long dayPlanId,
@@ -37,7 +35,6 @@ public class DayPlanController {
         return ResponseEntity.ok(dayPlanService.updateDayPlan(scheduleId, dayPlanId, dayPlanInputDTO));
     }
 
-    // change the fulfilled status
     @PatchMapping("/schedules/{schedule_id}/day_plans/{day_plan_id}/fulfilled")
     public ResponseEntity<DayPlan> updateFulfilledStatus(@PathVariable("schedule_id") long scheduleId,
                                                          @PathVariable("day_plan_id") long dayPlanId) {
@@ -45,7 +42,6 @@ public class DayPlanController {
         return ResponseEntity.ok(dayPlanService.updateFulfilledStatus(scheduleId, dayPlanId));
     }
 
-    // delete existing YearPlan
     @DeleteMapping("/schedules/{schedule_id}/day_plans/{day_plan_id}")
     public ResponseEntity<String> deleteDayPlan(@PathVariable("schedule_id") long scheduleId,
                                                 @PathVariable("day_plan_id") long dayPlanId) {

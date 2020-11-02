@@ -5,6 +5,7 @@ import com.pk.ms.entities.month.Month;
 import com.pk.ms.entities.month.MonthPlan;
 import com.pk.ms.entities.month.MonthSummary;
 import com.pk.ms.exceptions.AccessDeniedException;
+import com.pk.ms.exceptions.ResourceNotAvailableException;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -21,6 +22,8 @@ public class MonthSummaryService {
 
     public MonthSummary getMonthSummary(long scheduleId, long monthSummaryId) {
         MonthSummary monthSummary = getMonthSummaryById(monthSummaryId);
+        if(monthSummary == null)
+            throw new ResourceNotAvailableException();
         if(hasAccess(scheduleId, monthSummary))
             return monthSummary;
         else
@@ -50,6 +53,8 @@ public class MonthSummaryService {
 
     public MonthSummary createMonthSummary(long scheduleId, long monthId) {
         Month month = monthService.getMonthById(monthId);
+        if(month == null)
+            throw new ResourceNotAvailableException();
         if(monthService.hasAccess(scheduleId, month))
             return saveMonthSummary(new MonthSummary(getFullfilledAmount(month), getFailedAmount(month), month));
         else

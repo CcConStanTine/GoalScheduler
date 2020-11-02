@@ -17,21 +17,19 @@ public class DaySummaryController {
         this.daySummaryService = daySummaryService;
     }
 
-    // create a new DaySummary
-    @PostMapping(value="/schedules/{schedule_id}/days/{day_id}/day_summary")
-    @ResponseStatus(HttpStatus.OK)
-    public DaySummary createYearSummary(@PathVariable("schedule_id") long scheduleId,
-                                        @PathVariable("day_id") long dayId) {
-
-        return daySummaryService.createDaySummary(scheduleId, dayId);
-    }
-
-    // get particular DaySummary
     @GetMapping("/schedules/{schedule_id}/day_summary/{day_summary_id}")
     @ResponseStatus(HttpStatus.OK)
     public DaySummary getDaySummary(@PathVariable("schedule_id") long scheduleId,
                                     @PathVariable("day_summary_id") long daySummaryId) {
 
         return daySummaryService.getDaySummary(scheduleId, daySummaryId);
+    }
+
+    @PostMapping(value="/schedules/{schedule_id}/days/{day_id}/day_summary")
+    @ResponseStatus(HttpStatus.OK)
+    public DaySummary createYearSummary(@PathVariable("schedule_id") long scheduleId,
+                                        @PathVariable("day_id") long dayId) {
+
+        return daySummaryService.createDaySummary(scheduleId, dayId);
     }
 }

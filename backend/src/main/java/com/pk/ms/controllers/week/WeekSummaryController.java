@@ -16,19 +16,17 @@ public class WeekSummaryController {
         this.weekSummaryService = weekSummaryService;
     }
 
-    // create a new WeekSummary
-    @PostMapping(value="/schedules/{schedule_id}/weeks/{week_id}/week_summary")
-    public ResponseEntity<WeekSummary> createWeekSummary(@PathVariable("schedule_id") long scheduleId,
-                                                         @PathVariable("week_id") long weekId) {
-
-        return ResponseEntity.ok(weekSummaryService.createWeekSummary(scheduleId, weekId));
-    }
-
-    // get particular WeekSummary
     @GetMapping("/schedules/{schedule_id}/week_summary/{week_summary_id}")
     public ResponseEntity<WeekSummary> getWeekSummary(@PathVariable("schedule_id") long scheduleId,
                                                       @PathVariable("week_summary_id") long weekSummaryId) {
 
         return ResponseEntity.ok(weekSummaryService.getWeekSummary(scheduleId, weekSummaryId));
+    }
+
+    @PostMapping(value="/schedules/{schedule_id}/weeks/{week_id}/week_summary")
+    public ResponseEntity<WeekSummary> createWeekSummary(@PathVariable("schedule_id") long scheduleId,
+                                                         @PathVariable("week_id") long weekId) {
+
+        return ResponseEntity.ok(weekSummaryService.createWeekSummary(scheduleId, weekId));
     }
 }

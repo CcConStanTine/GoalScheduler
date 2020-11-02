@@ -20,7 +20,13 @@ public class WeekController {
         this.weekService = weekService;
     }
 
-    // create Week
+    @GetMapping("/schedules/{schedule_id}/weeks/{week_id}")
+    public ResponseEntity<WeekWithBasicDayDTO> getWeek(@PathVariable("schedule_id") long scheduleId,
+                                                       @PathVariable("week_id") long weekId) {
+
+        return ResponseEntity.ok(weekService.getWeek(scheduleId, weekId));
+    }
+
     @PostMapping(path = "/schedules/{schedule_id}/years/{year_id}/weeks", consumes = "application/json")
     public ResponseEntity<Week> createWeek(@PathVariable("schedule_id") long scheduleId,
                                            @PathVariable("year_id") long yearId,
@@ -29,16 +35,6 @@ public class WeekController {
         return ResponseEntity.ok(weekService.createWeek(scheduleId, yearId, weekInputDTO));
     }
 
-    // ONE OF THE FINAL ENDPOINTS!!!
-    // get particular Week with its plans and list of DayBasicInfoDTO
-    @GetMapping("/schedules/{schedule_id}/weeks/{week_id}")
-    public ResponseEntity<WeekWithBasicDayDTO> getWeek(@PathVariable("schedule_id") long scheduleId,
-                                                       @PathVariable("week_id") long weekId) {
-
-        return ResponseEntity.ok(weekService.getWeek(scheduleId, weekId));
-    }
-
-    // delete Week
     @DeleteMapping("/schedules/{schedule_id}/weeks/{week_id}")
     public ResponseEntity<String> deleteWeek(@PathVariable("schedule_id") long scheduleId,
                                              @PathVariable("week_id") long weekId) {

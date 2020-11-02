@@ -5,6 +5,7 @@ import com.pk.ms.dto.week.WeekPlanInputDTO;
 import com.pk.ms.entities.week.Week;
 import com.pk.ms.entities.week.WeekPlan;
 import com.pk.ms.exceptions.AccessDeniedException;
+import com.pk.ms.exceptions.ResourceNotAvailableException;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -29,7 +30,10 @@ public class WeekPlanService {
     }
 
     public String deleteWeekPlan(long scheduleId, long weekPlanId) {
-        if(hasAccess(scheduleId, getWeekPlanById(weekPlanId))) {
+        WeekPlan weekPlan = getWeekPlanById(weekPlanId);
+        if(weekPlan == null)
+            throw new ResourceNotAvailableException();
+        if(hasAccess(scheduleId, weekPlan)) {
             weekPlanRepo.deleteById(weekPlanId);
             return "Plan deleted successfully. ";
         }
@@ -39,6 +43,8 @@ public class WeekPlanService {
 
     public WeekPlan createWeekPlan(long scheduleId, long weekId, WeekPlanInputDTO weekPlanInputDTO) {
         Week week = weekService.getWeekById(weekId);
+        if(week == null)
+            throw new ResourceNotAvailableException();
         if(weekService.hasAccess(scheduleId, week))
             return saveWeekPlan(new WeekPlan(weekPlanInputDTO.getContent(), weekPlanInputDTO.getStartDate(),
                 weekPlanInputDTO.getEndDate(), week));
@@ -47,8 +53,9 @@ public class WeekPlanService {
     }
 
     public WeekPlan updateWeekPlan(long scheduleId, long weekId, WeekPlanInputDTO weekPlanInputDTO) {
-
         WeekPlan weekPlan = getWeekPlanById(weekId);
+        if(weekPlan == null)
+            throw new ResourceNotAvailableException();
         if(hasAccess(scheduleId, weekPlan)) {
             if (weekPlanInputDTO.getContent() != null)
                 weekPlan.setContent(weekPlanInputDTO.getContent());
@@ -64,8 +71,9 @@ public class WeekPlanService {
     }
 
     public WeekPlan updateFulfilledStatus(long scheduleId, long weekPlanId) {
-
         WeekPlan weekPlan = getWeekPlanById(weekPlanId);
+        if(weekPlan == null)
+            throw new ResourceNotAvailableException();
         if(hasAccess(scheduleId, weekPlan)) {
             boolean fullfilled = weekPlan.isFulfilled();
             if (!fullfilled)

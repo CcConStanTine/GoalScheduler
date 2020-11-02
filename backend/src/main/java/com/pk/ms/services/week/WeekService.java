@@ -5,11 +5,11 @@ import com.pk.ms.dto.day.DayBasicInfoDTO;
 import com.pk.ms.dto.week.WeekInputDTO;
 import com.pk.ms.dto.week.WeekWithBasicDayDTO;
 import com.pk.ms.entities.day.Day;
-import com.pk.ms.entities.month.Month;
 import com.pk.ms.entities.week.Week;
 import com.pk.ms.entities.year.Year;
 import com.pk.ms.exceptions.AccessDeniedException;
 import com.pk.ms.exceptions.EntityAlreadyExistException;
+import com.pk.ms.exceptions.ResourceNotAvailableException;
 import com.pk.ms.mappers.day.DayMapService;
 import com.pk.ms.services.day.DayService;
 import com.pk.ms.services.year.YearService;
@@ -50,7 +50,10 @@ public class WeekService {
     public List<Week> getWeeksByMonthId(long id) { return weekRepo.findAllByYearId(id); }
 
     public String deleteWeek(long scheduleId, long weekId) {
-        if (hasAccess(scheduleId, getWeekById(weekId))) {
+        Week week = getWeekById(weekId);
+        if(week == null)
+            throw new ResourceNotAvailableException();
+        if (hasAccess(scheduleId, week)) {
             weekRepo.deleteById(weekId);
             return "Week deleted successfully. ";
         }
@@ -74,6 +77,8 @@ public class WeekService {
 
     public Week createWeek(long scheduleId, long yearId, WeekInputDTO weekInputDTO) {
         Year year = yearService.getYearById(yearId);
+        if(year == null)
+            throw new ResourceNotAvailableException();
         if(yearService.hasAccess(scheduleId, year)) {
             if (existsByYearIdAndDate(yearId, weekInputDTO))
                 throw new EntityAlreadyExistException(weekInputDTO);
@@ -85,6 +90,8 @@ public class WeekService {
 
     public WeekWithBasicDayDTO getWeek(long scheduleId, long weekId) {
         Week week = getWeekById(weekId);
+        if(week == null)
+            throw new ResourceNotAvailableException();
         if(hasAccess(scheduleId, week)) {
             List<Day> dayList = dayService.getDaysByWeekId(weekId);
             List<DayBasicInfoDTO> dayBasicInfoDTOList = new ArrayList<>();

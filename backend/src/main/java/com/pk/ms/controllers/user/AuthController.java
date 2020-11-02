@@ -1,4 +1,4 @@
-package com.pk.ms.controllers;
+package com.pk.ms.controllers.user;
 
 import com.pk.ms.security.request.LoginRequest;
 import com.pk.ms.security.request.SignupRequest;

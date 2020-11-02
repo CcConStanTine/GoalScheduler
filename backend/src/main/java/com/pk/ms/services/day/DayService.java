@@ -9,6 +9,7 @@ import com.pk.ms.entities.year.Year;
 import com.pk.ms.exceptions.AccessDeniedException;
 import com.pk.ms.exceptions.EntityAlreadyExistException;
 import com.pk.ms.exceptions.NotValidDataException;
+import com.pk.ms.exceptions.ResourceNotAvailableException;
 import com.pk.ms.services.month.MonthService;
 import com.pk.ms.services.week.WeekService;
 import com.pk.ms.services.year.YearService;
@@ -43,6 +44,8 @@ public class DayService {
 
     public Day getDay(long scheduleId, long dayId) {
         Day day = getDayById(dayId);
+        if(day == null)
+            throw new ResourceNotAvailableException();
         if(hasAccess(scheduleId, day))
             return day;
         else
@@ -62,7 +65,10 @@ public class DayService {
     }
 
     public String deleteDay(long scheduleId, long dayId) {
-        if (hasAccess(scheduleId, getDayById(dayId))) {
+        Day day = getDayById(dayId);
+        if(day == null)
+            throw new ResourceNotAvailableException();
+        if (hasAccess(scheduleId, day)) {
             dayRepo.deleteById(dayId);
             return "Day deleted successfully. ";
         }
@@ -95,6 +101,9 @@ public class DayService {
     }
 
     public Day createDay(long scheduleId, long weekId, DayInputDTO reqDayInputDTO) {
+        Week week = weekService.getWeekById(weekId);
+        if(week == null)
+            throw new ResourceNotAvailableException();
         if(weekService.hasAccess(scheduleId, weekService.getWeekById(weekId))) {
             LocalDate localDate = reqDayInputDTO.getDayDate().toLocalDate();
             Year year = yearService.getActualYear(localDate, scheduleId);

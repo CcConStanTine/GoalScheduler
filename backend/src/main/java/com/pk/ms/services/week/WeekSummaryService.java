@@ -5,6 +5,7 @@ import com.pk.ms.entities.week.Week;
 import com.pk.ms.entities.week.WeekPlan;
 import com.pk.ms.entities.week.WeekSummary;
 import com.pk.ms.exceptions.AccessDeniedException;
+import com.pk.ms.exceptions.ResourceNotAvailableException;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -26,6 +27,8 @@ public class WeekSummaryService {
 
     public WeekSummary getWeekSummary(long scheduleId, long weekSummaryId) {
         WeekSummary weekSummary = getWeekSummaryById(weekSummaryId);
+        if(weekSummary == null)
+            throw new ResourceNotAvailableException();
         if(hasAccess(scheduleId, weekSummary))
             return weekSummary;
         else
@@ -51,6 +54,8 @@ public class WeekSummaryService {
 
     public WeekSummary createWeekSummary(long scheduleId, long weekId) {
         Week week = weekService.getWeekById(weekId);
+        if(week == null)
+            throw new ResourceNotAvailableException();
         if(weekService.hasAccess(scheduleId, week))
             return saveWeekSummary(new WeekSummary(getFullfilledAmount(week), getFailedAmount(week), week));
         else

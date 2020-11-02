@@ -7,25 +7,25 @@ import java.util.Set;
 
 public class SignupRequest {
 
-    @NotBlank
-    @Size(min = 4, max = 30)
+    @NotBlank(message = "This field cannot be empty!")
+    @Size(min = 4, max = 30, message = "User name length must be between 4 and 30!")
     private String username;
 
-    @NotBlank
-    @Size(min = 6, max = 32)
+    @NotBlank(message = "This field cannot be empty!")
+    @Size(min = 6, max = 32, message = "Password length must be between 6 and 32!")
     private String password;
 
-    @NotBlank
-    @Email
-    @Size(max = 50)
+    @NotBlank(message = "This field cannot be empty!")
+    @Email(message = "This is not an email pattern!")
+    @Size(max = 50, message = "Email length cannot be larger than 50!")
     private String email;
 
-    @NotBlank
-    @Size(max = 50)
+    @NotBlank(message = "This field cannot be empty!")
+    @Size(max = 50, message = "First name length cannot be larger than 50!")
     private String firstName;
 
-    @NotBlank
-    @Size(max = 50)
+    @NotBlank(message = "This field cannot be empty!")
+    @Size(max = 50, message = "Last name length cannot be larger than 50!")
     private String lastName;
 
     private Set<String> role;

@@ -11,6 +11,7 @@ import com.pk.ms.entities.week.Week;
 import com.pk.ms.entities.year.Year;
 import com.pk.ms.exceptions.AccessDeniedException;
 import com.pk.ms.exceptions.EntityAlreadyExistException;
+import com.pk.ms.exceptions.ResourceNotAvailableException;
 import com.pk.ms.mappers.month.MonthMapService;
 import com.pk.ms.mappers.week.WeekMapService;
 import com.pk.ms.mappers.year.YearMapService;
@@ -63,6 +64,8 @@ public class YearService {
     }
 
     public String deleteYear(long scheduleId, long yearId) {
+        if(getYearById(yearId) == null)
+            throw new ResourceNotAvailableException();
         if(hasAccess(scheduleId, getYearById(yearId))) {
             yearRepo.deleteById(yearId);
             return "Year deleted successfully. ";
@@ -99,6 +102,8 @@ public class YearService {
 
     public YearWithBasicMonthAndWeekDTO getYear(long scheduleId, long yearId) {
         Year year = getYearById(yearId);
+        if(year == null)
+            throw new ResourceNotAvailableException();
         if (hasAccess(scheduleId, year)) {
             List<Month> monthList = monthService.getMonthsByYearId(yearId);
             List<Week> weekList = weekService.getWeeksByMonthId(yearId);

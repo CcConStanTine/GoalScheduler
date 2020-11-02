@@ -1,21 +1,15 @@
-package com.pk.ms.security.request;
+package com.pk.ms.dto.user;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 
-public class LoginRequest {
-
-    @NotBlank(message = "This field cannot be empty!")
-    private String username;
+public class UserPasswordUpdateDTO {
 
     @NotBlank(message = "This field cannot be empty!")
+    @Size(min = 6, max = 32, message = "Password length must be between 6 and 32!")
     private String password;
 
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
+    public UserPasswordUpdateDTO() {
     }
 
     public String getPassword() {
