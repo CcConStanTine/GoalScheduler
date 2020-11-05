@@ -1,16 +1,13 @@
 package com.pk.ms.services.year;
 
-import com.pk.ms.dao.year.IYearRepository;
+import com.pk.ms.dao.year.YearRepository;
 import com.pk.ms.dto.month.MonthBasicInfoDTO;
 import com.pk.ms.dto.week.WeekBasicInfoDTO;
 import com.pk.ms.dto.year.YearBasicInfoDTO;
-import com.pk.ms.dto.year.YearInputDTO;
-import com.pk.ms.dto.year.YearWithBasicMonthAndWeekDTO;
 import com.pk.ms.entities.month.Month;
 import com.pk.ms.entities.week.Week;
 import com.pk.ms.entities.year.Year;
 import com.pk.ms.exceptions.AccessDeniedException;
-import com.pk.ms.exceptions.EntityAlreadyExistException;
 import com.pk.ms.exceptions.ResourceNotAvailableException;
 import com.pk.ms.mappers.month.MonthMapService;
 import com.pk.ms.mappers.week.WeekMapService;
@@ -27,110 +24,64 @@ import java.util.List;
 @Service
 public class YearService {
 
-    private final IYearRepository yearRepo;
+    private final YearRepository yearRepo;
 
     private final YearMapService yearMapService;
 
-    private final ScheduleService scheduleService;
-
-    private final MonthService monthService;
-
-    private final MonthMapService monthMapService;
-
-    private final WeekService weekService;
-
-    private final WeekMapService weekMapService;
-
-    public YearService(IYearRepository yearRepo, YearMapService yearMapService, ScheduleService scheduleService, MonthService monthService, MonthMapService monthMapService, WeekService weekService, WeekMapService weekMapService) {
+    public YearService(YearRepository yearRepo, YearMapService yearMapService) {
         this.yearRepo = yearRepo;
         this.yearMapService = yearMapService;
-        this.scheduleService = scheduleService;
-        this.monthService = monthService;
-        this.monthMapService = monthMapService;
-        this.weekService = weekService;
-        this.weekMapService = weekMapService;
     }
 
-    public Year getYearById(long id) {
-        return yearRepo.findById(id);
+    public Year getYearById(long yearId) {
+        return getNotNullYearById(yearId);
     }
 
-    public Year saveYear(Year year) {
-        return yearRepo.save(year);
-    }
-
-    public List<Year> getAllByScheduleId(long id) {
-        return yearRepo.findAllByScheduleId(id);
-    }
-
-    public String deleteYear(long scheduleId, long yearId) {
-        if(getYearById(yearId) == null)
-            throw new ResourceNotAvailableException();
-        if(hasAccess(scheduleId, getYearById(yearId))) {
-            yearRepo.deleteById(yearId);
-            return "Year deleted successfully. ";
-        }
-        else
-            throw new AccessDeniedException("This user cannot delete this resource. ");
-    }
-
-    public Year getActualYear(LocalDate date, long scheduleId) {
-        return yearRepo.findByScheduleIdAndYearNumber(scheduleId, date.getYear());
-    }
-
-    public boolean existsByScheduleIdAndYearNumber (long scheduleId, YearInputDTO yearInputDTO) {
-        if (yearRepo.findByScheduleIdAndYearNumber(scheduleId, yearInputDTO.getYearNumber()) != null)
-            return true;
-        else
-            return false;
-    }
-
-    public Year createYear(long scheduleId, YearInputDTO yearInputDTO) {
-        if (existsByScheduleIdAndYearNumber(scheduleId, yearInputDTO)) {
-            throw new EntityAlreadyExistException(yearInputDTO.getYearNumber());
-        }
-        return saveYear(new Year(yearInputDTO.getYearNumber(), scheduleService.getScheduleById(scheduleId)));
-    }
-
-    public List<YearBasicInfoDTO> getYears(long scheduleId) {
-        List<Year> yearList = getAllByScheduleId(scheduleId);
+    public List<YearBasicInfoDTO> getAllYearsDTOs() {
+        List<Year> yearList = yearRepo.findAll();
         List<YearBasicInfoDTO> yearBasicInfoDTOList = new ArrayList<>();
         for(Year year : yearList)
-            yearBasicInfoDTOList.add(yearMapService.mapToDTO(year));
+            yearBasicInfoDTOList.add(mapYearToDTO(year));
         return yearBasicInfoDTOList;
     }
 
-    public YearWithBasicMonthAndWeekDTO getYear(long scheduleId, long yearId) {
-        Year year = getYearById(yearId);
-        if(year == null)
+    public YearBasicInfoDTO getYearDTOById(long yearId) {
+        return mapYearToDTO(getNotNullYearById(yearId));
+    }
+
+    public YearBasicInfoDTO getYearDTOByLocalDate(LocalDate date) {
+        return mapYearToDTO(getNotNullYearByYearNumber(date.getYear()));
+    }
+
+
+    private Year getNotNullYearById(long yearId) {
+        Year year = getYearByIdFromRepo(yearId);
+        if (isObjectNull(year))
             throw new ResourceNotAvailableException();
-        if (hasAccess(scheduleId, year)) {
-            List<Month> monthList = monthService.getMonthsByYearId(yearId);
-            List<Week> weekList = weekService.getWeeksByMonthId(yearId);
-            List<MonthBasicInfoDTO> monthBasicInfoDTOList = new ArrayList<>();
-            List<WeekBasicInfoDTO> weekBasicInfoDTOList = new ArrayList<>();
-
-            for (Month month : monthList)
-                monthBasicInfoDTOList.add(monthMapService.mapToDTO(month));
-            for (Week week : weekList)
-                weekBasicInfoDTOList.add(weekMapService.mapToDTO(week));
-
-            return new YearWithBasicMonthAndWeekDTO(
-                    year.getYearId(),
-                    year.getYearNumber(),
-                    year.isLeapYear(),
-                    year.getDaysAmount(),
-                    monthBasicInfoDTOList,
-                    weekBasicInfoDTOList,
-                    year.getYearPlansList()
-            );
-        }
-        else
-            throw new AccessDeniedException("This user cannot access this resource. ");
+        return year;
     }
 
-    public boolean hasAccess(long scheduleId, Year year) {
-        return year.getSchedule().getScheduleId() == scheduleId;
+    private Year getYearByIdFromRepo(long id) {
+        return yearRepo.findById(id);
     }
 
+    private Year getNotNullYearByYearNumber(int yearNumber) {
+        Year year = getYearByYearNumberFromRepo(yearNumber);
+        if (isObjectNull(year))
+            throw new ResourceNotAvailableException();
+        return year;
+    }
+
+    private Year getYearByYearNumberFromRepo(int yearNumber) {
+        return yearRepo.findByYearNumber(yearNumber);
+    }
+
+    private YearBasicInfoDTO mapYearToDTO(Year year) {
+        return yearMapService.mapToDTO(year);
+    }
+
+    private boolean isObjectNull(Object object) {
+        return object == null;
+    }
 }
+

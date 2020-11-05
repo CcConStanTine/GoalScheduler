@@ -1,19 +1,18 @@
 package com.pk.ms.controllers.year;
 
 import com.pk.ms.dto.year.YearBasicInfoDTO;
-import com.pk.ms.dto.year.YearInputDTO;
-import com.pk.ms.dto.year.YearWithBasicMonthAndWeekDTO;
-import com.pk.ms.entities.year.Year;
 import com.pk.ms.services.year.YearService;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
 @PreAuthorize("hasRole('ROLE_ADMIN') or authentication.principal.id == #scheduleId")
+@RequestMapping("/schedule/{schedule_id}")
 public class YearController {
 
     private final YearService yearService;
@@ -22,29 +21,26 @@ public class YearController {
         this.yearService = yearService;
     }
 
-    @GetMapping("/schedules/{schedule_id}/years")
+    @GetMapping("/years")
     public ResponseEntity<List<YearBasicInfoDTO>> getYears(@PathVariable("schedule_id") long scheduleId) {
 
-        return ResponseEntity.ok(yearService.getYears(scheduleId));
+        return ResponseEntity.ok(yearService.getAllYearsDTOs());
     }
 
-    @GetMapping("/schedules/{schedule_id}/years/{year_id}")
-    public ResponseEntity<YearWithBasicMonthAndWeekDTO> getYear(@PathVariable("schedule_id") long scheduleId,
-                                                @PathVariable("year_id") long yearId) {
+    @GetMapping("/year/{year_id}")
+    public ResponseEntity<YearBasicInfoDTO> getYearByYearId(@PathVariable("schedule_id") long scheduleId,
+                                                            @PathVariable("year_id") long yearId) {
 
-        return ResponseEntity.ok(yearService.getYear(scheduleId, yearId));
+        return ResponseEntity.ok(yearService.getYearDTOById(yearId));
     }
 
-    @PostMapping(value="/schedules/{schedule_id}/years", consumes = "application/json")
-    public ResponseEntity<Year> createYear(@PathVariable("schedule_id") long scheduleId,
-                           @Valid @RequestBody YearInputDTO yearInputDTO) {
+    @GetMapping("/year")
+    public ResponseEntity<YearBasicInfoDTO> getYearByLocalDate(@PathVariable("schedule_id") long scheduleId,
+                                                               @RequestParam("local_date")
+                                                               @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+                                                                       LocalDate date) {
 
-        return ResponseEntity.ok(yearService.createYear(scheduleId, yearInputDTO));
+        return ResponseEntity.ok(yearService.getYearDTOByLocalDate(date));
     }
 
-    @DeleteMapping("/schedules/{schedule_id}/years/{year_id}")
-    public ResponseEntity<String> deleteYear(@PathVariable("schedule_id") long scheduleId,
-                           @PathVariable("year_id") long yearId) {
-        return ResponseEntity.ok(yearService.deleteYear(scheduleId, yearId));
-    }
 }

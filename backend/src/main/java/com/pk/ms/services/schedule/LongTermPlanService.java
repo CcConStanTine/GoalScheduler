@@ -1,91 +1,112 @@
 package com.pk.ms.services.schedule;
 
-import com.pk.ms.dao.schedule.ILongTermPlanRepository;
+import com.pk.ms.dao.schedule.LongTermPlanRepository;
 import com.pk.ms.dto.schedule.LongTermPlanInputDTO;
 import com.pk.ms.entities.schedule.LongTermPlan;
 import com.pk.ms.exceptions.AccessDeniedException;
 import com.pk.ms.exceptions.ResourceNotAvailableException;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
 public class LongTermPlanService {
 
-    private final ILongTermPlanRepository longTermPlanRepo;
+    private final LongTermPlanRepository longTermPlanRepo;
 
     private final ScheduleService scheduleService;
 
-    public LongTermPlanService(ILongTermPlanRepository longTermPlanRepo, ScheduleService scheduleService) {
+    public LongTermPlanService(LongTermPlanRepository longTermPlanRepo, ScheduleService scheduleService) {
         this.longTermPlanRepo = longTermPlanRepo;
         this.scheduleService = scheduleService;
     }
 
-    public LongTermPlan getLTPById(long id) {
-        return longTermPlanRepo.findById(id);
-    }
-
-    public List<LongTermPlan> getLongTermPlans(long id) { return longTermPlanRepo.findAllByScheduleId(id); }
-
-    public LongTermPlan save(LongTermPlan longTermPlan) {
-        return longTermPlanRepo.save(longTermPlan);
-    }
-
-    public String deleteLongTermPlan(long scheduleId, long ltpId) {
-        LongTermPlan longTermPlan = getLTPById(ltpId);
-        if(longTermPlan == null)
-            throw new ResourceNotAvailableException();
-        if(hasAccess(scheduleId, longTermPlan)) {
-            longTermPlanRepo.deleteById(ltpId);
-            return "Plan deleted successfully. ";
-        }
-        else
-            throw new AccessDeniedException("This user cannot delete this resource. ");
+    public List<LongTermPlan> getLongTermPlansByScheduleId(long id) {
+        return getLongTermPlansByScheduleIdFromRepo(id);
     }
 
     public LongTermPlan createLongTermPlan(long scheduleId, LongTermPlanInputDTO ltpInputDTO) {
-        return save(new LongTermPlan(ltpInputDTO.getContent(),
+        return saveLongTermPLan(new LongTermPlan(ltpInputDTO.getContent(),
                 ltpInputDTO.getStartDate(), ltpInputDTO.getEndDate(),
                 scheduleService.getScheduleById(scheduleId)));
     }
 
     public LongTermPlan updateLongTermPlan(long scheduleId, long ltpId, LongTermPlanInputDTO ltpInputDTO) {
 
-        LongTermPlan longTermPlan = getLTPById(ltpId);
-        if(longTermPlan == null)
-            throw new ResourceNotAvailableException();
+        LongTermPlan longTermPlan = getNotNullLTPById(ltpId);
+
         if(hasAccess(scheduleId, longTermPlan)) {
-            if (ltpInputDTO.getContent() != null)
-                longTermPlan.setContent(ltpInputDTO.getContent());
-            if (ltpInputDTO.getStartDate() != null)
-                longTermPlan.setStartDate(ltpInputDTO.getStartDate());
-            if (ltpInputDTO.getEndDate() != null)
-                longTermPlan.setEndDate(ltpInputDTO.getEndDate());
-            return save(longTermPlan);
+
+            String content = ltpInputDTO.getContent();
+            if (isObjectNull(content))
+                longTermPlan.setContent(content);
+
+            LocalDate startDate = ltpInputDTO.getStartDate();
+            if (isObjectNull(startDate))
+                longTermPlan.setStartDate(startDate);
+
+            LocalDate endDate = ltpInputDTO.getEndDate();
+            if (isObjectNull(endDate))
+                longTermPlan.setEndDate(endDate);
+
+            return saveLongTermPLan(longTermPlan);
         }
         else
             throw new AccessDeniedException("This user cannot update this resource. ");
     }
 
-    public LongTermPlan updateFulfilledStatus(long scheduleId, long longTermPlanId) {
-        LongTermPlan longTermPlan = getLTPById(longTermPlanId);
-        if(longTermPlan == null)
-            throw new ResourceNotAvailableException();
+    public String deleteLongTermPlan(long scheduleId, long ltpId) {
+        LongTermPlan longTermPlan = getNotNullLTPById(ltpId);
         if(hasAccess(scheduleId, longTermPlan)) {
-            boolean fullfilled = longTermPlan.isFulfilled();
-            if (!fullfilled)
-                fullfilled = true;
-            else
-                fullfilled = false;
-            longTermPlan.setFulfilled(fullfilled);
-            return save(longTermPlan);
+            deleteLongTermPlan(longTermPlan);
+            return "Plan has been deleted successfully. ";
+        }
+        else
+            throw new AccessDeniedException("This user cannot delete this resource. ");
+    }
+
+    public LongTermPlan updateFulfilledStatus(long scheduleId, long ltpId) {
+        LongTermPlan longTermPlan = getNotNullLTPById(ltpId);
+        if(hasAccess(scheduleId, longTermPlan)) {
+            boolean fulfilled = longTermPlan.isFulfilled();
+            fulfilled = !fulfilled;
+            longTermPlan.setFulfilled(fulfilled);
+            return saveLongTermPLan(longTermPlan);
         }
         else
             throw new AccessDeniedException("This user cannot update this resource. ");
+    }
+
+
+    private List<LongTermPlan> getLongTermPlansByScheduleIdFromRepo(long id) {
+        return longTermPlanRepo.findAllByScheduleId(id);
+    }
+
+    private LongTermPlan getNotNullLTPById(long id) {
+        LongTermPlan longTermPlan = getLongTermPlanByIdFromRepo(id);
+        if(isObjectNull(longTermPlan))
+            throw new ResourceNotAvailableException();
+        return longTermPlan;
+    }
+
+    private LongTermPlan getLongTermPlanByIdFromRepo(long id) {
+        return longTermPlanRepo.findById(id);
+    }
+
+    private LongTermPlan saveLongTermPLan(LongTermPlan longTermPlan) {
+        return longTermPlanRepo.save(longTermPlan);
+    }
+
+    private void deleteLongTermPlan(LongTermPlan longTermPlan) {
+        longTermPlanRepo.delete(longTermPlan);
+    }
+
+    private boolean isObjectNull(Object object) {
+        return object == null;
     }
 
     private boolean hasAccess(long scheduleId, LongTermPlan longTermPlan) {
         return longTermPlan.getSchedule().getScheduleId() == scheduleId;
     }
-
 }

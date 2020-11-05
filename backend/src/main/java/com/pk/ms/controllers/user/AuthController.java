@@ -29,5 +29,4 @@ public class AuthController {
     public ResponseEntity<MessageResponse> registerUser(@Valid @RequestBody SignupRequest signUpRequest){
         return ResponseEntity.ok(authService.registerUser(signUpRequest));
     }
-
 }

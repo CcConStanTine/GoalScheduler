@@ -1,16 +1,15 @@
 package com.pk.ms.dto.month;
 
-import com.pk.ms.entities.Plan;
+import com.pk.ms.abstracts.Plan;
 
-import java.sql.Date;
+import java.time.LocalDate;
 
-// MonthPlan DTO for purpose of creating, and updating some of MonthPlan attributes
-public class MonthPlanInputDTO extends Plan<Date> {
+public class MonthPlanInputDTO extends Plan<LocalDate> {
 
     public MonthPlanInputDTO() {
     }
 
-    public MonthPlanInputDTO(String content, Date startDate, Date endDate) {
+    public MonthPlanInputDTO(String content, LocalDate startDate, LocalDate endDate) {
         super(content, startDate, endDate);
     }
 }

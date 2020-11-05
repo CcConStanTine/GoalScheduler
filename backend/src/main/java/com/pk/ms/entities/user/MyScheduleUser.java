@@ -3,28 +3,34 @@ package com.pk.ms.entities.user;
 import com.pk.ms.entities.schedule.Schedule;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.Size;
 import java.util.HashSet;
 import java.util.Set;
 
 @Entity
 public class MyScheduleUser {
 
-    //primary key
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "myscheduleuser_seq")
-    @SequenceGenerator(name = "myscheduleuser_seq", sequenceName = "myscheduleuser_seq", allocationSize = 1)
-    private long userId;
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "my_schedule_user_seq")
+    @SequenceGenerator(name = "my_schedule_user_seq", sequenceName = "my_schedule_user_seq", allocationSize = 1)
+    private Long userId;
 
+    @Size(min = 2, max = 30)
     private String firstName;
 
+    @Size(min = 2, max = 30)
     private String lastName;
 
+    @Size(min = 2, max = 30)
     private String nick;
 
+    @Email
+    @Size(max = 50)
     private String email;
 
+    @Size(min = 4, max = 50)
     private String password;
-
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable( name = "my_schedule_user_roles",
@@ -34,6 +40,7 @@ public class MyScheduleUser {
 
     @OneToOne(mappedBy = "user")
     private Schedule schedule;
+
     public MyScheduleUser() {
 
     }
@@ -46,18 +53,11 @@ public class MyScheduleUser {
         this.password = password;
     }
 
-    public MyScheduleUser(String firstName, String lastName, String nick, String email) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.nick = nick;
-        this.email = email;
-    }
-
-    public long getUserId() {
+    public Long getUserId() {
         return userId;
     }
 
-    public void setUserId(long userId) {
+    public void setUserId(Long userId) {
         this.userId = userId;
     }
 

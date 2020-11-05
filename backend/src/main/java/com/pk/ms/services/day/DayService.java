@@ -1,15 +1,14 @@
 package com.pk.ms.services.day;
 
-import com.pk.ms.dao.day.IDayRepository;
-import com.pk.ms.dto.day.DayInputDTO;
+import com.pk.ms.dao.day.DayRepository;
+import com.pk.ms.dto.day.DayBasicInfoDTO;
 import com.pk.ms.entities.day.Day;
 import com.pk.ms.entities.month.Month;
 import com.pk.ms.entities.week.Week;
 import com.pk.ms.entities.year.Year;
 import com.pk.ms.exceptions.AccessDeniedException;
-import com.pk.ms.exceptions.EntityAlreadyExistException;
-import com.pk.ms.exceptions.NotValidDataException;
 import com.pk.ms.exceptions.ResourceNotAvailableException;
+import com.pk.ms.mappers.day.DayMapService;
 import com.pk.ms.services.month.MonthService;
 import com.pk.ms.services.week.WeekService;
 import com.pk.ms.services.year.YearService;
@@ -18,117 +17,83 @@ import org.springframework.stereotype.Service;
 
 import java.sql.Date;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
 public class DayService {
 
-    private final IDayRepository dayRepo;
-
-    private final YearService yearService;
-
-    private final WeekService weekService;
+    private final DayRepository dayRepo;
 
     private final MonthService monthService;
 
-    public DayService(IDayRepository dayRepo, @Lazy YearService yearService, @Lazy WeekService weekService, @Lazy MonthService monthService) {
+    private final DayMapService dayMapService;
+
+    public DayService(DayRepository dayRepo, MonthService monthService, DayMapService dayMapService) {
         this.dayRepo = dayRepo;
-        this.yearService = yearService;
-        this.weekService = weekService;
         this.monthService = monthService;
-    }
-
-    public Day saveDay(Day day) {
-        return dayRepo.save(day);
-    }
-
-    public Day getDay(long scheduleId, long dayId) {
-        Day day = getDayById(dayId);
-        if(day == null)
-            throw new ResourceNotAvailableException();
-        if(hasAccess(scheduleId, day))
-            return day;
-        else
-            throw new AccessDeniedException("This user cannot access this resource. ");
+        this.dayMapService = dayMapService;
     }
 
     public Day getDayById(long dayId) {
+        return getNotNullDayById(dayId);
+    }
+
+    public List<DayBasicInfoDTO> getDayDTOsByMonthId(long monthId) {
+        List<Day> dayList = getDaysByMonthIdFromRepo(monthId);
+        List<DayBasicInfoDTO> dayBasicInfoDTOList = new ArrayList<>();
+        for(Day day : dayList)
+            dayBasicInfoDTOList.add(mapToDTO(day));
+        return dayBasicInfoDTOList;
+    }
+
+    public List<DayBasicInfoDTO> getDayDTOsByLocalDate(LocalDate date) {
+        long monthId = monthService.getMonthDTOByLocalDate(date).getMonthId();
+        List<Day> dayList = getDaysByMonthIdFromRepo(monthId);
+        List<DayBasicInfoDTO> dayBasicInfoDTOList = new ArrayList<>();
+        for(Day day : dayList)
+            dayBasicInfoDTOList.add(mapToDTO(day));
+        return dayBasicInfoDTOList;
+    }
+
+    public DayBasicInfoDTO getDayDTOByDayId(long dayId) {
+        return mapToDTO(getNotNullDayById(dayId));
+    }
+
+    public DayBasicInfoDTO getDayDTOByLocalDate(LocalDate date) {
+        return mapToDTO(getNotNullDayByLocalDate(date));
+    }
+
+
+    private List<Day> getDaysByMonthIdFromRepo(long monthId) {
+        return dayRepo.findAllByMonthId(monthId);
+    }
+
+    private Day getNotNullDayById(long dayId) {
+        Day day = getDayByIdFromRepo(dayId);
+        if (isObjectNull(day))
+            throw new ResourceNotAvailableException();
+        return day;
+    }
+
+    private Day getDayByIdFromRepo(long dayId) {
         return dayRepo.findById(dayId);
     }
 
-    public List<Day> getDaysByWeekId(long id) {
-        return dayRepo.getDaysByWeekId(id);
+    private Day getNotNullDayByLocalDate(LocalDate date) {
+        return getDayByLocalDateFromRepo(date);
     }
 
-    public List<Day> getDaysByMonthId(long id) {
-        return dayRepo.getDaysByMonthId(id);
+    private Day getDayByLocalDateFromRepo(LocalDate date) {
+        return dayRepo.findByDate(date);
     }
 
-    public String deleteDay(long scheduleId, long dayId) {
-        Day day = getDayById(dayId);
-        if(day == null)
-            throw new ResourceNotAvailableException();
-        if (hasAccess(scheduleId, day)) {
-            dayRepo.deleteById(dayId);
-            return "Day deleted successfully. ";
-        }
-        else
-            throw new AccessDeniedException("This user cannot delete this resource. ");
-
+    private DayBasicInfoDTO mapToDTO(Day day) {
+        return dayMapService.mapToDTO(day);
     }
 
-    public boolean existsInWeek(long weekId, DayInputDTO dayInputDTO) {
-        if (dayRepo.findByWeekIdAndDayName(weekId, dayInputDTO.getDayName().getDayNumber()) != null)
-            return true;
-        else
-            return false;
-    }
-
-    public boolean existsInMonthByDate(long monthId, DayInputDTO dayInputDTO) {
-        if (dayRepo.findByMonthIdAndDayDate(monthId, dayInputDTO.getDayDate()) != null)
-            return true;
-        else
-            return false;
-    }
-
-    public boolean dataContainProperMonth(long monthId, DayInputDTO dayInputDTO) {
-        Date date = dayInputDTO.getDayDate();
-        LocalDate localDate = date.toLocalDate();
-        if (monthService.getMonthById(monthId).getMonthName().getMonthNumber() == localDate.getMonthValue())
-            return true;
-        else
-            return false;
-    }
-
-    public Day createDay(long scheduleId, long weekId, DayInputDTO reqDayInputDTO) {
-        Week week = weekService.getWeekById(weekId);
-        if(week == null)
-            throw new ResourceNotAvailableException();
-        if(weekService.hasAccess(scheduleId, weekService.getWeekById(weekId))) {
-            LocalDate localDate = reqDayInputDTO.getDayDate().toLocalDate();
-            Year year = yearService.getActualYear(localDate, scheduleId);
-            Month month = monthService.getActualMonth(localDate, year.getYearId());
-            long monthId = month.getMonthId();
-
-            if (!dataContainProperMonth(monthId, reqDayInputDTO))
-                throw new NotValidDataException(reqDayInputDTO);
-            if (existsInWeek(weekId, reqDayInputDTO))
-                throw new EntityAlreadyExistException(reqDayInputDTO.getDayName());
-            if (existsInMonthByDate(monthId, reqDayInputDTO))
-                throw new EntityAlreadyExistException(reqDayInputDTO.getDayDate());
-
-            return saveDay(new Day(reqDayInputDTO.getDayDate(), reqDayInputDTO.getDayName(),
-                    weekService.getWeekById(weekId), monthService.getMonthById(monthId)));
-        }
-        else
-            throw new AccessDeniedException("This user cannot create Day in this Week. ");
-    }
-
-    public Day getActualDay(long monthId, LocalDate date) {
-        return dayRepo.findByMonthIdAndDayDate(monthId, Date.valueOf(date));
-    }
-
-    public boolean hasAccess(long scheduleId, Day day) {
-        return day.getWeek().getYear().getSchedule().getScheduleId() == scheduleId;
+    private boolean isObjectNull(Object object) {
+        return object == null;
     }
 }
+

@@ -1,6 +1,5 @@
 package com.pk.ms.dto.year;
 
-// Year DTO for purpose of storing the fields needed while displaying the Years List
 public class YearBasicInfoDTO {
 
     private long yearId;

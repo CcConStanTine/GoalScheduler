@@ -1,60 +1,43 @@
 package com.pk.ms.entities.month;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.pk.ms.abstracts.Summary;
+import com.pk.ms.entities.schedule.Schedule;
 
 import javax.persistence.*;
 
 @Entity
-public class MonthSummary {
+public class MonthSummary extends Summary {
 
-    // primary key
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "monthsummary_seq")
-    @SequenceGenerator(name = "monthsummary_seq", sequenceName = "monthsummary_seq", allocationSize = 1)
-    private long monthSumId;
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "month_summary_seq")
+    @SequenceGenerator(name = "month_summary_seq", sequenceName = "month_summary_seq", allocationSize = 1)
+    private Long monthSummaryId;
 
-    private int fulfilledAmount;
-
-    private int failedAmount;
-
-    // foreign key
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "month_id")
     @JsonIgnore
     private Month month;
 
+    @ManyToOne
+    @JoinColumn(name = "schedule_id")
+    @JsonIgnore
+    private Schedule schedule;
+
     public MonthSummary() {
-
     }
 
-    public MonthSummary(int fulfilledAmount, int failedAmount, Month month) {
-        this.fulfilledAmount = fulfilledAmount;
-        this.failedAmount = failedAmount;
+    public MonthSummary(Month month, Schedule schedule) {
         this.month = month;
+        this.schedule = schedule;
     }
 
-    public long getMonthSumId() {
-        return monthSumId;
+    public Long getMonthSummaryId() {
+        return monthSummaryId;
     }
 
-    public void setMonthSumId(long monthSumId) {
-        this.monthSumId = monthSumId;
-    }
-
-    public int getFulfilledAmount() {
-        return fulfilledAmount;
-    }
-
-    public void setFulfilledAmount(int fulfilledAmount) {
-        this.fulfilledAmount = fulfilledAmount;
-    }
-
-    public int getFailedAmount() {
-        return failedAmount;
-    }
-
-    public void setFailedAmount(int failedAmount) {
-        this.failedAmount = failedAmount;
+    public void setMonthSummaryId(Long monthSummaryId) {
+        this.monthSummaryId = monthSummaryId;
     }
 
     public Month getMonth() {
@@ -63,5 +46,28 @@ public class MonthSummary {
 
     public void setMonth(Month month) {
         this.month = month;
+    }
+
+    public Schedule getSchedule() {
+        return schedule;
+    }
+
+    public void setSchedule(Schedule schedule) {
+        this.schedule = schedule;
+    }
+
+    @Override
+    public void countFulfilledAmount() {
+        int fulfilled=0;
+        for (MonthPlan monthPlan : schedule.getParticularMonthPlansList(this.month.getMonthId())) {
+            if(monthPlan.isFulfilled())
+                fulfilled++;
+        }
+        setFulfilledAmount(fulfilled);
+    }
+
+    @Override
+    public void countFailedAmount() {
+        setFailedAmount(schedule.getParticularMonthPlansList(this.month.getMonthId()).size() - getFulfilledAmount());
     }
 }

@@ -1,16 +1,15 @@
 package com.pk.ms.dto.schedule;
 
-import com.pk.ms.entities.Plan;
+import com.pk.ms.abstracts.Plan;
 
-import java.sql.Date;
+import java.time.LocalDate;
 
-// LongTermPlan DTO for purpose of creating, and updating some of LongTermPlan attributes
-public class LongTermPlanInputDTO extends Plan<Date> {
+public class LongTermPlanInputDTO extends Plan<LocalDate> {
 
     public LongTermPlanInputDTO() {
     }
 
-    public LongTermPlanInputDTO(String content, Date startDate, Date endDate) {
+    public LongTermPlanInputDTO(String content, LocalDate startDate, LocalDate endDate) {
         super(content, startDate, endDate);
     }
 }

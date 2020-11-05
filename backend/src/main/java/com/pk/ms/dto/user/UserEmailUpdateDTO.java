@@ -14,6 +14,10 @@ public class UserEmailUpdateDTO {
     public UserEmailUpdateDTO() {
     }
 
+    public UserEmailUpdateDTO(@NotNull @Size(min = 2, max = 100) @Email String email) {
+        this.email = email;
+    }
+
     public String getEmail() {
         return email;
     }

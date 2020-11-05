@@ -1,87 +1,119 @@
 package com.pk.ms.services.month;
 
-import com.pk.ms.dao.month.IMonthPlanRepository;
+import com.pk.ms.dao.month.MonthPlanRepository;
 import com.pk.ms.dto.month.MonthPlanInputDTO;
 import com.pk.ms.entities.month.Month;
 import com.pk.ms.entities.month.MonthPlan;
 import com.pk.ms.exceptions.AccessDeniedException;
 import com.pk.ms.exceptions.ResourceNotAvailableException;
+import com.pk.ms.services.schedule.ScheduleService;
 import org.springframework.stereotype.Service;
+
+import java.time.LocalDate;
+import java.util.List;
 
 @Service
 public class MonthPlanService {
 
-    private final IMonthPlanRepository monthPlanRepo;
+    private final MonthPlanRepository monthPlanRepo;
 
     private final MonthService monthService;
 
-    public MonthPlanService(IMonthPlanRepository monthPlanRepo, MonthService monthService) {
+    private final ScheduleService scheduleService;
+
+    public MonthPlanService(MonthPlanRepository monthPlanRepo, MonthService monthService, ScheduleService scheduleService) {
         this.monthPlanRepo = monthPlanRepo;
         this.monthService = monthService;
+        this.scheduleService = scheduleService;
     }
 
-    public MonthPlan saveMonthPlan(MonthPlan monthPlan) { return monthPlanRepo.save(monthPlan); }
-
-    public MonthPlan getMonthPlanById(long id) { return monthPlanRepo.findById(id); }
-
-    public String deleteMonthPlan(long scheduleId, long monthPlanId) {
-        MonthPlan monthPlan = getMonthPlanById(monthPlanId);
-        if(monthPlan == null)
-            throw new ResourceNotAvailableException();
-        if(hasAccess(scheduleId, monthPlan)) {
-            monthPlanRepo.deleteById(monthPlanId);
-            return "Plan deleted successfully. ";
-        }
-        else
-            throw new AccessDeniedException("This user cannot update this resource. ");
+    public List<MonthPlan> getMonthPlansByScheduleIdAndMonthId(long scheduleId, long monthId) {
+        return getMonthPlansByScheduleIdAndMonthIdFromRepo(scheduleId, monthId);
     }
 
     public MonthPlan createMonthPlan(long scheduleId, long monthId, MonthPlanInputDTO monthPlanInputDTO) {
-        Month month = monthService.getMonthById(monthId);
-        if(month == null)
-            throw new ResourceNotAvailableException();
-        if(monthService.hasAccess(scheduleId, month))
-            return saveMonthPlan(new MonthPlan(monthPlanInputDTO.getContent(), monthPlanInputDTO.getStartDate(),
-                monthPlanInputDTO.getEndDate(), month));
-        else
-            throw new AccessDeniedException("This user cannot create plan in this Month. ");
+        return saveMonthPlan(new MonthPlan(monthPlanInputDTO.getContent(),
+                monthPlanInputDTO.getStartDate(),
+                monthPlanInputDTO.getEndDate(),
+                monthService.getMonthById(monthId),
+                scheduleService.getScheduleById(scheduleId)));
     }
 
     public MonthPlan updateMonthPlan(long scheduleId, long monthPlanId, MonthPlanInputDTO monthPlanInputDTO) {
+
         MonthPlan monthPlan = getMonthPlanById(monthPlanId);
-        if(monthPlan == null)
-            throw new ResourceNotAvailableException();
+
         if(hasAccess(scheduleId, monthPlan)) {
-            if (monthPlanInputDTO.getContent() != null)
-                monthPlan.setContent(monthPlanInputDTO.getContent());
-            if (monthPlanInputDTO.getStartDate() != null)
-                monthPlan.setStartDate(monthPlanInputDTO.getStartDate());
-            if (monthPlanInputDTO.getEndDate() != null)
-                monthPlan.setEndDate(monthPlanInputDTO.getEndDate());
+
+            String content = monthPlanInputDTO.getContent();
+            if (isObjectNull(content))
+                monthPlan.setContent(content);
+
+            LocalDate startDate = monthPlanInputDTO.getStartDate();
+            if (isObjectNull(startDate))
+                monthPlan.setStartDate(startDate);
+
+            LocalDate endDate = monthPlanInputDTO.getEndDate();
+            if (isObjectNull(endDate))
+                monthPlan.setEndDate(endDate);
 
             return saveMonthPlan(monthPlan);
         }
         else
             throw new AccessDeniedException("This user cannot update this resource. ");
+    }
+
+    public String deleteMonthPlan(long scheduleId, long monthPlanId) {
+        MonthPlan monthPlan = getMonthPlanById(monthPlanId);
+        if(hasAccess(scheduleId, monthPlan)) {
+            deleteMonthPlan(monthPlan);
+            return "Plan deleted successfully. ";
+        }
+        else
+            throw new AccessDeniedException("This user cannot delete this resource. ");
     }
 
     public MonthPlan updateFulfilledStatus(long scheduleId, long monthPlanId) {
         MonthPlan monthPlan = getMonthPlanById(monthPlanId);
-        if(monthPlan == null)
-            throw new ResourceNotAvailableException();
         if(hasAccess(scheduleId, monthPlan)) {
-            boolean fullfilled = monthPlan.isFulfilled();
-            if (!fullfilled)
-                fullfilled = true;
-            else
-                fullfilled = false;
-            monthPlan.setFulfilled(fullfilled);
+            boolean fulfilled = monthPlan.isFulfilled();
+            fulfilled = !fulfilled;
+            monthPlan.setFulfilled(fulfilled);
             return saveMonthPlan(monthPlan);
         }
         else
             throw new AccessDeniedException("This user cannot update this resource. ");
     }
-    public boolean hasAccess(long scheduleId, MonthPlan monthPlan) {
-        return monthPlan.getMonth().getYear().getSchedule().getScheduleId() == scheduleId;
+
+
+    private List<MonthPlan> getMonthPlansByScheduleIdAndMonthIdFromRepo(long scheduleId, long monthId) {
+        return monthPlanRepo.findYearPlansByScheduleIdAndMonthId(scheduleId, monthId);
+    }
+
+    private MonthPlan getNotNullMonthPlanById(long id) {
+        MonthPlan monthPlan = monthPlanRepo.findById(id);
+        if(isObjectNull(monthPlan))
+            throw new ResourceNotAvailableException();
+        return monthPlan;
+    }
+
+    private MonthPlan getMonthPlanById(long monthPlanId) {
+        return getNotNullMonthPlanById(monthPlanId);
+    }
+
+    private MonthPlan saveMonthPlan(MonthPlan monthPlan) {
+        return monthPlanRepo.save(monthPlan);
+    }
+
+    private void deleteMonthPlan(MonthPlan monthPlan) {
+        monthPlanRepo.delete(monthPlan);
+    }
+
+    private boolean isObjectNull(Object object) {
+        return object == null;
+    }
+
+    private boolean hasAccess(long scheduleId, MonthPlan monthPlan) {
+        return monthPlan.getSchedule().getScheduleId() == scheduleId;
     }
 }

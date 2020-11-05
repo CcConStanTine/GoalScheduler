@@ -1,6 +1,6 @@
 package com.pk.ms.security.services;
 
-import com.pk.ms.dao.user.IUserRepository;
+import com.pk.ms.dao.user.UserRepository;
 import com.pk.ms.entities.user.MyScheduleUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -14,7 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Autowired
-    IUserRepository userRepository;
+    UserRepository userRepository;
 
     @Override
     @Transactional

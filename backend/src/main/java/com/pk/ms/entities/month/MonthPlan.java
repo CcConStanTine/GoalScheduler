@@ -1,40 +1,44 @@
 package com.pk.ms.entities.month;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.pk.ms.entities.Plan;
+import com.pk.ms.abstracts.Plan;
+import com.pk.ms.entities.schedule.Schedule;
 
 import javax.persistence.*;
-import java.sql.Date;
+import java.time.LocalDate;
 
 @Entity
-public class MonthPlan extends Plan<Date> {
+public class MonthPlan extends Plan<LocalDate> {
 
-    // primary key
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "monthplan_seq")
-    @SequenceGenerator(name = "monthplan_seq", sequenceName = "monthplan_seq", allocationSize = 1)
-    private long monthPlanId;
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "month_plan_seq")
+    @SequenceGenerator(name = "month_plan_seq", sequenceName = "month_plan_seq", allocationSize = 1)
+    private Long monthPlanId;
 
-    // foreign key
     @ManyToOne
-    @JoinColumn(name="month_id")
+    @JoinColumn(name = "month_id")
     @JsonIgnore
     private Month month;
 
-    public MonthPlan() {
+    @ManyToOne
+    @JoinColumn(name = "schedule_id")
+    @JsonIgnore
+    private Schedule schedule;
 
+    public MonthPlan() {
     }
 
-    public MonthPlan(String content, Date startDate, Date endDate, Month month) {
+    public MonthPlan(String content, LocalDate startDate, LocalDate endDate, Month month, Schedule schedule) {
         super(content, startDate, endDate);
         this.month = month;
+        this.schedule = schedule;
     }
 
-    public long getMonthPlanId() {
+    public Long getMonthPlanId() {
         return monthPlanId;
     }
 
-    public void setMonthPlanId(long monthPlanId) {
+    public void setMonthPlanId(Long monthPlanId) {
         this.monthPlanId = monthPlanId;
     }
 
@@ -44,5 +48,13 @@ public class MonthPlan extends Plan<Date> {
 
     public void setMonth(Month month) {
         this.month = month;
+    }
+
+    public Schedule getSchedule() {
+        return schedule;
+    }
+
+    public void setSchedule(Schedule schedule) {
+        this.schedule = schedule;
     }
 }

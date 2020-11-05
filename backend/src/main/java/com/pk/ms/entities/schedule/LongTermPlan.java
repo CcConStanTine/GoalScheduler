@@ -1,40 +1,37 @@
 package com.pk.ms.entities.schedule;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.pk.ms.entities.Plan;
+import com.pk.ms.abstracts.Plan;
 
 import javax.persistence.*;
-import java.sql.Date;
+import java.time.LocalDate;
 
 @Entity
-public class LongTermPlan extends Plan<Date> {
+public class LongTermPlan extends Plan<LocalDate> {
 
-    // primary key
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "longtermplan_seq")
-    @SequenceGenerator(name = "longtermplan_seq", sequenceName = "longtermplan_seq", allocationSize = 1)
-    private long longTermPlanId;
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "long_term_plan_seq")
+    @SequenceGenerator(name = "long_term_plan_seq", sequenceName = "long_term_plan_seq", allocationSize = 1)
+    private Long longTermPlanId;
 
-    // foreign key
     @ManyToOne
     @JoinColumn(name="schedule_id")
     @JsonIgnore
     private Schedule schedule;
 
     public LongTermPlan() {
-
     }
 
-    public LongTermPlan(String content, Date startDate, Date endDate, Schedule schedule) {
+    public LongTermPlan(String content, LocalDate startDate, LocalDate endDate, Schedule schedule) {
         super(content, startDate, endDate);
         this.schedule = schedule;
     }
 
-    public long getLongTermPlanId() {
+    public Long getLongTermPlanId() {
         return longTermPlanId;
     }
 
-    public void setLongTermPlanId(long longTermPlanId) {
+    public void setLongTermPlanId(Long longTermPlanId) {
         this.longTermPlanId = longTermPlanId;
     }
 
@@ -46,3 +43,4 @@ public class LongTermPlan extends Plan<Date> {
         this.schedule = schedule;
     }
 }
+
