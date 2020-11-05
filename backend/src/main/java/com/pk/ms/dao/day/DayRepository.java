@@ -15,7 +15,7 @@ public interface DayRepository extends CrudRepository<Day, Long> {
 
     Day findById(long id);
 
-    @Query(nativeQuery = true, value = "")
+    @Query(nativeQuery = true, value = "SELECT * FROM month WHERE month_id = ?")
     List<Day> findAllByMonthId(long monthId);
 
     @Query(nativeQuery = true, value = "SELECT * FROM day WHERE date = ?")
