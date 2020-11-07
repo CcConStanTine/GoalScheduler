@@ -30,6 +30,8 @@ public class YearSummary extends Summary {
     public YearSummary(Year year, Schedule schedule) {
         this.year = year;
         this.schedule = schedule;
+        countFailedAmount();
+        countFulfilledAmount();
     }
 
     public Long getYearSummaryId() {
@@ -68,6 +70,11 @@ public class YearSummary extends Summary {
 
     @Override
     public void countFailedAmount() {
-        setFailedAmount(schedule.getParticularYearPlansList(year.getYearNumber()).size() - getFulfilledAmount());
+        int failed=0;
+        for (YearPlan yearPlan : schedule.getParticularYearPlansList(year.getYearId())) {
+            if(!yearPlan.isFulfilled())
+                failed++;
+        }
+        setFailedAmount(failed);
     }
 }

@@ -42,14 +42,15 @@ public class DaySummaryService {
     }
 
     public DaySummary createDaySummary(long scheduleId, long dayId) {
-        DaySummary daySummary = getNotNullDaySummaryByScheduleIdAndDayId(scheduleId, dayId);
+        DaySummary daySummary = getDaySummaryByScheduleIdAndDayIdFromRepo(scheduleId, dayId);
         if(isObjectNull(daySummary)) {
             Day day = dayService.getDayById(dayId);
             Schedule schedule = scheduleService.getScheduleById(scheduleId);
             return saveDaySummary(new DaySummary(day, schedule));
         }
         else {
-            return updateDaySummary(scheduleId, daySummary);
+            updateDaySummary(scheduleId, daySummary);
+            return saveDaySummary(daySummary);
         }
     }
 
@@ -80,11 +81,10 @@ public class DaySummaryService {
         return daySummaryRepo.save(daySummary);
     }
 
-    private DaySummary updateDaySummary(long scheduleId, DaySummary daySummary) {
+    private void updateDaySummary(long scheduleId, DaySummary daySummary) {
         if (hasAccess(scheduleId, daySummary)) {
             daySummary.countFulfilledAmount();
             daySummary.countFailedAmount();
-            return daySummary;
         }
         else
             throw new AccessDeniedException("This user cannot access this resource. ");

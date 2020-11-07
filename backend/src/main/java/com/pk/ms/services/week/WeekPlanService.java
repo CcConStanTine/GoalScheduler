@@ -46,15 +46,15 @@ public class WeekPlanService {
         if(hasAccess(scheduleId, weekPlan)) {
 
             String content = weekPlanInputDTO.getContent();
-            if (isObjectNull(content))
+            if (!isObjectNull(content))
                 weekPlan.setContent(content);
 
             LocalDate startDate = weekPlanInputDTO.getStartDate();
-            if (isObjectNull(startDate))
+            if (!isObjectNull(startDate))
                 weekPlan.setStartDate(startDate);
 
             LocalDate endDate = weekPlanInputDTO.getEndDate();
-            if (isObjectNull(endDate))
+            if (!isObjectNull(endDate))
                 weekPlan.setEndDate(endDate);
 
             return saveWeekPlan(weekPlan);

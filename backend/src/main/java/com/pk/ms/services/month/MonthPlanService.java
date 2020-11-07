@@ -46,15 +46,15 @@ public class MonthPlanService {
         if(hasAccess(scheduleId, monthPlan)) {
 
             String content = monthPlanInputDTO.getContent();
-            if (isObjectNull(content))
+            if (!isObjectNull(content))
                 monthPlan.setContent(content);
 
             LocalDate startDate = monthPlanInputDTO.getStartDate();
-            if (isObjectNull(startDate))
+            if (!isObjectNull(startDate))
                 monthPlan.setStartDate(startDate);
 
             LocalDate endDate = monthPlanInputDTO.getEndDate();
-            if (isObjectNull(endDate))
+            if (!isObjectNull(endDate))
                 monthPlan.setEndDate(endDate);
 
             return saveMonthPlan(monthPlan);

@@ -42,14 +42,15 @@ public class MonthSummaryService {
     }
 
     public MonthSummary createMonthSummary(long scheduleId, long monthId) {
-        MonthSummary monthSummary = getNotNullMonthSummaryByScheduleIdAndMonthId(scheduleId, monthId);
+        MonthSummary monthSummary = getMonthSummaryByScheduleIdAndMonthIdFromRepo(scheduleId, monthId);
         if(isObjectNull(monthSummary)) {
             Month month = monthService.getMonthById(monthId);
             Schedule schedule = scheduleService.getScheduleById(scheduleId);
             return saveMonthSummary(new MonthSummary(month, schedule));
         }
         else {
-            return updateYMonthSummary(scheduleId, monthSummary);
+            updateYMonthSummary(scheduleId, monthSummary);
+            return saveMonthSummary(monthSummary);
         }
     }
 
@@ -80,11 +81,10 @@ public class MonthSummaryService {
         return monthSummaryRepo.save(monthSummary);
     }
 
-    private MonthSummary updateYMonthSummary(long scheduleId, MonthSummary monthSummary) {
+    private void updateYMonthSummary(long scheduleId, MonthSummary monthSummary) {
         if (hasAccess(scheduleId, monthSummary)) {
             monthSummary.countFulfilledAmount();
             monthSummary.countFailedAmount();
-            return monthSummary;
         }
         else
             throw new AccessDeniedException("This user cannot access this resource. ");

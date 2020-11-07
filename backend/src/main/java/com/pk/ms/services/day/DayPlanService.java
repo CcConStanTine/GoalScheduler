@@ -45,15 +45,15 @@ public class DayPlanService {
         if(hasAccess(scheduleId, dayPlan)) {
 
             String content = dayPlanInputDTO.getContent();
-            if (isObjectNull(content))
+            if (!isObjectNull(content))
                 dayPlan.setContent(content);
 
             LocalTime startDate = dayPlanInputDTO.getStartDate();
-            if (isObjectNull(startDate))
+            if (!isObjectNull(startDate))
                 dayPlan.setStartDate(startDate);
 
             LocalTime endDate = dayPlanInputDTO.getEndDate();
-            if (isObjectNull(endDate))
+            if (!isObjectNull(endDate))
                 dayPlan.setEndDate(endDate);
 
             return saveDayPlan(dayPlan);

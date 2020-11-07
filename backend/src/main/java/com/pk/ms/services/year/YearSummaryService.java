@@ -42,14 +42,15 @@ public class YearSummaryService {
     }
 
     public YearSummary createYearSummary(long scheduleId, long yearId) {
-        YearSummary yearSummary = getNotNullYearSummaryByScheduleIdAndYearId(scheduleId, yearId);
+        YearSummary yearSummary = getYearSummaryByScheduleIdAndYearIdFromRepo(scheduleId, yearId);
         if(isObjectNull(yearSummary)) {
             Year year = yearService.getYearById(yearId);
             Schedule schedule = scheduleService.getScheduleById(scheduleId);
             return saveYearSummary(new YearSummary(year, schedule));
         }
         else {
-            return updateYearSummary(scheduleId, yearSummary);
+            updateYearSummary(scheduleId, yearSummary);
+            return saveYearSummary(yearSummary);
         }
     }
 
@@ -81,11 +82,10 @@ public class YearSummaryService {
         return yearSummaryRepo.save(yearSummary);
     }
 
-    private YearSummary updateYearSummary(long scheduleId, YearSummary yearSummary) {
+    private void updateYearSummary(long scheduleId, YearSummary yearSummary) {
         if (hasAccess(scheduleId, yearSummary)) {
             yearSummary.countFulfilledAmount();
             yearSummary.countFailedAmount();
-            return yearSummary;
         }
         else
             throw new AccessDeniedException("This user cannot access this resource. ");

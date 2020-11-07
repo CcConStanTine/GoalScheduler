@@ -42,14 +42,15 @@ public class WeekSummaryService {
     }
 
     public WeekSummary createWeekSummary(long scheduleId, long weekId) {
-        WeekSummary weekSummary = getNotNullWeekSummaryByScheduleIdAndWeekId(scheduleId, weekId);
+        WeekSummary weekSummary = getWeekSummaryByScheduleIdAndWeekIdFromRepo(scheduleId, weekId);
         if(isObjectNull(weekSummary)) {
             Week week = weekService.getWeekById(weekId);
             Schedule schedule = scheduleService.getScheduleById(scheduleId);
             return saveWeekSummary(new WeekSummary(week, schedule));
         }
         else {
-            return updateWeekSummary(scheduleId, weekSummary);
+            updateWeekSummary(scheduleId, weekSummary);
+            return saveWeekSummary(weekSummary);
         }
     }
 
@@ -80,11 +81,10 @@ public class WeekSummaryService {
         return weekSummaryRepo.save(weekSummary);
     }
 
-    private WeekSummary updateWeekSummary(long scheduleId, WeekSummary weekSummary) {
+    private void updateWeekSummary(long scheduleId, WeekSummary weekSummary) {
         if (hasAccess(scheduleId, weekSummary)) {
             weekSummary.countFulfilledAmount();
             weekSummary.countFailedAmount();
-            return weekSummary;
         }
         else
             throw new AccessDeniedException("This user cannot access this resource. ");

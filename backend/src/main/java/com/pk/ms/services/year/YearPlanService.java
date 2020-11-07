@@ -46,15 +46,15 @@ public class YearPlanService {
         if(hasAccess(scheduleId, yearPlan)) {
 
             String content = yearPlanInputDTO.getContent();
-            if (isObjectNull(content))
+            if (!isObjectNull(content))
                 yearPlan.setContent(content);
 
             LocalDate startDate = yearPlanInputDTO.getStartDate();
-            if (isObjectNull(startDate))
+            if (!isObjectNull(startDate))
                 yearPlan.setStartDate(startDate);
 
             LocalDate endDate = yearPlanInputDTO.getEndDate();
-            if (isObjectNull(endDate))
+            if (!isObjectNull(endDate))
                 yearPlan.setEndDate(endDate);
 
             return saveYearPlan(yearPlan);

@@ -39,15 +39,15 @@ public class LongTermPlanService {
         if(hasAccess(scheduleId, longTermPlan)) {
 
             String content = ltpInputDTO.getContent();
-            if (isObjectNull(content))
+            if (!isObjectNull(content))
                 longTermPlan.setContent(content);
 
             LocalDate startDate = ltpInputDTO.getStartDate();
-            if (isObjectNull(startDate))
+            if (!isObjectNull(startDate))
                 longTermPlan.setStartDate(startDate);
 
             LocalDate endDate = ltpInputDTO.getEndDate();
-            if (isObjectNull(endDate))
+            if (!isObjectNull(endDate))
                 longTermPlan.setEndDate(endDate);
 
             return saveLongTermPLan(longTermPlan);
