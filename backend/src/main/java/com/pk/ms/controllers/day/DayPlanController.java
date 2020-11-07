@@ -27,7 +27,7 @@ public class DayPlanController {
         return ResponseEntity.ok(dayPlanService.getDayPlansByScheduleIdAndDayId(scheduleId, dayId));
     }
 
-    @PostMapping(value="/day/{day_id}/day_plans", consumes = "application/json")
+    @PostMapping(value="/day/{day_id}/day_plan", consumes = "application/json")
     public ResponseEntity<DayPlan> createDayPlan(@PathVariable("schedule_id") long scheduleId,
                                                  @PathVariable("day_id") long dayId,
                                                  @Valid @RequestBody DayPlanInputDTO dayPlanInputDTO) {

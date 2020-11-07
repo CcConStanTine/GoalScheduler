@@ -4,6 +4,7 @@ import com.pk.ms.entities.schedule.Schedule;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import java.util.HashSet;
 import java.util.Set;
@@ -16,21 +17,20 @@ public class MyScheduleUser {
     @SequenceGenerator(name = "my_schedule_user_seq", sequenceName = "my_schedule_user_seq", allocationSize = 1)
     private Long userId;
 
-    @Size(min = 2, max = 30)
-    private String firstName;
-
-    @Size(min = 2, max = 30)
-    private String lastName;
-
-    @Size(min = 2, max = 30)
+    @Size(max = 30)
     private String nick;
 
-    @Email
+    @Size(min = 6, max = 60)
+    private String password;
+
     @Size(max = 50)
     private String email;
 
-    @Size(min = 4, max = 50)
-    private String password;
+    @Size(max = 50)
+    private String firstName;
+
+    @Size(max = 50)
+    private String lastName;
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable( name = "my_schedule_user_roles",
