@@ -1,6 +1,5 @@
 package com.pk.ms.dto.user;
 
-// MyScheduleUser DTO for purpose of displaying his information without the Schedule
 public class UserInfoDTO {
 
     private long userId;

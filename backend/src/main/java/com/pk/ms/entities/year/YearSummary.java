@@ -1,62 +1,45 @@
 package com.pk.ms.entities.year;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.pk.ms.abstracts.Summary;
+import com.pk.ms.entities.schedule.Schedule;
 
 import javax.persistence.*;
 
 @Entity
-public class YearSummary {
+public class YearSummary extends Summary {
 
-    // primary key
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "yearsummary_seq")
-    @SequenceGenerator(name = "yearsummary_seq", sequenceName = "yearsummary_seq", allocationSize = 1)
-    private long yearSumId;
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "year_summary_seq")
+    @SequenceGenerator(name = "year_summary_seq", sequenceName = "year_summary_seq", allocationSize = 1)
+    private Long yearSummaryId;
 
-    private int fulfilledAmount;
-
-    private int failedAmount;
-
-    // foreign key
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "year_id")
     @JsonIgnore
     private Year year;
 
+    @ManyToOne
+    @JoinColumn(name = "schedule_id")
+    @JsonIgnore
+    private Schedule schedule;
+
     public YearSummary() {
-
     }
 
-    public YearSummary(int fulfilledAmount, int failedAmount, Year year) {
-        this.fulfilledAmount = fulfilledAmount;
-        this.failedAmount = failedAmount;
+    public YearSummary(Year year, Schedule schedule) {
         this.year = year;
+        this.schedule = schedule;
+        countFailedAmount();
+        countFulfilledAmount();
     }
 
-    public long getYearSumId() {
-        return yearSumId;
+    public Long getYearSummaryId() {
+        return yearSummaryId;
     }
 
-    public void setYearSumId(long yearSumId) {
-        this.yearSumId = yearSumId;
-    }
-
-    public int getFulfilledAmount() {
-        return fulfilledAmount;
-    }
-
-    public void setFulfilledAmount(int fulfilledAmount) {
-        this.fulfilledAmount = fulfilledAmount;
-
-
-    }
-
-    public int getFailedAmount() {
-        return failedAmount;
-    }
-
-    public void setFailedAmount(int failedAmount) {
-        this.failedAmount = failedAmount;
+    public void setYearSummaryId(Long yearSummaryId) {
+        this.yearSummaryId = yearSummaryId;
     }
 
     public Year getYear() {
@@ -65,5 +48,33 @@ public class YearSummary {
 
     public void setYear(Year year) {
         this.year = year;
+    }
+
+    public Schedule getSchedule() {
+        return schedule;
+    }
+
+    public void setSchedule(Schedule schedule) {
+        this.schedule = schedule;
+    }
+
+    @Override
+    public void countFulfilledAmount() {
+        int fulfilled=0;
+        for (YearPlan yearPlan : schedule.getParticularYearPlansList(year.getYearId())) {
+            if(yearPlan.isFulfilled())
+                fulfilled++;
+        }
+        setFulfilledAmount(fulfilled);
+    }
+
+    @Override
+    public void countFailedAmount() {
+        int failed=0;
+        for (YearPlan yearPlan : schedule.getParticularYearPlansList(year.getYearId())) {
+            if(!yearPlan.isFulfilled())
+                failed++;
+        }
+        setFailedAmount(failed);
     }
 }

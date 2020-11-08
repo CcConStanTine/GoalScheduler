@@ -1,16 +1,15 @@
 package com.pk.ms.dto.week;
 
-import com.pk.ms.entities.Plan;
+import com.pk.ms.abstracts.Plan;
 
-import java.sql.Date;
+import java.time.LocalDate;
 
-// WeekPlan DTO for purpose of creating, and updating some of WeekPlan attributes
-public class WeekPlanInputDTO extends Plan<Date> {
+public class WeekPlanInputDTO extends Plan<LocalDate> {
 
     public WeekPlanInputDTO() {
     }
 
-    public WeekPlanInputDTO(String content, Date startDate, Date endDate) {
+    public WeekPlanInputDTO(String content, LocalDate startDate, LocalDate endDate) {
         super(content, startDate, endDate);
     }
 }

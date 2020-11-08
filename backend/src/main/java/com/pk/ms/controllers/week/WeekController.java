@@ -1,17 +1,18 @@
 package com.pk.ms.controllers.week;
 
-import com.pk.ms.dto.week.WeekInputDTO;
-import com.pk.ms.dto.week.WeekWithBasicDayDTO;
-import com.pk.ms.entities.week.Week;
+import com.pk.ms.dto.week.WeekBasicInfoDTO;
 import com.pk.ms.services.week.WeekService;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
+import java.time.LocalDate;
+import java.util.List;
 
 @RestController
 @PreAuthorize("hasRole('ROLE_ADMIN') or authentication.principal.id == #scheduleId")
+@RequestMapping("/schedule/{schedule_id}")
 public class WeekController {
 
     private final WeekService weekService;
@@ -20,26 +21,35 @@ public class WeekController {
         this.weekService = weekService;
     }
 
-    @GetMapping("/schedules/{schedule_id}/weeks/{week_id}")
-    public ResponseEntity<WeekWithBasicDayDTO> getWeek(@PathVariable("schedule_id") long scheduleId,
-                                                       @PathVariable("week_id") long weekId) {
+    @GetMapping("/year/{year_id}/weeks")
+    public ResponseEntity<List<WeekBasicInfoDTO>> getWeeksByYearId(@PathVariable("schedule_id") long scheduleId,
+                                                                   @PathVariable("year_id") long yearId) {
 
-        return ResponseEntity.ok(weekService.getWeek(scheduleId, weekId));
+        return ResponseEntity.ok(weekService.getWeekDTOsByYearId(yearId));
     }
 
-    @PostMapping(path = "/schedules/{schedule_id}/years/{year_id}/weeks", consumes = "application/json")
-    public ResponseEntity<Week> createWeek(@PathVariable("schedule_id") long scheduleId,
-                                           @PathVariable("year_id") long yearId,
-                                           @Valid @RequestBody WeekInputDTO weekInputDTO) {
+    @GetMapping("/weeks")
+    public ResponseEntity<List<WeekBasicInfoDTO>> getWeeksByLocalDate(@PathVariable("schedule_id") long scheduleId,
+                                                                      @RequestParam("local_date")
+                                                                      @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+                                                                              LocalDate date) {
 
-        return ResponseEntity.ok(weekService.createWeek(scheduleId, yearId, weekInputDTO));
+        return ResponseEntity.ok(weekService.getWeekDTOsByLocalDate(date));
     }
 
-    @DeleteMapping("/schedules/{schedule_id}/weeks/{week_id}")
-    public ResponseEntity<String> deleteWeek(@PathVariable("schedule_id") long scheduleId,
-                                             @PathVariable("week_id") long weekId) {
+    @GetMapping("/week/{week_id}")
+    public ResponseEntity<WeekBasicInfoDTO> getWeekByWeekId(@PathVariable("schedule_id") long scheduleId,
+                                                            @PathVariable("week_id") long weekId) {
 
-        return ResponseEntity.ok(weekService.deleteWeek(scheduleId, weekId));
+        return ResponseEntity.ok(weekService.getWeekDTOByWeekId(weekId));
     }
 
+    @GetMapping("/week")
+    public ResponseEntity<WeekBasicInfoDTO> getWeekByLocalDate(@PathVariable("schedule_id") long scheduleId,
+                                                               @RequestParam("local_date")
+                                                               @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+                                                                       LocalDate date) {
+
+        return ResponseEntity.ok(weekService.getWeekDTOByLocalDate(date));
+    }
 }

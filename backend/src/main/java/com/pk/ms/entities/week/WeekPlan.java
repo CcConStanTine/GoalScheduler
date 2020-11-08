@@ -1,40 +1,44 @@
 package com.pk.ms.entities.week;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.pk.ms.entities.Plan;
+import com.pk.ms.abstracts.Plan;
+import com.pk.ms.entities.schedule.Schedule;
 
 import javax.persistence.*;
-import java.sql.Date;
+import java.time.LocalDate;
 
 @Entity
-public class WeekPlan extends Plan<Date> {
+public class WeekPlan extends Plan<LocalDate> {
 
-    // primary key
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "weekplan_seq")
-    @SequenceGenerator(name = "weekplan_seq", sequenceName = "weekplan_seq", allocationSize = 1)
-    private long weekPlanId;
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "week_plan_seq")
+    @SequenceGenerator(name = "week_plan_seq", sequenceName = "week_plan_seq", allocationSize = 1)
+    private Long weekPlanId;
 
-    // foreign key
     @ManyToOne
-    @JoinColumn(name="week_id")
+    @JoinColumn(name = "week_id")
     @JsonIgnore
     private Week week;
 
-    public WeekPlan() {
+    @ManyToOne
+    @JoinColumn(name = "schedule_id")
+    @JsonIgnore
+    private Schedule schedule;
 
+    public WeekPlan() {
     }
 
-    public WeekPlan(String content, Date startDate, Date endDate, Week week) {
+    public WeekPlan(String content, LocalDate startDate, LocalDate endDate, Week week, Schedule schedule) {
         super(content, startDate, endDate);
         this.week = week;
+        this.schedule = schedule;
     }
 
-    public long getWeekPlanId() {
+    public Long getWeekPlanId() {
         return weekPlanId;
     }
 
-    public void setWeekPlanId(long weekPlanId) {
+    public void setWeekPlanId(Long weekPlanId) {
         this.weekPlanId = weekPlanId;
     }
 
@@ -44,5 +48,13 @@ public class WeekPlan extends Plan<Date> {
 
     public void setWeek(Week week) {
         this.week = week;
+    }
+
+    public Schedule getSchedule() {
+        return schedule;
+    }
+
+    public void setSchedule(Schedule schedule) {
+        this.schedule = schedule;
     }
 }

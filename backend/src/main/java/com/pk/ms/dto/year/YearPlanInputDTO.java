@@ -1,16 +1,15 @@
 package com.pk.ms.dto.year;
 
-import com.pk.ms.entities.Plan;
+import com.pk.ms.abstracts.Plan;
 
-import java.sql.Date;
+import java.time.LocalDate;
 
-// YearPlan DTO for purpose of creating, and updating some of YearPlan attributes
-public class YearPlanInputDTO extends Plan<Date> {
+public class YearPlanInputDTO extends Plan<LocalDate> {
 
     public YearPlanInputDTO() {
     }
 
-    public YearPlanInputDTO(String content, Date startDate, Date endDate) {
+    public YearPlanInputDTO(String content, LocalDate startDate, LocalDate endDate) {
         super(content, startDate, endDate);
     }
 }

@@ -1,70 +1,100 @@
 package com.pk.ms.services.week;
 
-import com.pk.ms.dao.week.IWeekSummaryRepository;
+import com.pk.ms.dao.week.WeekSummaryRepository;
+import com.pk.ms.entities.schedule.Schedule;
 import com.pk.ms.entities.week.Week;
 import com.pk.ms.entities.week.WeekPlan;
 import com.pk.ms.entities.week.WeekSummary;
 import com.pk.ms.exceptions.AccessDeniedException;
 import com.pk.ms.exceptions.ResourceNotAvailableException;
+import com.pk.ms.services.schedule.ScheduleService;
 import org.springframework.stereotype.Service;
 
 @Service
 public class WeekSummaryService {
 
-
-    private final IWeekSummaryRepository weekSummaryRepo;
+    private final WeekSummaryRepository weekSummaryRepo;
 
     private final WeekService weekService;
 
-    public WeekSummaryService(IWeekSummaryRepository weekSummaryRepo, WeekService weekService) {
+    private final ScheduleService scheduleService;
+
+    public WeekSummaryService(WeekSummaryRepository weekSummaryRepo, WeekService weekService, ScheduleService scheduleService) {
         this.weekSummaryRepo = weekSummaryRepo;
         this.weekService = weekService;
+        this.scheduleService = scheduleService;
     }
 
-    public WeekSummary getWeekSummaryById(long id) {
-        return weekSummaryRepo.findById(id);
-    }
-
-    public WeekSummary getWeekSummary(long scheduleId, long weekSummaryId) {
-        WeekSummary weekSummary = getWeekSummaryById(weekSummaryId);
-        if(weekSummary == null)
-            throw new ResourceNotAvailableException();
+    public WeekSummary getWeekSummaryById(long scheduleId, long weekSummaryId) {
+        WeekSummary weekSummary = getNotNullWeekSummaryById(weekSummaryId);
         if(hasAccess(scheduleId, weekSummary))
             return weekSummary;
         else
             throw new AccessDeniedException("This user cannot access this resource. ");
     }
 
-    public WeekSummary saveWeekSummary(WeekSummary weekSummary) {
-        return weekSummaryRepo.save(weekSummary);
-    }
-
-    public int getFullfilledAmount(Week week) {
-        int fulfilled=0;
-        for (WeekPlan weekPlan: week.getWeekPlansList()) {
-            if(weekPlan.isFulfilled())
-                fulfilled++;
-        }
-        return fulfilled;
-    }
-
-    public int getFailedAmount(Week week) {
-        return week.getWeekPlansList().size() - getFullfilledAmount(week);
+    public WeekSummary getWeekSummaryByScheduleIdAndWeekId(long scheduleId, long weekId) {
+        WeekSummary weekSummary = getNotNullWeekSummaryByScheduleIdAndWeekId(scheduleId, weekId);
+        if(hasAccess(scheduleId, weekSummary))
+            return weekSummary;
+        else
+            throw new AccessDeniedException("This user cannot access this resource. ");
     }
 
     public WeekSummary createWeekSummary(long scheduleId, long weekId) {
-        Week week = weekService.getWeekById(weekId);
-        if(week == null)
-            throw new ResourceNotAvailableException();
-        if(weekService.hasAccess(scheduleId, week))
-            return saveWeekSummary(new WeekSummary(getFullfilledAmount(week), getFailedAmount(week), week));
-        else
-            throw new AccessDeniedException("This user cannot create summary in this Week. ");
+        WeekSummary weekSummary = getWeekSummaryByScheduleIdAndWeekIdFromRepo(scheduleId, weekId);
+        if(isObjectNull(weekSummary)) {
+            Week week = weekService.getWeekById(weekId);
+            Schedule schedule = scheduleService.getScheduleById(scheduleId);
+            return saveWeekSummary(new WeekSummary(week, schedule));
+        }
+        else {
+            updateWeekSummary(scheduleId, weekSummary);
+            return saveWeekSummary(weekSummary);
+        }
+    }
 
+
+    private WeekSummary getNotNullWeekSummaryById(long weekSummaryId) {
+        WeekSummary weekSummary = getWeekSummaryByIdFromRepo(weekSummaryId);
+        if(isObjectNull(weekSummary))
+            throw new ResourceNotAvailableException();
+        return weekSummary;
+    }
+
+    private WeekSummary getWeekSummaryByIdFromRepo(long weekSummaryId) {
+        return weekSummaryRepo.findById(weekSummaryId);
+    }
+
+    private WeekSummary getNotNullWeekSummaryByScheduleIdAndWeekId(long scheduleId, long weekId) {
+        WeekSummary weekSummary = getWeekSummaryByScheduleIdAndWeekIdFromRepo(scheduleId, weekId);
+        if(isObjectNull(weekSummary))
+            throw new ResourceNotAvailableException();
+        return weekSummary;
+    }
+
+    private WeekSummary getWeekSummaryByScheduleIdAndWeekIdFromRepo(long scheduleId, long weekId) {
+        return weekSummaryRepo.findByScheduleIdAndWeekId(scheduleId, weekId);
+    }
+
+    private WeekSummary saveWeekSummary(WeekSummary weekSummary) {
+        return weekSummaryRepo.save(weekSummary);
+    }
+
+    private void updateWeekSummary(long scheduleId, WeekSummary weekSummary) {
+        if (hasAccess(scheduleId, weekSummary)) {
+            weekSummary.countFulfilledAmount();
+            weekSummary.countFailedAmount();
+        }
+        else
+            throw new AccessDeniedException("This user cannot access this resource. ");
+    }
+
+    private boolean isObjectNull(Object object) {
+        return object == null;
     }
 
     private boolean hasAccess(long scheduleId, WeekSummary weekSummary) {
-        return weekSummary.getWeek().getYear().getSchedule().getScheduleId() == scheduleId;
+        return weekSummary.getSchedule().getScheduleId() == scheduleId;
     }
-
 }

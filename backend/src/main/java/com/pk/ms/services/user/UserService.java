@@ -1,11 +1,12 @@
 package com.pk.ms.services.user;
 
-import com.pk.ms.dao.user.IUserRepository;
+import com.pk.ms.dao.user.UserRepository;
 import com.pk.ms.dto.user.UserEmailUpdateDTO;
 import com.pk.ms.dto.user.UserInfoDTO;
 import com.pk.ms.dto.user.UserPasswordUpdateDTO;
-import com.pk.ms.dto.user.UserUpdateDTO;
+import com.pk.ms.dto.user.UserBasicInfoUpdateDTO;
 import com.pk.ms.entities.user.MyScheduleUser;
+import com.pk.ms.exceptions.ResourceNotAvailableException;
 import com.pk.ms.exceptions.UniqueValuesAlreadyExistsException;
 import com.pk.ms.mappers.user.UserInfoMapService;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -14,91 +15,100 @@ import org.springframework.stereotype.Service;
 @Service
 public class UserService {
 
-    private final IUserRepository userRepo;
+    private final UserRepository userRepo;
 
     private final UserInfoMapService userInfoMapService;
 
     private final PasswordEncoder encoder;
 
-    public UserService(IUserRepository userRepo, UserInfoMapService userInfoMapService, PasswordEncoder encoder) {
+    public UserService(UserRepository userRepo, UserInfoMapService userInfoMapService, PasswordEncoder encoder) {
         this.userRepo = userRepo;
         this.userInfoMapService = userInfoMapService;
         this.encoder = encoder;
     }
 
-    public MyScheduleUser save(MyScheduleUser user) {
+    public MyScheduleUser saveUser(MyScheduleUser user) {
         return userRepo.save(user);
     }
 
-    public MyScheduleUser getUserById(long id) {return userRepo.findById(id);}
-
-    public boolean checkForUniqueNick(String nick) {
-        if (userRepo.findByNick(nick) == null)
-            return false;
-        return true;
+    public boolean isNickUnique(String nick) {
+        return isObjectNull(getByNick(nick));
     }
 
-    public boolean checkForUniqueEmail(String email) {
-        if (userRepo.findByEmail(email) == null)
-            return false;
-        return true;
+    public boolean isEmailUnique(String email) {
+        return isObjectNull(getByEmail(email));
     }
 
     public UserInfoDTO getUserInfo(long id) {
-        return userInfoMapService.mapToDTO(getUserById(id));
+        return userInfoMapService.mapToDTO(getNotNullUserById(id));
     }
 
-    public UserInfoDTO updateUser(long userId, UserUpdateDTO userUpdateDTO) {
+    public UserInfoDTO updateBasicUserInfo(long userId, UserBasicInfoUpdateDTO userBasicInfoUpdateDTO) {
 
-        String nick = userUpdateDTO.getNick();
+        String nick = userBasicInfoUpdateDTO.getNick();
 
-        if(checkForUniqueNick(userUpdateDTO.getNick()))
-                throw new UniqueValuesAlreadyExistsException(userUpdateDTO);
+        if(!isNickUnique(userBasicInfoUpdateDTO.getNick()))
+            throw new UniqueValuesAlreadyExistsException(userBasicInfoUpdateDTO);
 
-        MyScheduleUser user = getUserById(userId);
+        MyScheduleUser user = getNotNullUserById(userId);
 
-        String firstName = userUpdateDTO.getFirstName();
-        if(isInputNotNull(firstName));
+        String firstName = userBasicInfoUpdateDTO.getFirstName();
+        if(!isObjectNull(firstName))
             user.setFirstName(firstName);
 
-        String lastName = userUpdateDTO.getLastName();
-        if(isInputNotNull(lastName))
+        String lastName = userBasicInfoUpdateDTO.getLastName();
+        if(!isObjectNull(lastName))
             user.setLastName(lastName);
 
-        if(isInputNotNull(nick))
+        if(!isObjectNull(nick))
             user.setNick(nick);
 
-        save(user);
+        saveUser(user);
         return userInfoMapService.mapToDTO(user);
-    }
-
-    private boolean isInputNotNull(String inputString) {
-        if(inputString != null)
-            return true;
-        else
-            return false;
     }
 
     public UserInfoDTO updateUserEmail(long userId, UserEmailUpdateDTO userEmailUpdateDTO) {
 
         String updateEmail = userEmailUpdateDTO.getEmail();
 
-        if(checkForUniqueEmail(updateEmail))
+        if(!isEmailUnique(updateEmail))
             throw new UniqueValuesAlreadyExistsException(updateEmail);
 
-        MyScheduleUser user = getUserById(userId);
-        if(isInputNotNull(updateEmail))
+        MyScheduleUser user = getNotNullUserById(userId);
+
+        if(!isObjectNull(updateEmail))
             user.setEmail(updateEmail);
 
-        save(user);
+        saveUser(user);
         return userInfoMapService.mapToDTO(user);
     }
 
     public String updateUserPassword(long userId, UserPasswordUpdateDTO userPasswordUpdateDTO) {
-        MyScheduleUser user = getUserById(userId);
+
+        MyScheduleUser user = getNotNullUserById(userId);
+
         String password = userPasswordUpdateDTO.getPassword();
         user.setPassword(encoder.encode(password));
-        save(user);
+        saveUser(user);
         return "Password changed successfully. ";
+    }
+
+    private boolean isObjectNull(Object object) {
+        return object == null;
+    }
+
+    private MyScheduleUser getNotNullUserById(long id) {
+        MyScheduleUser user = userRepo.findById(id);
+        if(isObjectNull(user))
+            throw new ResourceNotAvailableException();
+        return user;
+    }
+
+    private MyScheduleUser getByNick(String nick) {
+        return userRepo.findByNick(nick);
+    }
+
+    private MyScheduleUser getByEmail(String email) {
+        return userRepo.findByEmail(email);
     }
 }

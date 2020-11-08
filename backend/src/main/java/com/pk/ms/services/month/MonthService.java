@@ -1,17 +1,15 @@
 package com.pk.ms.services.month;
 
-import com.pk.ms.dao.month.IMonthRepository;
+import com.pk.ms.dao.month.MonthRepository;
 import com.pk.ms.dto.day.DayBasicInfoDTO;
-import com.pk.ms.dto.month.MonthInputDTO;
-import com.pk.ms.dto.month.MonthWithBasicDayDTO;
+import com.pk.ms.dto.month.MonthBasicInfoDTO;
 import com.pk.ms.entities.day.Day;
 import com.pk.ms.entities.month.Month;
 import com.pk.ms.entities.year.Year;
-import com.pk.ms.entities.year.YearPlan;
 import com.pk.ms.exceptions.AccessDeniedException;
-import com.pk.ms.exceptions.EntityAlreadyExistException;
 import com.pk.ms.exceptions.ResourceNotAvailableException;
 import com.pk.ms.mappers.day.DayMapService;
+import com.pk.ms.mappers.month.MonthMapService;
 import com.pk.ms.services.day.DayService;
 import com.pk.ms.services.year.YearService;
 import org.springframework.context.annotation.Lazy;
@@ -24,87 +22,82 @@ import java.util.List;
 @Service
 public class MonthService {
 
-    private final IMonthRepository monthRepo;
+    private final MonthRepository monthRepo;
+
+    private final MonthMapService monthMapService;
 
     private final YearService yearService;
 
-    private final DayService dayService;
-
-    private final DayMapService dayMapService;
-
-    public MonthService(IMonthRepository monthRepo, @Lazy YearService yearService, DayService dayService, DayMapService dayMapService) {
+    public MonthService(MonthRepository monthRepo, MonthMapService monthMapService, YearService yearService) {
         this.monthRepo = monthRepo;
+        this.monthMapService = monthMapService;
         this.yearService = yearService;
-        this.dayService = dayService;
-        this.dayMapService = dayMapService;
     }
 
-    public Month saveMonth(Month month) {
-        return monthRepo.save(month);
+    public Month getMonthById(long monthId) {
+        return getNotNullMonthById(monthId);
     }
 
-    public Month getMonthById(long id) {
-        return monthRepo.findById(id);
+    public List<MonthBasicInfoDTO> getMonthDTOsByYearId(long yearId) {
+        List<Month> monthList = getMonthsByYearId(yearId);
+        List<MonthBasicInfoDTO> monthBasicInfoDTOList = new ArrayList<>();
+        for(Month month : monthList)
+            monthBasicInfoDTOList.add(mapMonthToDTO(month));
+        return monthBasicInfoDTOList;
     }
 
-    public List<Month> getMonthsByYearId(long id) { return monthRepo.findAllByYearId(id); }
+    public List<MonthBasicInfoDTO> getMonthDTOsByLocalDate(LocalDate date) {
+        long yearId = yearService.getYearDTOById(date.getYear()).getYearId();
+        List<Month> monthList = getMonthsByYearId(yearId);
+        List<MonthBasicInfoDTO> monthBasicInfoDTOList = new ArrayList<>();
+        for(Month month : monthList)
+            monthBasicInfoDTOList.add(mapMonthToDTO(month));
+        return monthBasicInfoDTOList;
+    }
 
-    public String deleteMonth(long scheduleId, long monthId) {
-        Month month = getMonthById(monthId);
-        if(month == null)
+    public MonthBasicInfoDTO getMonthDTOById(long monthId) {
+        return mapMonthToDTO(getNotNullMonthById(monthId));
+    }
+
+    public MonthBasicInfoDTO getMonthDTOByLocalDate(LocalDate date) {
+        return mapMonthToDTO(getNotNullMonthByLocalDate(date));
+    }
+
+
+
+    private List<Month> getMonthsByYearId(long yearId) {
+        return monthRepo.findAllByYearId(yearId);
+    }
+
+    private Month getNotNullMonthById(long monthId) {
+        Month month = getMonthByIdFromRepo(monthId);
+        if (isObjectNull(month))
             throw new ResourceNotAvailableException();
-        if(hasAccess(scheduleId, month)) {
-            monthRepo.deleteById(monthId);
-            return "Month deleted successfully. ";
-        }
-        else
-            throw new AccessDeniedException("This user cannot delete this resource. ");
+        return month;
     }
 
-    public Month getActualMonth(LocalDate date, long yearId) {
-        return monthRepo.findByYearIdAndMonthName(yearId, date.getMonthValue());
+    private Month getMonthByIdFromRepo(long monthId) {
+        return monthRepo.findById(monthId);
     }
 
-    public boolean existsByYearIdAndMonthName(long yearId, MonthInputDTO monthInputDTO) {
-        if (monthRepo.findByYearIdAndMonthName(yearId, monthInputDTO.getMonthName().getMonthNumber()) != null)
-            return true;
-        else
-            return false;
-    }
-
-    public Month createMonth(long scheduleId, long yearId, MonthInputDTO monthInputDTO) {
-        Year year = yearService.getYearById(yearId);
-        if(year == null)
+    private Month getNotNullMonthByLocalDate(LocalDate date) {
+        Month month = getMonthByLocalDateFromRepo(date);
+        if (isObjectNull(month))
             throw new ResourceNotAvailableException();
-        if(yearService.hasAccess(scheduleId, year)) {
-            if (existsByYearIdAndMonthName(yearId, monthInputDTO))
-                throw new EntityAlreadyExistException(monthInputDTO.getMonthName());
-            return saveMonth(new Month(monthInputDTO.getMonthName(),
-                    year));
-        }
-        else
-            throw new AccessDeniedException("This user cannot create Month in this Year. ");
+        return month;
     }
 
-
-    public MonthWithBasicDayDTO getMonth(long scheduleId, long monthId) {
-        Month month = getMonthById(monthId);
-        if(month == null)
-            throw new ResourceNotAvailableException();
-        if(hasAccess(scheduleId, month)) {
-            List<Day> dayList = dayService.getDaysByMonthId(monthId);
-            List<DayBasicInfoDTO> dayBasicInfoDTOList = new ArrayList<>();
-            for (Day day : dayList)
-                dayBasicInfoDTOList.add(dayMapService.mapToDTO(day));
-            return new MonthWithBasicDayDTO(month.getMonthId(), month.getMonthName(), month.getDaysAmount(),
-                    dayBasicInfoDTOList, month.getMonthPlansList());
-        }
-        else
-            throw new AccessDeniedException("This user cannot access this resource. ");
+    private Month getMonthByLocalDateFromRepo(LocalDate date) {
+        return monthRepo.findByYearIdAndMonthNumber(
+                yearService.getYearDTOByLocalDate(date).getYearId(),
+                date.getMonthValue());
     }
 
-    public boolean hasAccess(long scheduleId, Month month) {
-        return month.getYear().getSchedule().getScheduleId() == scheduleId;
+    private MonthBasicInfoDTO mapMonthToDTO(Month month) {
+        return monthMapService.mapToDTO(month);
     }
 
+    private boolean isObjectNull(Object object) {
+        return object == null;
+    }
 }

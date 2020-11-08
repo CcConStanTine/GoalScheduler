@@ -2,7 +2,6 @@ package com.pk.ms.dto.month;
 
 import com.pk.ms.entities.month.MonthName;
 
-// Month DTO for purpose of storing the fields needed while displaying the Months List
 public class MonthBasicInfoDTO {
 
     private long monthId;

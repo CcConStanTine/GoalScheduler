@@ -8,24 +8,24 @@ public class Role {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "role_seq")
     @SequenceGenerator(name = "role_seq", sequenceName = "role_seq", allocationSize = 1)
-    private Long id;
+    private Long roleId;
 
     @Enumerated(EnumType.STRING)
     private UserRole name;
-
-    public Role() {
-    }
 
     public Role(UserRole name) {
         this.name = name;
     }
 
-    public Long getId() {
-        return id;
+    public Role() {
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public Long getRoleId() {
+        return roleId;
+    }
+
+    public void setRoleId(Long roleId) {
+        this.roleId = roleId;
     }
 
     public UserRole getName() {

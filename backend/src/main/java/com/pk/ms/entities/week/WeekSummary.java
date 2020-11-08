@@ -1,60 +1,43 @@
 package com.pk.ms.entities.week;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.pk.ms.abstracts.Summary;
+import com.pk.ms.entities.schedule.Schedule;
 
 import javax.persistence.*;
 
 @Entity
-public class WeekSummary {
+public class WeekSummary extends Summary {
 
-    // primary key
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "weeksummary_seq")
-    @SequenceGenerator(name = "weeksummary_seq", sequenceName = "weeksummary_seq", allocationSize = 1)
-    private long weekSumId;
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "week_summary_seq")
+    @SequenceGenerator(name = "week_summary_seq", sequenceName = "week_summary_seq", allocationSize = 1)
+    private Long weekSummaryId;
 
-    private int fulfilledAmount;
-
-    private int failedAmount;
-
-    // foreign key
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "week_id")
     @JsonIgnore
     private Week week;
 
+    @ManyToOne
+    @JoinColumn(name = "schedule_id")
+    @JsonIgnore
+    private Schedule schedule;
+
     public WeekSummary() {
-
     }
 
-    public WeekSummary(int fulfilledAmount, int failedAmount, Week week) {
-        this.fulfilledAmount = fulfilledAmount;
-        this.failedAmount = failedAmount;
+    public WeekSummary(Week week, Schedule schedule) {
         this.week = week;
+        this.schedule = schedule;
     }
 
-    public long getWeekSumId() {
-        return weekSumId;
+    public Long getWeekSummaryId() {
+        return weekSummaryId;
     }
 
-    public void setWeekSumId(long weekSumId) {
-        this.weekSumId = weekSumId;
-    }
-
-    public int getFulfilledAmount() {
-        return fulfilledAmount;
-    }
-
-    public void setFulfilledAmount(int fulfilledAmount) {
-        this.fulfilledAmount = fulfilledAmount;
-    }
-
-    public int getFailedAmount() {
-        return failedAmount;
-    }
-
-    public void setFailedAmount(int failedAmount) {
-        this.failedAmount = failedAmount;
+    public void setWeekSummaryId(Long weekSummaryId) {
+        this.weekSummaryId = weekSummaryId;
     }
 
     public Week getWeek() {
@@ -63,5 +46,28 @@ public class WeekSummary {
 
     public void setWeek(Week week) {
         this.week = week;
+    }
+
+    public Schedule getSchedule() {
+        return schedule;
+    }
+
+    public void setSchedule(Schedule schedule) {
+        this.schedule = schedule;
+    }
+
+    @Override
+    public void countFulfilledAmount() {
+        int fulfilled=0;
+        for (WeekPlan weekPlan : schedule.getParticularWeekPlansList(this.week.getWeekId())) {
+            if(weekPlan.isFulfilled())
+                fulfilled++;
+        }
+        setFulfilledAmount(fulfilled);
+    }
+
+    @Override
+    public void countFailedAmount() {
+        setFailedAmount(schedule.getParticularWeekPlansList(this.week.getWeekId()).size() - getFulfilledAmount());
     }
 }

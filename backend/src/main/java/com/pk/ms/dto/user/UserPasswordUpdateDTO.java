@@ -12,6 +12,10 @@ public class UserPasswordUpdateDTO {
     public UserPasswordUpdateDTO() {
     }
 
+    public UserPasswordUpdateDTO(@NotBlank(message = "This field cannot be empty!") @Size(min = 6, max = 32, message = "Password length must be between 6 and 32!") String password) {
+        this.password = password;
+    }
+
     public String getPassword() {
         return password;
     }

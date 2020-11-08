@@ -8,9 +8,11 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @RestController
 @PreAuthorize("hasRole('ROLE_ADMIN') or authentication.principal.id == #scheduleId")
+@RequestMapping("/schedule/{schedule_id}")
 public class MonthPlanController {
 
     private final MonthPlanService monthPlanService;
@@ -19,15 +21,21 @@ public class MonthPlanController {
         this.monthPlanService = monthPlanService;
     }
 
-    @PostMapping(value="/schedules/{schedule_id}/months/{month_id}/month_plans", consumes = "application/json")
-    public ResponseEntity<MonthPlan> createYearPlan(@PathVariable("schedule_id") long scheduleId,
-                                                    @PathVariable("month_id") long monthId,
-                                                    @Valid @RequestBody MonthPlanInputDTO monthPlanInputDTO) {
+    @GetMapping(value = "/month/{month_id}/month_plans")
+    public ResponseEntity<List<MonthPlan>> getMonthPlans(@PathVariable("schedule_id") long scheduleId,
+                                                         @PathVariable("month_id") long monthId) {
+        return ResponseEntity.ok(monthPlanService.getMonthPlansByScheduleIdAndMonthId(scheduleId, monthId));
+    }
+
+    @PostMapping(value="/month/{month_id}/month_plan", consumes = "application/json")
+    public ResponseEntity<MonthPlan> createMonthPlan(@PathVariable("schedule_id") long scheduleId,
+                                                     @PathVariable("month_id") long monthId,
+                                                     @Valid @RequestBody MonthPlanInputDTO monthPlanInputDTO) {
 
         return ResponseEntity.ok(monthPlanService.createMonthPlan(scheduleId, monthId, monthPlanInputDTO));
     }
 
-    @PatchMapping(value="/schedules/{schedule_id}/month_plans/{month_plan_id}", consumes = "application/json")
+    @PatchMapping(value="/month_plan/{month_plan_id}", consumes = "application/json")
     public ResponseEntity<MonthPlan> updateMonthPlan(@PathVariable("schedule_id") long scheduleId,
                                                      @PathVariable("month_plan_id") long monthPlanId,
                                                      @Valid @RequestBody MonthPlanInputDTO monthPlanInputDTO) {
@@ -35,17 +43,19 @@ public class MonthPlanController {
         return ResponseEntity.ok(monthPlanService.updateMonthPlan(scheduleId, monthPlanId, monthPlanInputDTO));
     }
 
-    @PatchMapping("/schedules/{schedule_id}/month_plans/{month_plan_id}/fulfilled")
+    @PatchMapping("/month_plan/{month_plan_id}/fulfilled")
     public ResponseEntity<MonthPlan> updateFulfilledStatus(@PathVariable("schedule_id") long scheduleId,
-                                                       @PathVariable("month_plan_id") long monthPlanId) {
+                                                           @PathVariable("month_plan_id") long monthPlanId) {
 
         return ResponseEntity.ok(monthPlanService.updateFulfilledStatus(scheduleId, monthPlanId));
     }
 
-    @DeleteMapping("/schedules/{schedule_id}/month_plans/{month_plan_id}")
+    @DeleteMapping("/month_plan/{month_plan_id}")
     public ResponseEntity<String> deleteMonthPlan(@PathVariable("schedule_id") long scheduleId,
                                                   @PathVariable("month_plan_id") long monthPlanId) {
 
         return ResponseEntity.ok(monthPlanService.deleteMonthPlan(scheduleId, monthPlanId));
     }
+
+
 }

@@ -3,18 +3,18 @@ package com.pk.ms.dto.day;
 import com.pk.ms.entities.day.DayName;
 
 import java.sql.Date;
+import java.time.LocalDate;
 
-// Day DTO for purpose of storing the fields needed while displaying the Days List
 public class DayBasicInfoDTO {
 
     private long dayId;
-    private Date dayDate;
+    private LocalDate dayDate;
     private DayName dayName;
 
     public DayBasicInfoDTO() {
     }
 
-    public DayBasicInfoDTO(long dayId, Date dayDate, DayName dayName) {
+    public DayBasicInfoDTO(long dayId, LocalDate dayDate, DayName dayName) {
         this.dayId = dayId;
         this.dayDate = dayDate;
         this.dayName = dayName;
@@ -28,11 +28,11 @@ public class DayBasicInfoDTO {
         this.dayId = dayId;
     }
 
-    public Date getDayDate() {
+    public LocalDate getDayDate() {
         return dayDate;
     }
 
-    public void setDayDate(Date dayDate) {
+    public void setDayDate(LocalDate dayDate) {
         this.dayDate = dayDate;
     }
 

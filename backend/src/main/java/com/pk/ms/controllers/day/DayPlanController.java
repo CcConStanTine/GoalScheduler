@@ -8,9 +8,11 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @RestController
 @PreAuthorize("hasRole('ROLE_ADMIN') or authentication.principal.id == #scheduleId")
+@RequestMapping("/schedule/{schedule_id}")
 public class DayPlanController {
 
     private final DayPlanService dayPlanService;
@@ -19,7 +21,13 @@ public class DayPlanController {
         this.dayPlanService = dayPlanService;
     }
 
-    @PostMapping(path = "/schedules/{schedule_id}/days/{day_id}/day_plans", consumes = "application/json")
+    @GetMapping(value = "/day/{day_id}/day_plans")
+    public ResponseEntity<List<DayPlan>> getDayPlans(@PathVariable("schedule_id") long scheduleId,
+                                                     @PathVariable("day_id") long dayId) {
+        return ResponseEntity.ok(dayPlanService.getDayPlansByScheduleIdAndDayId(scheduleId, dayId));
+    }
+
+    @PostMapping(value="/day/{day_id}/day_plan", consumes = "application/json")
     public ResponseEntity<DayPlan> createDayPlan(@PathVariable("schedule_id") long scheduleId,
                                                  @PathVariable("day_id") long dayId,
                                                  @Valid @RequestBody DayPlanInputDTO dayPlanInputDTO) {
@@ -27,7 +35,7 @@ public class DayPlanController {
         return ResponseEntity.ok(dayPlanService.createDayPlan(scheduleId, dayId, dayPlanInputDTO));
     }
 
-    @PatchMapping(value="/schedules/{schedule_id}/day_plans/{day_plan_id}", consumes = "application/json")
+    @PatchMapping(value="/day_plan/{day_plan_id}", consumes = "application/json")
     public ResponseEntity<DayPlan> updateDayPlan(@PathVariable("schedule_id") long scheduleId,
                                                  @PathVariable("day_plan_id") long dayPlanId,
                                                  @Valid @RequestBody DayPlanInputDTO dayPlanInputDTO) {
@@ -35,18 +43,17 @@ public class DayPlanController {
         return ResponseEntity.ok(dayPlanService.updateDayPlan(scheduleId, dayPlanId, dayPlanInputDTO));
     }
 
-    @PatchMapping("/schedules/{schedule_id}/day_plans/{day_plan_id}/fulfilled")
+    @PatchMapping("/day_plan/{day_plan_id}/fulfilled")
     public ResponseEntity<DayPlan> updateFulfilledStatus(@PathVariable("schedule_id") long scheduleId,
                                                          @PathVariable("day_plan_id") long dayPlanId) {
 
         return ResponseEntity.ok(dayPlanService.updateFulfilledStatus(scheduleId, dayPlanId));
     }
 
-    @DeleteMapping("/schedules/{schedule_id}/day_plans/{day_plan_id}")
+    @DeleteMapping("/day_plan/{day_plan_id}")
     public ResponseEntity<String> deleteDayPlan(@PathVariable("schedule_id") long scheduleId,
                                                 @PathVariable("day_plan_id") long dayPlanId) {
 
         return ResponseEntity.ok(dayPlanService.deleteDayPlan(scheduleId, dayPlanId));
     }
-
 }

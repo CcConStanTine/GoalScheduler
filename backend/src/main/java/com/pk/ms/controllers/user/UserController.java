@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 
 @RestController
-@RequestMapping("/users")
+@RequestMapping("/user")
 @PreAuthorize("hasRole('ROLE_ADMIN') or authentication.principal.id == #id")
 public class UserController {
 
@@ -26,10 +26,10 @@ public class UserController {
     }
 
     @PatchMapping(path = "/{id}/basic", consumes = "application/json")
-    public ResponseEntity<UserInfoDTO> updateUser(@PathVariable("id") long id,
-                                                  @Valid @RequestBody UserUpdateDTO userUpdateDTO) {
+    public ResponseEntity<UserInfoDTO> updateBasicUserInfo(@PathVariable("id") long id,
+                                                           @Valid @RequestBody UserBasicInfoUpdateDTO userBasicInfoUpdateDTO) {
 
-        return ResponseEntity.ok(userService.updateUser(id, userUpdateDTO));
+        return ResponseEntity.ok(userService.updateBasicUserInfo(id, userBasicInfoUpdateDTO));
     }
 
     @PatchMapping(path = "/{id}/email", consumes = "application/json")
@@ -40,7 +40,7 @@ public class UserController {
     }
     @PatchMapping(path = "/{id}/password", consumes = "application/json")
     public ResponseEntity<String> updateUserPassword(@PathVariable("id") long id,
-                                                          @Valid @RequestBody UserPasswordUpdateDTO userPasswordUpdateDTO) {
+                                                     @Valid @RequestBody UserPasswordUpdateDTO userPasswordUpdateDTO) {
 
         return ResponseEntity.ok(userService.updateUserPassword(id ,userPasswordUpdateDTO));
     }

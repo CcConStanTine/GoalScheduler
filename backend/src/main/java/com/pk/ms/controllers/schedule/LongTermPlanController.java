@@ -12,6 +12,7 @@ import java.util.List;
 
 @RestController
 @PreAuthorize("hasRole('ROLE_ADMIN') or authentication.principal.id == #scheduleId")
+@RequestMapping("/schedule/{schedule_id}")
 public class LongTermPlanController {
 
     private final LongTermPlanService longTermPlanService;
@@ -20,37 +21,37 @@ public class LongTermPlanController {
         this.longTermPlanService = longTermPlanService;
     }
 
-    @GetMapping("/schedules/{schedule_id}/long_term_plans")
+    @GetMapping("/long_term_plans")
     public List<LongTermPlan> getLongTermPlans(@PathVariable("schedule_id") long scheduleId) {
 
-        return longTermPlanService.getLongTermPlans(scheduleId);
+        return longTermPlanService.getLongTermPlansByScheduleId(scheduleId);
     }
 
-    @PostMapping(value = "/schedules/{schedule_id}/long_term_plans", consumes = "application/json")
+    @PostMapping(value = "/long_term_plan", consumes = "application/json")
     public ResponseEntity<LongTermPlan> createLongTermPlan(@PathVariable("schedule_id") long scheduleId,
-                                                          @Valid @RequestBody LongTermPlanInputDTO ltpInputDTO) {
+                                                           @Valid @RequestBody LongTermPlanInputDTO ltpInputDTO) {
 
         return ResponseEntity.ok(longTermPlanService.createLongTermPlan(scheduleId, ltpInputDTO));
     }
 
-    @PatchMapping(value="/schedules/{schedule_id}/long_term_plans/{long_term_plan_id}", consumes = "application/json")
+    @PatchMapping(value="/long_term_plan/{long_term_plan_id}", consumes = "application/json")
     public ResponseEntity<LongTermPlan> updateLongTermPlan(@PathVariable("schedule_id") long scheduleId,
-                                           @PathVariable("long_term_plan_id") long ltpId,
-                                           @Valid @RequestBody LongTermPlanInputDTO ltpInputDTO) {
+                                                           @PathVariable("long_term_plan_id") long ltpId,
+                                                           @Valid @RequestBody LongTermPlanInputDTO ltpInputDTO) {
 
         return ResponseEntity.ok(longTermPlanService.updateLongTermPlan(scheduleId, ltpId, ltpInputDTO));
     }
 
-    @PatchMapping("/schedules/{schedule_id}/long_term_plans/{long_term_plan_id}/fulfilled")
+    @PatchMapping("/long_term_plan/{long_term_plan_id}/fulfilled")
     public ResponseEntity<LongTermPlan> updateFulfilledStatus(@PathVariable("schedule_id") long scheduleId,
-                                        @PathVariable("long_term_plan_id") long yearPlanId) {
+                                                              @PathVariable("long_term_plan_id") long ltpId) {
 
-        return ResponseEntity.ok(longTermPlanService.updateFulfilledStatus(scheduleId, yearPlanId));
+        return ResponseEntity.ok(longTermPlanService.updateFulfilledStatus(scheduleId, ltpId));
     }
 
-    @DeleteMapping("/schedules/{schedule_id}/long_term_plans/{long_term_plan_id}")
+    @DeleteMapping("/long_term_plan/{long_term_plan_id}")
     public ResponseEntity<String> deleteLongTermPlan(@PathVariable("schedule_id") long scheduleId,
-                                     @PathVariable("long_term_plan_id") long ltpId) {
+                                                     @PathVariable("long_term_plan_id") long ltpId) {
 
         return ResponseEntity.ok(longTermPlanService.deleteLongTermPlan(scheduleId, ltpId));
     }

@@ -107,11 +107,10 @@ public class AuthService {
         return new MessageResponse("User registered successfully!");
     }
 
-
     public void validateRequest(SignupRequest signUpRequest) {
-        if(userService.checkForUniqueNick(signUpRequest.getUsername()))
+        if(!userService.isNickUnique(signUpRequest.getUsername()))
             throw new UniqueValuesAlreadyExistsException(signUpRequest);
-        if(userService.checkForUniqueEmail(signUpRequest.getEmail()))
+        if(!userService.isEmailUnique(signUpRequest.getEmail()))
             throw new UniqueValuesAlreadyExistsException(signUpRequest.getEmail());
     }
 
@@ -123,10 +122,10 @@ public class AuthService {
                 signUpRequest.getEmail(),
                 encoder.encode(signUpRequest.getPassword())
         );
-        Schedule schedule = new Schedule(user, new ArrayList<Year>(), new ArrayList<LongTermPlan>());
+        Schedule schedule = new Schedule(user);
         assignUserRole(user);
-        user = userService.save(user);
-        scheduleService.save(schedule);
+        user = userService.saveUser(user);
+        scheduleService.saveSchedule(schedule);
         return user;
     }
 
@@ -136,5 +135,4 @@ public class AuthService {
                 .orElseThrow(() -> new IllegalStateException("Role USER")));
         user.setRoles(defaultRoles);
     }
-
 }
