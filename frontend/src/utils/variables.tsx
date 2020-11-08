@@ -19,3 +19,35 @@ export const AccountFormErrorTypes = {
     MINLENGTH: 'this field required at least 2 characters',
     MAXLENGTH: 'this field required between 2 and 50 characters'
 }
+
+export const darkModeText = "Dark Mode";
+export const signOutText = "Sign Out";
+export const languageText = "Language";
+export const changePasswordText = "Change Password";
+export const changeUsernameText = "Change Username";
+
+export const languageOptions = [{
+    value: 'polish',
+    label: 'Polish'
+},
+{
+    value: 'english',
+    label: 'English'
+}
+];
+
+export const todayPlansText = "Today's plans:";
+export const otherPlansText = "Other plans:";
+
+export const todayPlans = [{
+    color: "#f00",
+    topic: 'Throw away garbage',
+},
+{
+    color: "darkgreen",
+    topic: 'Finish database',
+},
+{
+    color: "darkgreen",
+    topic: 'Setup test',
+}]

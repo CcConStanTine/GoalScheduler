@@ -6,6 +6,8 @@ interface AppContextInterface {
         loggedIn?: any;
         tokenID?: string;
         userID?: number;
+        userName?: string;
+        userPhoto?: any;
     };
     setLoggedIn?: (value: object) => void;
 }
