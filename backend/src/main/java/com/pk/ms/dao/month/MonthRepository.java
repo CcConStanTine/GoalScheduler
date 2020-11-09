@@ -14,7 +14,7 @@ public interface MonthRepository extends CrudRepository<Month, Long> {
 
     Month findById(long id);
 
-    @Query(nativeQuery = true, value = "SELECT * FROM month WHERE year_id = ? AND month_number = ?")
+    @Query(nativeQuery = true, value = "SELECT * FROM month WHERE year_id = ? AND month_name = ?")
     Month findByYearIdAndMonthNumber(long yearId, int monthNumber);
 
 }

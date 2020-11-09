@@ -17,7 +17,7 @@ public interface WeekRepository extends CrudRepository<Week, Long> {
     @Query(nativeQuery = true, value = "SELECT * FROM week WHERE year_id = ?")
     List<Week> findAllByYearId(long yearId);
 
-    @Query(nativeQuery = true, value = "SELECT * FROM week WHERE start_date <= ? AND end_date >= ?")
+    @Query(nativeQuery = true, value = "SELECT * FROM week WHERE start_date <= ?1 AND end_date >= ?1")
     Week findByDate(LocalDate date);
 
 }

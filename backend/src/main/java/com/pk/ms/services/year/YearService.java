@@ -37,6 +37,10 @@ public class YearService {
         return getNotNullYearById(yearId);
     }
 
+    public Year getYearByYearNumber(int yearNumber) {
+        return getYearByYearNumberFromRepo(yearNumber);
+    }
+
     public List<YearBasicInfoDTO> getAllYearsDTOs() {
         List<Year> yearList = yearRepo.findAll();
         List<YearBasicInfoDTO> yearBasicInfoDTOList = new ArrayList<>();

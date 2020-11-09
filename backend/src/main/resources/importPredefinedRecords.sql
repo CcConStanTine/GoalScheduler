@@ -1,8 +1,6 @@
-CREATE SEQUENCE IF NOT EXISTS day_name_seq INCREMENT BY 1 MINVALUE 1 MAXVALUE 7 START WITH 1 CYCLE;
-ALTER SEQUENCE day_name_seq INCREMENT BY 1 MINVALUE 1 MAXVALUE 7 START WITH 1 CYCLE;
+CREATE SEQUENCE IF NOT EXISTS day_name_seq_1_to_7 INCREMENT BY 1 MINVALUE 1 MAXVALUE 7 START WITH 1 CYCLE;
+ALTER SEQUENCE day_name_seq_1_to_7 INCREMENT BY 1 MINVALUE 1 MAXVALUE 7 START WITH 1 CYCLE;
 
-
-select * from year;
 insert into year (year_id, year_number, is_leap_year, days_amount) values (NEXTVAL('year_seq'), 2019, false, 365);
 
 insert into month (month_id, month_name, days_amount, year_id) values (NEXTVAL('month_seq'), 1, 31, 1);

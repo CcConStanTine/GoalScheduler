@@ -47,7 +47,7 @@ public class MonthService {
     }
 
     public List<MonthBasicInfoDTO> getMonthDTOsByLocalDate(LocalDate date) {
-        long yearId = yearService.getYearDTOById(date.getYear()).getYearId();
+        long yearId = yearService.getYearByYearNumber(date.getYear()).getYearId();
         List<Month> monthList = getMonthsByYearId(yearId);
         List<MonthBasicInfoDTO> monthBasicInfoDTOList = new ArrayList<>();
         for(Month month : monthList)
@@ -89,7 +89,7 @@ public class MonthService {
 
     private Month getMonthByLocalDateFromRepo(LocalDate date) {
         return monthRepo.findByYearIdAndMonthNumber(
-                yearService.getYearDTOByLocalDate(date).getYearId(),
+                yearService.getYearByYearNumber(date.getYear()).getYearId(),
                 date.getMonthValue());
     }
 

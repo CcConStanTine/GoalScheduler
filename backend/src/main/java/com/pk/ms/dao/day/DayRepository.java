@@ -15,10 +15,10 @@ public interface DayRepository extends CrudRepository<Day, Long> {
 
     Day findById(long id);
 
-    @Query(nativeQuery = true, value = "SELECT * FROM month WHERE month_id = ?")
+    @Query(nativeQuery = true, value = "SELECT * FROM day WHERE month_id = ?")
     List<Day> findAllByMonthId(long monthId);
 
-    @Query(nativeQuery = true, value = "SELECT * FROM day WHERE date = ?")
+    @Query(nativeQuery = true, value = "SELECT * FROM day WHERE day_date = ?")
     Day findByDate(LocalDate date);
 
 }

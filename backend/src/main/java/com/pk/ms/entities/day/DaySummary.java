@@ -2,6 +2,7 @@ package com.pk.ms.entities.day;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.pk.ms.abstracts.Summary;
+import com.pk.ms.entities.month.MonthPlan;
 import com.pk.ms.entities.schedule.Schedule;
 
 import javax.persistence.*;
@@ -30,6 +31,8 @@ public class DaySummary extends Summary {
     public DaySummary(Day day, Schedule schedule) {
         this.day = day;
         this.schedule = schedule;
+        countFulfilledAmount();
+        countFailedAmount();
     }
 
     public Long getDaySummaryId() {
@@ -68,6 +71,10 @@ public class DaySummary extends Summary {
 
     @Override
     public void countFailedAmount() {
-        setFailedAmount(schedule.getParticularDayPlansList(this.day.getDayId()).size() - getFulfilledAmount());
-    }
+        int failed=0;
+        for (DayPlan dayPlan : schedule.getParticularDayPlansList(day.getDayId())) {
+            if(!dayPlan.isFulfilled())
+                failed++;
+        }
+        setFailedAmount(failed);    }
 }

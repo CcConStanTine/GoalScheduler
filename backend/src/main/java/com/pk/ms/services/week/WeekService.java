@@ -48,7 +48,7 @@ public class WeekService {
     }
 
     public List<WeekBasicInfoDTO> getWeekDTOsByLocalDate(LocalDate date) {
-        long yearId = yearService.getYearDTOById(date.getYear()).getYearId();
+        long yearId = yearService.getYearByYearNumber(date.getYear()).getYearId();
         List<Week> weekList = getWeeksByYearIdFromRepo(yearId);
         List<WeekBasicInfoDTO> weekBasicInfoDTOList = new ArrayList<>();
         for(Week week : weekList)

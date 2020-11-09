@@ -3,6 +3,7 @@ package com.pk.ms.entities.month;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.pk.ms.abstracts.Summary;
 import com.pk.ms.entities.schedule.Schedule;
+import com.pk.ms.entities.year.YearPlan;
 
 import javax.persistence.*;
 
@@ -30,6 +31,8 @@ public class MonthSummary extends Summary {
     public MonthSummary(Month month, Schedule schedule) {
         this.month = month;
         this.schedule = schedule;
+        countFulfilledAmount();
+        countFailedAmount();
     }
 
     public Long getMonthSummaryId() {
@@ -59,7 +62,7 @@ public class MonthSummary extends Summary {
     @Override
     public void countFulfilledAmount() {
         int fulfilled=0;
-        for (MonthPlan monthPlan : schedule.getParticularMonthPlansList(this.month.getMonthId())) {
+        for (MonthPlan monthPlan : schedule.getParticularMonthPlansList(month.getMonthId())) {
             if(monthPlan.isFulfilled())
                 fulfilled++;
         }
@@ -68,6 +71,11 @@ public class MonthSummary extends Summary {
 
     @Override
     public void countFailedAmount() {
-        setFailedAmount(schedule.getParticularMonthPlansList(this.month.getMonthId()).size() - getFulfilledAmount());
+        int failed=0;
+        for (MonthPlan monthPlan : schedule.getParticularMonthPlansList(month.getMonthId())) {
+            if(!monthPlan.isFulfilled())
+                failed++;
+        }
+        setFailedAmount(failed);
     }
 }
