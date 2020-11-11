@@ -1,9 +1,13 @@
+import testImage from '../images/planner.jpg';
+
 class Database {
     authenticated: boolean;
     userLogin: string;
     password: string;
     userID: number;
     tokenID: string;
+    userName: string;
+    userPhoto: any;
 
 
     constructor() {
@@ -12,12 +16,16 @@ class Database {
         this.password = "admin";
         this.userID = 4;
         this.tokenID = "asdasdasdsa";
+        this.userName = "Konrad Dulęba";
+        this.userPhoto = testImage;
     }
 
     getUserInfo = () => {
         return {
             userID: this.userID,
-            tokenID: this.tokenID
+            tokenID: this.tokenID,
+            userName: this.userName,
+            userPhoto: this.userPhoto,
         }
     }
 
