@@ -3,11 +3,12 @@ import auth from './database';
 
 interface AppContextInterface {
     userContext?: {
-        loggedIn?: any;
-        tokenID?: string;
-        userID?: number;
-        userName?: string;
-        userPhoto?: any;
+        email?: string,
+        firstName?: string,
+        lastName?: string,
+        nick?: string,
+        token?: string,
+        userId?: number,
     };
     setLoggedIn?: (value: object) => void;
 }
@@ -21,9 +22,14 @@ export const AppContext = createContext<AppContextInterface>({});
 export const UseAppContext = ({ children }: UseAppContextInterface) => {
     const [userContext, setLoggedIn] = useState({});
 
-    useEffect(() => setLoggedIn({
-        loggedIn: auth.isAuthenticated()
-    }), []);
+    useEffect(() => {
+        const getUserData = async () => {
+            const { token } = auth.getCurrentUser();
+            const userInfo = token && await auth.getCurrentUserInfo();
+            setLoggedIn({ token, ...userInfo })
+        }
+        getUserData()
+    }, []);
 
     return (
         <AppContext.Provider value={{ userContext, setLoggedIn }}>

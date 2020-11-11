@@ -1,60 +1,77 @@
-import testImage from '../images/planner.jpg';
+import axios from 'axios';
+import { registerUser, loginUser } from '../utils/interfaces';
+import { successfullyLogedIn, errorLogedIn } from '../utils/variables';
+
 
 class Database {
-    authenticated: boolean;
-    userLogin: string;
-    password: string;
-    userID: number;
-    tokenID: string;
-    userName: string;
-    userPhoto: any;
-
+    serverAddress = '';
+    axiosType = "Bearer";
+    token: string;
+    userId: number;
+    username: string;
 
     constructor() {
-        this.authenticated = false;
-        this.userLogin = "admin";
-        this.password = "admin";
-        this.userID = 4;
-        this.tokenID = "asdasdasdsa";
-        this.userName = "Konrad Dulęba";
-        this.userPhoto = testImage;
+        this.token = null!;
+        this.userId = null!;
+        this.username = null!;
     }
 
-    getUserInfo = () => {
-        return {
-            userID: this.userID,
-            tokenID: this.tokenID,
-            userName: this.userName,
-            userPhoto: this.userPhoto,
+    getAuthConfig = () => ({
+        headers: {
+            Authorization: `${this.axiosType} ${this.token}`,
         }
+    })
+
+    changeUserPassword = (password: string) => axios
+        .patch(`${this.serverAddress}/user/${this.userId}/password`, { password }, this.getAuthConfig())
+        .then(({ data }) => data)
+        .catch(error => console.log(error))
+
+    checkIfPasswordIsCorrect = (oldPassword: string) => axios
+        .post(`${this.serverAddress}/sign-in`, { username: this.username, password: oldPassword }, this.getAuthConfig())
+        .then(({ status }) => status)
+        .catch(error => false);
+
+    getCurrentUser = () => {
+        if (localStorage.getItem('user')) {
+            const { token, id, username } = JSON.parse(localStorage.getItem('user')!);
+            this.token = token;
+            this.userId = id;
+            this.username = username
+        }
+
+        return { token: this.token }
     }
 
-    createAccount = (nickname: string, password: string, name: string, email: string) => {
-        return this.login(nickname, password);
-    }
+    getCurrentUserInfo = () => axios
+        .get(`${this.serverAddress}/user/${this.userId}/info`, this.getAuthConfig())
+        .then(({ data }) => data)
 
-    login = (nickname: string, password: string) => {
-        if (this.userLogin === nickname && this.password === password) {
-            this.authenticated = true;
+    register = ({ username, password, email, firstName, lastName }: registerUser): object => axios
+        .post(`${this.serverAddress}/sign-up`, {
+            username,
+            password,
+            email,
+            firstName,
+            lastName
+        })
+
+    login = ({ username, password }: loginUser): any => axios
+        .post(`${this.serverAddress}/sign-in`, { username, password })
+        .then(({ data }) => {
+            if (data.token) {
+                localStorage.setItem('user', JSON.stringify(data));
+            }
 
             return {
-                key: 200,
-                message: 'Successfully',
-                userInfo: this.getUserInfo()
-            }
-        }
+                ...data,
+                message: successfullyLogedIn
+            };
+        })
+        .catch(error => { return { message: errorLogedIn } })
 
-        return {
-            key: 500,
-            message: 'Login failed',
-        }
-    }
+    logout = () => localStorage.removeItem("user");
 
-    signout(): void {
-        this.authenticated = false;
-    }
-
-    isAuthenticated = () => this.authenticated;
 }
 
 export default new Database();

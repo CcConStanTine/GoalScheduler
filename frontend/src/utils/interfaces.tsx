@@ -10,6 +10,19 @@ export interface formDataInterface {
     name?: string,
 }
 
+export interface registerUser {
+    username: string,
+    password: string,
+    email: string,
+    firstName: string,
+    lastName: string
+}
+
+export interface loginUser {
+    username: string,
+    password: string
+}
+
 export interface createAccountDataInterface {
     nickname: string,
     password: string,

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import {
     appLogo,
     appLogoDescription,
@@ -10,11 +10,16 @@ import {
     signUp,
     loginIn
 } from './../../utils/variables';
+import { AppContext } from '../../authentication/AppContext';
 import AccountForm from '../../components/AccountForm';
 import { landingPageInterface } from '../../utils/interfaces';
+import { Redirect } from 'react-router-dom'
 
 const WelcomePage = ({ history }: landingPageInterface) => {
     const [showRegisterPanel, setShowRegisterPanel] = useState(false);
+    const { userContext } = useContext(AppContext);
+
+    if (userContext?.token) return <Redirect to="/app/home" />
 
     return (
         <section className="welcome-page">

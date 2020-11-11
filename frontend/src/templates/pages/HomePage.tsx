@@ -1,9 +1,9 @@
 import React, { useContext, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { AppContext } from '../../authentication/AppContext';
-import { appName, todayPlansText, todayPlans, otherPlansText } from '../../utils/variables';
-import { FaPlus, FaEllipsisV, FaCaretRight } from 'react-icons/fa';
-// import { Redirect } from 'react-router-dom';
+import { todayPlansText, todayPlans, otherPlansText, PageNavigationTypes } from '../../utils/variables';
+import { FaCaretRight } from 'react-icons/fa';
+import NavigationBar from '../../components/NavigationBar';
 
 interface HomeInterface {
     history: any
@@ -17,15 +17,7 @@ const HomePage = ({ history }: HomeInterface) => {
 
     return (
         <div className='home-page'>
-            <nav>
-                <Link to="/app/add">
-                    <FaPlus />
-                </Link>
-                <p>{appName}</p>
-                <Link to="/app/settings">
-                    <FaEllipsisV />
-                </Link>
-            </nav>
+            <NavigationBar type={PageNavigationTypes.HOMEPAGE} />
             <div className='search'>
                 <input
                     value={search}

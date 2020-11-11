@@ -11,6 +11,8 @@ export const continueWithoutSigningInMessage = "Continue Without Signing In";
 export const appWelcomeSpanMessage = "or";
 export const signUp = "Sign Up";
 export const loginIn = "Log In";
+export const successfullyLogedIn = 'Successfully';
+export const errorLogedIn = 'Username or Password might be wrong';
 export const appLogoDescription = `${appName} logo`;
 export const createAccountText = "Create Account";
 export const AccountFormErrorTypes = {
@@ -20,11 +22,26 @@ export const AccountFormErrorTypes = {
     MAXLENGTH: 'this field required between 2 and 50 characters'
 }
 
+export const PageNavigationTypes = {
+    HOMEPAGE: 'homepage',
+    DEFAULT: 'settings',
+}
+
+export const ChangeUserCredentialsTypes = {
+    USERNAME: 'username',
+    USERPASSWORD: 'password',
+}
+
 export const darkModeText = "Dark Mode";
 export const signOutText = "Sign Out";
 export const languageText = "Language";
 export const changePasswordText = "Change Password";
+export const checkOldPasswordError = "Old password is wrong";
+export const checkNewPasswordError = "New passwords are not equal";
 export const changeUsernameText = "Change Username";
+export const LogAgainMessage = "You need to log in again";
+export const theSamePasswordError = "New password can't be the same like a previous one";
+export const settingsNavigationText = "Settings";
 
 export const languageOptions = [{
     value: 'polish',

@@ -1,7 +1,7 @@
 import React, { useState, useContext } from 'react';
 import { useForm } from "react-hook-form";
 import { AccountFormTypes, createAccountText, loginIn } from '../utils/variables';
-import { accountFormInterface, createAccountDataInterface } from '../utils/interfaces';
+import { accountFormInterface, registerUser } from '../utils/interfaces';
 import auth from '../authentication/database';
 import renderAccountFormInputs from './RenderAccountFormInputs';
 import { AppContext } from '../authentication/AppContext';
@@ -14,7 +14,7 @@ const AccountForm = ({ type, history }: accountFormInterface) => {
     const { setLoggedIn } = useContext(AppContext);
 
     const LoginAccountInputData = [{
-        name: "nickname",
+        name: "username",
         type: "text",
         placeholder: "nickname",
         ref: register({ required: true, pattern: /^[a-zA-Z0-9-]+$/i, minLength: 2, maxLength: 50 }),
@@ -29,11 +29,17 @@ const AccountForm = ({ type, history }: accountFormInterface) => {
     }]
 
     const CreateAccountInputData = [{
-        name: "name",
+        name: "firstName",
         type: "text",
-        placeholder: "name",
+        placeholder: "first name",
         ref: register({ required: true, pattern: /^[a-zA-Z]+$/i, minLength: 2, maxLength: 50 }),
-        errors: errors.name
+        errors: errors.firstName
+    }, {
+        name: "lastName",
+        type: "text",
+        placeholder: "last name",
+        ref: register({ required: true, pattern: /^[a-zA-Z]+$/i, minLength: 2, maxLength: 50 }),
+        errors: errors.firstName
     }, {
         name: "email",
         type: "email",
@@ -41,11 +47,11 @@ const AccountForm = ({ type, history }: accountFormInterface) => {
         ref: register({ required: true, pattern: /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]+$/i, minLength: 2, maxLength: 50 }),
         errors: errors.email
     }, {
-        name: "nickname",
+        name: "username",
         type: "text",
-        placeholder: "nickname",
+        placeholder: "username",
         ref: register({ required: true, pattern: /^[a-zA-Z0-9]+$/i, minLength: 2, maxLength: 50 }),
-        errors: errors.nickname
+        errors: errors.username
     },
     {
         name: "password",
@@ -55,33 +61,35 @@ const AccountForm = ({ type, history }: accountFormInterface) => {
         errors: errors.password
     }];
 
-    const checkIfCanLogIn = (key: number) => {
-        if (key === 200) return true;
-        return false
+    // const checkIfCanLogIn = (key: number) => {
+    //     if (key === 200) return true;
+    //     return false
+    // }
+
+    // const logInUser = (userInfo?: object) => {
+    //     if (setLoggedIn)
+    //         setLoggedIn({ ...userInfo, loggedIn: auth.isAuthenticated() })
+
+    //     setTimeout(() => {
+    //         return history.push('/app/home');
+    //     }, 1000);
+    // }
+
+    const sendRequestToCreateUser = async (data: any) => {
+        await console.log(auth.register(data));
+        // console.log(message);
     }
 
-    const logInUser = (userInfo?: object) => {
-        if (setLoggedIn)
-            setLoggedIn({ ...userInfo, loggedIn: auth.isAuthenticated() })
+    const sendRequestToLoginUser = async (data: any) => {
+        const { token, message } = await auth.login(data);
 
-        setTimeout(() => {
-            return history.push('/app/home');
-        }, 1000);
-    }
+        if (token && setLoggedIn) return setLoggedIn(auth.getCurrentUser);
 
-    const sendRequestToDatabase = ({ nickname, password, name, email }: createAccountDataInterface) => {
-        const { key, message, userInfo } = name ?
-            auth.createAccount(nickname, password, name, email) :
-            auth.login(nickname, password);
-
-        if (checkIfCanLogIn(key))
-            logInUser(userInfo);
-
-        name ? setRegisterMessage(message) : setLoginMessage(message);
+        return setLoginMessage(message)
     }
 
     if (type === AccountFormTypes.CREATE) return (
-        <form onSubmit={handleSubmit(sendRequestToDatabase)}>
+        <form onSubmit={handleSubmit(sendRequestToCreateUser)}>
             {renderAccountFormInputs(CreateAccountInputData)}
             {registerMessage && <span className="database-message">{registerMessage}</span>}
             <input className="send-form-button" type="submit" value={createAccountText} />
@@ -89,7 +97,7 @@ const AccountForm = ({ type, history }: accountFormInterface) => {
     )
 
     return (
-        <form onSubmit={handleSubmit(sendRequestToDatabase)}>
+        <form onSubmit={handleSubmit(sendRequestToLoginUser)}>
             {renderAccountFormInputs(LoginAccountInputData)}
             {loginMessage && <span className="database-message">{loginMessage}</span>}
             <input className="send-form-button" type="submit" value={loginIn} />
