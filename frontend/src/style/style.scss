@@ -7,6 +7,83 @@
     font-family: 'Montserrat', sans-serif;
 }
 
+:root{
+    --dark_mode-background-color: black;
+    --dm-dark-mode-bgc: #707070;
+    --lt-dark-mode-bgc: black;
+    --language-bgc: rgb(22, 163, 22);
+    --change-username-bgc: rgb(255,0,0);
+    --change-password-bgc: #00B3DF;
+    --change-email-bgc: purple;
+    --sign-out-bgc: navy;
+}
+
+.darktheme{
+    background-color: var(--dark_mode-background-color);
+    color: white;
+
+    .navigation{
+        background-color: var(--dark_mode-background-color);
+
+        svg{
+            color: white;
+        }
+    }
+
+    .home-page{
+        .entries{
+            .entry{
+                svg{
+                    color: white;
+                }
+            }
+        }
+
+        .other-plans{
+            .other-plans-container{
+                .plan{
+                    background-color: #707070;
+                }
+            }
+        }
+    }
+
+    .settings-page{
+        .user-settings{
+            div{
+                aside{
+                    a{
+                        color: white;
+                    }
+                }
+
+                &.night-mode{
+                    aside{
+                        svg{
+                            background-color: var(--dm-dark-mode-bgc);
+                        }
+                    }
+                    .toggle-icon{
+                        font-size: 30px;
+                        overflow: auto;
+    
+                        &.on{
+                            fill: white;
+                        }
+                    }
+                }
+
+                &.language{
+                    select{
+                        background-color: var(--dark_mode-background-color);
+                        color: white;
+                    }
+                }
+            }
+        }
+    }
+}
+
 form{
     width: 100%;
     display: flex;
@@ -50,7 +127,7 @@ form{
     }
 }
 
-nav.navigation{
+.navigation{
     display: flex;
     flex-direction: row;
     // justify-content: space-between;
@@ -152,7 +229,7 @@ nav.navigation{
                 outline: unset;
                 font-size: 16px;
                 padding: 10px 20px;
-                color: #505050;
+                color: var(--dark_mode-background-color);
             }
         }
     }
@@ -170,13 +247,14 @@ nav.navigation{
 
         img{
             margin: 20px 0;
-            width: 150px;
-            height: 150px;
+            width: 130px;
+            height: 130px;
             border-radius: 50%;
         }
 
         p{
             font-size: 20px;
+            font-weight: bold;
         }
     }
 
@@ -199,16 +277,16 @@ nav.navigation{
                 align-items: center;
 
                 svg{
-                    height: 40px;
-                    background-color: white;
-                    width: 40px;
+                    height: 35px;
+                    width: 35px;
                     padding: 10px;
                     border-radius: 50%;
+                    color: white;
                 }
 
                 p,a{
-                    margin-left: 10px;
-                    font-size: 18px;
+                    margin-left: 20px;
+                    font-size: 16px;
                 }
 
                 a{
@@ -218,6 +296,7 @@ nav.navigation{
             }
 
             &.night-mode{
+
                 .toggle-icon{
                     font-size: 30px;
                     overflow: auto;
@@ -241,6 +320,30 @@ nav.navigation{
                     border: unset;
                     font-size: 16px;
                 }
+            }
+
+            .night-mode-icon{
+                background-color: var(--lt-dark-mode-bgc);
+            }
+
+            .language-icon{
+                background-color: var(--language-bgc);
+            }
+
+            .change-username-icon{
+                background-color: var(--change-username-bgc);
+            }
+
+            .change-password-icon{
+                background-color: var(--change-password-bgc);
+            }
+
+            .change-email-icon{
+                background-color: var(--change-email-bgc);
+            }
+
+            .sign-out-icon{
+                background-color: var(--sign-out-bgc);
             }
         }
     }
@@ -332,7 +435,7 @@ nav.navigation{
                 display: flex;
                 justify-content: center;
                 align-items: center;
-                background-color: #505050;
+                background-color: var(--dark_mode-background-color);
                 border-radius: 15px;
 
                 p{

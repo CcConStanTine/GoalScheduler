@@ -8,7 +8,7 @@ const UserLanguage = () => {
     return (
         <div className='language'>
             <aside>
-                <FaGlobeEurope />
+                <FaGlobeEurope className='language-icon' />
                 <p>{languageText}</p>
             </aside>
             <select value={language} onChange={event => setLanguage(event.target.value)}>

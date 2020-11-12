@@ -76,7 +76,7 @@ class Database {
 
             return {
                 ...data,
-                message: successfullyLogedIn
+                message: successfullyLogedIn,
             };
         })
         .catch(error => { return { message: errorLogedIn } })

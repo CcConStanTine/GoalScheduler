@@ -12,9 +12,9 @@ interface UserCredentials {
 const ChangeUserCredentials = ({ type, classType, placeholder }: UserCredentials) =>
     <div className={`change-${classType}`}>
         <aside>
-            {type === ChangeUserCredentialsTypes.USERNAME && <FaUser />}
-            {type === ChangeUserCredentialsTypes.USERPASSWORD && <FaKey />}
-            {type === ChangeUserCredentialsTypes.EMAIL && <FaEnvelope />}
+            {type === ChangeUserCredentialsTypes.USERNAME && <FaUser className='change-username-icon' />}
+            {type === ChangeUserCredentialsTypes.USERPASSWORD && <FaKey className='change-password-icon' />}
+            {type === ChangeUserCredentialsTypes.EMAIL && <FaEnvelope className='change-email-icon' />}
             <Link to={`/app/change-${classType}`}>{placeholder}</Link>
         </aside>
     </div>

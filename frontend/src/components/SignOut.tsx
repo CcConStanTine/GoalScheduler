@@ -15,7 +15,7 @@ const SignOut = () => {
     return (
         <div className='sign-out'>
             <aside onClick={logout}>
-                <FaSignOutAlt />
+                <FaSignOutAlt className='sign-out-icon' />
                 <p>{signOutText}</p>
             </aside>
         </div>
