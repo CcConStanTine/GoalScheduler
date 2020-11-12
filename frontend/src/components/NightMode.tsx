@@ -1,11 +1,13 @@
 import React, { useContext } from 'react';
-import { darkModeText } from '../utils/variables';
+import { languagePack } from '../utils/variables';
 import { FaToggleOn, FaToggleOff, FaMoon } from 'react-icons/fa';
 import { ThemeContext } from '../authentication/ThemeContext';
+import { LanguageContext } from '../authentication/LanguageContext';
 import checkUsedTheme from './CheckUserTheme';
 
 const NightMode = () => {
     const { theme, setTheme } = useContext(ThemeContext);
+    const { language } = useContext(LanguageContext);
 
     checkUsedTheme(theme!);
 
@@ -13,7 +15,7 @@ const NightMode = () => {
         <div className='night-mode'>
             <aside>
                 <FaMoon className='night-mode-icon' />
-                <p>{darkModeText}</p>
+                <p>{languagePack[language].darkModeText}</p>
             </aside>
             {theme === 'darktheme' ?
                 <FaToggleOn onClick={() => setTheme!('lightheme')} className="toggle-icon on" />

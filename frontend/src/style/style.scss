@@ -312,13 +312,12 @@ form{
             }
 
             &.language{
-
                 select{
                     appearance: none;
-                    display: block;
                     outline: none;
                     border: unset;
                     font-size: 16px;
+                    text-align: center;
                 }
             }
 

@@ -1,18 +1,24 @@
-import React, { useState } from 'react';
-import { languageText, languageOptions } from '../utils/variables';
+import React, { useContext } from 'react';
+import { languageOptions, languagePack } from '../utils/variables';
 import { FaGlobeEurope } from 'react-icons/fa';
+import { LanguageContext } from '../authentication/LanguageContext'
 
 const UserLanguage = () => {
-    const [language, setLanguage] = useState('english');
+    const { language, setLanguage } = useContext(LanguageContext);
+
+    const changeLanguage = (value: string) => {
+        setLanguage!(value);
+        localStorage.setItem('language', value);
+    }
 
     return (
         <div className='language'>
             <aside>
                 <FaGlobeEurope className='language-icon' />
-                <p>{languageText}</p>
+                <p>{languagePack[language].languageText}</p>
             </aside>
-            <select value={language} onChange={event => setLanguage(event.target.value)}>
-                {languageOptions.map(({ value, label }) => <option key={value} value={value}>{label}</option>)}
+            <select value={language} onChange={({ target }) => changeLanguage(target.value)}>
+                {languageOptions[language].map(({ value, label }) => <option key={value} value={value}>{label}</option>)}
             </select>
         </div>
     )

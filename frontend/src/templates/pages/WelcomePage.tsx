@@ -1,16 +1,7 @@
 import React, { useState, useContext } from 'react';
-import {
-    appLogo,
-    appLogoDescription,
-    appName,
-    appWelcomeMessage,
-    continueWithoutSigningInMessage,
-    AccountFormTypes,
-    appWelcomeSpanMessage,
-    signUp,
-    loginIn
-} from './../../utils/variables';
+import { appLogo, appName, AccountFormTypes, languagePack } from './../../utils/variables';
 import { AppContext } from '../../authentication/AppContext';
+import { LanguageContext } from '../../authentication/LanguageContext';
 import AccountForm from '../../components/AccountForm';
 import { landingPageInterface } from '../../utils/interfaces';
 import { Redirect } from 'react-router-dom'
@@ -18,22 +9,23 @@ import { Redirect } from 'react-router-dom'
 const WelcomePage = ({ history }: landingPageInterface) => {
     const [showRegisterPanel, setShowRegisterPanel] = useState(false);
     const { userContext } = useContext(AppContext);
+    const { language } = useContext(LanguageContext);
 
     if (userContext?.token) return <Redirect to="/app/home" />
 
     return (
         <section className="welcome-page">
             <nav className="navigation">
-                <img src={appLogo} alt={appLogoDescription} />
+                <img src={appLogo} alt={languagePack[language].appLogoDescription} />
                 <p>{appName}</p>
             </nav>
             <main className="main">
                 <div className="welcome-message">
-                    <h1>{appWelcomeMessage}</h1>
+                    <h1>{languagePack[language].appWelcomeMessage}</h1>
                 </div>
                 <div className="login-or-register-buttons">
-                    <button onClick={() => setShowRegisterPanel(true)}>{signUp}</button>
-                    <button onClick={() => setShowRegisterPanel(false)}>{loginIn}</button>
+                    <button onClick={() => setShowRegisterPanel(true)}>{languagePack[language].signUp}</button>
+                    <button onClick={() => setShowRegisterPanel(false)}>{languagePack[language].loginIn}</button>
                 </div>
                 <div className="form-container">
                     {showRegisterPanel ?
@@ -43,8 +35,8 @@ const WelcomePage = ({ history }: landingPageInterface) => {
                     }
                 </div>
                 <div className="login-without-register">
-                    <span>{appWelcomeSpanMessage}</span>
-                    <button>{continueWithoutSigningInMessage}</button>
+                    <span>{languagePack[language].appWelcomeSpanMessage}</span>
+                    <button>{languagePack[language].continueWithoutSigningInMessage}</button>
                 </div>
             </main>
         </section >

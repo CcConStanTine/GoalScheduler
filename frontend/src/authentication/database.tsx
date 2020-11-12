@@ -1,6 +1,5 @@
 import axios from 'axios';
 import { registerUser, loginUser } from '../utils/interfaces';
-import { successfullyLogedIn, errorLogedIn } from '../utils/variables';
 
 
 class Database {
@@ -76,10 +75,10 @@ class Database {
 
             return {
                 ...data,
-                message: successfullyLogedIn,
+                code: 200,
             };
         })
-        .catch(error => { return { message: errorLogedIn } })
+        .catch(error => { return { code: 400 } })
 
     logout = () => localStorage.removeItem("user");
 

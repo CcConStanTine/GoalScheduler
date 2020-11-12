@@ -1,17 +1,10 @@
 import React, { useContext, useState } from 'react';
 import { AppContext } from '../../authentication/AppContext';
+import { LanguageContext } from '../../authentication/LanguageContext';
 import auth from '../../authentication/database';
 import { useForm } from "react-hook-form";
 import renderAccountFormInputs from '../../components/RenderAccountFormInputs';
-import {
-  checkOldPasswordError,
-  checkNewPasswordError,
-  theSamePasswordError,
-  LogAgainMessage,
-  PageNavigationTypes,
-  changePasswordText,
-  changeUserSettingsInputValue
-} from '../../utils/variables';
+import { languagePack, PageNavigationTypes } from '../../utils/variables';
 import NavigationBar from '../../components/NavigationBar';
 
 interface sendRequestToChangePasswordInteface {
@@ -22,27 +15,28 @@ interface sendRequestToChangePasswordInteface {
 
 const ChangePasswordPage: React.FC = ({ history }: any) => {
   const { setLoggedIn } = useContext(AppContext);
+  const { language } = useContext(LanguageContext);
   const { register, handleSubmit, errors } = useForm();
   const [message, setMessage] = useState('')
 
   const ChangePasswordInputData = [{
     name: "oldPassword",
     type: "text",
-    placeholder: "Old Password",
+    placeholder: languagePack[language].oldPassword,
     ref: register({ required: true, pattern: /^[a-zA-Z0-9-]+$/i, minLength: 2, maxLength: 50 }),
     errors: errors.oldPassword
   },
   {
     name: "newPassword",
     type: "text",
-    placeholder: "New Password",
+    placeholder: languagePack[language].newPassword,
     ref: register({ required: true, pattern: /^[a-zA-Z0-9-]+$/i, minLength: 2, maxLength: 50 }),
     errors: errors.newPassword
   },
   {
     name: "newPasswordRepeat",
     type: "text",
-    placeholder: "Repeat New Password",
+    placeholder: languagePack[language].newPasswordRepeat,
     ref: register({ required: true, pattern: /^[a-zA-Z0-9-]+$/i, minLength: 2, maxLength: 50 }),
     errors: errors.newPasswordRepeat
   }];
@@ -51,7 +45,7 @@ const ChangePasswordPage: React.FC = ({ history }: any) => {
     setMessage(await auth.changeUserPassword(newPassword));
 
     setTimeout(() => {
-      setMessage(LogAgainMessage)
+      setMessage(languagePack[language].LogAgainMessage)
     }, 1000);
     return setTimeout(() => {
       auth.logout();
@@ -64,10 +58,10 @@ const ChangePasswordPage: React.FC = ({ history }: any) => {
       if (newPassword !== oldPassword)
         return changePasswordAndForceUserToLogAgain(newPassword)
 
-      return setMessage(theSamePasswordError);
+      return setMessage(languagePack[language].theSamePasswordError);
     }
 
-    return setMessage(checkNewPasswordError);
+    return setMessage(languagePack[language].checkNewPasswordError);
   }
 
   const sendRequestToChangePassword = async ({ oldPassword, newPassword, newPasswordRepeat }: sendRequestToChangePasswordInteface) => {
@@ -76,16 +70,16 @@ const ChangePasswordPage: React.FC = ({ history }: any) => {
     if (response)
       return checkPassword(oldPassword, newPassword, newPasswordRepeat);
 
-    return setMessage(checkOldPasswordError)
+    return setMessage(languagePack[language].checkOldPasswordError)
   };
 
   return (
     <section className='change-password-page'>
-      <NavigationBar type={PageNavigationTypes.DEFAULT} history={history} placeholder={changePasswordText} />
+      <NavigationBar type={PageNavigationTypes.DEFAULT} history={history} placeholder={languagePack[language].changePasswordText} />
       <form onSubmit={handleSubmit(sendRequestToChangePassword)}>
         {renderAccountFormInputs(ChangePasswordInputData)}
         {message && <p className='change-password-message'>{message}</p>}
-        <input className="send-form-button" type="submit" value={changeUserSettingsInputValue} />
+        <input className="send-form-button" type="submit" value={languagePack[language].changeUserSettingsInputValue} />
       </form>
     </section>
   );

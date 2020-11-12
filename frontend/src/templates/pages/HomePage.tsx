@@ -1,8 +1,9 @@
 import React, { useContext, useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { AppContext } from '../../authentication/AppContext';
+import { LanguageContext } from '../../authentication/LanguageContext';
 import auth from '../../authentication/database';
-import { todayPlansText, todayPlans, otherPlansText, PageNavigationTypes } from '../../utils/variables';
+import { todayPlans, PageNavigationTypes, languagePack } from '../../utils/variables';
 import { FaCaretRight } from 'react-icons/fa';
 import NavigationBar from '../../components/NavigationBar';
 
@@ -12,6 +13,7 @@ interface HomeInterface {
 
 const HomePage = ({ history }: HomeInterface) => {
     const { setLoggedIn } = useContext(AppContext);
+    const { language } = useContext(LanguageContext);
     const [search, setSearch] = useState('');
 
     useEffect(() => {
@@ -32,11 +34,11 @@ const HomePage = ({ history }: HomeInterface) => {
             <div className='search'>
                 <input
                     value={search}
-                    placeholder="Search"
+                    placeholder={languagePack[language].search}
                     onChange={event => setSearch(event.target.value)} />
             </div>
             <div className='entries'>
-                <p className='today-plans'>{todayPlansText}</p>
+                <p className='today-plans'>{languagePack[language].todayPlansText}</p>
 
                 {todayPlans.map(({ color, topic }) =>
                     <div className='entry' key={topic}>
@@ -50,7 +52,7 @@ const HomePage = ({ history }: HomeInterface) => {
                     </div>)}
             </div>
             <div className='other-plans'>
-                <p className='other-plans-text'>{otherPlansText}</p>
+                <p className='other-plans-text'>{languagePack[language].otherPlansText}</p>
                 <div className='other-plans-container'>
                     <div className='plan'>
                         <p>2020</p>

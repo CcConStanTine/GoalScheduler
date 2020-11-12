@@ -1,17 +1,10 @@
 import React, { useContext, useState } from 'react';
 import { AppContext } from '../../authentication/AppContext';
+import { LanguageContext } from '../../authentication/LanguageContext';
 import auth from '../../authentication/database';
 import { useForm } from "react-hook-form";
 import renderAccountFormInputs from '../../components/RenderAccountFormInputs';
-import {
-  changedUsernameSuccessfully,
-  LogAgainMessage,
-  PageNavigationTypes,
-  changeUsernameText,
-  theSameUsernameError,
-  checkPasswordError,
-  changeUserSettingsInputValue
-} from '../../utils/variables';
+import { PageNavigationTypes, languagePack } from '../../utils/variables';
 import NavigationBar from '../../components/NavigationBar';
 
 interface emailInterface {
@@ -21,20 +14,21 @@ interface emailInterface {
 
 const ChangeUsernamePage: React.FC = ({ history }: any) => {
   const { setLoggedIn } = useContext(AppContext);
+  const { language } = useContext(LanguageContext);
   const { register, handleSubmit, errors } = useForm();
   const [message, setMessage] = useState('');
 
   const ChangeNicknameInputData = [{
     name: "password",
     type: "password",
-    placeholder: "Enter your password",
+    placeholder: languagePack[language].oldPassword,
     ref: register({ required: true, pattern: /^[a-zA-Z0-9-]+$/i, minLength: 2, maxLength: 50 }),
     errors: errors.password
   },
   {
     name: "username",
     type: "text",
-    placeholder: "Enter new username",
+    placeholder: languagePack[language].newUsername,
     ref: register({ required: true, pattern: /^[a-zA-Z0-9]+$/i, minLength: 2, maxLength: 50 }),
     errors: errors.username
   }];
@@ -46,17 +40,17 @@ const ChangeUsernamePage: React.FC = ({ history }: any) => {
 
       if (message) return setMessage(message)
 
-      setTimeout(() => setMessage(LogAgainMessage), 1000);
+      setTimeout(() => setMessage(languagePack[language].LogAgainMessage), 1000);
 
       setTimeout(() => {
         auth.logout();
         return setLoggedIn!({})
       }, 2000);
 
-      return setMessage(changedUsernameSuccessfully);
+      return setMessage(languagePack[language].changedUsernameSuccessfully);
     }
 
-    return setMessage(theSameUsernameError);
+    return setMessage(languagePack[language].theSameUsernameError);
   }
 
   const sendRequestToChangeUsername = async ({ password, username }: emailInterface) => {
@@ -65,16 +59,16 @@ const ChangeUsernamePage: React.FC = ({ history }: any) => {
     if (response)
       return checkUsername(username);
 
-    return setMessage(checkPasswordError)
+    return setMessage(languagePack[language].checkPasswordError)
   }
 
   return (
     <section className='change-username-page'>
-      <NavigationBar type={PageNavigationTypes.DEFAULT} history={history} placeholder={changeUsernameText} />
+      <NavigationBar type={PageNavigationTypes.DEFAULT} history={history} placeholder={languagePack[language].changeUsernameText} />
       <form onSubmit={handleSubmit(sendRequestToChangeUsername)}>
         {renderAccountFormInputs(ChangeNicknameInputData)}
         {message && <p className='change-username-message'>{message}</p>}
-        <input className="send-form-button" type="submit" value={changeUserSettingsInputValue} />
+        <input className="send-form-button" type="submit" value={languagePack[language].changeUserSettingsInputValue} />
       </form>
     </section>
   );

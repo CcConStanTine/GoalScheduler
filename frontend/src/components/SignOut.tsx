@@ -1,11 +1,13 @@
 import React, { useContext } from 'react';
 import auth from '../authentication/database';
 import { AppContext } from '../authentication/AppContext';
-import { signOutText } from '../utils/variables';
+import { LanguageContext } from '../authentication/LanguageContext';
+import { languagePack } from '../utils/variables';
 import { FaSignOutAlt } from 'react-icons/fa';
 
 const SignOut = () => {
     const { setLoggedIn } = useContext(AppContext);
+    const { language } = useContext(LanguageContext);
 
     const logout = () => {
         auth.logout();
@@ -16,7 +18,7 @@ const SignOut = () => {
         <div className='sign-out'>
             <aside onClick={logout}>
                 <FaSignOutAlt className='sign-out-icon' />
-                <p>{signOutText}</p>
+                <p>{languagePack[language].signOutText}</p>
             </aside>
         </div>
     )
