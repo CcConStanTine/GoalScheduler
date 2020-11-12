@@ -1,6 +1,7 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { AppContext } from '../../authentication/AppContext';
+import auth from '../../authentication/database';
 import { todayPlansText, todayPlans, otherPlansText, PageNavigationTypes } from '../../utils/variables';
 import { FaCaretRight } from 'react-icons/fa';
 import NavigationBar from '../../components/NavigationBar';
@@ -10,9 +11,19 @@ interface HomeInterface {
 }
 
 const HomePage = ({ history }: HomeInterface) => {
-    const { userContext } = useContext(AppContext);
+    const { setLoggedIn } = useContext(AppContext);
     const [search, setSearch] = useState('');
 
+    useEffect(() => {
+        const { token } = auth.getCurrentUser();
+        const updateUserInfo = async () => {
+            const userInfo = await auth.getCurrentUserInfo();
+
+            setLoggedIn && setLoggedIn({ ...userInfo, token })
+        }
+
+        updateUserInfo();
+    }, [setLoggedIn])
 
 
     return (

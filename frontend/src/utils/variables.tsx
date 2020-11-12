@@ -45,9 +45,12 @@ export const theSamePasswordError = "New password can't be the same like a previ
 export const settingsNavigationText = "Settings";
 export const changeUserEmail = "Change Email";
 export const changedUserEmailSuccessfully = "Email changed successfully";
+export const changedUsernameSuccessfully = "Username changed successfully";
 export const checkOldEmailError = "Current email is wrong";
 export const theSameEmailError = "New email can't be the same like a previous one";
+export const theSameUsernameError = "New username can't be the same like a previous one";
 export const changeUserSettingsInputValue = "Save";
+export const checkPasswordError = "Password is wrong";
 
 export const languageOptions = [{
     value: 'polish',

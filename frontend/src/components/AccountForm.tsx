@@ -82,7 +82,6 @@ const AccountForm = ({ type, history }: accountFormInterface) => {
 
     const sendRequestToLoginUser = async (data: any) => {
         const { token, message } = await auth.login(data);
-
         if (token && setLoggedIn) return setLoggedIn(auth.getCurrentUser);
 
         return setLoginMessage(message)

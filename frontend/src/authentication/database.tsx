@@ -22,6 +22,11 @@ class Database {
         }
     })
 
+    changeUsername = (firstName: string, lastName: string, nick: string,) => axios
+        .patch(`${this.serverAddress}/user/${this.userId}/basic`, { firstName, lastName, nick }, this.getAuthConfig())
+        .then(({ data }) => data)
+        .catch(({ response }) => response.data)
+
     changeUserEmail = (email: string) => axios
         .patch(`${this.serverAddress}/user/${this.userId}/email`, { email }, this.getAuthConfig())
         .then(({ data }) => data)
@@ -51,6 +56,7 @@ class Database {
     getCurrentUserInfo = () => axios
         .get(`${this.serverAddress}/user/${this.userId}/info`, this.getAuthConfig())
         .then(({ data }) => data)
+        .catch(error => console.log(error))
 
     register = ({ username, password, email, firstName, lastName }: registerUser): object => axios
         .post(`${this.serverAddress}/sign-up`, {
