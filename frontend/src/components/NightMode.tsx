@@ -2,19 +2,12 @@ import React, { useContext } from 'react';
 import { darkModeText } from '../utils/variables';
 import { FaToggleOn, FaToggleOff, FaMoon } from 'react-icons/fa';
 import { ThemeContext } from '../authentication/ThemeContext';
+import checkUsedTheme from './CheckUserTheme';
 
 const NightMode = () => {
     const { theme, setTheme } = useContext(ThemeContext);
 
-    if (theme === 'darktheme') {
-        document.getElementById('root')?.classList.add('darktheme');
-        document.body.style.backgroundColor = "black";
-    }
-
-    else {
-        document.body.style.backgroundColor = "white";
-        document.getElementById('root')?.classList.remove('darktheme')
-    }
+    checkUsedTheme(theme!);
 
     return (
         <div className='night-mode'>
