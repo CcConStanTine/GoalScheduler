@@ -4,6 +4,7 @@ import { AppContext } from '../../authentication/AppContext';
 import HomePage from './HomePage';
 import SettingsPage from './SettingsPage';
 import ChangePasswordPage from './ChangePasswordPage';
+import ChangeEmailPage from './ChangeEmailPage';
 
 const AppTabs: React.FC = () => {
   const { userContext } = useContext(AppContext);
@@ -15,6 +16,7 @@ const AppTabs: React.FC = () => {
       <Route exact path="/app/home" component={HomePage}></Route>
       <Route exact path="/app/settings" component={SettingsPage}></Route>
       <Route exact path="/app/change-password" component={ChangePasswordPage}></Route>
+      <Route exact path="/app/change-email" component={ChangeEmailPage}></Route>
     </Switch >
   );
 };

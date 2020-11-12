@@ -22,6 +22,11 @@ class Database {
         }
     })
 
+    changeUserEmail = (email: string) => axios
+        .patch(`${this.serverAddress}/user/${this.userId}/email`, { email }, this.getAuthConfig())
+        .then(({ data }) => data)
+        .catch(error => console.log(error))
+
     changeUserPassword = (password: string) => axios
         .patch(`${this.serverAddress}/user/${this.userId}/password`, { password }, this.getAuthConfig())
         .then(({ data }) => data)

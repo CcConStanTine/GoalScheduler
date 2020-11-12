@@ -3,7 +3,15 @@ import { AppContext } from '../../authentication/AppContext';
 import auth from '../../authentication/database';
 import { useForm } from "react-hook-form";
 import renderAccountFormInputs from '../../components/RenderAccountFormInputs';
-import { checkOldPasswordError, checkNewPasswordError, theSamePasswordError, LogAgainMessage, PageNavigationTypes, changePasswordText } from '../../utils/variables';
+import {
+  checkOldPasswordError,
+  checkNewPasswordError,
+  theSamePasswordError,
+  LogAgainMessage,
+  PageNavigationTypes,
+  changePasswordText,
+  changeUserSettingsInputValue
+} from '../../utils/variables';
 import NavigationBar from '../../components/NavigationBar';
 
 interface sendRequestToChangePasswordInteface {
@@ -77,7 +85,7 @@ const ChangePasswordPage: React.FC = ({ history }: any) => {
       <form onSubmit={handleSubmit(sendRequestToChangePassword)}>
         {renderAccountFormInputs(ChangePasswordInputData)}
         {message && <p className='change-password-message'>{message}</p>}
-        <input className="send-form-button" type="submit" value={changePasswordText} />
+        <input className="send-form-button" type="submit" value={changeUserSettingsInputValue} />
       </form>
     </section>
   );

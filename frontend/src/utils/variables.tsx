@@ -30,6 +30,7 @@ export const PageNavigationTypes = {
 export const ChangeUserCredentialsTypes = {
     USERNAME: 'username',
     USERPASSWORD: 'password',
+    EMAIL: 'email',
 }
 
 export const darkModeText = "Dark Mode";
@@ -42,6 +43,11 @@ export const changeUsernameText = "Change Username";
 export const LogAgainMessage = "You need to log in again";
 export const theSamePasswordError = "New password can't be the same like a previous one";
 export const settingsNavigationText = "Settings";
+export const changeUserEmail = "Change Email";
+export const changedUserEmailSuccessfully = "Email changed successfully";
+export const checkOldEmailError = "Current email is wrong";
+export const theSameEmailError = "New email can't be the same like a previous one";
+export const changeUserSettingsInputValue = "Save";
 
 export const languageOptions = [{
     value: 'polish',
