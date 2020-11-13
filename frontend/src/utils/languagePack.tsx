@@ -43,7 +43,8 @@ const languagePack: languageInterface = {
         oldPassword: 'Old Password',
         newPassword: 'New Password',
         newPasswordRepeat: 'Repeat New Password',
-        newUsername: 'Enter new username'
+        newUsername: 'Enter new username',
+        userPhotoText: 'Change User Photo'
     },
     'pl-PL': {
         signOutText: 'Wyloguj się',
@@ -86,7 +87,8 @@ const languagePack: languageInterface = {
         oldPassword: 'Aktualne hasło',
         newPassword: 'Nowe hasło',
         newPasswordRepeat: 'Powtórz nowe hasło',
-        newUsername: 'Nowa nazwa użytkownika'
+        newUsername: 'Nowa nazwa użytkownika',
+        userPhotoText: 'Zmień zdjęcie użytkownika'
     }
 }
 

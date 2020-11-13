@@ -16,6 +16,7 @@
     --change-password-bgc: #00B3DF;
     --change-email-bgc: purple;
     --sign-out-bgc: navy;
+    --change-userphoto-bgc: brown;
 }
 
 .darktheme{
@@ -360,6 +361,10 @@ form{
 
             .sign-out-icon{
                 background-color: var(--sign-out-bgc);
+            }
+
+            .change-userphoto-icon{
+                background-color: var(--change-userphoto-bgc);
             }
         }
     }

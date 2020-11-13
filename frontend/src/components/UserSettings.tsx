@@ -29,6 +29,11 @@ const UserSettings = () => {
                 placeholder={languagePack[language].changeUserEmail}
                 classType="email"
             />
+            <ChangeUserCredentials
+                type={ChangeUserCredentialsTypes.USERPHOTO}
+                placeholder={languagePack[language].userPhotoText}
+                classType="photo"
+            />
             <SignOut />
         </div>
     )

@@ -19,7 +19,12 @@ class Database {
         headers: {
             Authorization: `${this.axiosType} ${this.token}`,
         }
-    })
+    });
+
+    changeUserPhoto = (file: FormData) => axios
+        .post(`${this.serverAddress}/user/${this.userId}/image`, file, this.getAuthConfig())
+        .then(res => console.log(res))
+        .catch(({ response }) => console.log(response.data))
 
     changeUsername = (firstName: string, lastName: string, nick: string,) => axios
         .patch(`${this.serverAddress}/user/${this.userId}/basic`, { firstName, lastName, nick }, this.getAuthConfig())

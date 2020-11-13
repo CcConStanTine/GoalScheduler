@@ -116,5 +116,6 @@ export interface languageInterface {
         newPassword: string;
         newPasswordRepeat: string;
         newUsername: string;
+        userPhotoText: string;
     };
 }

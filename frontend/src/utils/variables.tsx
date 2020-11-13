@@ -25,6 +25,7 @@ export const ChangeUserCredentialsTypes = {
     USERNAME: 'username',
     USERPASSWORD: 'password',
     EMAIL: 'email',
+    USERPHOTO: 'photo',
 }
 
 
