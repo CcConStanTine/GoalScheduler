@@ -296,17 +296,34 @@ form{
             }
 
             &.night-mode{
+                .switcher{
+                    width: 40px;
+                    height: 12px;
+                    padding: unset;
+                    border-radius: 10px;
+                    background-color: lightgray;
+                    position: relative;
 
-                .toggle-icon{
-                    font-size: 30px;
-                    overflow: auto;
+                    .toggler{
+                        padding: unset;
+                        width: 20px;
+                        height: 20px;
+                        background-color: white;
+                        border-radius: 10px;
+                        border: 1px solid lightgray;
+                        position: absolute;
+                        top: 50%;
+                        left: 0;
+                        transform: translateY(-50%);
+                        transition: left 1s easy;
 
-                    &.on{
-                        fill: green;
-                    }
+                        &.darktheme{
+                            left: calc(100% - 20px);
+                        }
 
-                    &.off{
-                        fill: black;
+                        &.lighttheme{
+                            left: 0;
+                        }
                     }
                 }
             }
