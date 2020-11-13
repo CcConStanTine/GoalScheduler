@@ -1,6 +1,7 @@
 import React, { useState, useContext } from 'react';
 import { useForm } from "react-hook-form";
-import { AccountFormTypes, languagePack } from '../utils/variables';
+import { AccountFormTypes } from '../utils/variables';
+import languagePack from '../utils/languagePack';
 import { accountFormInterface } from '../utils/interfaces';
 import auth from '../authentication/database';
 import renderAccountFormInputs from './RenderAccountFormInputs';

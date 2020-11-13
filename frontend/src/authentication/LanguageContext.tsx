@@ -1,5 +1,5 @@
 import React, { createContext, useState, ReactNode, useEffect } from 'react';
-import { languagePack } from '../utils/variables';
+import languagePack from '../utils/languagePack';
 
 interface AppContextInterface {
     language: string;

@@ -1,5 +1,6 @@
 import React, { useState, useContext } from 'react';
-import { appLogo, appName, AccountFormTypes, languagePack } from './../../utils/variables';
+import { appLogo, appName, AccountFormTypes } from '../../utils/variables';
+import languagePack from '../../utils/languagePack';
 import { AppContext } from '../../authentication/AppContext';
 import { LanguageContext } from '../../authentication/LanguageContext';
 import AccountForm from '../../components/AccountForm';

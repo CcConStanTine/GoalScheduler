@@ -4,7 +4,8 @@ import NightMode from './NightMode';
 import UserLanguage from './UserLanguage';
 import ChangeUserCredentials from './ChangeUserCredentials';
 import SignOut from './SignOut';
-import { ChangeUserCredentialsTypes, languagePack } from '../utils/variables';
+import { ChangeUserCredentialsTypes } from '../utils/variables';
+import languagePack from '../utils/languagePack';
 
 const UserSettings = () => {
     const { language } = useContext(LanguageContext);

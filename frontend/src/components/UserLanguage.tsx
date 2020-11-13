@@ -1,5 +1,6 @@
 import React, { useContext } from 'react';
-import { languageOptions, languagePack } from '../utils/variables';
+import { languageOptions } from '../utils/variables';
+import languagePack from '../utils/languagePack';
 import { FaGlobeEurope } from 'react-icons/fa';
 import { LanguageContext } from '../authentication/LanguageContext'
 

@@ -4,7 +4,8 @@ import { LanguageContext } from '../../authentication/LanguageContext';
 import auth from '../../authentication/database';
 import { useForm } from "react-hook-form";
 import renderAccountFormInputs from '../../components/RenderAccountFormInputs';
-import { languagePack, PageNavigationTypes } from '../../utils/variables';
+import { PageNavigationTypes } from '../../utils/variables';
+import languagePack from '../../utils/languagePack';
 import NavigationBar from '../../components/NavigationBar';
 
 interface emailInterface {

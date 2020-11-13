@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import auth from '../authentication/database';
 import { AppContext } from '../authentication/AppContext';
 import { LanguageContext } from '../authentication/LanguageContext';
-import { languagePack } from '../utils/variables';
+import languagePack from '../utils/languagePack';
 import { FaSignOutAlt } from 'react-icons/fa';
 
 const SignOut = () => {

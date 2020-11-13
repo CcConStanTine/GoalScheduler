@@ -1,5 +1,6 @@
 import React, { useContext } from 'react';
-import { languagePack, PageNavigationTypes } from '../../utils/variables';
+import { PageNavigationTypes } from '../../utils/variables';
+import languagePack from '../../utils/languagePack';
 import NavigationBar from '../../components/NavigationBar';
 import UserData from '../../components/UserData';
 import UserSettings from '../../components/UserSettings';

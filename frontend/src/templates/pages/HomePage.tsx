@@ -3,7 +3,8 @@ import { Link } from 'react-router-dom';
 import { AppContext } from '../../authentication/AppContext';
 import { LanguageContext } from '../../authentication/LanguageContext';
 import auth from '../../authentication/database';
-import { todayPlans, PageNavigationTypes, languagePack } from '../../utils/variables';
+import { todayPlans, PageNavigationTypes } from '../../utils/variables';
+import languagePack from '../../utils/languagePack';
 import { FaCaretRight } from 'react-icons/fa';
 import NavigationBar from '../../components/NavigationBar';
 
