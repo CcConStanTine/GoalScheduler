@@ -5,6 +5,7 @@ import com.pk.ms.dto.user.UserBasicInfoUpdateDTO;
 import com.pk.ms.dto.user.UserEmailUpdateDTO;
 import com.pk.ms.dto.user.UserInfoDTO;
 import com.pk.ms.dto.user.UserPasswordUpdateDTO;
+import com.pk.ms.entities.user.Image;
 import com.pk.ms.entities.user.MyScheduleUser;
 import com.pk.ms.exceptions.ResourceNotAvailableException;
 import com.pk.ms.exceptions.UniqueValuesAlreadyExistsException;
@@ -37,6 +38,8 @@ class UserServiceTest {
 
     UserInfoMapService userInfoMapService;
 
+    ImageService imageService;
+
     PasswordEncoder encoder = new BCryptPasswordEncoder();
 
     MyScheduleUser user1;
@@ -53,7 +56,7 @@ class UserServiceTest {
         user1.setUserId(1L);
         user2.setUserId(2L);
         userInfoMapService = new UserInfoMapService();
-        userService = new UserService(userRepo, userInfoMapService, encoder);
+        userService = new UserService(userRepo, userInfoMapService, encoder, imageService);
     }
 
     @Test

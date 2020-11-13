@@ -1,10 +1,12 @@
 package com.pk.ms.controllers.user;
 
 import com.pk.ms.dto.user.*;
+import com.pk.ms.entities.user.Image;
 import com.pk.ms.services.user.UserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 
@@ -44,4 +46,26 @@ public class UserController {
 
         return ResponseEntity.ok(userService.updateUserPassword(id ,userPasswordUpdateDTO));
     }
+
+
+    @GetMapping("/{id}/image")
+    public ResponseEntity<Image> getUserImage(@PathVariable("id") long id) {
+
+        return ResponseEntity.ok(userService.getUserImage(id));
+    }
+
+    @PostMapping("/{id}/image")
+    public ResponseEntity<Image> addUserImage(@PathVariable("id") long id,
+                                              @RequestParam ("file") MultipartFile file) {
+
+        return ResponseEntity.ok(userService.addUserImage(id, file));
+    }
+
+    @DeleteMapping("/{id}/image")
+    public ResponseEntity<String> deleteUserImage(@PathVariable("id") long id) {
+
+        return ResponseEntity.ok(userService.deleteUserImage(id));
+    }
+
+
 }
