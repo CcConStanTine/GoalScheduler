@@ -9,6 +9,7 @@ interface AppContextInterface {
         nick?: string,
         token?: string,
         userId?: number,
+        userPhoto?: string
     };
     setLoggedIn?: (value: object) => void;
 }
@@ -26,6 +27,8 @@ export const UseAppContext = ({ children }: UseAppContextInterface) => {
         const getUserData = async () => {
             const { token } = auth.getCurrentUser();
             const userInfo = token && await auth.getCurrentUserInfo();
+            const data = token && await auth.getUserPhoto();
+            console.log(data);
             setLoggedIn({ token, ...userInfo })
         }
         getUserData()

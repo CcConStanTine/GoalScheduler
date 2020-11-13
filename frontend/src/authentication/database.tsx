@@ -21,10 +21,15 @@ class Database {
         }
     });
 
+    getUserPhoto = () => axios
+        .get(`${this.serverAddress}/user/${this.userId}/image`, this.getAuthConfig())
+        .then(({ data }) => data)
+        .catch(error => console.log(error))
+
     changeUserPhoto = (file: FormData) => axios
         .post(`${this.serverAddress}/user/${this.userId}/image`, file, this.getAuthConfig())
-        .then(res => console.log(res))
-        .catch(({ response }) => console.log(response.data))
+        .then(({ statusText }) => statusText)
+        .catch(({ response }) => response.data.message);
 
     changeUsername = (firstName: string, lastName: string, nick: string,) => axios
         .patch(`${this.serverAddress}/user/${this.userId}/basic`, { firstName, lastName, nick }, this.getAuthConfig())

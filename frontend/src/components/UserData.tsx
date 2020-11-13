@@ -7,7 +7,7 @@ const UserData = () => {
 
     return (
         <div className='user-data'>
-            <img src={userDefaultPhoto} alt={`${userContext?.lastName}`} />
+            <img src={userContext?.userPhoto ? userContext?.userPhoto : userDefaultPhoto} alt={`${userContext?.lastName}`} />
             <p>{userContext?.firstName} {userContext?.lastName}</p>
         </div>
     )

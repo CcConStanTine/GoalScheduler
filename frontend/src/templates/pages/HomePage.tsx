@@ -21,8 +21,9 @@ const HomePage = ({ history }: HomeInterface) => {
         const { token } = auth.getCurrentUser();
         const updateUserInfo = async () => {
             const userInfo = await auth.getCurrentUserInfo();
+            const { fileUrl } = token && await auth.getUserPhoto();
 
-            setLoggedIn && setLoggedIn({ ...userInfo, token })
+            setLoggedIn && setLoggedIn({ ...userInfo, token, userPhoto: fileUrl })
         }
 
         updateUserInfo();
