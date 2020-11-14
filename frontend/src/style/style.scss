@@ -485,6 +485,8 @@ form{
 
 .change-user-photo-page{
     width: 100%;
+    text-align: center;
+
 
     .actual-photo{
         width: 100%;
@@ -502,5 +504,40 @@ form{
         display: flex;
         flex-direction: row;
         justify-content: space-around;
+        margin: 20px 0;
+
+        input{
+            display: none;
+        }
+    }
+
+    button{
+        padding: 10px 20px;
+        outline: unset;
+        font-size: 15px;
+        border-radius: 20px;
+        border: unset;
+        background-color: navy;
+        color: white;
+        width: 40%;
+
+        &.upload-button{
+            background-color: green;
+
+            &:disabled{
+                background-color: rgb(240, 240, 240);
+                color: gray;
+            }
+        }
+
+        &.delete-button{
+            margin: 20px 0;
+            background-color: red;
+
+            &:disabled{
+                background-color: rgb(240, 240, 240);
+                color: gray;
+            }
+        }
     }
 }

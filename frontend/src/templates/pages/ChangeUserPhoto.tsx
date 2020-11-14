@@ -1,4 +1,4 @@
-import React, { useContext, useState, useRef } from 'react';
+import React, { useContext, useState, useRef, useEffect } from 'react';
 import { AppContext } from '../../authentication/AppContext';
 import { LanguageContext } from '../../authentication/LanguageContext';
 import auth from '../../authentication/database';
@@ -11,6 +11,7 @@ const ChangeUserPhoto: React.FC = ({ history }: any) => {
   const [photo, setPhoto] = useState(null);
   const { language } = useContext(LanguageContext);
   const [message, setMessage] = useState('');
+  const [showDeleteOption, setShowDeleteOption] = useState(false);
 
   const inputPhoto = useRef<HTMLInputElement>(null);
 
@@ -31,6 +32,19 @@ const ChangeUserPhoto: React.FC = ({ history }: any) => {
     return setMessage(response);
   }
 
+  useEffect(() => {
+    const showDeleteUserPhotoOption = async () => {
+      const { imageId } = await auth.getUserPhoto();
+
+      return setShowDeleteOption(!!imageId);
+    };
+    showDeleteUserPhotoOption()
+  }, [userContext?.userPhoto])
+
+  const deleteUserPhoto = async () => {
+    await auth.deleteUserPhoto();
+  }
+
   return (
     <section className='change-user-photo-page'>
       <NavigationBar type={PageNavigationTypes.DEFAULT} history={history} placeholder={languagePack[language].userPhotoText} />
@@ -44,8 +58,10 @@ const ChangeUserPhoto: React.FC = ({ history }: any) => {
           ref={inputPhoto}
         />
         <button onClick={() => inputPhoto.current?.click()}>Wybierz zdjęcie</button>
-        <button onClick={fileUploadHandler} disabled={!photo}>Upload</button>
+        <button onClick={fileUploadHandler} disabled={!photo} className="upload-button">Upload</button>
       </div>
+      <button onClick={deleteUserPhoto} disabled={!showDeleteOption} className="delete-button">Delete</button>
+
       {message && <p className='user-photo-message'>{message}</p>}
     </section>
   );
