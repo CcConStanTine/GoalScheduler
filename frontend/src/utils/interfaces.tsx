@@ -118,5 +118,9 @@ export interface languageInterface {
         newUsername: string;
         userPhotoText: string;
         uploadImageSuccessed: string;
+        deleteImageSuccessed: string;
+        selectPhoto: string;
+        uploadImage: string;
+        deletePhoto: string;
     };
 }

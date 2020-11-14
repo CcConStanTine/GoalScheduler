@@ -5,6 +5,7 @@ import auth from '../../authentication/database';
 import { PageNavigationTypes } from '../../utils/variables';
 import languagePack from '../../utils/languagePack';
 import NavigationBar from '../../components/NavigationBar';
+import userDefaultPhoto from '../../images/planner.jpg';
 
 const ChangeUserPhoto: React.FC = ({ history }: any) => {
   const { userContext, setLoggedIn } = useContext(AppContext);
@@ -42,7 +43,15 @@ const ChangeUserPhoto: React.FC = ({ history }: any) => {
   }, [userContext?.userPhoto])
 
   const deleteUserPhoto = async () => {
-    await auth.deleteUserPhoto();
+    const response = await auth.deleteUserPhoto();
+
+    if (response === "OK") {
+      setLoggedIn!({ ...userContext, userPhoto: userDefaultPhoto });
+
+      return setMessage(languagePack[language].deleteImageSuccessed);
+    }
+
+    return setMessage(response);
   }
 
   return (
@@ -57,10 +66,10 @@ const ChangeUserPhoto: React.FC = ({ history }: any) => {
           onChange={event => updatePhoto(event.target.files![0])}
           ref={inputPhoto}
         />
-        <button onClick={() => inputPhoto.current?.click()}>Wybierz zdjęcie</button>
-        <button onClick={fileUploadHandler} disabled={!photo} className="upload-button">Upload</button>
+        <button onClick={() => inputPhoto.current?.click()}>{languagePack[language].selectPhoto}</button>
+        <button onClick={fileUploadHandler} disabled={!photo} className="upload-button">{languagePack[language].uploadImage}</button>
       </div>
-      <button onClick={deleteUserPhoto} disabled={!showDeleteOption} className="delete-button">Delete</button>
+      <button onClick={deleteUserPhoto} disabled={!showDeleteOption} className="delete-button">{languagePack[language].deletePhoto}</button>
 
       {message && <p className='user-photo-message'>{message}</p>}
     </section>

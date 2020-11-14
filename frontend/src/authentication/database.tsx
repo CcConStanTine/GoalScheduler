@@ -23,8 +23,8 @@ class Database {
 
     deleteUserPhoto = () => axios
         .delete(`${this.serverAddress}/user/${this.userId}/image`, this.getAuthConfig())
-        .then(({ data }) => console.log(data))
-        .catch(error => console.log(error))
+        .then(({ statusText }) => statusText)
+        .catch(({ response }) => response.data.message)
 
     getUserPhoto = () => axios
         .get(`${this.serverAddress}/user/${this.userId}/image`, this.getAuthConfig())

@@ -496,6 +496,7 @@ form{
         img{
             margin: 20px 0;
             width: 130px;
+            height: 130px;
         }
     }
 
@@ -539,5 +540,9 @@ form{
                 color: gray;
             }
         }
+    }
+
+    .user-photo-message{
+        margin: 20px 0;
     }
 }
