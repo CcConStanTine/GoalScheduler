@@ -1,5 +1,4 @@
 import React, { useContext } from 'react';
-import userDefaultPhoto from '../images/planner.jpg';
 import { AppContext } from '../authentication/AppContext';
 
 const UserData = () => {
@@ -7,7 +6,7 @@ const UserData = () => {
 
     return (
         <div className='user-data'>
-            <img src={userContext?.userPhoto ? userContext?.userPhoto : userDefaultPhoto} alt={`${userContext?.lastName}`} />
+            <img src={userContext?.userPhoto} alt={`${userContext?.lastName}`} />
             <p>{userContext?.firstName} {userContext?.lastName}</p>
         </div>
     )

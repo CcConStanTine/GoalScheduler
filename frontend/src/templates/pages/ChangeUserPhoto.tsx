@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useRef } from 'react';
 import { AppContext } from '../../authentication/AppContext';
 import { LanguageContext } from '../../authentication/LanguageContext';
 import auth from '../../authentication/database';
@@ -12,9 +12,9 @@ const ChangeUserPhoto: React.FC = ({ history }: any) => {
   const { language } = useContext(LanguageContext);
   const [message, setMessage] = useState('');
 
-  const showPhoto = (photo: any) => {
-    setPhoto(photo);
-  }
+  const inputPhoto = useRef<HTMLInputElement>(null);
+
+  const updatePhoto = (photo: any) => setPhoto(photo)
 
   const fileUploadHandler = async () => {
     const formData = new FormData();
@@ -34,9 +34,19 @@ const ChangeUserPhoto: React.FC = ({ history }: any) => {
   return (
     <section className='change-user-photo-page'>
       <NavigationBar type={PageNavigationTypes.DEFAULT} history={history} placeholder={languagePack[language].userPhotoText} />
-      <input type="file" onChange={event => showPhoto(event.target.files![0])} />
-      <button onClick={fileUploadHandler} disabled={!photo}>Upload</button>
-      {message && <p>{message}</p>}
+      <div className='actual-photo'>
+        <img src={userContext?.userPhoto} alt={`${userContext?.nick}`} />
+      </div>
+      <div className="options">
+        <input
+          type="file"
+          onChange={event => updatePhoto(event.target.files![0])}
+          ref={inputPhoto}
+        />
+        <button onClick={() => inputPhoto.current?.click()}>Wybierz zdjęcie</button>
+        <button onClick={fileUploadHandler} disabled={!photo}>Upload</button>
+      </div>
+      {message && <p className='user-photo-message'>{message}</p>}
     </section>
   );
 };

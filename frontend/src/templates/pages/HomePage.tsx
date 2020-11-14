@@ -7,6 +7,7 @@ import { todayPlans, PageNavigationTypes } from '../../utils/variables';
 import languagePack from '../../utils/languagePack';
 import { FaCaretRight } from 'react-icons/fa';
 import NavigationBar from '../../components/NavigationBar';
+import userDefaultPhoto from '../../images/planner.jpg';
 
 interface HomeInterface {
     history: any
@@ -23,7 +24,7 @@ const HomePage = ({ history }: HomeInterface) => {
             const userInfo = await auth.getCurrentUserInfo();
             const { fileUrl } = token && await auth.getUserPhoto();
 
-            setLoggedIn && setLoggedIn({ ...userInfo, token, userPhoto: fileUrl })
+            setLoggedIn && setLoggedIn({ ...userInfo, token, userPhoto: fileUrl ? fileUrl : userDefaultPhoto })
         }
 
         updateUserInfo();
