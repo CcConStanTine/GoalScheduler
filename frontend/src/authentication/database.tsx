@@ -21,33 +21,35 @@ class Database {
         }
     });
 
+    getUserValue = (value: string) => `${this.serverAddress}/user/${this.userId}/${value}`;
+
     deleteUserPhoto = () => axios
-        .delete(`${this.serverAddress}/user/${this.userId}/image`, this.getAuthConfig())
+        .delete(this.getUserValue('image'), this.getAuthConfig())
         .then(({ statusText }) => statusText)
         .catch(({ response }) => response.data.message)
 
     getUserPhoto = () => axios
-        .get(`${this.serverAddress}/user/${this.userId}/image`, this.getAuthConfig())
+        .get(this.getUserValue('image'), this.getAuthConfig())
         .then(({ data }) => data)
         .catch(error => console.log(error))
 
     changeUserPhoto = (file: FormData) => axios
-        .post(`${this.serverAddress}/user/${this.userId}/image`, file, this.getAuthConfig())
+        .post(this.getUserValue('image'), file, this.getAuthConfig())
         .then(({ statusText }) => statusText)
         .catch(({ response }) => response.data.message);
 
     changeUsername = (firstName: string, lastName: string, nick: string,) => axios
-        .patch(`${this.serverAddress}/user/${this.userId}/basic`, { firstName, lastName, nick }, this.getAuthConfig())
+        .patch(this.getUserValue('basic'), { firstName, lastName, nick }, this.getAuthConfig())
         .then(({ data }) => data)
         .catch(({ response }) => response.data)
 
     changeUserEmail = (email: string) => axios
-        .patch(`${this.serverAddress}/user/${this.userId}/email`, { email }, this.getAuthConfig())
+        .patch(this.getUserValue('email'), { email }, this.getAuthConfig())
         .then(({ data }) => data)
         .catch(error => console.log(error))
 
     changeUserPassword = (password: string) => axios
-        .patch(`${this.serverAddress}/user/${this.userId}/password`, { password }, this.getAuthConfig())
+        .patch(this.getUserValue('password'), { password }, this.getAuthConfig())
         .then(({ data }) => data)
         .catch(error => console.log(error))
 
@@ -68,7 +70,7 @@ class Database {
     }
 
     getCurrentUserInfo = () => axios
-        .get(`${this.serverAddress}/user/${this.userId}/info`, this.getAuthConfig())
+        .get(this.getUserValue('info'), this.getAuthConfig())
         .then(({ data }) => data)
         .catch(error => console.log(error))
 
