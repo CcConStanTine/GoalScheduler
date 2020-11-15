@@ -58,7 +58,7 @@ const ChangeUserPhoto: React.FC = ({ history }: any) => {
     <section className='change-user-photo-page'>
       <NavigationBar type={PageNavigationTypes.DEFAULT} history={history} placeholder={languagePack[language].userPhotoText} />
       <div className='actual-photo'>
-        <img src={userContext?.userPhoto} alt={`${userContext?.nick}`} />
+        <img src={photo ? URL.createObjectURL(photo) : userContext?.userPhoto} alt={`${userContext?.nick}`} />
       </div>
       <div className="options">
         <input
