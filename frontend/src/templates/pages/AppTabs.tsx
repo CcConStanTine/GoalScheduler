@@ -7,6 +7,7 @@ import ChangePasswordPage from './ChangePasswordPage';
 import ChangeEmailPage from './ChangeEmailPage';
 import ChangeUsernamePage from './ChangeUsernamePage';
 import ChangeUserPhoto from './ChangeUserPhoto';
+import ViewEntryPage from './ViewEntryPage';
 
 const AppTabs: React.FC = () => {
   const { userContext } = useContext(AppContext);
@@ -21,6 +22,7 @@ const AppTabs: React.FC = () => {
       <Route exact path="/app/change-email" component={ChangeEmailPage}></Route>
       <Route exact path="/app/change-username" component={ChangeUsernamePage}></Route>
       <Route exact path="/app/change-photo" component={ChangeUserPhoto}></Route>
+      <Route exact path="/app/view/:id" component={ViewEntryPage}></Route>
     </Switch >
   );
 };
