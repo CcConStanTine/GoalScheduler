@@ -65,6 +65,7 @@ const ChangeUserPhoto: React.FC = ({ history }: any) => {
           type="file"
           onChange={event => updatePhoto(event.target.files![0])}
           ref={inputPhoto}
+          accept="image/png, image/jpeg"
         />
         <button onClick={() => inputPhoto.current?.click()}>{languagePack[language].selectPhoto}</button>
         <button onClick={fileUploadHandler} disabled={!photo} className="upload-button">{languagePack[language].uploadImage}</button>
