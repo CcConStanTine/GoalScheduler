@@ -23,6 +23,29 @@ class Database {
 
     getUserValue = (value: string) => `${this.serverAddress}/user/${this.userId}/${value}`;
 
+    getCurrentDate = () => {
+        const date = new Date();
+
+        return `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
+    }
+
+    getDayByDate = (date: string) => axios
+        .get(`${this.serverAddress}/schedule/${this.userId}/day?local_date=${date}`, this.getAuthConfig())
+        .then(({ data }) => data)
+        .catch(({ response }) => response.data.message)
+
+    getDayPlansByDayID = (dayId: number) => axios
+        .get(`${this.serverAddress}/schedule/${this.userId}/day/${dayId}/day_plans`, this.getAuthConfig())
+        .then(({ data }) => data)
+        .catch(({ response }) => response.data.message)
+
+    getTodayPlans = async () => {
+        const date = this.getCurrentDate();
+        const { dayId } = await this.getDayByDate(date);
+        const todayPlans = await this.getDayPlansByDayID(dayId);
+        return todayPlans;
+    }
+
     deleteUserPhoto = () => axios
         .delete(this.getUserValue('image'), this.getAuthConfig())
         .then(({ statusText }) => statusText)

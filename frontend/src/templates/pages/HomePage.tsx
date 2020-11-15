@@ -1,13 +1,12 @@
 import React, { useContext, useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
 import { AppContext } from '../../authentication/AppContext';
 import { LanguageContext } from '../../authentication/LanguageContext';
 import auth from '../../authentication/database';
-import { todayPlans, PageNavigationTypes } from '../../utils/variables';
+import { PageNavigationTypes } from '../../utils/variables';
 import languagePack from '../../utils/languagePack';
-import { FaCaretRight } from 'react-icons/fa';
 import NavigationBar from '../../components/NavigationBar';
 import userDefaultPhoto from '../../images/planner.jpg';
+import renderTodayPlans from '../../components/RenderTodayPlans';
 
 interface HomeInterface {
     history: any
@@ -17,6 +16,7 @@ const HomePage = ({ history }: HomeInterface) => {
     const { setLoggedIn } = useContext(AppContext);
     const { language } = useContext(LanguageContext);
     const [search, setSearch] = useState('');
+    const [todayPlans, setTodayPlans] = useState([]);
 
     useEffect(() => {
         const { token } = auth.getCurrentUser();
@@ -27,9 +27,15 @@ const HomePage = ({ history }: HomeInterface) => {
             setLoggedIn && setLoggedIn({ ...userInfo, token, userPhoto: fileUrl ? fileUrl : userDefaultPhoto })
         }
 
-        updateUserInfo();
-    }, [setLoggedIn])
+        const updateTodayPlans = async () => {
+            const todayPlansTable = await auth.getTodayPlans();
 
+            setTodayPlans(todayPlansTable);
+        }
+
+        updateUserInfo();
+        updateTodayPlans();
+    }, [setLoggedIn])
 
     return (
         <div className='home-page'>
@@ -42,8 +48,10 @@ const HomePage = ({ history }: HomeInterface) => {
             </div>
             <div className='entries'>
                 <p className='today-plans'>{languagePack[language].todayPlansText}</p>
+                {console.log(todayPlans)}
+                {renderTodayPlans(todayPlans)}
 
-                {todayPlans.map(({ color, topic }) =>
+                {/* {todayPlans.map(({ color, topic }) =>
                     <div className='entry' key={topic}>
                         <div className='entry-info'>
                             <span className='color' style={{ backgroundColor: `${color}` }}></span>
@@ -52,7 +60,7 @@ const HomePage = ({ history }: HomeInterface) => {
                         <Link to="/app/settings">
                             <FaCaretRight />
                         </Link>
-                    </div>)}
+                    </div>)} */}
             </div>
             <div className='other-plans'>
                 <p className='other-plans-text'>{languagePack[language].otherPlansText}</p>
