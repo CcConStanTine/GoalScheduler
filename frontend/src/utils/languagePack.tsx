@@ -49,7 +49,8 @@ const languagePack: languageInterface = {
         deleteImageSuccessed: 'Image Deleted Successfully',
         selectPhoto: 'Select Photo',
         uploadImage: 'Upload',
-        deletePhoto: 'Delete Photo'
+        deletePhoto: 'Delete Photo',
+        viewEntry: 'View'
     },
     'pl-PL': {
         signOutText: 'Wyloguj się',
@@ -98,7 +99,8 @@ const languagePack: languageInterface = {
         deleteImageSuccessed: 'Zdjęcie zostało usunięte',
         selectPhoto: 'Wybierz zdjęcie',
         uploadImage: 'Prześlij',
-        deletePhoto: 'Usuń zdjęcie'
+        deletePhoto: 'Usuń zdjęcie',
+        viewEntry: 'Podgląd'
     }
 }
 

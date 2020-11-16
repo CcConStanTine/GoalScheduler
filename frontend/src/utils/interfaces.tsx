@@ -122,5 +122,6 @@ export interface languageInterface {
         selectPhoto: string;
         uploadImage: string;
         deletePhoto: string;
+        viewEntry: string;
     };
 }

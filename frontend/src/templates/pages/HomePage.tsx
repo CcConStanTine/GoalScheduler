@@ -48,19 +48,7 @@ const HomePage = ({ history }: HomeInterface) => {
             </div>
             <div className='entries'>
                 <p className='today-plans'>{languagePack[language].todayPlansText}</p>
-                {console.log(todayPlans)}
                 {renderTodayPlans(todayPlans)}
-
-                {/* {todayPlans.map(({ color, topic }) =>
-                    <div className='entry' key={topic}>
-                        <div className='entry-info'>
-                            <span className='color' style={{ backgroundColor: `${color}` }}></span>
-                            <p>{topic}</p>
-                        </div>
-                        <Link to="/app/settings">
-                            <FaCaretRight />
-                        </Link>
-                    </div>)} */}
             </div>
             <div className='other-plans'>
                 <p className='other-plans-text'>{languagePack[language].otherPlansText}</p>

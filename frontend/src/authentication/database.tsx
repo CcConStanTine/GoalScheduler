@@ -29,6 +29,11 @@ class Database {
         return `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
     }
 
+    getPlanByPlanId = (dayId: number) => axios
+        .get(`${this.serverAddress}/schedule/${this.userId}/day_plans/${dayId}`, this.getAuthConfig())
+        .then(({ data }) => data)
+        .catch(({ response }) => response.data.message)
+
     getDayByDate = (date: string) => axios
         .get(`${this.serverAddress}/schedule/${this.userId}/day?local_date=${date}`, this.getAuthConfig())
         .then(({ data }) => data)
