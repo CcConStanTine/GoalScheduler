@@ -151,6 +151,24 @@ form{
         height: 30px;
         color: black;
     }
+
+    .view-entry-navigation{
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+
+        div{
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+        }
+
+        .delete-icon{
+            align-self: right;
+            margin-right: 5px;
+        }
+    }
 }
 
 .welcome-page{
@@ -544,5 +562,56 @@ form{
 
     .user-photo-message{
         margin: 20px 0;
+    }
+}
+
+.view-entry-page{
+
+    .content{
+        display: flex;
+        flex-direction: row;
+
+        .title,.data{
+            width: 50%;
+            padding: 10px;
+            font-size: 18px;
+
+            p{
+                padding: 10px 0;
+            }
+        }
+    }
+
+    .fulfilled{
+        position: fixed;
+        top: 50px;
+        left: 0;
+        background-color: rgba(230,230,230, 0.7);
+        width: 100%;
+        height: calc(100% - 50px);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 1;
+
+        p{
+            transform: rotate(30deg);
+            font-size: 25px;
+        }
+    }
+
+    .edit-button{
+        position: fixed;
+        bottom: 5vh;
+        right: 5vh;
+        padding: 20px;
+        border-radius: 50%;
+        border: unset;
+        background-color: rgb(180, 180, 180);
+        outline: unset;
+
+        svg{
+            font-size: 25px;
+        }
     }
 }

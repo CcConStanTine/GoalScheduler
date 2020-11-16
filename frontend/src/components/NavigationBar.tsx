@@ -1,5 +1,5 @@
 import React from 'react';
-import { FaChevronLeft, FaPlus, FaEllipsisV } from 'react-icons/fa';
+import { FaChevronLeft, FaPlus, FaEllipsisV, FaTrash } from 'react-icons/fa';
 import { Link } from 'react-router-dom'
 import { appName, PageNavigationTypes } from '../utils/variables';
 
@@ -27,6 +27,15 @@ const NavigationBar = ({ type, history, placeholder }: Navigation) =>
                 <FaChevronLeft onClick={() => history.goBack()} />
                 <p>{placeholder}</p>
             </>
+        }
+        {type === PageNavigationTypes.VIEWENTRY &&
+            <div className='view-entry-navigation'>
+                <div>
+                    <FaChevronLeft onClick={() => history.goBack()} />
+                    <p>{placeholder}</p>
+                </div>
+                <FaTrash className='delete-icon' />
+            </div>
         }
     </nav>
 

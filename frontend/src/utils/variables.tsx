@@ -19,6 +19,7 @@ export const AccountFormErrorTypes = {
 export const PageNavigationTypes = {
     HOMEPAGE: 'homepage',
     DEFAULT: 'settings',
+    VIEWENTRY: 'viewEntry',
 }
 
 export const ChangeUserCredentialsTypes = {
