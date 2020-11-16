@@ -30,6 +30,14 @@ public class DayPlanService {
         return getDayPlansByScheduleIdAndDayIdFromRepo(scheduleId, dayId);
     }
 
+    public DayPlan getDayPlan(long scheduleId, long dayPlanId) {
+        DayPlan dayPlan = getNotNullDayPlanById(dayPlanId);
+        if(hasAccess(scheduleId, dayPlan))
+            return dayPlan;
+        else
+            throw new AccessDeniedException("This user cannot access this resource. ");
+    }
+
     public DayPlan createDayPlan(long scheduleId, long dayId, DayPlanInputDTO dayPlanInputDTO) {
         return saveDayPlan(new DayPlan(dayPlanInputDTO.getContent(),
                 dayPlanInputDTO.getStartDate(),

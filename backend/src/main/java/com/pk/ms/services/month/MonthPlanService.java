@@ -2,7 +2,6 @@ package com.pk.ms.services.month;
 
 import com.pk.ms.dao.month.MonthPlanRepository;
 import com.pk.ms.dto.month.MonthPlanInputDTO;
-import com.pk.ms.entities.month.Month;
 import com.pk.ms.entities.month.MonthPlan;
 import com.pk.ms.exceptions.AccessDeniedException;
 import com.pk.ms.exceptions.ResourceNotAvailableException;
@@ -29,6 +28,14 @@ public class MonthPlanService {
 
     public List<MonthPlan> getMonthPlansByScheduleIdAndMonthId(long scheduleId, long monthId) {
         return getMonthPlansByScheduleIdAndMonthIdFromRepo(scheduleId, monthId);
+    }
+
+    public MonthPlan getMonthPlan(long scheduleId, long monthPlanId) {
+        MonthPlan monthPlan = getNotNullMonthPlanById(monthPlanId);
+        if(hasAccess(scheduleId, monthPlan))
+            return monthPlan;
+        else
+            throw new AccessDeniedException("This user cannot access this resource. ");
     }
 
     public MonthPlan createMonthPlan(long scheduleId, long monthId, MonthPlanInputDTO monthPlanInputDTO) {
@@ -87,7 +94,7 @@ public class MonthPlanService {
 
 
     private List<MonthPlan> getMonthPlansByScheduleIdAndMonthIdFromRepo(long scheduleId, long monthId) {
-        return monthPlanRepo.findYearPlansByScheduleIdAndMonthId(scheduleId, monthId);
+        return monthPlanRepo.findMonthPlansByScheduleIdAndMonthId(scheduleId, monthId);
     }
 
     private MonthPlan getNotNullMonthPlanById(long id) {

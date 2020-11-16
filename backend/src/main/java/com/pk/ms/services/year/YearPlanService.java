@@ -2,7 +2,6 @@ package com.pk.ms.services.year;
 
 import com.pk.ms.dao.year.YearPlanRepository;
 import com.pk.ms.dto.year.YearPlanInputDTO;
-import com.pk.ms.entities.year.Year;
 import com.pk.ms.entities.year.YearPlan;
 import com.pk.ms.exceptions.AccessDeniedException;
 import com.pk.ms.exceptions.ResourceNotAvailableException;
@@ -29,6 +28,14 @@ public class YearPlanService {
 
     public List<YearPlan> getYearPlansByScheduleIdAndYearId(long scheduleId, long yearId) {
         return getYearPlansByScheduleIdAndYearIdFromRepo(scheduleId, yearId);
+    }
+
+    public YearPlan getYearPlan(long scheduleId, long yearPlanId) {
+        YearPlan yearPlan = getNotNullYearPlanById(yearPlanId);
+        if(hasAccess(scheduleId, yearPlan))
+            return yearPlan;
+        else
+            throw new AccessDeniedException("This user cannot access this resource. ");
     }
 
     public YearPlan createYearPlan(long scheduleId, long yearId, YearPlanInputDTO yearPlanInputDTO) {

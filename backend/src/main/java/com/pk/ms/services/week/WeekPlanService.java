@@ -2,7 +2,6 @@ package com.pk.ms.services.week;
 
 import com.pk.ms.dao.week.WeekPlanRepository;
 import com.pk.ms.dto.week.WeekPlanInputDTO;
-import com.pk.ms.entities.week.Week;
 import com.pk.ms.entities.week.WeekPlan;
 import com.pk.ms.exceptions.AccessDeniedException;
 import com.pk.ms.exceptions.ResourceNotAvailableException;
@@ -29,6 +28,14 @@ public class WeekPlanService {
 
     public List<WeekPlan> getWeekPlansByScheduleIdAndWeekId(long scheduleId, long weekId) {
         return getWeekPlansByScheduleIdAndWeekIdFromRepo(scheduleId, weekId);
+    }
+
+    public WeekPlan getWeekPlan(long scheduleId, long weekPlanId) {
+        WeekPlan weekPlan = getNotNullWeekPlanById(weekPlanId);
+        if(hasAccess(scheduleId, weekPlan))
+            return weekPlan;
+        else
+            throw new AccessDeniedException("This user cannot access this resource. ");
     }
 
     public WeekPlan createWeekPlan(long scheduleId, long weekId, WeekPlanInputDTO weekPlanInputDTO) {

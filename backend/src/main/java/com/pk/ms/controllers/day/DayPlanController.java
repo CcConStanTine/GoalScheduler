@@ -27,6 +27,12 @@ public class DayPlanController {
         return ResponseEntity.ok(dayPlanService.getDayPlansByScheduleIdAndDayId(scheduleId, dayId));
     }
 
+    @GetMapping(value = "/day_plans/{day_plan_id}")
+    public ResponseEntity<DayPlan> getDayPlan(@PathVariable("schedule_id") long scheduleId,
+                                              @PathVariable("day_plan_id") long dayPlanId) {
+        return ResponseEntity.ok(dayPlanService.getDayPlan(scheduleId, dayPlanId));
+    }
+
     @PostMapping(value="/day/{day_id}/day_plan", consumes = "application/json")
     public ResponseEntity<DayPlan> createDayPlan(@PathVariable("schedule_id") long scheduleId,
                                                  @PathVariable("day_id") long dayId,

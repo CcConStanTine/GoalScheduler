@@ -27,6 +27,12 @@ public class YearPlanController {
         return ResponseEntity.ok(yearPlanService.getYearPlansByScheduleIdAndYearId(scheduleId, yearId));
     }
 
+    @GetMapping(value = "/year_plans/{year_plan_id}")
+    public ResponseEntity<YearPlan> getYearPlan(@PathVariable("schedule_id") long scheduleId,
+                                                @PathVariable("year_plan_id") long yearPlanId) {
+        return ResponseEntity.ok(yearPlanService.getYearPlan(scheduleId, yearPlanId));
+    }
+
     @PostMapping(value="/year/{year_id}/year_plan", consumes = "application/json")
     public ResponseEntity<YearPlan> createYearPlan(@PathVariable("schedule_id") long scheduleId,
                                                    @PathVariable("year_id") long yearId,

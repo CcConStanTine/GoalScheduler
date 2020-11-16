@@ -13,6 +13,6 @@ public interface MonthPlanRepository extends CrudRepository<MonthPlan, Long> {
     MonthPlan findById(long id);
 
     @Query(nativeQuery = true, value = "SELECT * FROM month_plan WHERE schedule_id = ? AND month_id = ?")
-    List<MonthPlan> findYearPlansByScheduleIdAndMonthId(long scheduleId, long monthId);
+    List<MonthPlan> findMonthPlansByScheduleIdAndMonthId(long scheduleId, long monthId);
 
 }

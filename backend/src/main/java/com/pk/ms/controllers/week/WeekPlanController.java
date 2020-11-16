@@ -27,6 +27,12 @@ public class WeekPlanController {
         return ResponseEntity.ok(weekPlanService.getWeekPlansByScheduleIdAndWeekId(scheduleId, weekId));
     }
 
+    @GetMapping(value = "/week_plans/{week_plan_id}")
+    public ResponseEntity<WeekPlan> getWeekPlan(@PathVariable("schedule_id") long scheduleId,
+                                                @PathVariable("week_plan_id") long weekPlanId) {
+        return ResponseEntity.ok(weekPlanService.getWeekPlan(scheduleId, weekPlanId));
+    }
+
     @PostMapping(value="/week/{week_id}/week_plan", consumes = "application/json")
     public ResponseEntity<WeekPlan> createWeekPlan(@PathVariable("schedule_id") long scheduleId,
                                                    @PathVariable("week_id") long weekId,

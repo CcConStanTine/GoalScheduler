@@ -27,6 +27,12 @@ public class MonthPlanController {
         return ResponseEntity.ok(monthPlanService.getMonthPlansByScheduleIdAndMonthId(scheduleId, monthId));
     }
 
+    @GetMapping(value = "/month_plans/{month_plan_id}")
+    public ResponseEntity<MonthPlan> getMonthPlan(@PathVariable("schedule_id") long scheduleId,
+                                                  @PathVariable("month_plan_id") long monthPlanId) {
+        return ResponseEntity.ok(monthPlanService.getMonthPlan(scheduleId, monthPlanId));
+    }
+
     @PostMapping(value="/month/{month_id}/month_plan", consumes = "application/json")
     public ResponseEntity<MonthPlan> createMonthPlan(@PathVariable("schedule_id") long scheduleId,
                                                      @PathVariable("month_id") long monthId,
