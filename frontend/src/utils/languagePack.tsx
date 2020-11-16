@@ -50,7 +50,11 @@ const languagePack: languageInterface = {
         selectPhoto: 'Select Photo',
         uploadImage: 'Upload',
         deletePhoto: 'Delete Photo',
-        viewEntry: 'View'
+        viewEntry: 'View',
+        viewEndDate: 'End Time',
+        viewStartDate: 'Start Time',
+        viewFulfilledPlan: 'This task has been completed',
+        viewPlanDescription: 'Task Description',
     },
     'pl-PL': {
         signOutText: 'Wyloguj się',
@@ -100,7 +104,11 @@ const languagePack: languageInterface = {
         selectPhoto: 'Wybierz zdjęcie',
         uploadImage: 'Prześlij',
         deletePhoto: 'Usuń zdjęcie',
-        viewEntry: 'Podgląd'
+        viewEntry: 'Podgląd',
+        viewStartDate: 'Godzina rozpoczęcia',
+        viewEndDate: 'Godzina zakończenia',
+        viewFulfilledPlan: 'Zadanie zostało ukończone',
+        viewPlanDescription: 'Opis zadania',
     }
 }
 

@@ -123,5 +123,9 @@ export interface languageInterface {
         uploadImage: string;
         deletePhoto: string;
         viewEntry: string;
+        viewStartDate: string;
+        viewEndDate: string;
+        viewFulfilledPlan: string;
+        viewPlanDescription: string;
     };
 }
