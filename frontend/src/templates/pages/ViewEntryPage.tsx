@@ -5,7 +5,7 @@ import NavigationBar from '../../components/NavigationBar';
 import { LanguageContext } from '../../authentication/LanguageContext';
 import auth from '../../authentication/database';
 import { useParams } from "react-router-dom";
-import { FaPen } from 'react-icons/fa';
+import { FaPen, FaCheck, FaTimes } from 'react-icons/fa';
 
 interface HomeInterface {
     history: any
@@ -27,6 +27,7 @@ const ViewEntryPage = ({ history }: HomeInterface) => {
     const { language } = useContext(LanguageContext);
     const { id } = useParams<RouteParams>();
     const [entry, setEntry] = useState<EntryParams>({});
+    const [deleteEntryWindow, showDeleteEntryWindow] = useState<boolean>(false);
 
     useEffect(() => {
         const getEntryData = async () => {
@@ -38,9 +39,19 @@ const ViewEntryPage = ({ history }: HomeInterface) => {
         getEntryData();
     }, [id])
 
+    const deleteEntry = async () => {
+        await auth.deletePlanByPlanId(parseInt(id));
+        return history.goBack();
+    }
+
     return (
         <section className={`view-entry-page ${entry?.fulfilled}`}>
-            <NavigationBar type={PageNavigationTypes.VIEWENTRY} history={history} placeholder={languagePack[language].viewEntry} />
+            <NavigationBar
+                type={PageNavigationTypes.VIEWENTRY}
+                history={history}
+                placeholder={languagePack[language].viewEntry}
+                deleteFunction={showDeleteEntryWindow}
+            />
             <div className='content'>
                 <div className="title">
                     <p>{languagePack[language].viewStartDate}</p>
@@ -53,9 +64,23 @@ const ViewEntryPage = ({ history }: HomeInterface) => {
                     <p>{entry?.content}</p>
                 </div>
             </div>
-            <button className='edit-button'>
+            <button className='functionBtn edit-button'>
                 <FaPen />
             </button>
+            <button className={`functionBtn finish-button completed-${entry?.fulfilled}`}>
+                {entry?.fulfilled ? <FaTimes /> : <FaCheck />}
+            </button>
+
+            {deleteEntryWindow && <div className='delete-window'>
+                <div className='delete-message-container'>
+                    <p>{languagePack[language].entryDeleteText}</p>
+                    <div className='delete-options'>
+                        <button className='default-button' onClick={deleteEntry}>{languagePack[language].deleteText}</button>
+                        <button className='default-button' onClick={() => showDeleteEntryWindow(false)}>{languagePack[language].cancelText}</button>
+                    </div>
+                </div>
+            </div>}
+
             {entry?.fulfilled && <div className='fulfilled'>
                 <p>{languagePack[language].viewFulfilledPlan}</p>
             </div>}

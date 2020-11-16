@@ -55,6 +55,9 @@ const languagePack: languageInterface = {
         viewStartDate: 'Start Time',
         viewFulfilledPlan: 'This task has been completed',
         viewPlanDescription: 'Task Description',
+        cancelText: 'Cancel',
+        deleteText: 'Delete',
+        entryDeleteText: "Are you sure? You won't be able to get your task back"
     },
     'pl-PL': {
         signOutText: 'Wyloguj się',
@@ -109,6 +112,9 @@ const languagePack: languageInterface = {
         viewEndDate: 'Godzina zakończenia',
         viewFulfilledPlan: 'Zadanie zostało ukończone',
         viewPlanDescription: 'Opis zadania',
+        cancelText: 'Anuluj',
+        deleteText: 'Usuń',
+        entryDeleteText: 'Napewno? Nie będzie można przywrócić tego zadania'
     }
 }
 

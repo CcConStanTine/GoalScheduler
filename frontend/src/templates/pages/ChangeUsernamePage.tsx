@@ -69,7 +69,7 @@ const ChangeUsernamePage: React.FC = ({ history }: any) => {
       <form onSubmit={handleSubmit(sendRequestToChangeUsername)}>
         {renderAccountFormInputs(ChangeNicknameInputData)}
         {message && <p className='change-username-message'>{message}</p>}
-        <input className="send-form-button" type="submit" value={languagePack[language].changeUserSettingsInputValue} />
+        <input className="default-button" type="submit" value={languagePack[language].changeUserSettingsInputValue} />
       </form>
     </section>
   );

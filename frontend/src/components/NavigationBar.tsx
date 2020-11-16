@@ -7,9 +7,10 @@ interface Navigation {
     type: string;
     history?: any;
     placeholder?: string;
+    deleteFunction?: (value: boolean) => void;
 }
 
-const NavigationBar = ({ type, history, placeholder }: Navigation) =>
+const NavigationBar = ({ type, history, placeholder, deleteFunction }: Navigation) =>
     <nav className="navigation">
         {type === PageNavigationTypes.HOMEPAGE &&
             <>
@@ -34,7 +35,7 @@ const NavigationBar = ({ type, history, placeholder }: Navigation) =>
                     <FaChevronLeft onClick={() => history.goBack()} />
                     <p>{placeholder}</p>
                 </div>
-                <FaTrash className='delete-icon' />
+                <FaTrash className='delete-icon' onClick={() => deleteFunction!(true)} />
             </div>
         }
     </nav>

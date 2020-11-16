@@ -80,7 +80,7 @@ const ChangePasswordPage: React.FC = ({ history }: any) => {
       <form onSubmit={handleSubmit(sendRequestToChangePassword)}>
         {renderAccountFormInputs(ChangePasswordInputData)}
         {message && <p className='change-password-message'>{message}</p>}
-        <input className="send-form-button" type="submit" value={languagePack[language].changeUserSettingsInputValue} />
+        <input className="default-button" type="submit" value={languagePack[language].changeUserSettingsInputValue} />
       </form>
     </section>
   );

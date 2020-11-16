@@ -127,5 +127,8 @@ export interface languageInterface {
         viewEndDate: string;
         viewFulfilledPlan: string;
         viewPlanDescription: string;
+        deleteText: string;
+        cancelText: string;
+        entryDeleteText: string;
     };
 }

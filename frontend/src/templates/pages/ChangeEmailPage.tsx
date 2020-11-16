@@ -65,7 +65,7 @@ const ChangeEmailPage: React.FC = ({ history }: any) => {
       <form onSubmit={handleSubmit(sendRequestToChangeEmail)}>
         {renderAccountFormInputs(ChangeEmailInputData)}
         {message && <p className='change-email-message'>{message}</p>}
-        <input className="send-form-button" type="submit" value={languagePack[language].changeUserSettingsInputValue} />
+        <input className="default-button" type="submit" value={languagePack[language].changeUserSettingsInputValue} />
       </form>
     </section>
   );

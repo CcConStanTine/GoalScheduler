@@ -29,8 +29,15 @@ class Database {
         return `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
     }
 
-    getPlanByPlanId = (dayId: number) => axios
-        .get(`${this.serverAddress}/schedule/${this.userId}/day_plans/${dayId}`, this.getAuthConfig())
+    //schedule/2/day_plan/215
+
+    deletePlanByPlanId = (planId: number) => axios
+        .delete(`${this.serverAddress}/schedule/${this.userId}/day_plan/${planId}`, this.getAuthConfig())
+        .then(({ data }) => data)
+        .catch(({ response }) => response.data.message)
+
+    getPlanByPlanId = (planId: number) => axios
+        .get(`${this.serverAddress}/schedule/${this.userId}/day_plans/${planId}`, this.getAuthConfig())
         .then(({ data }) => data)
         .catch(({ response }) => response.data.message)
 
