@@ -83,6 +83,19 @@
             }
         }
     }
+
+    .view-entry-page{
+        .fulfilled{
+            background-color: rgba(0,0,0,0.7);
+        }
+        .delete-window{
+            background-color: rgba(0,0,0,0.7);
+
+            .delete-message-container{
+                background-color: #333;
+            }
+        }
+    }
 }
 
 .default-button{
@@ -446,6 +459,11 @@ form{
 
                 p{
                     font-size: 17px;
+                    width: 70vw;
+                    height: 25px;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                    white-space: nowrap;
                 }
             }
 
@@ -649,10 +667,9 @@ form{
         height: 100%;
         background-color: rgba(200,200,200, 0.7);
         padding-top: 50px;
-        z-index: 2;
+        z-index: 4;
 
         .delete-message-container{
-            // width: 80%;
             padding: 20px;
             background-color: white;
             text-align-last: center;

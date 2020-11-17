@@ -114,7 +114,7 @@ const languagePack: languageInterface = {
         viewPlanDescription: 'Opis zadania',
         cancelText: 'Anuluj',
         deleteText: 'Usuń',
-        entryDeleteText: 'Napewno? Nie będzie można przywrócić tego zadania'
+        entryDeleteText: 'Na pewno? Nie będzie można przywrócić tego zadania'
     }
 }
 
