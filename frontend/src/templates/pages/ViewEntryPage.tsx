@@ -28,6 +28,7 @@ const ViewEntryPage = ({ history }: HomeInterface) => {
     const { id } = useParams<RouteParams>();
     const [entry, setEntry] = useState<EntryParams>({});
     const [deleteEntryWindow, showDeleteEntryWindow] = useState<boolean>(false);
+    const [finishEntryWindow, showFinishEntryWindow] = useState<boolean>(false);
 
     useEffect(() => {
         const getEntryData = async () => {
@@ -37,7 +38,7 @@ const ViewEntryPage = ({ history }: HomeInterface) => {
         }
 
         getEntryData();
-    }, [id])
+    }, [id, finishEntryWindow])
 
     const deleteEntry = async () => {
         await auth.deletePlanByPlanId(parseInt(id));
@@ -46,7 +47,7 @@ const ViewEntryPage = ({ history }: HomeInterface) => {
 
     const toggleFulfilledPlan = async () => {
         await auth.toggleFinishPlanByPlanId(parseInt(id));
-        return history.goBack();
+        showFinishEntryWindow(false);
     }
 
     return (
@@ -74,18 +75,30 @@ const ViewEntryPage = ({ history }: HomeInterface) => {
             </button>
             <button className={`functionBtn finish-button completed-${entry?.fulfilled}`}>
                 {entry?.fulfilled ?
-                    <FaTimes onClick={() => toggleFulfilledPlan()} />
+                    <FaTimes onClick={() => showFinishEntryWindow(true)} />
                     :
-                    <FaCheck onClick={() => toggleFulfilledPlan()} />
+                    <FaCheck onClick={() => showFinishEntryWindow(true)} />
                 }
             </button>
 
             {deleteEntryWindow && <div className='delete-window'>
-                <div className='delete-message-container'>
+                <div className='message-container'>
                     <p>{languagePack[language].entryDeleteText}</p>
-                    <div className='delete-options'>
+                    <div className='options'>
                         <button className='default-button' onClick={deleteEntry}>{languagePack[language].deleteText}</button>
                         <button className='default-button' onClick={() => showDeleteEntryWindow(false)}>{languagePack[language].cancelText}</button>
+                    </div>
+                </div>
+            </div>}
+
+            {finishEntryWindow && <div className='finish-window'>
+                <div className='message-container'>
+                    <p>{entry?.fulfilled ? languagePack[language].unFulfilledText : languagePack[language].successfulyFulfilledText}</p>
+                    <div className='options'>
+                        <button className='default-button' onClick={toggleFulfilledPlan}>
+                            {entry?.fulfilled ? languagePack[language].unFulfilledTextSendOption : languagePack[language].successfulyFulfilledTextSendOption}
+                        </button>
+                        <button className='default-button' onClick={() => showFinishEntryWindow(false)}>{languagePack[language].cancelText}</button>
                     </div>
                 </div>
             </div>}

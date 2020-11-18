@@ -57,7 +57,11 @@ const languagePack: languageInterface = {
         viewPlanDescription: 'Task Description',
         cancelText: 'Cancel',
         deleteText: 'Delete',
-        entryDeleteText: "Are you sure? You won't be able to get your task back"
+        entryDeleteText: "Are you sure? You won't be able to get your task back",
+        successfulyFulfilledText: 'Have you finished this task?',
+        successfulyFulfilledTextSendOption: 'I have',
+        unFulfilledText: 'Do u want to restore this task?',
+        unFulfilledTextSendOption: 'I do'
     },
     'pl-PL': {
         signOutText: 'Wyloguj się',
@@ -114,7 +118,11 @@ const languagePack: languageInterface = {
         viewPlanDescription: 'Opis zadania',
         cancelText: 'Anuluj',
         deleteText: 'Usuń',
-        entryDeleteText: 'Na pewno? Nie będzie można przywrócić tego zadania'
+        entryDeleteText: 'Na pewno? Nie będzie można przywrócić tego zadania',
+        successfulyFulfilledText: 'Czy chcesz ukończyć to zadanie?',
+        successfulyFulfilledTextSendOption: 'Ukończ',
+        unFulfilledText: 'Czy chcesz aktywować to zadanie?',
+        unFulfilledTextSendOption: 'Aktywuj'
     }
 }
 

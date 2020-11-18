@@ -130,5 +130,9 @@ export interface languageInterface {
         deleteText: string;
         cancelText: string;
         entryDeleteText: string;
+        successfulyFulfilledText: string;
+        successfulyFulfilledTextSendOption: string;
+        unFulfilledText: string;
+        unFulfilledTextSendOption: string;
     };
 }

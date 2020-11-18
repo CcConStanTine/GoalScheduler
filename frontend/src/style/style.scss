@@ -656,7 +656,7 @@ form{
         background-color: rgb(145, 14, 14);
     }
 
-    .delete-window{
+    .delete-window, .finish-window{
         display: flex;
         justify-content: center;
         align-items: flex-start;
@@ -669,16 +669,17 @@ form{
         padding-top: 50px;
         z-index: 4;
 
-        .delete-message-container{
+        .message-container{
             padding: 20px;
             background-color: white;
             text-align-last: center;
+            width: 100%;
 
             p{
                 font-size: 18px;
             }
 
-            .delete-options{
+            .options{
                 display: flex;
                 flex-direction: row;
                 justify-content: space-around;
