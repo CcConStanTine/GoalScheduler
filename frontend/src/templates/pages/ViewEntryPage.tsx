@@ -44,6 +44,11 @@ const ViewEntryPage = ({ history }: HomeInterface) => {
         return history.goBack();
     }
 
+    const toggleFulfilledPlan = async () => {
+        await auth.toggleFinishPlanByPlanId(parseInt(id));
+        return history.goBack();
+    }
+
     return (
         <section className={`view-entry-page ${entry?.fulfilled}`}>
             <NavigationBar
@@ -68,7 +73,11 @@ const ViewEntryPage = ({ history }: HomeInterface) => {
                 <FaPen />
             </button>
             <button className={`functionBtn finish-button completed-${entry?.fulfilled}`}>
-                {entry?.fulfilled ? <FaTimes /> : <FaCheck />}
+                {entry?.fulfilled ?
+                    <FaTimes onClick={() => toggleFulfilledPlan()} />
+                    :
+                    <FaCheck onClick={() => toggleFulfilledPlan()} />
+                }
             </button>
 
             {deleteEntryWindow && <div className='delete-window'>

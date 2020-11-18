@@ -31,6 +31,11 @@ class Database {
 
     //schedule/2/day_plan/215
 
+    toggleFinishPlanByPlanId = (planId: number) => axios
+        .patch(`${this.serverAddress}/schedule/${this.userId}/day_plan/${planId}/fulfilled`, {}, this.getAuthConfig())
+        .then(({ data }) => data)
+        .catch(({ response }) => console.log(response.data))
+
     deletePlanByPlanId = (planId: number) => axios
         .delete(`${this.serverAddress}/schedule/${this.userId}/day_plan/${planId}`, this.getAuthConfig())
         .then(({ data }) => data)
@@ -52,7 +57,8 @@ class Database {
         .catch(({ response }) => response.data.message)
 
     getTodayPlans = async () => {
-        const date = this.getCurrentDate();
+        // const date = this.getCurrentDate();
+        const date = '2020-11-17';
         const { dayId } = await this.getDayByDate(date);
         const todayPlans = await this.getDayPlansByDayID(dayId);
         return todayPlans;
