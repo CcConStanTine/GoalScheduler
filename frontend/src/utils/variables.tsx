@@ -27,6 +27,11 @@ export const ChangeUserCredentialsTypes = {
     USERPASSWORD: 'password',
     EMAIL: 'email',
     USERPHOTO: 'photo',
+};
+
+export const EntryPageConfirmWindowTypes = {
+    DELETE: 'delete',
+    FINISH: 'finish',
 }
 
 

@@ -1,11 +1,12 @@
 import React, { useContext, useState, useEffect } from 'react';
-import { PageNavigationTypes } from '../../utils/variables';
+import { PageNavigationTypes, EntryPageConfirmWindowTypes } from '../../utils/variables';
 import languagePack from '../../utils/languagePack';
 import NavigationBar from '../../components/NavigationBar';
 import { LanguageContext } from '../../authentication/LanguageContext';
 import auth from '../../authentication/database';
 import { useParams } from "react-router-dom";
 import { FaPen, FaCheck, FaTimes } from 'react-icons/fa';
+import EntryPageConfirmWindow from '../../components/EntryPageConfirmWindow';
 
 interface HomeInterface {
     history: any
@@ -81,27 +82,24 @@ const ViewEntryPage = ({ history }: HomeInterface) => {
                 }
             </button>
 
-            {deleteEntryWindow && <div className='delete-window'>
-                <div className='message-container'>
-                    <p>{languagePack[language].entryDeleteText}</p>
-                    <div className='options'>
-                        <button className='default-button' onClick={deleteEntry}>{languagePack[language].deleteText}</button>
-                        <button className='default-button' onClick={() => showDeleteEntryWindow(false)}>{languagePack[language].cancelText}</button>
-                    </div>
-                </div>
-            </div>}
+            {deleteEntryWindow && <EntryPageConfirmWindow
+                type={EntryPageConfirmWindowTypes.DELETE}
+                placeholder={languagePack[language].entryDeleteText}
+                optionText={languagePack[language].deleteText}
+                closeWindowFunction={showDeleteEntryWindow}
+                sendRequestFunction={deleteEntry}
+            />}
 
-            {finishEntryWindow && <div className='finish-window'>
-                <div className='message-container'>
-                    <p>{entry?.fulfilled ? languagePack[language].unFulfilledText : languagePack[language].successfulyFulfilledText}</p>
-                    <div className='options'>
-                        <button className='default-button' onClick={toggleFulfilledPlan}>
-                            {entry?.fulfilled ? languagePack[language].unFulfilledTextSendOption : languagePack[language].successfulyFulfilledTextSendOption}
-                        </button>
-                        <button className='default-button' onClick={() => showFinishEntryWindow(false)}>{languagePack[language].cancelText}</button>
-                    </div>
-                </div>
-            </div>}
+            {finishEntryWindow && <EntryPageConfirmWindow
+                type={EntryPageConfirmWindowTypes.FINISH}
+                placeholder={languagePack[language].successfulyFulfilledText}
+                optionText={languagePack[language].successfulyFulfilledTextSendOption}
+                closeWindowFunction={showFinishEntryWindow}
+                sendRequestFunction={toggleFulfilledPlan}
+                fulfilled={entry?.fulfilled}
+                unFulfilledPlaceholder={languagePack[language].unFulfilledText}
+                unFullfilledOptionText={languagePack[language].unFulfilledTextSendOption}
+            />}
 
             {entry?.fulfilled && <div className='fulfilled'>
                 <p>{languagePack[language].viewFulfilledPlan}</p>
