@@ -7,6 +7,7 @@ import languagePack from '../../utils/languagePack';
 import NavigationBar from '../../components/NavigationBar';
 import userDefaultPhoto from '../../images/planner.jpg';
 import renderTodayPlans from '../../components/RenderTodayPlans';
+import HomePageOtherEntries from '../../components/HomePageOtherEntries';
 
 interface HomeInterface {
     history: any
@@ -52,14 +53,7 @@ const HomePage = ({ history }: HomeInterface) => {
             </div>
             <div className='other-plans'>
                 <p className='other-plans-text'>{languagePack[language].otherPlansText}</p>
-                <div className='other-plans-container'>
-                    <div className='plan'>
-                        <p>2020</p>
-                    </div>
-                    <div className='plan'>
-                        <p>2019</p>
-                    </div>
-                </div>
+                <HomePageOtherEntries />
             </div>
         </div>
     )

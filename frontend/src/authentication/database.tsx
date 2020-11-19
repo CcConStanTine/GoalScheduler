@@ -31,6 +31,24 @@ class Database {
 
     //schedule/2/day_plan/215
 
+    getYearPlans = async (date: string = this.getCurrentDate()) => {
+        const { yearId } = await this.getYearByDate(date);
+        const yearPlans = await this.getYearPlansByYearId(yearId);
+
+        return yearPlans;
+    }
+
+    getYearByDate = (date: string) => axios
+        .get(`${this.serverAddress}/schedule/${this.userId}/year?local_date=${date}`, this.getAuthConfig())
+        .then(({ data }) => data)
+        .catch(({ response }) => console.log(response.data))
+
+    getYearPlansByYearId = (yearId: number) => axios
+        .get(`${this.serverAddress}/schedule/${this.userId}/year/${yearId}/year_plans`, this.getAuthConfig())
+        .then(({ data }) => data)
+        .catch(({ response }) => console.log(response.data))
+
+
     toggleFinishPlanByPlanId = (planId: number) => axios
         .patch(`${this.serverAddress}/schedule/${this.userId}/day_plan/${planId}/fulfilled`, {}, this.getAuthConfig())
         .then(({ data }) => data)

@@ -48,7 +48,7 @@ const ViewEntryPage = ({ history }: HomeInterface) => {
 
     const toggleFulfilledPlan = async () => {
         await auth.toggleFinishPlanByPlanId(parseInt(id));
-        showFinishEntryWindow(false);
+        return showFinishEntryWindow(false);
     }
 
     return (
