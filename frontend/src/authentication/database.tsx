@@ -29,7 +29,22 @@ class Database {
         return `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
     }
 
-    //schedule/2/day_plan/215
+    getMonthPlans = async (date: string = this.getCurrentDate()) => {
+        const { monthId } = await this.getMonthByDate(date);
+        const monthPlans = await this.getMonthPlansByMonthId(monthId);
+
+        return monthPlans;
+    }
+
+    getMonthPlansByMonthId = (monthId: number) => axios
+        .get(`${this.serverAddress}/schedule/${this.userId}/month/${monthId}/month_plans`, this.getAuthConfig())
+        .then(({ data }) => data)
+        .catch(({ response }) => console.log(response.data))
+
+    getMonthByDate = (date: string) => axios
+        .get(`${this.serverAddress}/schedule/${this.userId}/month?local_date=${date}`, this.getAuthConfig())
+        .then(({ data }) => data)
+        .catch(({ response }) => console.log(response.data))
 
     getYearPlans = async (date: string = this.getCurrentDate()) => {
         const { yearId } = await this.getYearByDate(date);
