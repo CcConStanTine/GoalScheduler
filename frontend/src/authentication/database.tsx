@@ -29,11 +29,18 @@ class Database {
         return `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
     }
 
-    getMonthPlans = async (date: string = this.getCurrentDate()) => {
-        const { monthId } = await this.getMonthByDate(date);
-        const monthPlans = await this.getMonthPlansByMonthId(monthId);
+    getDayPlans = async (date: string = this.getCurrentDate()) => {
+        const { dayId, dayName } = await this.getDayByDate(date);
+        const plans = await this.getDayPlansByDayID(dayId);
 
-        return monthPlans;
+        return { placeholder: dayName, plans }
+    }
+
+    getMonthPlans = async (date: string = this.getCurrentDate()) => {
+        const { monthId, monthName } = await this.getMonthByDate(date);
+        const plans = await this.getMonthPlansByMonthId(monthId);
+
+        return { placeholder: monthName, plans };
     }
 
     getMonthPlansByMonthId = (monthId: number) => axios
@@ -47,10 +54,10 @@ class Database {
         .catch(({ response }) => console.log(response.data))
 
     getYearPlans = async (date: string = this.getCurrentDate()) => {
-        const { yearId } = await this.getYearByDate(date);
-        const yearPlans = await this.getYearPlansByYearId(yearId);
+        const { yearId, yearNumber } = await this.getYearByDate(date);
+        const plans = await this.getYearPlansByYearId(yearId);
 
-        return yearPlans;
+        return { placeholder: yearNumber, plans };
     }
 
     getYearByDate = (date: string) => axios
@@ -79,7 +86,7 @@ class Database {
         .then(({ data }) => data)
         .catch(({ response }) => response.data.message)
 
-    getDayByDate = (date: string) => axios
+    getDayByDate = (date: string = this.getCurrentDate()) => axios
         .get(`${this.serverAddress}/schedule/${this.userId}/day?local_date=${date}`, this.getAuthConfig())
         .then(({ data }) => data)
         .catch(({ response }) => response.data.message)
@@ -90,9 +97,7 @@ class Database {
         .catch(({ response }) => response.data.message)
 
     getTodayPlans = async () => {
-        // const date = this.getCurrentDate();
-        const date = '2020-11-17';
-        const { dayId } = await this.getDayByDate(date);
+        const { dayId } = await this.getDayByDate();
         const todayPlans = await this.getDayPlansByDayID(dayId);
         return todayPlans;
     }

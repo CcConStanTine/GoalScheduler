@@ -34,6 +34,11 @@ export const EntryPageConfirmWindowTypes = {
     FINISH: 'finish',
 }
 
+export const EntriesPlanType = {
+    YEAR: 'year',
+    MONTH: 'month',
+    DAY: 'day'
+}
 
 
 export const languageOptions: selectLanguageInterface = {

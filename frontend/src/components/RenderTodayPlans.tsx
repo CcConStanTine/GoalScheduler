@@ -21,7 +21,6 @@ const renderTodayPlans = (planList: planlistInterface) => planList.map(({ conten
         <div className='entry-info'>
             <span className='color'></span>
             <p>{content}</p>
-            {console.log(content, yearPlanId)}
         </div>
         <Link to={`view/${dayPlanId ? dayPlanId : yearPlanId}`}>
             <FaCaretRight />
