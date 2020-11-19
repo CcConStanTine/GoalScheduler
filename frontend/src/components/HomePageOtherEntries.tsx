@@ -5,10 +5,7 @@ import auth from '../authentication/database';
 
 const HomePageOtherEntries = () => {
     const [entryType, setEntryType] = useState('year');
-    const [entryData, setEntryData] = useState([{
-        content: 'hejo',
-        dayPlanId: 1
-    }]);
+    const [entryData, setEntryData] = useState([]);
 
     useEffect(() => {
         const getEntryData = async () => {
@@ -28,9 +25,9 @@ const HomePageOtherEntries = () => {
                 <FaChevronRight />
             </div>
             <div className='entries-navigation'>
-                <button className='default-button'>Year Plan</button>
-                <button className='default-button'>Month Plan</button>
-                <button className='default-button'>Day Plan</button>
+                <button className={`default-button ${entryType === 'year' && 'on'}`}>Year Plan</button>
+                <button className={`default-button ${entryType === 'month' && 'on'}`}>Month Plan</button>
+                <button className={`default-button ${entryType === 'day' && 'on'}`}>Day Plan</button>
             </div>
             <div className='entries'>
                 {renderTodayPlans(entryData)}
