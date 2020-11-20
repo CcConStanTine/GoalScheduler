@@ -53,6 +53,11 @@ class Database {
         return { placeholder: monthName, id: monthId, plans, daysAmount };
     }
 
+    getMonthsByDate = (date: string) => axios
+        .get(`${this.serverAddress}/schedule/${this.userId}/months?local_date=${date}`, this.getAuthConfig())
+        .then(({ data }) => data)
+        .catch(({ response }) => console.log(response.data))
+
     getMonthPlansByMonthId = (monthId: number) => axios
         .get(`${this.serverAddress}/schedule/${this.userId}/month/${monthId}/month_plans`, this.getAuthConfig())
         .then(({ data }) => data)

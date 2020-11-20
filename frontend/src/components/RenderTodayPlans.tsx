@@ -17,7 +17,7 @@ interface planProperties {
     yearPlanId?: number;
 }
 const renderTodayPlans = (planList: planlistInterface) => planList.map(({ content, dayPlanId, yearPlanId }: planProperties) =>
-    <div className='entry' key={`${content}${dayPlanId}`}>
+    <div className='entry' key={`${content}${dayPlanId ? dayPlanId : yearPlanId}`}>
         <div className='entry-info'>
             <span className='color'></span>
             <p>{content}</p>
