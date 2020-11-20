@@ -40,6 +40,11 @@ export const EntriesPlanType = {
     DAY: 'day'
 }
 
+export const navigationTypes = {
+    ADDITION: 'addition',
+    SUBTRACTION: 'subtraction'
+}
+
 
 export const languageOptions: selectLanguageInterface = {
     'en-US': [{

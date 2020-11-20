@@ -29,18 +29,28 @@ class Database {
         return `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
     }
 
+    getDayByDayId = async (dayId: number) => axios
+        .get(`${this.serverAddress}/schedule/${this.userId}/day/${dayId}`, this.getAuthConfig())
+        .then(({ data }) => data)
+        .catch(({ response }) => console.log(response.data))
+
     getDayPlans = async (date: string = this.getCurrentDate()) => {
         const { dayId, dayName } = await this.getDayByDate(date);
         const plans = await this.getDayPlansByDayID(dayId);
 
-        return { placeholder: dayName, plans }
+        return { placeholder: dayName, id: dayId, plans }
     }
 
+    getMonthById = async (monthId: number) => axios
+        .get(`${this.serverAddress}/schedule/${this.userId}/month/${monthId}`, this.getAuthConfig())
+        .then(({ data }) => data)
+        .catch(({ response }) => console.log(response.data))
+
     getMonthPlans = async (date: string = this.getCurrentDate()) => {
-        const { monthId, monthName } = await this.getMonthByDate(date);
+        const { monthId, monthName, daysAmount } = await this.getMonthByDate(date);
         const plans = await this.getMonthPlansByMonthId(monthId);
 
-        return { placeholder: monthName, plans };
+        return { placeholder: monthName, id: monthId, plans, daysAmount };
     }
 
     getMonthPlansByMonthId = (monthId: number) => axios
@@ -53,11 +63,16 @@ class Database {
         .then(({ data }) => data)
         .catch(({ response }) => console.log(response.data))
 
+    getYearByYearId = async (yearId: number) => axios
+        .get(`${this.serverAddress}/schedule/${this.userId}/year/${yearId}`, this.getAuthConfig())
+        .then(({ data }) => data)
+        .catch(({ response }) => console.log(response.data))
+
     getYearPlans = async (date: string = this.getCurrentDate()) => {
         const { yearId, yearNumber } = await this.getYearByDate(date);
         const plans = await this.getYearPlansByYearId(yearId);
 
-        return { placeholder: yearNumber, plans };
+        return { placeholder: yearNumber, id: yearId, plans };
     }
 
     getYearByDate = (date: string) => axios
