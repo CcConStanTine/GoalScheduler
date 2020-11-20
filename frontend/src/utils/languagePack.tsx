@@ -61,7 +61,19 @@ const languagePack: languageInterface = {
         successfulyFulfilledText: 'Have you finished this task?',
         successfulyFulfilledTextSendOption: 'I have',
         unFulfilledText: 'Do u want to restore this task?',
-        unFulfilledTextSendOption: 'I do'
+        unFulfilledTextSendOption: 'I do',
+        january: 'January',
+        february: 'February',
+        march: 'March',
+        april: 'April',
+        may: 'May',
+        june: 'June',
+        july: 'July',
+        august: 'August',
+        september: 'September',
+        october: 'October',
+        november: 'November',
+        december: 'December',
     },
     'pl-PL': {
         signOutText: 'Wyloguj się',
@@ -122,7 +134,19 @@ const languagePack: languageInterface = {
         successfulyFulfilledText: 'Czy chcesz ukończyć to zadanie?',
         successfulyFulfilledTextSendOption: 'Ukończ',
         unFulfilledText: 'Czy chcesz aktywować to zadanie?',
-        unFulfilledTextSendOption: 'Aktywuj'
+        unFulfilledTextSendOption: 'Aktywuj',
+        january: 'Styczeń',
+        february: 'Luty',
+        march: 'Marzec',
+        april: 'Kwiecień',
+        may: 'Maj',
+        june: 'Czerwiec',
+        july: 'Lipiec',
+        august: 'Sierpień',
+        september: 'Wrzesień',
+        october: 'Październik',
+        november: 'Listopad',
+        december: 'Grudzień',
     }
 }
 
