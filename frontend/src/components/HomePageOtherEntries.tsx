@@ -1,8 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { FaChevronRight, FaChevronLeft } from 'react-icons/fa';
 import renderTodayPlans from './RenderTodayPlans';
 import auth from '../authentication/database';
+import { LanguageContext } from '../authentication/LanguageContext';
 import { EntriesPlanType, navigationTypes } from '../utils/variables';
+import languagePack from '../utils/languagePack';
 
 interface entryParams {
     placeholder: number | null | string;
@@ -16,11 +18,11 @@ const getActualDateAsAObject = () => {
     return { year: date.getFullYear(), month: date.getMonth() + 1, day: date.getDate() }
 }
 
-const setIdValue = (sign: string, entryType: string, id: number, monthList?: any) => {
-    console.log(monthList);
+const setIdValue = (sign: string, entryType: string, id: number, entryList?: any) => {
+    console.log(entryList);
     if (entryType === EntriesPlanType.MONTH) {
-        const firstMonthId = monthList[0].monthId;
-        const lastMonthId = monthList[monthList.length - 1].monthId;
+        const firstMonthId = entryList[0].monthId;
+        const lastMonthId = entryList[entryList.length - 1].monthId;
 
         console.log(firstMonthId, lastMonthId, id, sign)
 
@@ -50,7 +52,23 @@ const setIdValue = (sign: string, entryType: string, id: number, monthList?: any
         }
     }
 
-    return 1;
+    const firstDayId = entryList[0].dayId;
+    const lastDayId = entryList[entryList.length - 1].dayId;
+
+    if (sign === navigationTypes.ADDITION) {
+        console.log('dodaje')
+        ++id;
+        if (id > lastDayId) return firstDayId;
+
+        return id;
+    }
+    else {
+        console.log('odejmuje')
+        --id;
+        if (id < firstDayId) return lastDayId;
+
+        return id;
+    }
 }
 
 interface dateParams {
@@ -78,11 +96,32 @@ const setMonthValue = (monthName: string) => {
     }
 }
 
+const setMonthName = (monthNumber: number, language: string) => {
+    switch (monthNumber) {
+        case 1: return 'JANUARY';
+        case 2: return 'FEBRUARY';
+        case 3: return 'MARCH';
+        case 4: return 'APRIL';
+        case 5: return 'MAY';
+        case 6: return 'JUNE';
+        case 7: return 'JULY';
+        case 8: return 'AUGUST';
+        case 9: return 'SEPTEMBER';
+        case 10: return 'OCTOBER';
+        case 11: return 'NOVEMBER';
+        case 12: return 'DECEMBER';
+
+        default: return 1;
+    }
+}
+
+
 const HomePageOtherEntries = () => {
     const [date, setDate] = useState<dateParams>(getActualDateAsAObject());
     const [id, setId] = useState(null);
     const [entryType, setEntryType] = useState<string>(EntriesPlanType.YEAR);
     const [entryData, setEntryData] = useState<entryParams>({ placeholder: null, plans: [], id: null });
+    const { language } = useContext(LanguageContext);
 
     const changeEntry = async (sign: string) => {
         if (entryType === EntriesPlanType.YEAR) {
@@ -101,9 +140,11 @@ const HomePageOtherEntries = () => {
             return setEntryData({ placeholder: monthName, plans, id: monthId });
         }
 
-        const { dayId, dayName } = await auth.getDayByDayId(setIdValue(sign, entryType, id!));
-        const plans = await auth.getDayByDayId(dayId);
+        const dayList = await auth.getDaysByDate(`${date.year}-${date.month < 10 ? `0${date.month}` : date.month}-${date.day}`);
+        const { dayId, dayName, dayDate } = await auth.getDayByDayId(setIdValue(sign, entryType, id!, dayList));
+        const { plans } = await auth.getDayPlans(dayDate);
         setId(dayId);
+        setDate({ ...date, day: dayDate.slice(dayDate.length - 2, dayDate.length) })
         return setEntryData({ placeholder: dayName, plans, id: dayId })
     }
 
@@ -141,9 +182,9 @@ const HomePageOtherEntries = () => {
     const setPlaceholderValue = () => {
         const { year, month, day } = date;
         if (entryType === EntriesPlanType.YEAR) return year
-        else if (entryType === EntriesPlanType.MONTH) return `${year} ${month}`
+        else if (entryType === EntriesPlanType.MONTH) return `${setMonthName(month, language)} ${year}`
 
-        return `${year} ${month} ${day}`
+        return `${day} ${setMonthName(month, language)} ${year}`
     }
 
     return (

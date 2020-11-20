@@ -106,6 +106,11 @@ class Database {
         .then(({ data }) => data)
         .catch(({ response }) => response.data.message)
 
+    getDaysByDate = (date: string) => axios
+        .get(`${this.serverAddress}/schedule/${this.userId}/days?local_date=${date}`, this.getAuthConfig())
+        .then(({ data }) => data)
+        .catch(({ response }) => response.data.message)
+
     getDayByDate = (date: string = this.getCurrentDate()) => axios
         .get(`${this.serverAddress}/schedule/${this.userId}/day?local_date=${date}`, this.getAuthConfig())
         .then(({ data }) => data)
