@@ -146,5 +146,8 @@ export interface languageInterface {
         october: string;
         november: string;
         december: string;
+        yearPlanText: string;
+        monthPlanText: string;
+        dayPlanText: string;
     };
 }

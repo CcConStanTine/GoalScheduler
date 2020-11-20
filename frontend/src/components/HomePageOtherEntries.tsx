@@ -195,12 +195,24 @@ const HomePageOtherEntries = () => {
                 <FaChevronRight onClick={() => changeEntry(navigationTypes.ADDITION)} />
             </div>
             <div className='entries-navigation'>
-                <button className={`default-button ${setActiveClassName(EntriesPlanType.YEAR)}`}
-                    onClick={() => handlePlanData(EntriesPlanType.YEAR, `${date.year}-${date.month < 10 ? `0${date.month}` : date.month}-${date.day}`)}>Year Plan</button>
-                <button className={`default-button ${setActiveClassName(EntriesPlanType.MONTH)}`}
-                    onClick={() => handlePlanData(EntriesPlanType.MONTH, `${date.year}-${date.month < 10 ? `0${date.month}` : date.month}-${date.day}`)}>Month Plan</button>
-                <button className={`default-button ${setActiveClassName(EntriesPlanType.DAY)}`}
-                    onClick={() => handlePlanData(EntriesPlanType.DAY, `${date.year}-${date.month < 10 ? `0${date.month}` : date.month}-${date.day}`)}>Day Plan</button>
+                <button
+                    className={`default-button ${setActiveClassName(EntriesPlanType.YEAR)}`}
+                    onClick={() => handlePlanData(EntriesPlanType.YEAR, `${date.year}-${date.month < 10 ? `0${date.month}` : date.month}-${date.day}`)}
+                >
+                    {languagePack[language].yearPlanText}
+                </button>
+                <button
+                    className={`default-button ${setActiveClassName(EntriesPlanType.MONTH)}`}
+                    onClick={() => handlePlanData(EntriesPlanType.MONTH, `${date.year}-${date.month < 10 ? `0${date.month}` : date.month}-${date.day}`)}
+                >
+                    {languagePack[language].monthPlanText}
+                </button>
+                <button
+                    className={`default-button ${setActiveClassName(EntriesPlanType.DAY)}`}
+                    onClick={() => handlePlanData(EntriesPlanType.DAY, `${date.year}-${date.month < 10 ? `0${date.month}` : date.month}-${date.day}`)}
+                >
+                    {languagePack[language].dayPlanText}
+                </button>
             </div>
             <div className='entries'>
                 {renderTodayPlans(entryData.plans)}

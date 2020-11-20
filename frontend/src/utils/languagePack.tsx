@@ -74,6 +74,9 @@ const languagePack: languageInterface = {
         october: 'October',
         november: 'November',
         december: 'December',
+        yearPlanText: 'Year Plan',
+        monthPlanText: 'Month Plan',
+        dayPlanText: 'Day Plan',
     },
     'pl-PL': {
         signOutText: 'Wyloguj się',
@@ -147,6 +150,9 @@ const languagePack: languageInterface = {
         october: 'Październik',
         november: 'Listopad',
         december: 'Grudzień',
+        yearPlanText: 'Rok',
+        monthPlanText: 'Miesiąc',
+        dayPlanText: 'Dzień'
     }
 }
 
