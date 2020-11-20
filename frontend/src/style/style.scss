@@ -489,7 +489,7 @@ form{
             flex-direction: column;
             width: 100%;
 
-            .year-navigation{
+            .data-navigation{
                 width: 100%;
                 display: flex;
                 flex-direction: row;
@@ -522,7 +522,7 @@ form{
                     color: black;
                 }
 
-                .on{
+                .active{
                     border-color: rgb(220,220,220);
                     background-color: rgb(220,220,220);
                 }

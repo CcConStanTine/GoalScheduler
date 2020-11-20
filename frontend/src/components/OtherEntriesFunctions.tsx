@@ -1,27 +1,7 @@
-import React from 'react';
 import { EntriesPlanType, navigationTypes } from '../utils/variables';
 import languagePack from '../utils/languagePack';
-
-interface EntriesNavigation {
-    entryType: string;
-    handlePlanData: any;
-    placeholder: string;
-}
-
-interface dateParams {
-    year: number;
-    month: number;
-    day: number;
-}
-
-interface navlistInterface {
-    [index: number]: {
-        entryType: string;
-        handlePlanData: any;
-        placeholder: string;
-    };
-    map: any;
-};
+import { dateParams } from '../utils/interfaces';
+import auth from '../authentication/database';
 
 export const getActualDateAsAObject = () => {
     const date = new Date();
@@ -60,58 +40,83 @@ export const getDateAsAString = (date: dateParams, monthName?: string) => {
     return `${year}-${monthValue}-${day}`;
 };
 
-export const setIdValue = (sign: string, entryType: string, id: number, entryList?: any) => {
-    console.log(entryList);
-    if (entryType === EntriesPlanType.MONTH) {
-        const firstMonthId = entryList[0].monthId;
-        const lastMonthId = entryList[entryList.length - 1].monthId;
+const getFirstAndLastId = (entryType: string, entryList: any) => {
+    if (entryType === EntriesPlanType.MONTH)
+        return { firstId: entryList[0].monthId, lastId: entryList[entryList.length - 1].monthId };
+    else if (entryType === EntriesPlanType.DAY)
+        return { firstId: entryList[0].dayId, lastId: entryList[entryList.length - 1].dayId };
 
-        console.log(firstMonthId, lastMonthId, id, sign)
-
-        if (sign === navigationTypes.ADDITION) {
-            console.log('dodaje')
-            ++id;
-            if (id > lastMonthId) return firstMonthId;
-
-            return id;
-        }
-        else {
-            console.log('odejmuje')
-            --id;
-            if (id < firstMonthId) return lastMonthId;
-
-            return id;
-        }
-    }
-    else if (entryType === EntriesPlanType.YEAR) {
-        if (sign === navigationTypes.ADDITION)
-            return ++id
-        else {
-            --id;
-            if (id < 1) return 1;
-
-            return id;
-        }
-    }
-
-    const firstDayId = entryList[0].dayId;
-    const lastDayId = entryList[entryList.length - 1].dayId;
-
-    if (sign === navigationTypes.ADDITION) {
-        console.log('dodaje')
-        ++id;
-        if (id > lastDayId) return firstDayId;
-
-        return id;
-    }
-    else {
-        console.log('odejmuje')
-        --id;
-        if (id < firstDayId) return lastDayId;
-
-        return id;
-    }
+    return { firstId: null, lastId: 1 };
 }
+
+const calculateId = (sign: string, firstId: number, lastId: number, id: number) => {
+    if (sign === navigationTypes.ADDITION)
+        return ++id > lastId ? firstId : id;
+
+    return --id < firstId ? lastId : id;
+}
+
+export const setIdValue = (sign: string, entryType: string, id: number, entryList?: any) => {
+    const { firstId, lastId } = getFirstAndLastId(entryType, entryList);
+
+    if (firstId)
+        return calculateId(sign, firstId, lastId, id);
+
+    if (sign === navigationTypes.ADDITION)
+        return ++id
+
+    return --id < 1 ? lastId : id;
+};
+
+export const setPlaceholderValue = (date: dateParams, entryType: string, language: string) => {
+    const { year, month, day } = date;
+    const monthValue = setMonthName(month, language);
+
+    if (entryType === EntriesPlanType.YEAR) return year
+    else if (entryType === EntriesPlanType.MONTH) return `${monthValue} ${year}`
+
+    return `${day} ${monthValue} ${year}`
+};
+
+export const setActiveClassName = (type: string, entryType: string) => {
+    if (entryType === type)
+        return 'active';
+
+    return null;
+};
+
+export const getRequestByType = async (type: string, date?: string) => {
+    if (type === EntriesPlanType.YEAR)
+        return await auth.getYearPlans(date);
+    else if (type === EntriesPlanType.MONTH)
+        return await auth.getMonthPlans(date);
+
+    return await auth.getDayPlans(date);
+};
+
+export const getDataByType = async (type: string, sign: string, id: number, date: dateParams) => {
+    if (type === EntriesPlanType.YEAR) {
+        const { yearId: _id, yearNumber: year } = await auth.getYearByYearId(setIdValue(sign, type, id!));
+        const plans = await auth.getYearPlansByYearId(_id);
+
+        return { _id, _date: { ...date, year }, plans };
+    }
+    else if (type === EntriesPlanType.MONTH) {
+        const monthList = await auth.getMonthsByDate(getDateAsAString(date));
+        const { monthId: _id, monthName } = await auth.getMonthById(setIdValue(sign, type, id!, monthList));
+        const { plans } = await auth.getMonthPlans(getDateAsAString(date, monthName));
+        const month = setMonthValue(monthName);
+
+        return { _id, _date: { ...date, month }, plans };
+    }
+
+    const dayList = await auth.getDaysByDate(getDateAsAString(date));
+    const { dayId: _id, dayDate } = await auth.getDayByDayId(setIdValue(sign, type, id!, dayList));
+    const { plans } = await auth.getDayPlans(dayDate);
+    const day = dayDate.slice(dayDate.length - 2, dayDate.length);
+
+    return { _id, _date: { ...date, day }, plans };
+};
 
 const setMonthName = (monthNumber: number, language: string) => {
     switch (monthNumber) {
@@ -130,28 +135,4 @@ const setMonthName = (monthNumber: number, language: string) => {
 
         default: return languagePack[language].january;
     }
-}
-
-export const setPlaceholderValue = (date: dateParams, entryType: string, language: string) => {
-    const { year, month, day } = date;
-    const monthValue = setMonthName(month, language);
-
-    if (entryType === EntriesPlanType.YEAR) return year
-    else if (entryType === EntriesPlanType.MONTH) return `${monthValue} ${year}`
-
-    return `${day} ${monthValue} ${year}`
-}
-
-const setActiveClassName = (type: string, entryType: string) => {
-    if (entryType === type)
-        return 'active';
-
-    return null;
-}
-
-export const renderEntriesNavigation = (navList: navlistInterface) => navList.map(({ entryType, handlePlanData, placeholder }: EntriesNavigation) =>
-    <button
-        className={`default-button ${setActiveClassName(EntriesPlanType.YEAR, entryType)}`}
-        onClick={() => handlePlanData}
-        key={`${entryType}${placeholder}`}
-    >{placeholder}</button>)
+};

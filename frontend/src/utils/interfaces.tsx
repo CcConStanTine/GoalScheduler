@@ -2,6 +2,30 @@ export interface landingPageInterface {
     history: any
 }
 
+export interface dateParams {
+    year: number;
+    month: number;
+    day: number;
+}
+
+export interface entriesNavigation {
+    entryType: string;
+    onClick: any;
+    date: dateParams;
+}
+
+export interface entryParams {
+    [index: number]: singleEntryParams;
+    map: any;
+}
+
+export interface singleEntryParams {
+    content: string;
+    yearPlanId?: number;
+    monthPlanId?: number;
+    dayPlanId?: number;
+}
+
 export interface formDataInterface {
     data: Object,
     nickname: string,

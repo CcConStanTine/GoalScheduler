@@ -35,10 +35,10 @@ class Database {
         .catch(({ response }) => console.log(response.data))
 
     getDayPlans = async (date: string = this.getCurrentDate()) => {
-        const { dayId, dayName } = await this.getDayByDate(date);
+        const { dayId } = await this.getDayByDate(date);
         const plans = await this.getDayPlansByDayID(dayId);
 
-        return { placeholder: dayName, id: dayId, plans }
+        return { id: dayId, plans }
     }
 
     getMonthById = async (monthId: number) => axios
@@ -47,10 +47,10 @@ class Database {
         .catch(({ response }) => console.log(response.data))
 
     getMonthPlans = async (date: string = this.getCurrentDate()) => {
-        const { monthId, monthName, daysAmount } = await this.getMonthByDate(date);
+        const { monthId } = await this.getMonthByDate(date);
         const plans = await this.getMonthPlansByMonthId(monthId);
 
-        return { placeholder: monthName, id: monthId, plans, daysAmount };
+        return { id: monthId, plans };
     }
 
     getMonthsByDate = (date: string) => axios
@@ -74,10 +74,10 @@ class Database {
         .catch(({ response }) => console.log(response.data))
 
     getYearPlans = async (date: string = this.getCurrentDate()) => {
-        const { yearId, yearNumber } = await this.getYearByDate(date);
+        const { yearId } = await this.getYearByDate(date);
         const plans = await this.getYearPlansByYearId(yearId);
 
-        return { placeholder: yearNumber, id: yearId, plans };
+        return { id: yearId, plans };
     }
 
     getYearByDate = (date: string) => axios
