@@ -152,7 +152,7 @@ const languagePack: languageInterface = {
         december: 'Grudzień',
         yearPlanText: 'Rok',
         monthPlanText: 'Miesiąc',
-        dayPlanText: 'Dzień'
+        dayPlanText: 'Dzień',
     }
 }
 

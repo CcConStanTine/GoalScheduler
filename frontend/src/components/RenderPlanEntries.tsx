@@ -4,7 +4,8 @@ import { Link } from 'react-router-dom';
 import { entryParams, singleEntryParams } from '../utils/interfaces';
 import { PlanTypes } from '../utils/variables';
 
-const renderTodayPlans = (planList: entryParams) => planList.map(({ content, dayPlanId, yearPlanId, monthPlanId }: singleEntryParams) => {
+const renderPlanEntries = (planList: entryParams) => planList.map(({ content, dayPlanId, yearPlanId, monthPlanId, fulfilled }: singleEntryParams) => {
+
     const checkLinkValue = () => {
         if (dayPlanId)
             return `${PlanTypes.DAY}/${dayPlanId}`;
@@ -17,7 +18,7 @@ const renderTodayPlans = (planList: entryParams) => planList.map(({ content, day
     return (
         <div className='entry' key={`${content}${dayPlanId ? dayPlanId : yearPlanId}`}>
             <div className='entry-info'>
-                <span className='color'></span>
+                <span className={`circle ${fulfilled && 'closed'}`}></span>
                 <p>{content}</p>
             </div>
             <Link to={`view/${checkLinkValue()}`}>
@@ -29,4 +30,4 @@ const renderTodayPlans = (planList: entryParams) => planList.map(({ content, day
 
 
 
-export default renderTodayPlans;
+export default renderPlanEntries;

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import renderTodayPlans from './RenderTodayPlans';
+import renderPlanEntries from './RenderPlanEntries';
 import { EntriesPlanType } from '../utils/variables';
 import RenderEntriesNavigation from './RenderEntriesNavigation';
 import RenderEntriesDateNavigation from './RenderEntriesDateNavigation';
@@ -47,7 +47,7 @@ const HomePageOtherEntries = () => {
                 />
             </div>
             <div className='entries'>
-                {renderTodayPlans(entryData)}
+                {renderPlanEntries(entryData)}
             </div>
         </div>
     )

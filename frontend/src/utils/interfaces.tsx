@@ -37,6 +37,7 @@ export interface singleEntryParams {
     yearPlanId?: number;
     monthPlanId?: number;
     dayPlanId?: number;
+    fulfilled?: boolean;
 }
 
 export interface formDataInterface {

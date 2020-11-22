@@ -6,7 +6,7 @@ import { PageNavigationTypes } from '../../utils/variables';
 import languagePack from '../../utils/languagePack';
 import NavigationBar from '../../components/NavigationBar';
 import userDefaultPhoto from '../../images/planner.jpg';
-import renderTodayPlans from '../../components/RenderTodayPlans';
+import RenderPlanEntries from '../../components/RenderPlanEntries';
 import HomePageOtherEntries from '../../components/HomePageOtherEntries';
 
 interface HomeInterface {
@@ -50,7 +50,7 @@ const HomePage = ({ history }: HomeInterface) => {
             <div className='entries'>
                 <p className='today-plans'>{languagePack[language].todayPlansText}</p>
                 {console.log(todayPlans)}
-                {renderTodayPlans(todayPlans)}
+                {RenderPlanEntries(todayPlans)}
             </div>
             <div className='other-plans'>
                 <p className='other-plans-text'>{languagePack[language].otherPlansText}</p>
