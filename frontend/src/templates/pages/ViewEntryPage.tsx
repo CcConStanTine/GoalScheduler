@@ -25,6 +25,24 @@ interface EntryParams {
     dayPlanId?: number;
 }
 
+const deletePlanByType = async (type: string, id: number) => {
+    if (type === 'year')
+        return await auth.deleteYearPlanByYearId(id);
+    else if (type === 'month')
+        return await auth.deleteMonthPlanByMonthId(id);
+
+    return await auth.deleteDayPlanByPlanId(id)
+}
+
+const togglePlanByType = async (type: string, id: number) => {
+    if (type === 'year')
+        return await auth.toggleFinishYearPlanByPlanId(id);
+    else if (type === 'month')
+        return await auth.toggleFinishMonthPlanByPlanId(id);
+
+    return await auth.toggleFinishDayPlanByPlanId(id);
+}
+
 const getEntryDataByType = async (type: string, id: number) => {
     if (type === 'day')
         return await auth.getPlanByPlanId(id);
@@ -52,12 +70,13 @@ const ViewEntryPage = ({ history }: HomeInterface) => {
     }, [id, finishEntryWindow, type])
 
     const deleteEntry = async () => {
-        await auth.deletePlanByPlanId(parseInt(id));
+        await deletePlanByType(type, parseInt(id));
         return history.goBack();
     }
 
     const toggleFulfilledPlan = async () => {
-        await auth.toggleFinishPlanByPlanId(parseInt(id));
+        await togglePlanByType(type, parseInt(id));
+
         return showFinishEntryWindow(false);
     }
 

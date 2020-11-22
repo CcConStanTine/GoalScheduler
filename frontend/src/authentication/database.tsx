@@ -85,6 +85,26 @@ class Database {
         return { id: yearId, plans };
     }
 
+    deleteYearPlanByYearId = (yearId: number) => axios
+        .delete(`${this.serverAddress}/schedule/${this.userId}/year_plan/${yearId}`, this.getAuthConfig())
+        .then(({ data }) => data)
+        .catch(({ response }) => console.log(response.data))
+
+    toggleFinishYearPlanByPlanId = (yearId: number) => axios
+        .patch(`${this.serverAddress}/schedule/${this.userId}/year_plan/${yearId}/fulfilled`, {}, this.getAuthConfig())
+        .then(({ data }) => data)
+        .catch(({ response }) => console.log(response.data))
+
+    deleteMonthPlanByMonthId = (monthId: number) => axios
+        .delete(`${this.serverAddress}/schedule/${this.userId}/month_plan/${monthId}`, this.getAuthConfig())
+        .then(({ data }) => data)
+        .catch(({ response }) => console.log(response.data))
+
+    toggleFinishMonthPlanByPlanId = (monthId: number) => axios
+        .patch(`${this.serverAddress}/schedule/${this.userId}/month_plan/${monthId}/fulfilled`, {}, this.getAuthConfig())
+        .then(({ data }) => data)
+        .catch(({ response }) => console.log(response.data))
+
     getYearByDate = (date: string) => axios
         .get(`${this.serverAddress}/schedule/${this.userId}/year?local_date=${date}`, this.getAuthConfig())
         .then(({ data }) => data)
@@ -100,12 +120,12 @@ class Database {
         .then(({ data }) => data)
         .catch(({ response }) => console.log(response.data))
 
-    toggleFinishPlanByPlanId = (planId: number) => axios
+    toggleFinishDayPlanByPlanId = (planId: number) => axios
         .patch(`${this.serverAddress}/schedule/${this.userId}/day_plan/${planId}/fulfilled`, {}, this.getAuthConfig())
         .then(({ data }) => data)
         .catch(({ response }) => console.log(response.data))
 
-    deletePlanByPlanId = (planId: number) => axios
+    deleteDayPlanByPlanId = (planId: number) => axios
         .delete(`${this.serverAddress}/schedule/${this.userId}/day_plan/${planId}`, this.getAuthConfig())
         .then(({ data }) => data)
         .catch(({ response }) => response.data.message)
