@@ -22,7 +22,7 @@ const AppTabs: React.FC = () => {
       <Route exact path="/app/change-email" component={ChangeEmailPage}></Route>
       <Route exact path="/app/change-username" component={ChangeUsernamePage}></Route>
       <Route exact path="/app/change-photo" component={ChangeUserPhoto}></Route>
-      <Route exact path="/app/view/:id" component={ViewEntryPage}></Route>
+      <Route exact path="/app/view/:type/:id" component={ViewEntryPage}></Route>
     </Switch >
   );
 };

@@ -41,6 +41,11 @@ class Database {
         return { id: dayId, plans }
     }
 
+    getMonthPlanByMonthPlanId = (monthId: number) => axios
+        .get(`${this.serverAddress}/schedule/${this.userId}/month_plans/${monthId}`, this.getAuthConfig())
+        .then(({ data }) => data)
+        .catch(({ response }) => console.log(response.data))
+
     getMonthById = async (monthId: number) => axios
         .get(`${this.serverAddress}/schedule/${this.userId}/month/${monthId}`, this.getAuthConfig())
         .then(({ data }) => data)
@@ -90,6 +95,10 @@ class Database {
         .then(({ data }) => data)
         .catch(({ response }) => console.log(response.data))
 
+    getYearPlanByYearPlanId = (yearId: number) => axios
+        .get(`${this.serverAddress}/schedule/${this.userId}/year_plans/${yearId}`, this.getAuthConfig())
+        .then(({ data }) => data)
+        .catch(({ response }) => console.log(response.data))
 
     toggleFinishPlanByPlanId = (planId: number) => axios
         .patch(`${this.serverAddress}/schedule/${this.userId}/day_plan/${planId}/fulfilled`, {}, this.getAuthConfig())

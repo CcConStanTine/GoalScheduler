@@ -14,6 +14,7 @@ interface HomeInterface {
 
 interface RouteParams {
     id: string;
+    type: string;
 }
 
 interface EntryParams {
@@ -24,22 +25,31 @@ interface EntryParams {
     dayPlanId?: number;
 }
 
+const getEntryDataByType = async (type: string, id: number) => {
+    if (type === 'day')
+        return await auth.getPlanByPlanId(id);
+    else if (type === 'month')
+        return await auth.getMonthPlanByMonthPlanId(id);
+
+    return await auth.getYearPlanByYearPlanId(id);
+}
+
 const ViewEntryPage = ({ history }: HomeInterface) => {
     const { language } = useContext(LanguageContext);
-    const { id } = useParams<RouteParams>();
+    const { id, type } = useParams<RouteParams>();
     const [entry, setEntry] = useState<EntryParams>({});
     const [deleteEntryWindow, showDeleteEntryWindow] = useState<boolean>(false);
     const [finishEntryWindow, showFinishEntryWindow] = useState<boolean>(false);
 
     useEffect(() => {
         const getEntryData = async () => {
-            const entryData = await auth.getPlanByPlanId(parseInt(id));
+            const entryData = await getEntryDataByType(type, parseInt(id));
 
             setEntry(entryData);
         }
 
         getEntryData();
-    }, [id, finishEntryWindow])
+    }, [id, finishEntryWindow, type])
 
     const deleteEntry = async () => {
         await auth.deletePlanByPlanId(parseInt(id));
