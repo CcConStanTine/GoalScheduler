@@ -130,7 +130,7 @@ class Database {
         .then(({ data }) => data)
         .catch(({ response }) => response.data.message)
 
-    getPlanByPlanId = (planId: number) => axios
+    getDayPlanByPlanId = (planId: number) => axios
         .get(`${this.serverAddress}/schedule/${this.userId}/day_plans/${planId}`, this.getAuthConfig())
         .then(({ data }) => data)
         .catch(({ response }) => response.data.message)

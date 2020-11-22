@@ -9,6 +9,12 @@ export const AccountFormTypes = {
     LOGIN: 'login',
 };
 
+export const PlanTypes = {
+    DAY: 'day',
+    MONTH: 'month',
+    YEAR: 'year',
+}
+
 export const AccountFormErrorTypes = {
     REQUIRED: 'this field is required',
     PATTERN: 'this field contains of inappropriate sign',

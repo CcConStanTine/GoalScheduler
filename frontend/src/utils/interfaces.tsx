@@ -8,6 +8,19 @@ export interface dateParams {
     day: number;
 }
 
+export interface ViewEntryRouteParams {
+    id: string;
+    type: string;
+}
+
+export interface ViewEntryParams {
+    content?: string;
+    endDate?: string;
+    startDate?: string;
+    fulfilled?: boolean;
+    dayPlanId?: number;
+};
+
 export interface entriesNavigation {
     entryType: string;
     onClick: any;

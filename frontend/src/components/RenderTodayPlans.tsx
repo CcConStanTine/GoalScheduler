@@ -2,19 +2,16 @@ import React from 'react';
 import { FaCaretRight } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 import { entryParams, singleEntryParams } from '../utils/interfaces';
-
-// yearPlanId?: number;
-//     monthPlanId?: number;
-//     dayPlanId?: number;
+import { PlanTypes } from '../utils/variables';
 
 const renderTodayPlans = (planList: entryParams) => planList.map(({ content, dayPlanId, yearPlanId, monthPlanId }: singleEntryParams) => {
     const checkLinkValue = () => {
         if (dayPlanId)
-            return `day/${dayPlanId}`;
+            return `${PlanTypes.DAY}/${dayPlanId}`;
         else if (monthPlanId)
-            return `month/${monthPlanId}`;
+            return `${PlanTypes.MONTH}/${monthPlanId}`;
 
-        return `year/${yearPlanId}`;
+        return `${PlanTypes.YEAR}/${yearPlanId}`;
     }
 
     return (
