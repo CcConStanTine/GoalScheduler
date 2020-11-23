@@ -77,6 +77,11 @@ const languagePack: languageInterface = {
         yearPlanText: 'Year Plan',
         monthPlanText: 'Month Plan',
         dayPlanText: 'Day Plan',
+        addEntryText: 'Add task',
+        inputDateAcceptText: 'Done',
+        inputDateMonthNames: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+        inputPlaceholderEndText: 'Select end date',
+        inputPlaceholderStartText: 'Select start date',
     },
     'pl-PL': {
         signOutText: 'Wyloguj się',
@@ -153,6 +158,11 @@ const languagePack: languageInterface = {
         yearPlanText: 'Rok',
         monthPlanText: 'Miesiąc',
         dayPlanText: 'Dzień',
+        addEntryText: 'Dodaj swoje zadanie',
+        inputDateAcceptText: 'Wybierz',
+        inputDateMonthNames: ['Styczeń', 'Luty', 'Marzec', 'Kwiecień', 'Maj', 'Czerwiec', 'Lipiec', 'Sierpień', 'Wrzesień', 'Październik', 'Listopad', 'Grudzień'],
+        inputPlaceholderEndText: 'Wybierz datę ukończenia',
+        inputPlaceholderStartText: 'Wybierz datę rozpoczęcia',
     }
 }
 

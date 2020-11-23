@@ -49,7 +49,6 @@ const HomePage = ({ history }: HomeInterface) => {
             </div>
             <div className='entries'>
                 <p className='today-plans'>{languagePack[language].todayPlansText}</p>
-                {console.log(todayPlans)}
                 {RenderPlanEntries(todayPlans)}
             </div>
             <div className='other-plans'>

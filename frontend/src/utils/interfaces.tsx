@@ -187,5 +187,10 @@ export interface languageInterface {
         yearPlanText: string;
         monthPlanText: string;
         dayPlanText: string;
+        addEntryText: string;
+        inputDateAcceptText: string;
+        inputDateMonthNames: string[];
+        inputPlaceholderStartText: string;
+        inputPlaceholderEndText: string;
     };
 }

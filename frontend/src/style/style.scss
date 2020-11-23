@@ -724,3 +724,44 @@ form{
         }
     }
 }
+
+.add-entry-page{
+    .content{
+        display: flex;
+        flex-direction: column;
+
+        .entries-navigation{
+            display: flex;
+            flex-direction: row;
+            padding: 30px 15px;
+            border-bottom: 1px solid lightgray;
+            border-top: 1px solid lightgray;
+        
+            .default-button{
+                margin: 0;
+                margin: 0 2.5%;
+                background-color: white;
+                border: 1px solid gray;
+                color: black;
+            }
+        
+            .active{
+                border-color: rgb(220,220,220);
+                background-color: rgb(220,220,220);
+            }
+        }
+
+        .date-picker{
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding-top: 25px;
+            .add-entry-input{
+                background-color: rgb(240,240,240);
+                color: black;
+                font-size: 18px;
+            }
+        }
+    }
+}
+
