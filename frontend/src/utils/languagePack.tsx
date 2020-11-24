@@ -82,6 +82,7 @@ const languagePack: languageInterface = {
         inputDateMonthNames: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
         inputPlaceholderEndText: 'Select end date',
         inputPlaceholderStartText: 'Select start date',
+        textareaPlaceholderText: 'Description',
     },
     'pl-PL': {
         signOutText: 'Wyloguj się',
@@ -163,6 +164,7 @@ const languagePack: languageInterface = {
         inputDateMonthNames: ['Styczeń', 'Luty', 'Marzec', 'Kwiecień', 'Maj', 'Czerwiec', 'Lipiec', 'Sierpień', 'Wrzesień', 'Październik', 'Listopad', 'Grudzień'],
         inputPlaceholderEndText: 'Wybierz datę ukończenia',
         inputPlaceholderStartText: 'Wybierz datę rozpoczęcia',
+        textareaPlaceholderText: 'Opis zadania',
     }
 }
 

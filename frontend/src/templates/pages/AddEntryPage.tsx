@@ -1,34 +1,22 @@
-import React, { useContext, useState, useEffect } from 'react';
+import React, { useContext, useState } from 'react';
 import { PageNavigationTypes, EntriesPlanType } from '../../utils/variables';
 import languagePack from '../../utils/languagePack';
 import NavigationBar from '../../components/NavigationBar';
 import { LanguageContext } from '../../authentication/LanguageContext';
 import auth from '../../authentication/database';
-import { useParams } from "react-router-dom";
-import { FaPen, FaCheck, FaTimes } from 'react-icons/fa';
-import EntryPageConfirmWindow from '../../components/EntryPageConfirmWindow';
-import { getEntryDataByType, deletePlanByType, togglePlanByType } from '../../components/ViewEntryPageFunctons';
+// import { useParams } from "react-router-dom";
 import { landingPageInterface, ViewEntryRouteParams, ViewEntryParams } from '../../utils/interfaces';
 import { setActiveClassName } from '../../components/OtherEntriesFunctions';
-import { IonButton, IonDatetime } from '@ionic/react';
+import { IonDatetime, IonTextarea } from '@ionic/react';
 
 const AddEntryPage = ({ history }: landingPageInterface) => {
     const { language } = useContext(LanguageContext);
     const [entryType, setEntryType] = useState<string>(EntriesPlanType.DAY);
-    const [selectedStartDate, setSelectedStartDate] = useState('');
-    const [selectedEndDate, setSelectedEndDate] = useState('');
-    const { id, type } = useParams<ViewEntryRouteParams>();
-    const [entry, setEntry] = useState<ViewEntryParams>({});
-
-    // useEffect(() => {
-    //     const getEntryData = async () => {
-    //         const entryData = await getEntryDataByType(type, parseInt(id));
-
-    //         setEntry(entryData);
-    //     }
-
-    //     getEntryData();
-    // }, [id, finishEntryWindow, type])
+    const [selectedStartDate, setSelectedStartDate] = useState<string>('');
+    const [selectedEndDate, setSelectedEndDate] = useState<string>('');
+    const [description, setDescription] = useState<string>('');
+    // const { id, type } = useParams<ViewEntryRouteParams>();
+    // const [entry, setEntry] = useState<ViewEntryParams>({});
 
     return (
         <section className='add-entry-page'>
@@ -76,6 +64,16 @@ const AddEntryPage = ({ history }: landingPageInterface) => {
                         monthNames={languagePack[language].inputDateMonthNames}
                         max={'2030'}
                         className='default-button add-entry-input'
+                    />
+                    <IonTextarea
+                        autoGrow={true}
+                        inputMode={'text'}
+                        minlength={5}
+                        value={description}
+                        onIonChange={e => setDescription(e.detail.value!)}
+                        placeholder={languagePack[language].textareaPlaceholderText}
+                        required={true}
+                        className='default-button add-entry-textarea'
                     />
                 </div>
             </div>

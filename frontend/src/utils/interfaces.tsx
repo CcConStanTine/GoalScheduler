@@ -192,5 +192,6 @@ export interface languageInterface {
         inputDateMonthNames: string[];
         inputPlaceholderStartText: string;
         inputPlaceholderEndText: string;
+        textareaPlaceholderText: string;
     };
 }
