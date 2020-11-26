@@ -121,11 +121,11 @@ export interface checkErrorTypeInterface {
 export interface selectLanguageInterface {
     [key: string]: [
         {
-            label: string;
+            text: string;
             value: string;
         },
         {
-            label: string;
+            text: string;
             value: string;
         }]
 };
@@ -217,5 +217,6 @@ export interface languageInterface {
         dayInputSelectEndTime: string;
         inputSendRequestText: string;
         editEntryText: string;
+        selectLanguageText: string;
     };
 }

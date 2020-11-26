@@ -61,19 +61,19 @@ export const AddEntryPageDefaultValues = {
 
 export const languageOptions: selectLanguageInterface = {
     'en-US': [{
-        label: 'English',
+        text: 'English',
         value: 'en-US'
     },
     {
-        label: 'Polish',
+        text: 'Polish',
         value: 'pl-PL'
     }],
     'pl-PL': [{
-        label: 'Angielski',
+        text: 'Angielski',
         value: 'en-US'
     },
     {
-        label: 'Polski',
+        text: 'Polski',
         value: 'pl-PL'
     }],
 }
