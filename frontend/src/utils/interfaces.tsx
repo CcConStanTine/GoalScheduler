@@ -2,6 +2,12 @@ export interface landingPageInterface {
     history: any
 }
 
+export interface inputData {
+    startDate: string;
+    endDate: string;
+    content: string;
+}
+
 export interface dateParams {
     year: number;
     month: number;
@@ -24,7 +30,7 @@ export interface ViewEntryParams {
 export interface entriesNavigation {
     entryType: string;
     onClick: any;
-    date: dateParams;
+    date?: dateParams;
 }
 
 export interface entryParams {

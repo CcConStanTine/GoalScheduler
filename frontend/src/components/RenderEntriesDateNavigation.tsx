@@ -11,7 +11,7 @@ const RenderEntriesDateNavigation = ({ entryType, onClick, date }: entriesNaviga
     return (
         <>
             <FaChevronLeft onClick={() => onClick(navigationTypes.SUBTRACTION)} />
-            <p>{setPlaceholderValue(date, entryType, language)}</p>
+            <p>{setPlaceholderValue(date!, entryType, language)}</p>
             <FaChevronRight onClick={() => onClick(navigationTypes.ADDITION)} />
         </>
     )

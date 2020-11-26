@@ -10,7 +10,7 @@ interface Navigation {
     deleteFunction?: (value: boolean) => void;
 }
 
-const NavigationBar = ({ type, history, placeholder, deleteFunction }: Navigation) =>
+const NavigationBar = ({ type, history, placeholder, deleteFunction }: Navigation) => (
     <nav className="navigation">
         {type === PageNavigationTypes.HOMEPAGE &&
             <>
@@ -39,5 +39,6 @@ const NavigationBar = ({ type, history, placeholder, deleteFunction }: Navigatio
             </div>
         }
     </nav>
+)
 
 export default NavigationBar;

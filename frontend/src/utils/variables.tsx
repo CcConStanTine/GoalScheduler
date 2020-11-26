@@ -51,6 +51,12 @@ export const navigationTypes = {
     SUBTRACTION: 'subtraction'
 }
 
+export const AddEntryPageDefaultValues = {
+    startDate: '',
+    endDate: '',
+    content: '',
+}
+
 
 export const languageOptions: selectLanguageInterface = {
     'en-US': [{
