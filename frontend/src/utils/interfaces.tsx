@@ -6,6 +6,8 @@ export interface inputData {
     startDate: string;
     endDate: string;
     content: string;
+    startDateTime?: string;
+    day?: string;
 }
 
 export interface dateParams {
@@ -199,5 +201,8 @@ export interface languageInterface {
         inputPlaceholderStartText: string;
         inputPlaceholderEndText: string;
         textareaPlaceholderText: string;
+        dayInputSelectDay: string;
+        dayInputSelectStartTime: string;
+        dayInputSelectEndTime: string;
     };
 }

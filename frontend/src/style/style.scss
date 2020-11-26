@@ -759,8 +759,9 @@ form{
 
             .add-entry-input,.add-entry-textarea{
                 background-color: rgb(240,240,240);
-                color: black;
                 font-size: 18px;
+                color: rgba(0,0,0,0.5);
+                --placeholder-color: black;
             }
         }
     }

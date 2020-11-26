@@ -17,6 +17,7 @@ class Database {
     }
 
     changeDateToCorrectFormat = (date: string) => date.slice(0, 10);
+    changeDateTimeToCorrectFormat = (date: string) => date.slice(11, 19);
 
     getAuthConfig = () => ({
         headers: {
@@ -57,10 +58,10 @@ class Database {
         .catch(({ response }) => console.log(response.data))
 
     addDayPlan = async (data: inputData) => {
-        const { startDate } = data;
-        const { dayId } = await this.getDayByDate(startDate);
+        const { startDate, endDate, content, day } = data;
+        const { dayId } = await this.getDayByDate(day);
 
-        return await this.addDayPlanByDayId(dayId, data);
+        return await this.addDayPlanByDayId(dayId, { startDate, endDate, content });
     }
 
     addDayPlanByDayId = async (dayId: number, data: inputData) => axios

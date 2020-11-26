@@ -55,6 +55,7 @@ export const AddEntryPageDefaultValues = {
     startDate: '',
     endDate: '',
     content: '',
+    startDateTime: '',
 }
 
 

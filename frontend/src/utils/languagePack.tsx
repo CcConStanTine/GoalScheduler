@@ -83,6 +83,9 @@ const languagePack: languageInterface = {
         inputPlaceholderEndText: 'Select end date',
         inputPlaceholderStartText: 'Select start date',
         textareaPlaceholderText: 'Description',
+        dayInputSelectDay: 'Select Day',
+        dayInputSelectEndTime: 'Select end time',
+        dayInputSelectStartTime: 'Select start time',
     },
     'pl-PL': {
         signOutText: 'Wyloguj się',
@@ -165,6 +168,9 @@ const languagePack: languageInterface = {
         inputPlaceholderEndText: 'Wybierz datę ukończenia',
         inputPlaceholderStartText: 'Wybierz datę rozpoczęcia',
         textareaPlaceholderText: 'Opis zadania',
+        dayInputSelectDay: 'Wybierz dzień',
+        dayInputSelectEndTime: 'O której ma się kończyć',
+        dayInputSelectStartTime: 'O której ma się zaczynać'
     }
 }
 

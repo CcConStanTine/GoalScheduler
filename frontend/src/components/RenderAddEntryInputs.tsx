@@ -11,7 +11,16 @@ const RenderAddEntryInputs = ({ languagePack, entryType }: any) => {
     const { handleSubmit, control } = useForm<inputData>({ defaultValues });
 
     const formatDate = (data: inputData) => {
-        const { startDate, endDate } = data;
+        const { startDate, endDate, startDateTime } = data;
+
+        if (startDateTime) {
+            return {
+                ...data,
+                day: auth.changeDateToCorrectFormat(startDate),
+                startDate: auth.changeDateTimeToCorrectFormat(startDateTime),
+                endDate: auth.changeDateTimeToCorrectFormat(endDate),
+            }
+        }
 
         return {
             ...data,
@@ -29,7 +38,6 @@ const RenderAddEntryInputs = ({ languagePack, entryType }: any) => {
             await auth.addMonthPlan(dayData);
         else
             await auth.addYearPlan(dayData);
-
         return history.goBack();
     }
 
@@ -38,9 +46,9 @@ const RenderAddEntryInputs = ({ languagePack, entryType }: any) => {
             <Controller
                 render={({ onChange }) =>
                     <IonDatetime
-                        displayFormat="DD-MMMM-YYYY"
+                        displayFormat="DD MMMM YYYY"
                         onIonChange={onChange}
-                        placeholder={languagePack.inputPlaceholderStartText}
+                        placeholder={entryType === EntriesPlanType.DAY ? languagePack.dayInputSelectDay : languagePack.inputPlaceholderStartText}
                         cancelText={languagePack.cancelText}
                         doneText={languagePack.inputDateAcceptText}
                         min={auth.getCurrentDate()}
@@ -54,25 +62,62 @@ const RenderAddEntryInputs = ({ languagePack, entryType }: any) => {
                     required: true
                 }}
             />
-            <Controller
-                render={({ onChange }) =>
-                    <IonDatetime
-                        displayFormat="DD-MMMM-YYYY"
-                        onIonChange={onChange}
-                        placeholder={languagePack.inputPlaceholderEndText}
-                        cancelText={languagePack.cancelText}
-                        doneText={languagePack.inputDateAcceptText}
-                        min={auth.getCurrentDate()}
-                        monthNames={languagePack.inputDateMonthNames}
-                        max={'2030'}
-                        className='default-button add-entry-input'
-                    />}
-                control={control}
-                name='endDate'
-                rules={{
-                    required: true
-                }}
-            />
+            {entryType === EntriesPlanType.DAY ?
+                <>
+                    <Controller
+                        render={({ onChange }) =>
+                            <IonDatetime
+                                displayFormat="HH : mm"
+                                onIonChange={onChange}
+                                placeholder={languagePack.dayInputSelectStartTime}
+                                cancelText={languagePack.cancelText}
+                                doneText={languagePack.inputDateAcceptText}
+                                className='default-button add-entry-input'
+                            />}
+                        control={control}
+                        name='startDateTime'
+                        rules={{
+                            required: true
+                        }}
+                    />
+                    <Controller
+                        render={({ onChange }) =>
+                            <IonDatetime
+                                displayFormat="HH : mm"
+                                onIonChange={onChange}
+                                placeholder={languagePack.dayInputSelectEndTime}
+                                cancelText={languagePack.cancelText}
+                                doneText={languagePack.inputDateAcceptText}
+                                className='default-button add-entry-input'
+                            />}
+                        control={control}
+                        name='endDate'
+                        rules={{
+                            required: true
+                        }}
+                    />
+                </>
+                :
+                <Controller
+                    render={({ onChange }) =>
+                        <IonDatetime
+                            displayFormat="DD MMMM YYYY"
+                            onIonChange={onChange}
+                            placeholder={languagePack.inputPlaceholderEndText}
+                            cancelText={languagePack.cancelText}
+                            doneText={languagePack.inputDateAcceptText}
+                            min={auth.getCurrentDate()}
+                            monthNames={languagePack.inputDateMonthNames}
+                            max={'2030'}
+                            className='default-button add-entry-input'
+                        />}
+                    control={control}
+                    name='endDate'
+                    rules={{
+                        required: true
+                    }}
+                />
+            }
             <Controller
                 render={({ onChange }) =>
                     <IonTextarea
