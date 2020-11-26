@@ -21,6 +21,17 @@ export interface ViewEntryRouteParams {
     type: string;
 }
 
+export interface EditEntryParams {
+    content?: string;
+    startDate?: string;
+    endDate?: string;
+    yearPlanId?: number;
+    monthPlanId?: number;
+    dayPlanId?: number;
+    fulfilled?: boolean;
+    length?: any;
+}
+
 export interface ViewEntryParams {
     content?: string;
     endDate?: string;
@@ -204,5 +215,7 @@ export interface languageInterface {
         dayInputSelectDay: string;
         dayInputSelectStartTime: string;
         dayInputSelectEndTime: string;
+        inputSendRequestText: string;
+        editEntryText: string;
     };
 }

@@ -1,5 +1,6 @@
 import React, { useContext, useState, useEffect } from 'react';
 import { PageNavigationTypes, EntryPageConfirmWindowTypes } from '../../utils/variables';
+import { Link } from 'react-router-dom';
 import languagePack from '../../utils/languagePack';
 import NavigationBar from '../../components/NavigationBar';
 import { LanguageContext } from '../../authentication/LanguageContext';
@@ -58,7 +59,9 @@ const ViewEntryPage = ({ history }: landingPageInterface) => {
                 </div>
             </div>
             <button className='functionBtn edit-button'>
-                <FaPen />
+                <Link to={`/app/edit/${type}/${id}`}>
+                    <FaPen />
+                </Link>
             </button>
             <button className={`functionBtn finish-button completed-${entry?.fulfilled}`}>
                 {entry?.fulfilled ?

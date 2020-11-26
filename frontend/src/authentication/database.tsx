@@ -1,5 +1,4 @@
 import axios from 'axios';
-import { start } from 'repl';
 import { registerUser, loginUser, inputData } from '../utils/interfaces';
 
 
@@ -63,6 +62,27 @@ class Database {
 
         return await this.addDayPlanByDayId(dayId, { startDate, endDate, content });
     }
+
+    changeDayPlanByDayId = async (dayId: number, data: inputData) => axios
+        .patch(`${this.serverAddress}/schedule/${this.userId}/day_plan/${dayId}`, data, this.getAuthConfig())
+        .then(({ data }) => data)
+        .catch(({ response }) => console.log(response.data))
+
+    changeDayPlan = async (dayId: number, data: inputData) => {
+        const { startDateTime, endDate, content } = data;
+
+        return await this.changeDayPlanByDayId(dayId, { startDate: startDateTime!, endDate, content });
+    }
+
+    changeYearPlan = async (yearId: number, data: inputData) => axios
+        .patch(`${this.serverAddress}/schedule/${this.userId}/year_plan/${yearId}`, data, this.getAuthConfig())
+        .then(({ data }) => data)
+        .catch(({ response }) => console.log(response.data))
+
+    changeMonthPlan = async (monthId: number, data: inputData) => axios
+        .patch(`${this.serverAddress}/schedule/${this.userId}/month_plan/${monthId}`, data, this.getAuthConfig())
+        .then(({ data }) => data)
+        .catch(({ response }) => console.log(response.data))
 
     addDayPlanByDayId = async (dayId: number, data: inputData) => axios
         .post(`${this.serverAddress}/schedule/${this.userId}/day/${dayId}/day_plan`, data, this.getAuthConfig())
