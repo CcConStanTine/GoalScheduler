@@ -4,14 +4,32 @@ import { IonDatetime, IonTextarea } from '@ionic/react';
 import auth from '../authentication/database';
 import { inputData } from '../utils/interfaces';
 import { useHistory } from 'react-router-dom';
-import { AddEntryPageDefaultValues as defaultValues } from '../utils/variables';
+import { AddEntryPageDefaultValues as defaultValues, EntriesPlanType } from '../utils/variables';
 
 const RenderAddEntryInputs = ({ languagePack, entryType }: any) => {
     const history = useHistory();
     const { handleSubmit, control } = useForm<inputData>({ defaultValues });
 
-    const onSubmit = (data: any) => {
-        console.log(data, entryType);
+    const formatDate = (data: inputData) => {
+        const { startDate, endDate } = data;
+
+        return {
+            ...data,
+            startDate: auth.changeDateToCorrectFormat(startDate),
+            endDate: auth.changeDateToCorrectFormat(endDate),
+        };
+    }
+
+    const onSubmit = async (data: inputData) => {
+        const dayData = formatDate(data);
+
+        if (entryType === EntriesPlanType.DAY)
+            await auth.addDayPlan(dayData);
+        else if (entryType === EntriesPlanType.MONTH)
+            await auth.addMonthPlan(dayData);
+        else
+            await auth.addYearPlan(dayData);
+
         return history.goBack();
     }
 

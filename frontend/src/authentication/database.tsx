@@ -1,5 +1,6 @@
 import axios from 'axios';
-import { registerUser, loginUser } from '../utils/interfaces';
+import { start } from 'repl';
+import { registerUser, loginUser, inputData } from '../utils/interfaces';
 
 
 class Database {
@@ -15,6 +16,8 @@ class Database {
         this.username = null!;
     }
 
+    changeDateToCorrectFormat = (date: string) => date.slice(0, 10);
+
     getAuthConfig = () => ({
         headers: {
             Authorization: `${this.axiosType} ${this.token}`,
@@ -28,6 +31,42 @@ class Database {
 
         return `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
     }
+
+    addYearPlan = async (data: inputData) => {
+        const { startDate } = data;
+        const { yearId } = await this.getYearByDate(startDate);
+
+        return await this.addYearPlanByYearId(yearId, data);
+    }
+
+    addYearPlanByYearId = async (yearId: number, data: inputData) => axios
+        .post(`${this.serverAddress}/schedule/${this.userId}/year/${yearId}/year_plan`, data, this.getAuthConfig())
+        .then(({ data }) => data)
+        .catch(({ response }) => console.log(response.data))
+
+    addMonthPlan = async (data: inputData) => {
+        const { startDate } = data;
+        const { monthId } = await this.getMonthByDate(startDate);
+
+        return await this.addMonthPlanByMonthId(monthId, data);
+    }
+
+    addMonthPlanByMonthId = async (monthId: number, data: inputData) => axios
+        .post(`${this.serverAddress}/schedule/${this.userId}/month/${monthId}/month_plan`, data, this.getAuthConfig())
+        .then(({ data }) => data)
+        .catch(({ response }) => console.log(response.data))
+
+    addDayPlan = async (data: inputData) => {
+        const { startDate } = data;
+        const { dayId } = await this.getDayByDate(startDate);
+
+        return await this.addDayPlanByDayId(dayId, data);
+    }
+
+    addDayPlanByDayId = async (dayId: number, data: inputData) => axios
+        .post(`${this.serverAddress}/schedule/${this.userId}/day/${dayId}/day_plan`, data, this.getAuthConfig())
+        .then(({ data }) => data)
+        .catch(({ response }) => console.log(response.data))
 
     getDayByDayId = async (dayId: number) => axios
         .get(`${this.serverAddress}/schedule/${this.userId}/day/${dayId}`, this.getAuthConfig())
