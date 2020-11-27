@@ -29,6 +29,7 @@ const UserLanguage = () => {
             <IonPicker
                 isOpen={isPickerOpen}
                 columns={[languageColumn]}
+                cssClass='picker'
                 buttons={[
                     {
                         text: languagePack[language].cancelText,

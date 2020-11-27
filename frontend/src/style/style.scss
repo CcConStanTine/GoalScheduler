@@ -43,9 +43,13 @@
         }
 
         .other-plans{
-            .other-plans-container{
-                .plan{
-                    background-color: #707070;
+            .other-entries-container{
+                .entries-navigation{
+                    .active{
+                        border-color: rgb(120,120,120);
+                        background-color: rgb(120,120,120);
+                        color: white;
+                    }
                 }
             }
         }
@@ -75,13 +79,6 @@
                         }
                     }
                 }
-
-                &.language{
-                    select{
-                        background-color: var(--dark_mode-background-color);
-                        color: white;
-                    }
-                }
             }
         }
     }
@@ -90,10 +87,10 @@
         .fulfilled{
             background-color: rgba(0,0,0,0.7);
         }
-        .delete-window{
+        .delete-window,.finish-window{
             background-color: rgba(0,0,0,0.7);
 
-            .delete-message-container{
+            .message-container{
                 background-color: #333;
             }
         }
