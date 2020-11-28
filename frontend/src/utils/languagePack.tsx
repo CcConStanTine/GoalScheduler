@@ -88,7 +88,8 @@ const languagePack: languageInterface = {
         dayInputSelectStartTime: 'Select start time',
         inputSendRequestText: 'Add Task',
         editEntryText: 'Edit Entry',
-        selectLanguageText: 'Done'
+        selectLanguageText: 'Done',
+        loggingIn: 'Logging In',
     },
     'pl-PL': {
         signOutText: 'Wyloguj się',
@@ -176,7 +177,8 @@ const languagePack: languageInterface = {
         dayInputSelectStartTime: 'O której ma się zaczynać',
         inputSendRequestText: 'Dodaj wpis',
         editEntryText: 'Edytuj wpis',
-        selectLanguageText: 'Wybierz'
+        selectLanguageText: 'Wybierz',
+        loggingIn: 'Wczytuję',
     }
 }
 

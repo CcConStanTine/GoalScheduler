@@ -65,7 +65,13 @@ const AccountForm = ({ type, history }: accountFormInterface) => {
     }];
 
     const sendRequestToCreateUser = async (data: any) => {
-        await console.log(auth.register(data));
+        const { status, message } = await auth.register(data);
+        if (status === 200) {
+            setTimeout(() => setRegisterMessage(languagePack[language].loggingIn), 1000);
+            setTimeout(() => sendRequestToLoginUser(data), 2000);
+        }
+
+        return setRegisterMessage(message);
     }
 
     const sendRequestToLoginUser = async (data: any) => {

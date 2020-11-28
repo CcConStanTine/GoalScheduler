@@ -267,7 +267,7 @@ class Database {
         .then(({ data }) => data)
         .catch(error => console.log(error))
 
-    register = ({ username, password, email, firstName, lastName }: registerUser): object => axios
+    register = async ({ username, password, email, firstName, lastName }: registerUser) => axios
         .post(`${this.serverAddress}/sign-up`, {
             username,
             password,
@@ -275,6 +275,9 @@ class Database {
             firstName,
             lastName
         })
+        .then(({ data }) => { return { status: 200, message: data.message } })
+        .catch(({ response }) => response.data);
+
 
     login = ({ username, password }: loginUser): any => axios
         .post(`${this.serverAddress}/sign-in`, { username, password })

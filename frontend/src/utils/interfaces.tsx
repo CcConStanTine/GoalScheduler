@@ -218,5 +218,6 @@ export interface languageInterface {
         inputSendRequestText: string;
         editEntryText: string;
         selectLanguageText: string;
+        loggingIn: string;
     };
 }
