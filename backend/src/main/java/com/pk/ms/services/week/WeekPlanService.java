@@ -2,10 +2,12 @@ package com.pk.ms.services.week;
 
 import com.pk.ms.dao.week.WeekPlanRepository;
 import com.pk.ms.dto.week.WeekPlanInputDTO;
+import com.pk.ms.entities.week.Week;
 import com.pk.ms.entities.week.WeekPlan;
 import com.pk.ms.exceptions.AccessDeniedException;
 import com.pk.ms.exceptions.ResourceNotAvailableException;
 import com.pk.ms.services.schedule.ScheduleService;
+import org.apache.tomcat.jni.Local;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -39,6 +41,8 @@ public class WeekPlanService {
     }
 
     public WeekPlan createWeekPlan(long scheduleId, long weekId, WeekPlanInputDTO weekPlanInputDTO) {
+        Week week = weekService.getWeekById(weekId);
+        dataValidationForDataTypes(weekPlanInputDTO, week);
         return saveWeekPlan(new WeekPlan(weekPlanInputDTO.getContent(),
                 weekPlanInputDTO.getStartDate(),
                 weekPlanInputDTO.getEndDate(),
@@ -47,27 +51,28 @@ public class WeekPlanService {
     }
 
     public WeekPlan updateWeekPlan(long scheduleId, long weekPlanId, WeekPlanInputDTO weekPlanInputDTO) {
-
         WeekPlan weekPlan = getNotNullWeekPlanById(weekPlanId);
-
+        Week week = weekPlan.getWeek();
+        dataValidationForDataTypes(weekPlanInputDTO, week);
         if(hasAccess(scheduleId, weekPlan)) {
-
-            String content = weekPlanInputDTO.getContent();
-            if (!isObjectNull(content))
-                weekPlan.setContent(content);
-
-            LocalDate startDate = weekPlanInputDTO.getStartDate();
-            if (!isObjectNull(startDate))
-                weekPlan.setStartDate(startDate);
-
-            LocalDate endDate = weekPlanInputDTO.getEndDate();
-            if (!isObjectNull(endDate))
-                weekPlan.setEndDate(endDate);
-
+            updateWeekPlanAttributes(weekPlanInputDTO, weekPlan);
             return saveWeekPlan(weekPlan);
         }
         else
             throw new AccessDeniedException("This user cannot update this resource. ");
+    }
+
+    private void dataValidationForDataTypes(WeekPlanInputDTO weekPlanInputDTO, Week week) {
+        LocalDate startDate = week.getStartDate();
+        LocalDate endDate = week.getEndDate();
+        LocalDate inputStartDate = weekPlanInputDTO.getStartDate();
+        LocalDate inputEndDate = weekPlanInputDTO.getEndDate();
+        if(     !((inputStartDate.isAfter(startDate) && (inputStartDate.isBefore(endDate))) ||
+                ((inputStartDate.isEqual(startDate) || inputStartDate.isEqual(endDate)))))
+            throw new IllegalArgumentException("Start date cannot include other weeks. ");
+        if(     !((inputEndDate.isAfter(startDate) && (inputEndDate.isBefore(endDate))) ||
+                ((inputEndDate.isEqual(startDate) || inputEndDate.isEqual(endDate)))))
+            throw new IllegalArgumentException("End date cannot include other weeks. ");
     }
 
     public String deleteWeekPlan(long scheduleId, long weekPlanId) {
@@ -110,6 +115,12 @@ public class WeekPlanService {
 
     private WeekPlan saveWeekPlan(WeekPlan weekPlan) {
         return weekPlanRepo.save(weekPlan);
+    }
+
+    private void updateWeekPlanAttributes(WeekPlanInputDTO weekPlanInputDTO, WeekPlan weekPlan) {
+        weekPlan.setContent(weekPlanInputDTO.getContent());
+        weekPlan.setStartDate(weekPlanInputDTO.getStartDate());
+        weekPlan.setEndDate(weekPlanInputDTO.getEndDate());
     }
 
     private void deleteWeekPlan(WeekPlan weekPlan) {

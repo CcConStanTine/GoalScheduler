@@ -7,6 +7,7 @@ import javax.validation.constraints.Size;
 @MappedSuperclass
 public abstract class Plan <T> {
 
+    @NotNull
     @Size(max = 200)
     private String content;
 

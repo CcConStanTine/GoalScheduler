@@ -7,7 +7,6 @@ import com.pk.ms.exceptions.AccessDeniedException;
 import com.pk.ms.exceptions.ResourceNotAvailableException;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -33,23 +32,9 @@ public class LongTermPlanService {
     }
 
     public LongTermPlan updateLongTermPlan(long scheduleId, long ltpId, LongTermPlanInputDTO ltpInputDTO) {
-
         LongTermPlan longTermPlan = getNotNullLTPById(ltpId);
-
         if(hasAccess(scheduleId, longTermPlan)) {
-
-            String content = ltpInputDTO.getContent();
-            if (!isObjectNull(content))
-                longTermPlan.setContent(content);
-
-            LocalDate startDate = ltpInputDTO.getStartDate();
-            if (!isObjectNull(startDate))
-                longTermPlan.setStartDate(startDate);
-
-            LocalDate endDate = ltpInputDTO.getEndDate();
-            if (!isObjectNull(endDate))
-                longTermPlan.setEndDate(endDate);
-
+            updateLTPAttributes(ltpInputDTO, longTermPlan);
             return saveLongTermPLan(longTermPlan);
         }
         else
@@ -96,6 +81,12 @@ public class LongTermPlanService {
 
     private LongTermPlan saveLongTermPLan(LongTermPlan longTermPlan) {
         return longTermPlanRepo.save(longTermPlan);
+    }
+
+    private void updateLTPAttributes(LongTermPlanInputDTO ltpInputDTO, LongTermPlan longTermPlan) {
+        longTermPlan.setContent(ltpInputDTO.getContent());
+        longTermPlan.setStartDate(ltpInputDTO.getStartDate());
+        longTermPlan.setEndDate(ltpInputDTO.getEndDate());
     }
 
     private void deleteLongTermPlan(LongTermPlan longTermPlan) {

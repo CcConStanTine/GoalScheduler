@@ -2,13 +2,13 @@ package com.pk.ms.services.month;
 
 import com.pk.ms.dao.month.MonthPlanRepository;
 import com.pk.ms.dto.month.MonthPlanInputDTO;
+import com.pk.ms.entities.month.Month;
 import com.pk.ms.entities.month.MonthPlan;
 import com.pk.ms.exceptions.AccessDeniedException;
 import com.pk.ms.exceptions.ResourceNotAvailableException;
 import com.pk.ms.services.schedule.ScheduleService;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -39,35 +39,33 @@ public class MonthPlanService {
     }
 
     public MonthPlan createMonthPlan(long scheduleId, long monthId, MonthPlanInputDTO monthPlanInputDTO) {
+        Month month = monthService.getMonthById(monthId);
+        dataValidationForDataTypes(monthPlanInputDTO, month);
         return saveMonthPlan(new MonthPlan(monthPlanInputDTO.getContent(),
                 monthPlanInputDTO.getStartDate(),
                 monthPlanInputDTO.getEndDate(),
-                monthService.getMonthById(monthId),
+                month,
                 scheduleService.getScheduleById(scheduleId)));
     }
 
     public MonthPlan updateMonthPlan(long scheduleId, long monthPlanId, MonthPlanInputDTO monthPlanInputDTO) {
-
         MonthPlan monthPlan = getMonthPlanById(monthPlanId);
-
+        Month month = monthPlan.getMonth();
+        dataValidationForDataTypes(monthPlanInputDTO, month);
         if(hasAccess(scheduleId, monthPlan)) {
-
-            String content = monthPlanInputDTO.getContent();
-            if (!isObjectNull(content))
-                monthPlan.setContent(content);
-
-            LocalDate startDate = monthPlanInputDTO.getStartDate();
-            if (!isObjectNull(startDate))
-                monthPlan.setStartDate(startDate);
-
-            LocalDate endDate = monthPlanInputDTO.getEndDate();
-            if (!isObjectNull(endDate))
-                monthPlan.setEndDate(endDate);
-
+            updateMonthPlanAttributes(monthPlanInputDTO, monthPlan);
             return saveMonthPlan(monthPlan);
         }
         else
             throw new AccessDeniedException("This user cannot update this resource. ");
+    }
+
+    private void dataValidationForDataTypes(MonthPlanInputDTO monthPlanInputDTO, Month month) {
+        int monthNumber = month.getMonthName().getMonthNumber();
+        if (monthPlanInputDTO.getStartDate().getMonthValue() != monthNumber)
+            throw new IllegalArgumentException("Start date cannot include other month. ");
+        if (monthPlanInputDTO.getEndDate().getMonthValue() != monthNumber)
+            throw new IllegalArgumentException("End date cannot include other month. ");
     }
 
     public String deleteMonthPlan(long scheduleId, long monthPlanId) {
@@ -110,6 +108,12 @@ public class MonthPlanService {
 
     private MonthPlan saveMonthPlan(MonthPlan monthPlan) {
         return monthPlanRepo.save(monthPlan);
+    }
+
+    private void updateMonthPlanAttributes(MonthPlanInputDTO monthPlanInputDTO, MonthPlan monthPlan) {
+        monthPlan.setContent(monthPlanInputDTO.getContent());
+        monthPlan.setStartDate(monthPlanInputDTO.getStartDate());
+        monthPlan.setEndDate(monthPlanInputDTO.getEndDate());
     }
 
     private void deleteMonthPlan(MonthPlan monthPlan) {

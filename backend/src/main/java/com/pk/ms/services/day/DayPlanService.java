@@ -8,7 +8,6 @@ import com.pk.ms.exceptions.ResourceNotAvailableException;
 import com.pk.ms.services.schedule.ScheduleService;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalTime;
 import java.util.List;
 
 @Service
@@ -47,23 +46,9 @@ public class DayPlanService {
     }
 
     public DayPlan updateDayPlan(long scheduleId, long dayPlanId, DayPlanInputDTO dayPlanInputDTO) {
-
         DayPlan dayPlan = getNotNullDayPlanById(dayPlanId);
-
         if(hasAccess(scheduleId, dayPlan)) {
-
-            String content = dayPlanInputDTO.getContent();
-            if (!isObjectNull(content))
-                dayPlan.setContent(content);
-
-            LocalTime startDate = dayPlanInputDTO.getStartDate();
-            if (!isObjectNull(startDate))
-                dayPlan.setStartDate(startDate);
-
-            LocalTime endDate = dayPlanInputDTO.getEndDate();
-            if (!isObjectNull(endDate))
-                dayPlan.setEndDate(endDate);
-
+            updateDayPlanAttributes(dayPlanInputDTO, dayPlan);
             return saveDayPlan(dayPlan);
         }
         else
@@ -110,6 +95,12 @@ public class DayPlanService {
 
     private DayPlan saveDayPlan(DayPlan dayPlan) {
         return dayPlanRepo.save(dayPlan);
+    }
+
+    private void updateDayPlanAttributes(DayPlanInputDTO dayPlanInputDTO, DayPlan dayPlan) {
+        dayPlan.setContent(dayPlanInputDTO.getContent());
+        dayPlan.setStartDate(dayPlanInputDTO.getStartDate());
+        dayPlan.setEndDate(dayPlanInputDTO.getEndDate());
     }
 
     private void deleteDayPlan(DayPlan dayPlan) {
