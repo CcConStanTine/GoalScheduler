@@ -3,7 +3,7 @@ import { registerUser, loginUser, inputData } from '../utils/interfaces';
 
 
 class Database {
-    serverAddress = '';
+    serverAddress = 'https://goalscheduler.herokuapp.com';
     axiosType = "Bearer";
     token: string;
     userId: number;
@@ -18,6 +18,16 @@ class Database {
     changeDateToCorrectFormat = (date: string) => date.slice(0, 10);
     changeDateTimeToCorrectFormat = (date: string) => date.slice(11, 19);
 
+    validateDate = (date: any) => {
+        const year = date.slice(0, 4);
+        const month = date.slice(5, 7);
+        const day = parseInt(date.slice(8, 10));
+
+        const _date = `${year}-${month}-${day < 10 ? `0${day}` : day}`;
+
+        return _date;
+    }
+
     getAuthConfig = () => ({
         headers: {
             Authorization: `${this.axiosType} ${this.token}`,
@@ -29,7 +39,7 @@ class Database {
     getCurrentDate = () => {
         const date = new Date();
 
-        return `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
+        return `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate() < 10 ? `0${date.getDate()}` : date.getDate()}`;
     }
 
     addYearPlan = async (data: inputData) => {
@@ -94,8 +104,9 @@ class Database {
         .then(({ data }) => data)
         .catch(({ response }) => console.log(response.data))
 
-    getDayPlans = async (date: string = this.getCurrentDate()) => {
-        const { dayId } = await this.getDayByDate(date);
+    getDayPlans = async (date: string | undefined) => {
+        let _date = date ? this.validateDate(date) : this.getCurrentDate();
+        const { dayId } = await this.getDayByDate(_date);
         const plans = await this.getDayPlansByDayID(dayId);
 
         return { id: dayId, plans }
@@ -111,15 +122,16 @@ class Database {
         .then(({ data }) => data)
         .catch(({ response }) => console.log(response.data))
 
-    getMonthPlans = async (date: string = this.getCurrentDate()) => {
-        const { monthId } = await this.getMonthByDate(date);
+    getMonthPlans = async (date: string | undefined) => {
+        let _date = date ? this.validateDate(date) : this.getCurrentDate();
+        const { monthId } = await this.getMonthByDate(_date);
         const plans = await this.getMonthPlansByMonthId(monthId);
 
         return { id: monthId, plans };
     }
 
     getMonthsByDate = (date: string) => axios
-        .get(`${this.serverAddress}/schedule/${this.userId}/months?local_date=${date}`, this.getAuthConfig())
+        .get(`${this.serverAddress}/schedule/${this.userId}/months?local_date=${this.validateDate(date)}`, this.getAuthConfig())
         .then(({ data }) => data)
         .catch(({ response }) => console.log(response.data))
 
@@ -138,8 +150,9 @@ class Database {
         .then(({ data }) => data)
         .catch(({ response }) => console.log(response.data))
 
-    getYearPlans = async (date: string = this.getCurrentDate()) => {
-        const { yearId } = await this.getYearByDate(date);
+    getYearPlans = async (date: string | undefined) => {
+        let _date = date ? this.validateDate(date) : this.getCurrentDate();
+        const { yearId } = await this.getYearByDate(_date);
         const plans = await this.getYearPlansByYearId(yearId);
 
         return { id: yearId, plans };
@@ -196,7 +209,7 @@ class Database {
         .catch(({ response }) => response.data.message)
 
     getDaysByDate = (date: string) => axios
-        .get(`${this.serverAddress}/schedule/${this.userId}/days?local_date=${date}`, this.getAuthConfig())
+        .get(`${this.serverAddress}/schedule/${this.userId}/days?local_date=${this.validateDate(date)}`, this.getAuthConfig())
         .then(({ data }) => data)
         .catch(({ response }) => response.data.message)
 
