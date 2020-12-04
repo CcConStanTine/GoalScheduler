@@ -6,11 +6,12 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface DayPlanRepository extends CrudRepository<DayPlan, Long> {
 
-    DayPlan findById(long id);
+    Optional<DayPlan> findById(long id);
 
     @Query(nativeQuery = true, value = "SELECT * FROM day_plan WHERE schedule_id = ? AND day_id = ?")
     List<DayPlan> findDayPlansByScheduleIdAndDayId(long scheduleId, long dayId);

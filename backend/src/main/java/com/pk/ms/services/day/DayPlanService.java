@@ -1,9 +1,9 @@
 package com.pk.ms.services.day;
 
+import com.pk.ms.abstracts.PlanAccessAuthorizationService;
 import com.pk.ms.dao.day.DayPlanRepository;
 import com.pk.ms.dto.day.DayPlanInputDTO;
 import com.pk.ms.entities.day.DayPlan;
-import com.pk.ms.exceptions.AccessDeniedException;
 import com.pk.ms.exceptions.ResourceNotAvailableException;
 import com.pk.ms.services.schedule.ScheduleService;
 import org.springframework.stereotype.Service;
@@ -11,107 +11,74 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class DayPlanService {
+public class DayPlanService implements PlanAccessAuthorizationService {
 
-    private final DayPlanRepository dayPlanRepo;
+    private final DayPlanRepository repository;
 
     private final DayService dayService;
 
     private final ScheduleService scheduleService;
 
-    public DayPlanService(DayPlanRepository dayPlanRepo, DayService dayService, ScheduleService scheduleService) {
-        this.dayPlanRepo = dayPlanRepo;
+    public DayPlanService(DayPlanRepository repository, DayService dayService, ScheduleService scheduleService) {
+        this.repository = repository;
         this.dayService = dayService;
         this.scheduleService = scheduleService;
     }
 
     public List<DayPlan> getDayPlansByScheduleIdAndDayId(long scheduleId, long dayId) {
-        return getDayPlansByScheduleIdAndDayIdFromRepo(scheduleId, dayId);
+        return repository.findDayPlansByScheduleIdAndDayId(scheduleId, dayId);
     }
 
     public DayPlan getDayPlan(long scheduleId, long dayPlanId) {
-        DayPlan dayPlan = getNotNullDayPlanById(dayPlanId);
-        if(hasAccess(scheduleId, dayPlan))
-            return dayPlan;
-        else
-            throw new AccessDeniedException("This user cannot access this resource. ");
+        return getAuthorizedNotNullDayPlanById(scheduleId, dayPlanId);
     }
 
     public DayPlan createDayPlan(long scheduleId, long dayId, DayPlanInputDTO dayPlanInputDTO) {
-        return saveDayPlan(new DayPlan(dayPlanInputDTO.getContent(),
+        return save(new DayPlan(dayPlanInputDTO.getContent(),
                 dayPlanInputDTO.getStartDate(),
                 dayPlanInputDTO.getEndDate(),
-                dayService.getDayById(dayId),
-                scheduleService.getScheduleById(scheduleId)));
+                scheduleService.getScheduleById(scheduleId),
+                dayService.getDayById(dayId)));
     }
 
     public DayPlan updateDayPlan(long scheduleId, long dayPlanId, DayPlanInputDTO dayPlanInputDTO) {
-        DayPlan dayPlan = getNotNullDayPlanById(dayPlanId);
-        if(hasAccess(scheduleId, dayPlan)) {
-            updateDayPlanAttributes(dayPlanInputDTO, dayPlan);
-            return saveDayPlan(dayPlan);
-        }
-        else
-            throw new AccessDeniedException("This user cannot update this resource. ");
+        DayPlan dayPlan = getAuthorizedNotNullDayPlanById(scheduleId, dayPlanId);
+        updateDayPlanAttributes(dayPlanInputDTO, dayPlan);
+        return save(dayPlan);
     }
 
     public String deleteDayPlan(long scheduleId, long dayPlanId) {
-        DayPlan dayPlan = getNotNullDayPlanById(dayPlanId);
-        if(hasAccess(scheduleId, dayPlan)) {
-            deleteDayPlan(dayPlan);
-            return "Plan deleted successfully. ";
-        }
-        else
-            throw new AccessDeniedException("This user cannot delete this resource. ");
+        delete(getAuthorizedNotNullDayPlanById(scheduleId, dayPlanId));
+        return "Plan deleted successfully. ";
     }
 
     public DayPlan updateFulfilledStatus(long scheduleId, long dayPlanId) {
-        DayPlan dayPlan = getNotNullDayPlanById(dayPlanId);
-        if(hasAccess(scheduleId, dayPlan)) {
-            boolean fulfilled = dayPlan.isFulfilled();
-            fulfilled = !fulfilled;
-            dayPlan.setFulfilled(fulfilled);
-            return saveDayPlan(dayPlan);
-        }
-        else
-            throw new AccessDeniedException("This user cannot update this resource. ");
+        DayPlan dayPlan = getAuthorizedNotNullDayPlanById(scheduleId, dayPlanId);
+        dayPlan.setFulfilled(!dayPlan.isFulfilled());
+        return save(dayPlan);
     }
 
-
-    private List<DayPlan> getDayPlansByScheduleIdAndDayIdFromRepo(long scheduleId, long dayId) {
-        return dayPlanRepo.findDayPlansByScheduleIdAndDayId(scheduleId, dayId);
-    }
-
-    private DayPlan getNotNullDayPlanById(long id) {
-        DayPlan dayPlan = getDayPlanByIdFromRepo(id);
-        if(isObjectNull(dayPlan))
-            throw new ResourceNotAvailableException();
+    private DayPlan getAuthorizedNotNullDayPlanById(long scheduleId, long dayPlanId) {
+        DayPlan dayPlan = repository.findById(dayPlanId).orElseThrow(ResourceNotAvailableException::new);
+        authorize(hasAccess(scheduleId, dayPlan));
         return dayPlan;
     }
 
-    private DayPlan getDayPlanByIdFromRepo(long id) {
-        return dayPlanRepo.findById(id);
-    }
-
-    private DayPlan saveDayPlan(DayPlan dayPlan) {
-        return dayPlanRepo.save(dayPlan);
+    private DayPlan save(DayPlan dayPlan) {
+        return repository.save(dayPlan);
     }
 
     private void updateDayPlanAttributes(DayPlanInputDTO dayPlanInputDTO, DayPlan dayPlan) {
         dayPlan.setContent(dayPlanInputDTO.getContent());
         dayPlan.setStartDate(dayPlanInputDTO.getStartDate());
         dayPlan.setEndDate(dayPlanInputDTO.getEndDate());
+        if(dayPlanInputDTO.getImportance() != null)
+            dayPlan.setImportance(dayPlanInputDTO.getImportance());
+        if(dayPlanInputDTO.getUrgency() != null)
+            dayPlan.setUrgency(dayPlanInputDTO.getUrgency());
     }
 
-    private void deleteDayPlan(DayPlan dayPlan) {
-        dayPlanRepo.delete(dayPlan);
-    }
-
-    private boolean isObjectNull(Object object) {
-        return object == null;
-    }
-
-    private boolean hasAccess(long scheduleId, DayPlan dayPlan) {
-        return dayPlan.getSchedule().getScheduleId() == scheduleId;
+    private void delete(DayPlan dayPlan) {
+        repository.delete(dayPlan);
     }
 }
