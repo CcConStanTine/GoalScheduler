@@ -19,19 +19,12 @@ public class YearSummary extends Summary {
     @JsonIgnore
     private Year year;
 
-    @ManyToOne
-    @JoinColumn(name = "schedule_id")
-    @JsonIgnore
-    private Schedule schedule;
-
     public YearSummary() {
     }
 
-    public YearSummary(Year year, Schedule schedule) {
+    public YearSummary(Schedule schedule, Year year) {
+        super(schedule);
         this.year = year;
-        this.schedule = schedule;
-        countFailedAmount();
-        countFulfilledAmount();
     }
 
     public Long getYearSummaryId() {
@@ -48,14 +41,6 @@ public class YearSummary extends Summary {
 
     public void setYear(Year year) {
         this.year = year;
-    }
-
-    public Schedule getSchedule() {
-        return schedule;
-    }
-
-    public void setSchedule(Schedule schedule) {
-        this.schedule = schedule;
     }
 
     @Override

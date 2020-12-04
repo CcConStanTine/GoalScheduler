@@ -6,13 +6,13 @@ import com.pk.ms.dao.schedule.LongTermPlanRepository;
 import com.pk.ms.dto.schedule.LongTermPlanInputDTO;
 import com.pk.ms.entities.schedule.LongTermPlan;
 import com.pk.ms.exceptions.ResourceNotAvailableException;
-import com.pk.ms.abstracts.AccessAuthorizationService;
+import com.pk.ms.abstracts.PlanAccessAuthorizationService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-public class LongTermPlanService implements AccessAuthorizationService {
+public class LongTermPlanService implements PlanAccessAuthorizationService {
 
     private final LongTermPlanRepository repository;
 

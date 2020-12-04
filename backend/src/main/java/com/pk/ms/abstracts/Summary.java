@@ -1,5 +1,10 @@
 package com.pk.ms.abstracts;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.pk.ms.entities.schedule.Schedule;
+
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.MappedSuperclass;
 
 @MappedSuperclass
@@ -9,7 +14,16 @@ public abstract class Summary {
 
     private int failedAmount;
 
+    @ManyToOne
+    @JoinColumn(name = "schedule_id")
+    @JsonIgnore
+    protected Schedule schedule;
+
     public Summary() {
+    }
+
+    public Summary(Schedule schedule) {
+        this.schedule = schedule;
     }
 
     public int getFulfilledAmount() {
@@ -26,6 +40,14 @@ public abstract class Summary {
 
     public void setFailedAmount(int failedAmount) {
         this.failedAmount = failedAmount;
+    }
+
+    public Schedule getSchedule() {
+        return schedule;
+    }
+
+    public void setSchedule(Schedule schedule) {
+        this.schedule = schedule;
     }
 
     public abstract void countFulfilledAmount();

@@ -1,6 +1,6 @@
 package com.pk.ms.services.year;
 
-import com.pk.ms.abstracts.AccessAuthorizationService;
+import com.pk.ms.abstracts.PlanAccessAuthorizationService;
 import com.pk.ms.constants.Importance;
 import com.pk.ms.constants.Urgency;
 import com.pk.ms.dao.year.YearPlanRepository;
@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class YearPlanService implements AccessAuthorizationService {
+public class YearPlanService implements PlanAccessAuthorizationService {
 
     private final YearPlanRepository repository;
 
