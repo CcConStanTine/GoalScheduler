@@ -1,5 +1,7 @@
 package com.pk.ms.services.schedule;
 
+import com.pk.ms.constants.Importance;
+import com.pk.ms.constants.Urgency;
 import com.pk.ms.dao.schedule.LongTermPlanRepository;
 import com.pk.ms.dto.schedule.LongTermPlanInputDTO;
 import com.pk.ms.entities.schedule.LongTermPlan;
@@ -43,7 +45,7 @@ public class LongTermPlanService implements AccessAuthorizationService {
     public String deleteLongTermPlan(long scheduleId, long ltpId) {
         LongTermPlan longTermPlan = getAuthorizedNotNullLongTermPlanByIdFromRepo(scheduleId, ltpId);
         delete(longTermPlan);
-        return "Plan has been deleted successfully. ";
+        return "Plan deleted successfully. ";
     }
 
     public LongTermPlan updateFulfilledStatus(long scheduleId, long ltpId) {
@@ -68,8 +70,14 @@ public class LongTermPlanService implements AccessAuthorizationService {
         longTermPlan.setContent(ltpInputDTO.getContent());
         longTermPlan.setStartDate(ltpInputDTO.getStartDate());
         longTermPlan.setEndDate(ltpInputDTO.getEndDate());
-        longTermPlan.setImportance(ltpInputDTO.getImportance());
-        longTermPlan.setUrgency(ltpInputDTO.getUrgency());
+        if(ltpInputDTO.getImportance() != null)
+            longTermPlan.setImportance(ltpInputDTO.getImportance());
+        else
+            longTermPlan.setImportance(Importance.REGULAR);
+        if(ltpInputDTO.getUrgency() != null)
+            longTermPlan.setUrgency(ltpInputDTO.getUrgency());
+        else
+            longTermPlan.setUrgency(Urgency.REGULAR);
     }
 
     private void delete(LongTermPlan longTermPlan) {

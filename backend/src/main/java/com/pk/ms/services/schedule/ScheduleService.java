@@ -21,14 +21,6 @@ public class ScheduleService {
     }
 
     private Schedule getNotNullScheduleById(long id) {
-        Schedule schedule = scheduleRepo.findById(id);
-        if(isObjectNull(schedule))
-            throw new ResourceNotAvailableException();
-        return schedule;
+        return scheduleRepo.findById(id).orElseThrow(ResourceNotAvailableException::new);
     }
-
-    private boolean isObjectNull(Object object) {
-        return object == null;
-    }
-
 }

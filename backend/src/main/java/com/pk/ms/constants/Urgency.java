@@ -1,7 +1,7 @@
 package com.pk.ms.constants;
 
 public enum Urgency {
-    NOTURGENT,
+    NONURGENT,
     REGULAR,
     URGENT,
     VERYURGENT

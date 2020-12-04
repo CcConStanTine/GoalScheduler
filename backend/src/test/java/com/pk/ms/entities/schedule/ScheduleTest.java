@@ -22,6 +22,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 class ScheduleTest {
+    /*
 
     MyScheduleUser user;
     Schedule schedule;
@@ -255,4 +256,6 @@ class ScheduleTest {
         //then
         assertEquals(0, dayPlanList.size());
     }
+
+     */
 }

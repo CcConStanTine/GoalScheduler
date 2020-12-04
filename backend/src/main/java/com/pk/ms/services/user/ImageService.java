@@ -17,10 +17,6 @@ public class ImageService {
         this.imageUploader = imageUploader;
     }
 
-    public Image getImageById(long imageId) {
-        return getImageByIdFromRepo(imageId);
-    }
-
     public Image saveImage(MultipartFile file) {
         String fileUrl = uploadImageOnHosting(file);
         return save(new Image(fileUrl));
@@ -33,8 +29,14 @@ public class ImageService {
     }
 
     public String deleteImage(Image image) {
-        deleteImageById(image.getImageId());
+        if(isNotNull(image)) {
+            delete(image);
+        }
         return "Image deleted successfully. ";
+    }
+
+    private boolean isNotNull(Image image) {
+        return image != null;
     }
 
     private Image save(Image image) {
@@ -49,8 +51,7 @@ public class ImageService {
         return imageRepository.findById(imageId);
     }
 
-    private void deleteImageById(long id) {
-        imageRepository.deleteById(id);
+    private void delete(Image image) {
+        imageRepository.delete(image);
     }
-
 }
