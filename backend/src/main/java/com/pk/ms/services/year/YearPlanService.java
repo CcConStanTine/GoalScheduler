@@ -91,12 +91,8 @@ public class YearPlanService implements PlanAccessAuthorizationService {
         yearPlan.setEndDate(yearPlanInputDTO.getEndDate());
         if(yearPlanInputDTO.getImportance() != null)
             yearPlan.setImportance(yearPlanInputDTO.getImportance());
-        else
-            yearPlan.setImportance(Importance.REGULAR);
         if(yearPlanInputDTO.getUrgency() != null)
             yearPlan.setUrgency(yearPlanInputDTO.getUrgency());
-        else
-            yearPlan.setUrgency(Urgency.REGULAR);
     }
 
     private void delete(YearPlan yearPlan) {

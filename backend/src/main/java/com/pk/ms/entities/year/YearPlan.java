@@ -33,6 +33,11 @@ public class YearPlan extends PlanEntity<LocalDate> {
         this.year = year;
     }
 
+    public YearPlan(String content, LocalDate startDate, LocalDate endDate, Schedule schedule, Year year) {
+        super(content, startDate, endDate, schedule);
+        this.year = year;
+    }
+
     public Long getYearPlanId() {
         return yearPlanId;
     }

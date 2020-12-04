@@ -1,12 +1,10 @@
 package com.pk.ms.services.schedule;
 
-import com.pk.ms.constants.Importance;
-import com.pk.ms.constants.Urgency;
+import com.pk.ms.abstracts.PlanAccessAuthorizationService;
 import com.pk.ms.dao.schedule.LongTermPlanRepository;
 import com.pk.ms.dto.schedule.LongTermPlanInputDTO;
 import com.pk.ms.entities.schedule.LongTermPlan;
 import com.pk.ms.exceptions.ResourceNotAvailableException;
-import com.pk.ms.abstracts.PlanAccessAuthorizationService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -31,8 +29,6 @@ public class LongTermPlanService implements PlanAccessAuthorizationService {
         return save(new LongTermPlan(ltpInputDTO.getContent(),
                                                 ltpInputDTO.getStartDate(),
                                                 ltpInputDTO.getEndDate(),
-                                                ltpInputDTO.getImportance(),
-                                                ltpInputDTO.getUrgency(),
                                                 scheduleService.getScheduleById(scheduleId)));
     }
 
@@ -72,12 +68,8 @@ public class LongTermPlanService implements PlanAccessAuthorizationService {
         longTermPlan.setEndDate(ltpInputDTO.getEndDate());
         if(ltpInputDTO.getImportance() != null)
             longTermPlan.setImportance(ltpInputDTO.getImportance());
-        else
-            longTermPlan.setImportance(Importance.REGULAR);
         if(ltpInputDTO.getUrgency() != null)
             longTermPlan.setUrgency(ltpInputDTO.getUrgency());
-        else
-            longTermPlan.setUrgency(Urgency.REGULAR);
     }
 
     private void delete(LongTermPlan longTermPlan) {

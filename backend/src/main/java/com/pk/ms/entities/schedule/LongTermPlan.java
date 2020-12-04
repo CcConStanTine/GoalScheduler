@@ -23,6 +23,10 @@ public class LongTermPlan extends PlanEntity<LocalDate> {
         super(content, startDate, endDate, importance, urgency, schedule);
     }
 
+    public LongTermPlan(String content, LocalDate startDate, LocalDate endDate, Schedule schedule) {
+        super(content, startDate, endDate, schedule);
+    }
+
     public Long getLongTermPlanId() {
         return longTermPlanId;
     }
