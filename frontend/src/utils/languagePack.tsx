@@ -1,7 +1,7 @@
 import { appName } from './variables';
 import { languageInterface } from './interfaces';
 
-const languagePack: any = {
+const languagePack: languageInterface = {
     'en-US': {
         WELCOME: {
             signUp: 'Sign Up',

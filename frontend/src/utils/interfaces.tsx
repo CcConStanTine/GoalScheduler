@@ -130,67 +130,113 @@ export interface selectLanguageInterface {
         }]
 };
 
-export interface languageInterface {
-    [key: string]: {
-        signOutText: string;
-        todayPlansText: string;
-        darkModeText: string;
-        languageText: string;
-        changePasswordText: string;
-        checkOldPasswordError: string;
-        checkNewPasswordError: string;
-        changeUsernameText: string;
-        LogAgainMessage: string;
-        theSamePasswordError: string;
-        settingsNavigationText: string;
-        changeUserEmail: string;
-        changedUserEmailSuccessfully: string;
-        changedUsernameSuccessfully: string;
-        checkOldEmailError: string;
-        theSameEmailError: string;
-        theSameUsernameError: string;
-        changeUserSettingsInputValue: string;
-        checkPasswordError: string;
-        otherPlansText: string;
-        appWelcomeSpanMessage: string;
-        signUp: string;
-        loginIn: string;
-        successfullyLoggedIn: string;
-        errorLoggedIn: string;
-        appLogoDescription: string;
-        createAccountText: string;
-        continueWithoutSigningInMessage: string;
-        appWelcomeMessage: string;
-        username: string;
-        password: string;
-        firstName: string;
-        lastName: string;
-        email: string;
-        search: string;
-        currentEmail: string;
-        newEmail: string;
-        oldPassword: string;
-        newPassword: string;
-        newPasswordRepeat: string;
-        newUsername: string;
-        userPhotoText: string;
-        uploadImageSuccessed: string;
-        deleteImageSuccessed: string;
-        selectPhoto: string;
-        uploadImage: string;
-        deletePhoto: string;
-        viewEntry: string;
-        viewStartDate: string;
-        viewEndDate: string;
-        viewFulfilledPlan: string;
-        viewPlanDescription: string;
-        deleteText: string;
-        cancelText: string;
-        entryDeleteText: string;
-        successfulyFulfilledText: string;
-        successfulyFulfilledTextSendOption: string;
-        unFulfilledText: string;
-        unFulfilledTextSendOption: string;
+interface welcome {
+    signUp: string;
+    logIn: string;
+    logginIn: string;
+    appDescription: string;
+    username: string;
+    password: string;
+    firstName: string;
+    lastName: string;
+    email: string;
+    createAccount: string;
+    or: string;
+    continueWithoutSigningIn: string;
+    errorLoggedIn: string;
+    userRegisterSuccessfuly: string;
+}
+
+interface home {
+    search: string;
+    todayPlans: string;
+    otherPlans: string;
+}
+
+interface add {
+    title: string;
+    addTask: string;
+    selectDay: string;
+    selectStartTime: string;
+    selectEndTime: string;
+    description: string;
+}
+
+interface settings {
+    title: string;
+    darkMode: string;
+    language: string;
+    changeUsername: string;
+    changePassword: string;
+    changeEmail: string;
+    changeUserPhoto: string;
+    signOut: string;
+}
+
+interface viewEntry {
+    title: string;
+    startTime: string;
+    endTime: string;
+    description: string;
+    deleteTask: string;
+    deleteTaskConfirm: string;
+    finishedTask: string;
+    finishedTaskConfirm: string;
+    restoreTask: string;
+    restoreTaskConfirm: string;
+}
+
+interface changeUsername {
+    title: string;
+    enterNewUsername: string;
+    changedUsernameFailed: string;
+    changedUsernameSuccessfully: string;
+}
+
+interface changePassword {
+    title: string;
+    newPassword: string;
+    repeatNewPassword: string;
+    changedPasswordFailed: string;
+    wrongOldPassword: string;
+    wrongNewPasswords: string;
+    changedPasswordSuccessfully: string;
+}
+
+interface changeEmail {
+    title: string;
+    currentEmail: string;
+    newEmail: string;
+    changedEmailSuccessfully: string;
+    wrongCurrentEmail: string;
+    changedEmailFailed: string;
+}
+
+interface changeUserphoto {
+    title: string;
+    select: string;
+    upload: string;
+    delete: string;
+    uploadImageSuccessed: string;
+    deleteImageSuccessed: string;
+}
+
+interface global {
+    appName: string;
+    yearPlan: string;
+    monthPlan: string;
+    dayPlan: string;
+    selectOptionsDone: string;
+    selectOptionCancel: string;
+    logInAgain: string;
+    oldPassword: string;
+    wrongPassword: string;
+    save: string;
+    cancel: string;
+}
+
+interface months {
+    names: {
         january: string;
         february: string;
         march: string;
@@ -203,21 +249,22 @@ export interface languageInterface {
         october: string;
         november: string;
         december: string;
-        yearPlanText: string;
-        monthPlanText: string;
-        dayPlanText: string;
-        addEntryText: string;
-        inputDateAcceptText: string;
-        inputDateMonthNames: string[];
-        inputPlaceholderStartText: string;
-        inputPlaceholderEndText: string;
-        textareaPlaceholderText: string;
-        dayInputSelectDay: string;
-        dayInputSelectStartTime: string;
-        dayInputSelectEndTime: string;
-        inputSendRequestText: string;
-        editEntryText: string;
-        selectLanguageText: string;
-        loggingIn: string;
+    },
+    namesTable: [key: string];
+}
+
+export interface languageInterface {
+    [key: string]: {
+        WELCOME: welcome;
+        HOME: home;
+        ADD: add;
+        SETTINGS: settings;
+        VIEWENTRY: viewEntry;
+        CHANGEUSERNAME: changeUsername;
+        CHANGEPASSWORD: changePassword;
+        CHANGEEMAIL: changeEmail;
+        CHANGEUSERPHOTO: changeUserphoto;
+        GLOBAL: global;
+        MONTHS: months;
     };
 }
