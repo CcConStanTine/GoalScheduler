@@ -5,7 +5,6 @@ import com.pk.ms.dao.week.WeekPlanRepository;
 import com.pk.ms.dto.week.WeekPlanInputDTO;
 import com.pk.ms.entities.week.Week;
 import com.pk.ms.entities.week.WeekPlan;
-import com.pk.ms.exceptions.AccessDeniedException;
 import com.pk.ms.exceptions.ResourceNotAvailableException;
 import com.pk.ms.services.schedule.ScheduleService;
 import org.springframework.stereotype.Service;

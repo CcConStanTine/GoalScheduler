@@ -42,7 +42,7 @@ public class YearSummaryService implements SummaryAccessAuthorizationService {
     public YearSummary updateYearSummary(long scheduleId, long yearSummaryId) {
         YearSummary yearSummary = getAuthorizedNotNullYearSummaryById(scheduleId, yearSummaryId);
         countMonthSummary(yearSummary);
-        return yearSummary;
+        return save(yearSummary);
     }
 
     private YearSummary getAuthorizedNotNullYearSummaryById(long scheduleId, long yearSummaryId) {

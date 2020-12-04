@@ -41,7 +41,7 @@ public class MonthSummaryService implements SummaryAccessAuthorizationService {
     public MonthSummary updateMonthSummary(long scheduleId, long monthSummaryId) {
         MonthSummary monthSummary = getAuthorizedNotNullMonthSummaryById(scheduleId, monthSummaryId);
         countMonthSummary(monthSummary);
-        return monthSummary;
+        return save(monthSummary);
     }
 
     private MonthSummary getAuthorizedNotNullMonthSummaryById(long scheduleId, long monthSummaryId) {

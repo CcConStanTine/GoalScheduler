@@ -6,12 +6,14 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Optional;
+
 @Repository
 public interface WeekSummaryRepository extends CrudRepository<WeekSummary, Long> {
 
-    WeekSummary findById(long id);
+    Optional<WeekSummary> findById(long id);
 
     @Query(nativeQuery = true, value = "SELECT * FROM week_summary WHERE schedule_id = ? AND week_id = ?")
-    WeekSummary findByScheduleIdAndWeekId(long scheduleId, long weekId);
+    Optional<WeekSummary> findByScheduleIdAndWeekId(long scheduleId, long weekId);
 
 }
