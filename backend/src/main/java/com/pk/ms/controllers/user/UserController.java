@@ -10,6 +10,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 
+@CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @RequestMapping("/user")
 @PreAuthorize("hasRole('ROLE_ADMIN') or authentication.principal.id == #id")

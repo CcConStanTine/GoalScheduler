@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.List;
 
+@CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @PreAuthorize("hasRole('ROLE_ADMIN') or authentication.principal.id == #scheduleId")
 @RequestMapping("/schedule/{schedule_id}")
