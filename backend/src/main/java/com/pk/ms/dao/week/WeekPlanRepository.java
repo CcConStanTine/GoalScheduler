@@ -6,11 +6,12 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface WeekPlanRepository extends CrudRepository<WeekPlan, Long> {
 
-    WeekPlan findById(long id);
+    Optional<WeekPlan> findById(long id);
 
     @Query(nativeQuery = true, value = "SELECT * FROM week_plan WHERE schedule_id = ? AND week_id = ?")
     List<WeekPlan> findWeekPlansByScheduleIdAndWeekId(long scheduleId, long weekId);

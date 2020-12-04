@@ -39,8 +39,7 @@ public class LongTermPlanService implements PlanAccessAuthorizationService {
     }
 
     public String deleteLongTermPlan(long scheduleId, long ltpId) {
-        LongTermPlan longTermPlan = getAuthorizedNotNullLongTermPlanByIdFromRepo(scheduleId, ltpId);
-        delete(longTermPlan);
+        delete(getAuthorizedNotNullLongTermPlanByIdFromRepo(scheduleId, ltpId));
         return "Plan deleted successfully. ";
     }
 
