@@ -1,10 +1,10 @@
 package com.pk.ms.dto.month;
 
-import com.pk.ms.abstracts.Plan;
+import com.pk.ms.abstracts.PlanDTO;
 
 import java.time.LocalDate;
 
-public class MonthPlanInputDTO extends Plan<LocalDate> {
+public class MonthPlanInputDTO extends PlanDTO<LocalDate> {
 
     public MonthPlanInputDTO() {
     }

@@ -1,12 +1,10 @@
 package com.pk.ms.dao.day;
 
 import com.pk.ms.entities.day.Day;
-import com.pk.ms.entities.day.DayName;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
-import java.sql.Date;
 import java.time.LocalDate;
 import java.util.List;
 

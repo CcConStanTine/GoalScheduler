@@ -1,8 +1,10 @@
 package com.pk.ms.dto.day;
 
+import com.pk.ms.abstracts.PlanDTO;
+
 import java.time.LocalTime;
 
-public class DayPlanInputDTO extends com.pk.ms.abstracts.Plan<LocalTime> {
+public class DayPlanInputDTO extends PlanDTO<LocalTime> {
 
     public DayPlanInputDTO() {
     }

@@ -1,14 +1,14 @@
 package com.pk.ms.entities.year;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.pk.ms.abstracts.Plan;
+import com.pk.ms.abstracts.PlanDTO;
 import com.pk.ms.entities.schedule.Schedule;
 
 import javax.persistence.*;
 import java.time.LocalDate;
 
 @Entity
-public class YearPlan extends Plan<LocalDate> {
+public class YearPlan extends PlanDTO<LocalDate> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "year_plan_seq")

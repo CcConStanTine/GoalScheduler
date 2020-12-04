@@ -1,11 +1,14 @@
 package com.pk.ms.abstracts;
 
+import com.pk.ms.constants.Importance;
+import com.pk.ms.constants.Urgency;
+
 import javax.persistence.MappedSuperclass;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 @MappedSuperclass
-public abstract class Plan <T> {
+public abstract class PlanDTO<T> {
 
     @NotNull
     @Size(max = 200)
@@ -19,10 +22,10 @@ public abstract class Plan <T> {
 
     private boolean isFulfilled;
 
-    public Plan() {
+    public PlanDTO() {
     }
 
-    public Plan(String content, T startDate, T endDate) {
+    public PlanDTO(String content, T startDate, T endDate) {
         this.content = content;
         this.startDate = startDate;
         this.endDate = endDate;

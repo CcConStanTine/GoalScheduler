@@ -1,10 +1,10 @@
 package com.pk.ms.dto.week;
 
-import com.pk.ms.abstracts.Plan;
+import com.pk.ms.abstracts.PlanDTO;
 
 import java.time.LocalDate;
 
-public class WeekPlanInputDTO extends Plan<LocalDate> {
+public class WeekPlanInputDTO extends PlanDTO<LocalDate> {
 
     public WeekPlanInputDTO() {
     }

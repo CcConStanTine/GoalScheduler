@@ -3,101 +3,76 @@ package com.pk.ms.services.schedule;
 import com.pk.ms.dao.schedule.LongTermPlanRepository;
 import com.pk.ms.dto.schedule.LongTermPlanInputDTO;
 import com.pk.ms.entities.schedule.LongTermPlan;
-import com.pk.ms.exceptions.AccessDeniedException;
 import com.pk.ms.exceptions.ResourceNotAvailableException;
+import com.pk.ms.abstracts.AccessAuthorizationService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-public class LongTermPlanService {
+public class LongTermPlanService implements AccessAuthorizationService {
 
-    private final LongTermPlanRepository longTermPlanRepo;
+    private final LongTermPlanRepository repository;
 
     private final ScheduleService scheduleService;
 
-    public LongTermPlanService(LongTermPlanRepository longTermPlanRepo, ScheduleService scheduleService) {
-        this.longTermPlanRepo = longTermPlanRepo;
+    public LongTermPlanService(LongTermPlanRepository repository, ScheduleService scheduleService) {
+        this.repository = repository;
         this.scheduleService = scheduleService;
     }
 
     public List<LongTermPlan> getLongTermPlansByScheduleId(long id) {
-        return getLongTermPlansByScheduleIdFromRepo(id);
+        return repository.findAllByScheduleId(id);
     }
 
     public LongTermPlan createLongTermPlan(long scheduleId, LongTermPlanInputDTO ltpInputDTO) {
-        return saveLongTermPLan(new LongTermPlan(ltpInputDTO.getContent(),
-                ltpInputDTO.getStartDate(), ltpInputDTO.getEndDate(),
-                scheduleService.getScheduleById(scheduleId)));
+        return save(new LongTermPlan(ltpInputDTO.getContent(),
+                                                ltpInputDTO.getStartDate(),
+                                                ltpInputDTO.getEndDate(),
+                                                ltpInputDTO.getImportance(),
+                                                ltpInputDTO.getUrgency(),
+                                                scheduleService.getScheduleById(scheduleId)));
     }
 
     public LongTermPlan updateLongTermPlan(long scheduleId, long ltpId, LongTermPlanInputDTO ltpInputDTO) {
-        LongTermPlan longTermPlan = getNotNullLTPById(ltpId);
-        if(hasAccess(scheduleId, longTermPlan)) {
-            updateLTPAttributes(ltpInputDTO, longTermPlan);
-            return saveLongTermPLan(longTermPlan);
-        }
-        else
-            throw new AccessDeniedException("This user cannot update this resource. ");
+        LongTermPlan longTermPlan = getAuthorizedNotNullLongTermPlanByIdFromRepo(scheduleId, ltpId);
+        updateLTPAttributes(ltpInputDTO, longTermPlan);
+        return save(longTermPlan);
     }
 
     public String deleteLongTermPlan(long scheduleId, long ltpId) {
-        LongTermPlan longTermPlan = getNotNullLTPById(ltpId);
-        if(hasAccess(scheduleId, longTermPlan)) {
-            deleteLongTermPlan(longTermPlan);
-            return "Plan has been deleted successfully. ";
-        }
-        else
-            throw new AccessDeniedException("This user cannot delete this resource. ");
+        LongTermPlan longTermPlan = getAuthorizedNotNullLongTermPlanByIdFromRepo(scheduleId, ltpId);
+        delete(longTermPlan);
+        return "Plan has been deleted successfully. ";
     }
 
     public LongTermPlan updateFulfilledStatus(long scheduleId, long ltpId) {
-        LongTermPlan longTermPlan = getNotNullLTPById(ltpId);
-        if(hasAccess(scheduleId, longTermPlan)) {
-            boolean fulfilled = longTermPlan.isFulfilled();
-            fulfilled = !fulfilled;
-            longTermPlan.setFulfilled(fulfilled);
-            return saveLongTermPLan(longTermPlan);
-        }
-        else
-            throw new AccessDeniedException("This user cannot update this resource. ");
+        LongTermPlan longTermPlan = getAuthorizedNotNullLongTermPlanByIdFromRepo(scheduleId, ltpId);
+        longTermPlan.setFulfilled(!longTermPlan.isFulfilled());
+        return save(longTermPlan);
     }
 
 
-    private List<LongTermPlan> getLongTermPlansByScheduleIdFromRepo(long id) {
-        return longTermPlanRepo.findAllByScheduleId(id);
-    }
-
-    private LongTermPlan getNotNullLTPById(long id) {
-        LongTermPlan longTermPlan = getLongTermPlanByIdFromRepo(id);
-        if(isObjectNull(longTermPlan))
-            throw new ResourceNotAvailableException();
+    private LongTermPlan getAuthorizedNotNullLongTermPlanByIdFromRepo(long scheduleId, long ltpId) {
+        LongTermPlan longTermPlan = repository.findById(ltpId)
+                .orElseThrow(ResourceNotAvailableException::new);
+        authorize(hasAccess(scheduleId, longTermPlan));
         return longTermPlan;
     }
 
-    private LongTermPlan getLongTermPlanByIdFromRepo(long id) {
-        return longTermPlanRepo.findById(id);
-    }
-
-    private LongTermPlan saveLongTermPLan(LongTermPlan longTermPlan) {
-        return longTermPlanRepo.save(longTermPlan);
+    private LongTermPlan save(LongTermPlan longTermPlan) {
+        return repository.save(longTermPlan);
     }
 
     private void updateLTPAttributes(LongTermPlanInputDTO ltpInputDTO, LongTermPlan longTermPlan) {
         longTermPlan.setContent(ltpInputDTO.getContent());
         longTermPlan.setStartDate(ltpInputDTO.getStartDate());
         longTermPlan.setEndDate(ltpInputDTO.getEndDate());
+        longTermPlan.setImportance(ltpInputDTO.getImportance());
+        longTermPlan.setUrgency(ltpInputDTO.getUrgency());
     }
 
-    private void deleteLongTermPlan(LongTermPlan longTermPlan) {
-        longTermPlanRepo.delete(longTermPlan);
-    }
-
-    private boolean isObjectNull(Object object) {
-        return object == null;
-    }
-
-    private boolean hasAccess(long scheduleId, LongTermPlan longTermPlan) {
-        return longTermPlan.getSchedule().getScheduleId() == scheduleId;
+    private void delete(LongTermPlan longTermPlan) {
+        repository.delete(longTermPlan);
     }
 }

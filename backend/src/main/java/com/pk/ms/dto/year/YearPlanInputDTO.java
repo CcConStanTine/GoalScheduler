@@ -1,10 +1,10 @@
 package com.pk.ms.dto.year;
 
-import com.pk.ms.abstracts.Plan;
+import com.pk.ms.abstracts.PlanDTO;
 
 import java.time.LocalDate;
 
-public class YearPlanInputDTO extends Plan<LocalDate> {
+public class YearPlanInputDTO extends PlanDTO<LocalDate> {
 
     public YearPlanInputDTO() {
     }
