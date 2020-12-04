@@ -35,7 +35,7 @@ public class WeekSummaryService implements SummaryAccessAuthorizationService {
     public WeekSummary createWeekSummary(long scheduleId, long weekId) {
         Week week = weekService.getWeekById(weekId);
         Schedule schedule = scheduleService.getScheduleById(scheduleId);
-        return save(new WeekSummary(week, schedule));
+        return save(new WeekSummary(schedule, week));
     }
 
     public WeekSummary updateWeekSummary(long scheduleId, long weekId) {

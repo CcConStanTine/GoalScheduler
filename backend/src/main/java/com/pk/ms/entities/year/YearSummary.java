@@ -25,6 +25,8 @@ public class YearSummary extends Summary {
     public YearSummary(Schedule schedule, Year year) {
         super(schedule);
         this.year = year;
+        countFulfilledAmount();
+        countFailedAmount();
     }
 
     public Long getYearSummaryId() {

@@ -20,17 +20,12 @@ public class WeekSummary extends Summary {
     @JsonIgnore
     private Week week;
 
-    @ManyToOne
-    @JoinColumn(name = "schedule_id")
-    @JsonIgnore
-    private Schedule schedule;
-
     public WeekSummary() {
     }
 
-    public WeekSummary(Week week, Schedule schedule) {
+    public WeekSummary(Schedule schedule, Week week) {
+        super(schedule);
         this.week = week;
-        this.schedule = schedule;
         countFulfilledAmount();
         countFailedAmount();
     }

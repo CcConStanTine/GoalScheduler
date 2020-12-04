@@ -20,17 +20,12 @@ public class DaySummary extends Summary {
     @JsonIgnore
     private Day day;
 
-    @ManyToOne
-    @JoinColumn(name = "schedule_id")
-    @JsonIgnore
-    private Schedule schedule;
-
     public DaySummary() {
     }
 
-    public DaySummary(Day day, Schedule schedule) {
+    public DaySummary(Schedule schedule, Day day) {
+        super(schedule);
         this.day = day;
-        this.schedule = schedule;
         countFulfilledAmount();
         countFailedAmount();
     }
@@ -49,14 +44,6 @@ public class DaySummary extends Summary {
 
     public void setDay(Day day) {
         this.day = day;
-    }
-
-    public Schedule getSchedule() {
-        return schedule;
-    }
-
-    public void setSchedule(Schedule schedule) {
-        this.schedule = schedule;
     }
 
     @Override

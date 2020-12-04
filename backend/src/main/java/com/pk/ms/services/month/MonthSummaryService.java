@@ -35,7 +35,7 @@ public class MonthSummaryService implements SummaryAccessAuthorizationService {
     public MonthSummary createMonthSummary(long scheduleId, long monthId) {
         Month month = monthService.getMonthById(monthId);
         Schedule schedule = scheduleService.getScheduleById(scheduleId);
-        return save(new MonthSummary(month, schedule));
+        return save(new MonthSummary(schedule, month));
     }
 
     public MonthSummary updateMonthSummary(long scheduleId, long monthSummaryId) {

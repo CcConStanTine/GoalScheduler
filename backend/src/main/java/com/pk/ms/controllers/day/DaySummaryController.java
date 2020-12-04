@@ -40,4 +40,11 @@ public class DaySummaryController {
         return ResponseEntity.ok(daySummaryService.createDaySummary(scheduleId, dayId));
     }
 
+    @PatchMapping("/day_summary/{day_summary_id}")
+    public ResponseEntity<DaySummary> updateDaySummary(@PathVariable("schedule_id") long scheduleId,
+                                                       @PathVariable("day_summary_id") long daySummaryId) {
+
+        return ResponseEntity.ok(daySummaryService.updateDaySummary(scheduleId, daySummaryId));
+    }
+
 }

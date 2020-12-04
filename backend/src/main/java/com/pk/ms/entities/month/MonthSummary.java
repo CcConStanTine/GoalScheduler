@@ -20,17 +20,12 @@ public class MonthSummary extends Summary {
     @JsonIgnore
     private Month month;
 
-    @ManyToOne
-    @JoinColumn(name = "schedule_id")
-    @JsonIgnore
-    private Schedule schedule;
-
     public MonthSummary() {
     }
 
-    public MonthSummary(Month month, Schedule schedule) {
+    public MonthSummary(Schedule schedule, Month month) {
+        super(schedule);
         this.month = month;
-        this.schedule = schedule;
         countFulfilledAmount();
         countFailedAmount();
     }
