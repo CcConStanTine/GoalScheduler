@@ -1,65 +1,56 @@
 package com.pk.ms.services.week;
 
+import com.pk.ms.abstracts.PlanAccessAuthorizationService;
 import com.pk.ms.dao.week.WeekPlanRepository;
 import com.pk.ms.dto.week.WeekPlanInputDTO;
 import com.pk.ms.entities.week.Week;
 import com.pk.ms.entities.week.WeekPlan;
-import com.pk.ms.exceptions.AccessDeniedException;
 import com.pk.ms.exceptions.ResourceNotAvailableException;
 import com.pk.ms.services.schedule.ScheduleService;
-import org.apache.tomcat.jni.Local;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.List;
 
 @Service
-public class WeekPlanService {
+public class WeekPlanService implements PlanAccessAuthorizationService {
 
-    private final WeekPlanRepository weekPlanRepo;
+    private final WeekPlanRepository repository;
 
     private final WeekService weekService;
 
     private final ScheduleService scheduleService;
 
-    public WeekPlanService(WeekPlanRepository weekPlanRepo, WeekService weekService, ScheduleService scheduleService) {
-        this.weekPlanRepo = weekPlanRepo;
+    public WeekPlanService(WeekPlanRepository repository, WeekService weekService, ScheduleService scheduleService) {
+        this.repository = repository;
         this.weekService = weekService;
         this.scheduleService = scheduleService;
     }
 
     public List<WeekPlan> getWeekPlansByScheduleIdAndWeekId(long scheduleId, long weekId) {
-        return getWeekPlansByScheduleIdAndWeekIdFromRepo(scheduleId, weekId);
+        return repository.findWeekPlansByScheduleIdAndWeekId(scheduleId, weekId);
     }
 
     public WeekPlan getWeekPlan(long scheduleId, long weekPlanId) {
-        WeekPlan weekPlan = getNotNullWeekPlanById(weekPlanId);
-        if(hasAccess(scheduleId, weekPlan))
-            return weekPlan;
-        else
-            throw new AccessDeniedException("This user cannot access this resource. ");
+        return getAuthorizedNotNullWeekPlanById(scheduleId, weekPlanId);
     }
 
     public WeekPlan createWeekPlan(long scheduleId, long weekId, WeekPlanInputDTO weekPlanInputDTO) {
         Week week = weekService.getWeekById(weekId);
         dataValidationForDataTypes(weekPlanInputDTO, week);
-        return saveWeekPlan(new WeekPlan(weekPlanInputDTO.getContent(),
-                weekPlanInputDTO.getStartDate(),
-                weekPlanInputDTO.getEndDate(),
-                weekService.getWeekById(weekId),
-                scheduleService.getScheduleById(scheduleId)));
+        WeekPlan weekPlan = new WeekPlan(weekPlanInputDTO.getContent(), weekPlanInputDTO.getStartDate(),
+                weekPlanInputDTO.getEndDate(), scheduleService.getScheduleById(scheduleId), week);
+        updateImportance(weekPlanInputDTO, weekPlan);
+        updateUrgency(weekPlanInputDTO, weekPlan);
+        return weekPlan;
     }
 
     public WeekPlan updateWeekPlan(long scheduleId, long weekPlanId, WeekPlanInputDTO weekPlanInputDTO) {
-        WeekPlan weekPlan = getNotNullWeekPlanById(weekPlanId);
+        WeekPlan weekPlan = getAuthorizedNotNullWeekPlanById(scheduleId, weekPlanId);
         Week week = weekPlan.getWeek();
         dataValidationForDataTypes(weekPlanInputDTO, week);
-        if(hasAccess(scheduleId, weekPlan)) {
-            updateWeekPlanAttributes(weekPlanInputDTO, weekPlan);
-            return saveWeekPlan(weekPlan);
-        }
-        else
-            throw new AccessDeniedException("This user cannot update this resource. ");
+        updateWeekPlanAttributes(weekPlanInputDTO, weekPlan);
+        return save(weekPlan);
     }
 
     private void dataValidationForDataTypes(WeekPlanInputDTO weekPlanInputDTO, Week week) {
@@ -76,62 +67,45 @@ public class WeekPlanService {
     }
 
     public String deleteWeekPlan(long scheduleId, long weekPlanId) {
-        WeekPlan weekPlan = getNotNullWeekPlanById(weekPlanId);
-        if(hasAccess(scheduleId, weekPlan)) {
-            deleteWeekPlan(weekPlan);
-            return "Plan deleted successfully. ";
-        }
-        else
-            throw new AccessDeniedException("This user cannot delete this resource. ");
+        delete(getAuthorizedNotNullWeekPlanById(scheduleId, weekPlanId));
+        return "Plan deleted successfully. ";
     }
 
     public WeekPlan updateFulfilledStatus(long scheduleId, long weekPlanId) {
-        WeekPlan weekPlan = getNotNullWeekPlanById(weekPlanId);
-        if(hasAccess(scheduleId, weekPlan)) {
-            boolean fulfilled = weekPlan.isFulfilled();
-            fulfilled = !fulfilled;
-            weekPlan.setFulfilled(fulfilled);
-            return saveWeekPlan(weekPlan);
-        }
-        else
-            throw new AccessDeniedException("This user cannot update this resource. ");
+        WeekPlan weekPlan = getAuthorizedNotNullWeekPlanById(scheduleId, weekPlanId);
+        weekPlan.setFulfilled(!weekPlan.isFulfilled());
+        return save(weekPlan);
     }
 
-
-    private List<WeekPlan> getWeekPlansByScheduleIdAndWeekIdFromRepo(long scheduleId, long weekId) {
-        return weekPlanRepo.findWeekPlansByScheduleIdAndWeekId(scheduleId, weekId);
-    }
-
-    private WeekPlan getNotNullWeekPlanById(long id) {
-        WeekPlan weekPlan = getWeekPlanByIdFromRepo(id);
-        if(isObjectNull(weekPlan))
-            throw new ResourceNotAvailableException();
+    private WeekPlan getAuthorizedNotNullWeekPlanById(long scheduleId, long weekPlanId) {
+        WeekPlan weekPlan = repository.findById(weekPlanId).orElseThrow(ResourceNotAvailableException::new);
+        authorize(hasAccess(scheduleId, weekPlan));
         return weekPlan;
     }
 
-    private WeekPlan getWeekPlanByIdFromRepo(long id) {
-        return weekPlanRepo.findById(id);
-    }
-
-    private WeekPlan saveWeekPlan(WeekPlan weekPlan) {
-        return weekPlanRepo.save(weekPlan);
+    private WeekPlan save(WeekPlan weekPlan) {
+        return repository.save(weekPlan);
     }
 
     private void updateWeekPlanAttributes(WeekPlanInputDTO weekPlanInputDTO, WeekPlan weekPlan) {
         weekPlan.setContent(weekPlanInputDTO.getContent());
         weekPlan.setStartDate(weekPlanInputDTO.getStartDate());
         weekPlan.setEndDate(weekPlanInputDTO.getEndDate());
+        updateImportance(weekPlanInputDTO, weekPlan);
+        updateUrgency(weekPlanInputDTO, weekPlan);
     }
 
-    private void deleteWeekPlan(WeekPlan weekPlan) {
-        weekPlanRepo.delete(weekPlan);
+    private void updateImportance(WeekPlanInputDTO weekPlanInputDTO, WeekPlan weekPlan) {
+        if(weekPlanInputDTO.getImportance() != null)
+            weekPlan.setImportance(weekPlanInputDTO.getImportance());
     }
 
-    private boolean isObjectNull(Object object) {
-        return object == null;
+    private void updateUrgency(WeekPlanInputDTO weekPlanInputDTO, WeekPlan weekPlan) {
+        if(weekPlanInputDTO.getUrgency() != null)
+            weekPlan.setUrgency(weekPlanInputDTO.getUrgency());
     }
 
-    private boolean hasAccess(long scheduleId, WeekPlan weekPlan) {
-        return weekPlan.getSchedule().getScheduleId() == scheduleId;
+    private void delete(WeekPlan weekPlan) {
+        repository.delete(weekPlan);
     }
 }

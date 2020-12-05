@@ -38,4 +38,11 @@ public class WeekSummaryController {
 
         return ResponseEntity.ok(weekSummaryService.createWeekSummary(scheduleId, weekId));
     }
+
+    @PatchMapping("/week_summary/{week_summary_id}")
+    public ResponseEntity<WeekSummary> updateWeekSummary(@PathVariable("schedule_id") long scheduleId,
+                                                         @PathVariable("week_summary_id") long weekSummaryId) {
+
+        return ResponseEntity.ok(weekSummaryService.updateWeekSummary(scheduleId, weekSummaryId));
+    }
 }

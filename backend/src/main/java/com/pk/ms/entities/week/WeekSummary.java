@@ -2,7 +2,6 @@ package com.pk.ms.entities.week;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.pk.ms.abstracts.Summary;
-import com.pk.ms.entities.month.MonthPlan;
 import com.pk.ms.entities.schedule.Schedule;
 
 import javax.persistence.*;
@@ -20,19 +19,13 @@ public class WeekSummary extends Summary {
     @JsonIgnore
     private Week week;
 
-    @ManyToOne
-    @JoinColumn(name = "schedule_id")
-    @JsonIgnore
-    private Schedule schedule;
-
     public WeekSummary() {
     }
 
-    public WeekSummary(Week week, Schedule schedule) {
+    public WeekSummary(Schedule schedule, Week week) {
+        super(schedule);
         this.week = week;
-        this.schedule = schedule;
-        countFulfilledAmount();
-        countFailedAmount();
+        countSummary();
     }
 
     public Long getWeekSummaryId() {
@@ -60,21 +53,55 @@ public class WeekSummary extends Summary {
     }
 
     @Override
-    public void countFulfilledAmount() {
-        int fulfilled=0;
+    public void countSummary() {
+        int fulfilled=0, failed=0;
+        double maxSum=0, actualSum=0;
         for (WeekPlan weekPlan : schedule.getParticularWeekPlansList(week.getWeekId())) {
-            if(weekPlan.isFulfilled())
+            if(weekPlan.isFulfilled()) {
                 fulfilled++;
-        }
-        setFulfilledAmount(fulfilled);
-    }
-
-    @Override
-    public void countFailedAmount() {
-        int failed=0;
-        for (WeekPlan weekPlan : schedule.getParticularWeekPlansList(week.getWeekId())) {
-            if(!weekPlan.isFulfilled())
+                switch(weekPlan.getImportance()) {
+                    case NOTIMPORTANT: {
+                        maxSum+=8;
+                        actualSum+=8;
+                    } break;
+                    case REGULAR: {
+                        maxSum+=17;
+                        actualSum+=17;
+                    } break;
+                    case IMPORTANT: {
+                        maxSum+=38;
+                        actualSum+=38;
+                    } break;
+                    case VERYIMPORTANT: {
+                        maxSum+=55;
+                        actualSum+=55;
+                    } break;
+                }
+            }
+            else {
                 failed++;
+                switch(weekPlan.getImportance()) {
+                    case NOTIMPORTANT: {
+                        maxSum+=8;
+                    } break;
+                    case REGULAR: {
+                        maxSum+=17;
+                    } break;
+                    case IMPORTANT: {
+                        maxSum+=38;
+                    } break;
+                    case VERYIMPORTANT: {
+                        maxSum+=55;
+                    } break;
+                }
+            }
+
         }
-        setFailedAmount(failed);    }
+        double percentagePlansRating = 0;
+        if(maxSum!=0)
+            percentagePlansRating = actualSum/maxSum * 100;
+        setFulfilledAmount(fulfilled);
+        setFailedAmount(failed);
+        setPercentagePlansRating((int)percentagePlansRating);
+    }
 }

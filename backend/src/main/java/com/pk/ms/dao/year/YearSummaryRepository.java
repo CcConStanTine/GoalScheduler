@@ -5,11 +5,13 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 public interface YearSummaryRepository extends CrudRepository<YearSummary, Long> {
 
-    YearSummary findById(long id);
+    Optional<YearSummary> findById(long id);
 
     @Query(nativeQuery = true, value = "SELECT * FROM year_summary WHERE schedule_id = ? AND year_id = ?")
-    YearSummary findByScheduleIdAndYearId(long scheduleId, long yearId);
+    Optional<YearSummary> findByScheduleIdAndYearId(long scheduleId, long yearId);
 
 }

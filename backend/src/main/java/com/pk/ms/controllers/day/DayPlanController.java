@@ -22,6 +22,12 @@ public class DayPlanController {
         this.dayPlanService = dayPlanService;
     }
 
+    @PostMapping(value = "/day/{day_id}/daily_schedule")
+    public ResponseEntity<List<DayPlan>> addDailyRoutinePlansToTheDay(@PathVariable("schedule_id") long scheduleId,
+                                                                      @PathVariable("day_id") long dayId) {
+        return ResponseEntity.ok(dayPlanService.addDailyRoutinePlansToTheDayPlans(scheduleId, dayId));
+    }
+
     @GetMapping(value = "/day/{day_id}/day_plans")
     public ResponseEntity<List<DayPlan>> getDayPlans(@PathVariable("schedule_id") long scheduleId,
                                                      @PathVariable("day_id") long dayId) {

@@ -1,14 +1,17 @@
 package com.pk.ms.entities.day;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.pk.ms.abstracts.Plan;
+import com.pk.ms.abstracts.PlanDTO;
+import com.pk.ms.abstracts.PlanEntity;
+import com.pk.ms.constants.Importance;
+import com.pk.ms.constants.Urgency;
 import com.pk.ms.entities.schedule.Schedule;
 
 import javax.persistence.*;
 import java.time.LocalTime;
 
 @Entity
-public class DayPlan extends Plan<LocalTime> {
+public class DayPlan extends PlanEntity<LocalTime> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "day_plan_seq")
@@ -20,18 +23,17 @@ public class DayPlan extends Plan<LocalTime> {
     @JsonIgnore
     private Day day;
 
-    @ManyToOne
-    @JoinColumn(name = "schedule_id")
-    @JsonIgnore
-    private Schedule schedule;
-
     public DayPlan() {
     }
 
-    public DayPlan(String content, LocalTime startDate, LocalTime endDate, Day day, Schedule schedule) {
-        super(content, startDate, endDate);
+    public DayPlan(String content, LocalTime startDate, LocalTime endDate, Schedule schedule, Day day) {
+        super(content, startDate, endDate, schedule);
         this.day = day;
-        this.schedule = schedule;
+    }
+
+    public DayPlan(String content, LocalTime startDate, LocalTime endDate, Importance importance, Urgency urgency, Schedule schedule, Day day) {
+        super(content, startDate, endDate, importance, urgency, schedule);
+        this.day = day;
     }
 
     public Long getDayPlanId() {
@@ -48,13 +50,5 @@ public class DayPlan extends Plan<LocalTime> {
 
     public void setDay(Day day) {
         this.day = day;
-    }
-
-    public Schedule getSchedule() {
-        return schedule;
-    }
-
-    public void setSchedule(Schedule schedule) {
-        this.schedule = schedule;
     }
 }

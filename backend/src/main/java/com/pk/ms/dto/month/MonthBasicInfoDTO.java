@@ -1,6 +1,6 @@
 package com.pk.ms.dto.month;
 
-import com.pk.ms.entities.month.MonthName;
+import com.pk.ms.constants.MonthName;
 
 public class MonthBasicInfoDTO {
 
