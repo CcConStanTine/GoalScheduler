@@ -2,7 +2,10 @@
 
 ### Project description
 
-Web REST application, the main purpose of this application is to mirror a real-life goal planner with some fancy features which computers are able to do. 
+Web REST application mirroring a real-life goal planner with some fancy features which computers are able to do. 
+Sign in, plan your future and let the appication summaraize your days, weeks, month or year plans and even rate them with rating algorithm. 
+
+Project went through 2 major reworks, where the last one was updating it from version 1.0 to 2.0. 
 
 ### Project functionalities
 
