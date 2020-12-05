@@ -35,7 +35,7 @@ public class DailyRoutinePlanService {
                 dto.getEndDate(), userService.getUserById(userId));
         updateImportance(dto, plan);
         updateUrgency(dto, plan);
-        return plan;
+        return save(plan);
     }
 
     public DailyRoutinePlan updateDailyRoutinePlan(long userId, long dailyRoutinePlanId,
