@@ -87,7 +87,7 @@ const AccountForm = ({ type, history }: accountFormInterface) => {
         <form onSubmit={handleSubmit(sendRequestToCreateUser)}>
             {renderAccountFormInputs(CreateAccountInputData)}
             {registerMessage && <span className="database-message">{registerMessage}</span>}
-            <input className="send-form-button" type="submit" value={languagePack[language].WELCOME.createAccount} />
+            <input className="default-button send-form-button" type="submit" value={languagePack[language].WELCOME.createAccount} />
         </form>
     )
 
@@ -95,7 +95,7 @@ const AccountForm = ({ type, history }: accountFormInterface) => {
         <form onSubmit={handleSubmit(sendRequestToLoginUser)}>
             {renderAccountFormInputs(LoginAccountInputData)}
             {loginMessage && <span className="database-message">{loginMessage}</span>}
-            <input className="send-form-button" type="submit" value={languagePack[language].WELCOME.logIn} />
+            <input className="default-button send-form-button" type="submit" value={languagePack[language].WELCOME.logInButton} />
         </form>
     )
 };

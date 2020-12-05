@@ -134,6 +134,7 @@ interface welcome {
     signUp: string;
     logIn: string;
     logginIn: string;
+    logInButton: string;
     appDescription: string;
     username: string;
     password: string;
