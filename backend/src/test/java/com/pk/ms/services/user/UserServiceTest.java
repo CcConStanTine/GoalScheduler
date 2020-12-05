@@ -133,7 +133,7 @@ class UserServiceTest {
         //given
         UserInfoDTO userInfoDTOExpected = new UserInfoDTO(user1.getUserId(), user1.getFirstName(),
                 user1.getLastName(), user1.getNick(), user1.getEmail());
-        given(userRepo.findById(1L)).willReturn(user1);
+        given(userRepo.findById(1L)).willReturn(java.util.Optional.ofNullable(user1));
         //when
         UserInfoDTO userInfoDTOActual = userService.getUserInfo(1L);
         //then
@@ -175,7 +175,7 @@ class UserServiceTest {
         //given
         UserBasicInfoUpdateDTO userBasicInfoUpdateDTO = new UserBasicInfoUpdateDTO("UniqueFirstName",
                 "UniqueLastName", "UniqueNick");
-        given(userRepo.findById(1L)).willReturn(user1);
+        given(userRepo.findById(1L)).willReturn(java.util.Optional.ofNullable(user1));
         given(userRepo.save(user1)).willReturn(user1);
         given(userRepo.findByNick("UniqueNick")).willReturn(null);
         //when
@@ -215,7 +215,7 @@ class UserServiceTest {
     void should_UpdateUserEmail_When_InputEmailIsUnique() {
         //given
         UserEmailUpdateDTO userEmailUpdateDTO = new UserEmailUpdateDTO("UniqueEmail@gmail.com");
-        given(userRepo.findById(1L)).willReturn(user1);
+        given(userRepo.findById(1L)).willReturn(java.util.Optional.ofNullable(user1));
         given(userRepo.save(user1)).willReturn(user1);
         given(userRepo.findByEmail("UniqueEmail@gmail.com")).willReturn(null);
         //when
@@ -240,7 +240,7 @@ class UserServiceTest {
     void should_UpdateAndEncodeUserPassword() {
         //given
         UserPasswordUpdateDTO userPasswordUpdateDTO = new UserPasswordUpdateDTO("newPassword");
-        given(userRepo.findById(1L)).willReturn(user1);
+        given(userRepo.findById(1L)).willReturn(java.util.Optional.ofNullable(user1));
         given(userRepo.save(user1)).willReturn(user1);
         //when
         userService.updateUserPassword(1L, userPasswordUpdateDTO);
@@ -253,7 +253,7 @@ class UserServiceTest {
     void should_ReturnProperMessage() {
         //given
         UserPasswordUpdateDTO userPasswordUpdateDTO = new UserPasswordUpdateDTO("newPassword");
-        given(userRepo.findById(1L)).willReturn(user1);
+        given(userRepo.findById(1L)).willReturn(java.util.Optional.ofNullable(user1));
         given(userRepo.save(user1)).willReturn(user1);
         //when
         String message = userService.updateUserPassword(1L, userPasswordUpdateDTO);

@@ -26,12 +26,6 @@ public class MonthPlan extends PlanEntity<LocalDate> {
     public MonthPlan() {
     }
 
-    public MonthPlan(String content, LocalDate startDate, LocalDate endDate, Importance importance,
-                     Urgency urgency, Schedule schedule, Month month) {
-        super(content, startDate, endDate, importance, urgency, schedule);
-        this.month = month;
-    }
-
     public MonthPlan(String content, LocalDate startDate, LocalDate endDate, Schedule schedule, Month month) {
         super(content, startDate, endDate, schedule);
         this.month = month;

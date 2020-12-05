@@ -26,12 +26,6 @@ public class DayPlan extends PlanEntity<LocalTime> {
     public DayPlan() {
     }
 
-    public DayPlan(String content, LocalTime startDate, LocalTime endDate, Importance importance,
-                   Urgency urgency, Schedule schedule, Day day) {
-        super(content, startDate, endDate, importance, urgency, schedule);
-        this.day = day;
-    }
-
     public DayPlan(String content, LocalTime startDate, LocalTime endDate, Schedule schedule, Day day) {
         super(content, startDate, endDate, schedule);
         this.day = day;

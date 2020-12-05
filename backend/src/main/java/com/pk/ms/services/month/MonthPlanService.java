@@ -3,8 +3,10 @@ package com.pk.ms.services.month;
 import com.pk.ms.abstracts.PlanAccessAuthorizationService;
 import com.pk.ms.dao.month.MonthPlanRepository;
 import com.pk.ms.dto.month.MonthPlanInputDTO;
+import com.pk.ms.dto.year.YearPlanInputDTO;
 import com.pk.ms.entities.month.Month;
 import com.pk.ms.entities.month.MonthPlan;
+import com.pk.ms.entities.year.YearPlan;
 import com.pk.ms.exceptions.ResourceNotAvailableException;
 import com.pk.ms.services.schedule.ScheduleService;
 import org.springframework.stereotype.Service;
@@ -37,11 +39,11 @@ public class MonthPlanService implements PlanAccessAuthorizationService {
     public MonthPlan createMonthPlan(long scheduleId, long monthId, MonthPlanInputDTO monthPlanInputDTO) {
         Month month = monthService.getMonthById(monthId);
         dataValidationForDataTypes(monthPlanInputDTO, month);
-        return save(new MonthPlan(monthPlanInputDTO.getContent(),
-                monthPlanInputDTO.getStartDate(),
-                monthPlanInputDTO.getEndDate(),
-                scheduleService.getScheduleById(scheduleId),
-                month));
+        MonthPlan monthPlan = new MonthPlan(monthPlanInputDTO.getContent(), monthPlanInputDTO.getStartDate(),
+                monthPlanInputDTO.getEndDate(), scheduleService.getScheduleById(scheduleId), month);
+        updateImportance(monthPlanInputDTO, monthPlan);
+        updateUrgency(monthPlanInputDTO, monthPlan);
+        return monthPlan;
     }
 
     public MonthPlan updateMonthPlan(long scheduleId, long monthPlanId, MonthPlanInputDTO monthPlanInputDTO) {
@@ -86,8 +88,16 @@ public class MonthPlanService implements PlanAccessAuthorizationService {
         monthPlan.setContent(monthPlanInputDTO.getContent());
         monthPlan.setStartDate(monthPlanInputDTO.getStartDate());
         monthPlan.setEndDate(monthPlanInputDTO.getEndDate());
+        updateImportance(monthPlanInputDTO, monthPlan);
+        updateUrgency(monthPlanInputDTO, monthPlan);
+    }
+
+    private void updateImportance(MonthPlanInputDTO monthPlanInputDTO, MonthPlan monthPlan) {
         if(monthPlanInputDTO.getImportance() != null)
             monthPlan.setImportance(monthPlanInputDTO.getImportance());
+    }
+
+    private void updateUrgency(MonthPlanInputDTO monthPlanInputDTO, MonthPlan monthPlan) {
         if(monthPlanInputDTO.getUrgency() != null)
             monthPlan.setUrgency(monthPlanInputDTO.getUrgency());
     }

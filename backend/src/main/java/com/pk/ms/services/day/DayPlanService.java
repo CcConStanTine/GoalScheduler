@@ -34,11 +34,12 @@ public class DayPlanService implements PlanAccessAuthorizationService {
     }
 
     public DayPlan createDayPlan(long scheduleId, long dayId, DayPlanInputDTO dayPlanInputDTO) {
-        return save(new DayPlan(dayPlanInputDTO.getContent(),
-                dayPlanInputDTO.getStartDate(),
-                dayPlanInputDTO.getEndDate(),
-                scheduleService.getScheduleById(scheduleId),
-                dayService.getDayById(dayId)));
+        DayPlan dayPlan = new DayPlan(dayPlanInputDTO.getContent(), dayPlanInputDTO.getStartDate(),
+                dayPlanInputDTO.getEndDate(), scheduleService.getScheduleById(scheduleId),
+                dayService.getDayById(dayId));
+        updateImportance(dayPlanInputDTO, dayPlan);
+        updateUrgency(dayPlanInputDTO, dayPlan);
+        return dayPlan;
     }
 
     public DayPlan updateDayPlan(long scheduleId, long dayPlanId, DayPlanInputDTO dayPlanInputDTO) {
@@ -72,8 +73,16 @@ public class DayPlanService implements PlanAccessAuthorizationService {
         dayPlan.setContent(dayPlanInputDTO.getContent());
         dayPlan.setStartDate(dayPlanInputDTO.getStartDate());
         dayPlan.setEndDate(dayPlanInputDTO.getEndDate());
+        updateImportance(dayPlanInputDTO, dayPlan);
+        updateUrgency(dayPlanInputDTO, dayPlan);
+    }
+
+    private void updateImportance(DayPlanInputDTO dayPlanInputDTO, DayPlan dayPlan) {
         if(dayPlanInputDTO.getImportance() != null)
             dayPlan.setImportance(dayPlanInputDTO.getImportance());
+    }
+
+    private void updateUrgency(DayPlanInputDTO dayPlanInputDTO, DayPlan dayPlan) {
         if(dayPlanInputDTO.getUrgency() != null)
             dayPlan.setUrgency(dayPlanInputDTO.getUrgency());
     }

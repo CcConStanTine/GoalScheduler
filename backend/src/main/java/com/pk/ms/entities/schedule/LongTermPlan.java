@@ -1,8 +1,6 @@
 package com.pk.ms.entities.schedule;
 
 import com.pk.ms.abstracts.PlanEntity;
-import com.pk.ms.constants.Importance;
-import com.pk.ms.constants.Urgency;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -16,11 +14,6 @@ public class LongTermPlan extends PlanEntity<LocalDate> {
     private Long longTermPlanId;
 
     public LongTermPlan() {
-    }
-
-    public LongTermPlan(String content, LocalDate startDate, LocalDate endDate, Importance importance,
-                        Urgency urgency, Schedule schedule) {
-        super(content, startDate, endDate, importance, urgency, schedule);
     }
 
     public LongTermPlan(String content, LocalDate startDate, LocalDate endDate, Schedule schedule) {

@@ -1,8 +1,6 @@
 package com.pk.ms.services.year;
 
 import com.pk.ms.abstracts.PlanAccessAuthorizationService;
-import com.pk.ms.constants.Importance;
-import com.pk.ms.constants.Urgency;
 import com.pk.ms.dao.year.YearPlanRepository;
 import com.pk.ms.dto.year.YearPlanInputDTO;
 import com.pk.ms.entities.year.Year;
@@ -39,13 +37,11 @@ public class YearPlanService implements PlanAccessAuthorizationService {
     public YearPlan createYearPlan(long scheduleId, long yearId, YearPlanInputDTO yearPlanInputDTO) {
         Year year = yearService.getYearById(yearId);
         checkIfInputDataFieldsAreValid(yearPlanInputDTO, year);
-        return save(new YearPlan(yearPlanInputDTO.getContent(),
-                                        yearPlanInputDTO.getStartDate(),
-                                        yearPlanInputDTO.getEndDate(),
-                                        yearPlanInputDTO.getImportance(),
-                                        yearPlanInputDTO.getUrgency(),
-                                        scheduleService.getScheduleById(scheduleId),
-                                        year));
+        YearPlan yearPlan = new YearPlan(yearPlanInputDTO.getContent(), yearPlanInputDTO.getStartDate(),
+                yearPlanInputDTO.getEndDate(), scheduleService.getScheduleById(scheduleId), year);
+        updateImportance(yearPlanInputDTO, yearPlan);
+        updateUrgency(yearPlanInputDTO, yearPlan);
+        return save(yearPlan);
     }
 
     public YearPlan updateYearPlan(long scheduleId, long yearPlanId, YearPlanInputDTO yearPlanInputDTO) {
@@ -89,8 +85,16 @@ public class YearPlanService implements PlanAccessAuthorizationService {
         yearPlan.setContent(yearPlanInputDTO.getContent());
         yearPlan.setStartDate(yearPlanInputDTO.getStartDate());
         yearPlan.setEndDate(yearPlanInputDTO.getEndDate());
+        updateImportance(yearPlanInputDTO, yearPlan);
+        updateUrgency(yearPlanInputDTO, yearPlan);
+    }
+
+    private void updateImportance(YearPlanInputDTO yearPlanInputDTO, YearPlan yearPlan) {
         if(yearPlanInputDTO.getImportance() != null)
             yearPlan.setImportance(yearPlanInputDTO.getImportance());
+    }
+
+    private void updateUrgency(YearPlanInputDTO yearPlanInputDTO, YearPlan yearPlan) {
         if(yearPlanInputDTO.getUrgency() != null)
             yearPlan.setUrgency(yearPlanInputDTO.getUrgency());
     }

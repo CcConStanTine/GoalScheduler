@@ -26,10 +26,11 @@ public class LongTermPlanService implements PlanAccessAuthorizationService {
     }
 
     public LongTermPlan createLongTermPlan(long scheduleId, LongTermPlanInputDTO ltpInputDTO) {
-        return save(new LongTermPlan(ltpInputDTO.getContent(),
-                                                ltpInputDTO.getStartDate(),
-                                                ltpInputDTO.getEndDate(),
-                                                scheduleService.getScheduleById(scheduleId)));
+        LongTermPlan longTermPlan = new LongTermPlan(ltpInputDTO.getContent(), ltpInputDTO.getStartDate(),
+                ltpInputDTO.getEndDate(), scheduleService.getScheduleById(scheduleId));
+        updateImportance(ltpInputDTO, longTermPlan);
+        updateUrgency(ltpInputDTO, longTermPlan);
+        return save(longTermPlan);
     }
 
     public LongTermPlan updateLongTermPlan(long scheduleId, long ltpId, LongTermPlanInputDTO ltpInputDTO) {
@@ -65,8 +66,16 @@ public class LongTermPlanService implements PlanAccessAuthorizationService {
         longTermPlan.setContent(ltpInputDTO.getContent());
         longTermPlan.setStartDate(ltpInputDTO.getStartDate());
         longTermPlan.setEndDate(ltpInputDTO.getEndDate());
+        updateImportance(ltpInputDTO, longTermPlan);
+        updateUrgency(ltpInputDTO, longTermPlan);
+    }
+
+    private void updateImportance(LongTermPlanInputDTO ltpInputDTO, LongTermPlan longTermPlan) {
         if(ltpInputDTO.getImportance() != null)
             longTermPlan.setImportance(ltpInputDTO.getImportance());
+    }
+
+    private void updateUrgency(LongTermPlanInputDTO ltpInputDTO, LongTermPlan longTermPlan) {
         if(ltpInputDTO.getUrgency() != null)
             longTermPlan.setUrgency(ltpInputDTO.getUrgency());
     }

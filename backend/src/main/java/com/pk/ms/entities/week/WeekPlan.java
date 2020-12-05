@@ -25,11 +25,6 @@ public class WeekPlan extends PlanEntity<LocalDate> {
     public WeekPlan() {
     }
 
-    public WeekPlan(String content, LocalDate startDate, LocalDate endDate, Importance importance, Urgency urgency, Schedule schedule, Week week) {
-        super(content, startDate, endDate, importance, urgency, schedule);
-        this.week = week;
-    }
-
     public WeekPlan(String content, LocalDate startDate, LocalDate endDate, Schedule schedule, Week week) {
         super(content, startDate, endDate, schedule);
         this.week = week;

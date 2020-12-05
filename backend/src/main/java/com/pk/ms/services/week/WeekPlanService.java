@@ -38,11 +38,11 @@ public class WeekPlanService implements PlanAccessAuthorizationService {
     public WeekPlan createWeekPlan(long scheduleId, long weekId, WeekPlanInputDTO weekPlanInputDTO) {
         Week week = weekService.getWeekById(weekId);
         dataValidationForDataTypes(weekPlanInputDTO, week);
-        return save(new WeekPlan(weekPlanInputDTO.getContent(),
-                weekPlanInputDTO.getStartDate(),
-                weekPlanInputDTO.getEndDate(),
-                scheduleService.getScheduleById(scheduleId),
-                week));
+        WeekPlan weekPlan = new WeekPlan(weekPlanInputDTO.getContent(), weekPlanInputDTO.getStartDate(),
+                weekPlanInputDTO.getEndDate(), scheduleService.getScheduleById(scheduleId), week);
+        updateImportance(weekPlanInputDTO, weekPlan);
+        updateUrgency(weekPlanInputDTO, weekPlan);
+        return weekPlan;
     }
 
     public WeekPlan updateWeekPlan(long scheduleId, long weekPlanId, WeekPlanInputDTO weekPlanInputDTO) {
@@ -91,8 +91,16 @@ public class WeekPlanService implements PlanAccessAuthorizationService {
         weekPlan.setContent(weekPlanInputDTO.getContent());
         weekPlan.setStartDate(weekPlanInputDTO.getStartDate());
         weekPlan.setEndDate(weekPlanInputDTO.getEndDate());
+        updateImportance(weekPlanInputDTO, weekPlan);
+        updateUrgency(weekPlanInputDTO, weekPlan);
+    }
+
+    private void updateImportance(WeekPlanInputDTO weekPlanInputDTO, WeekPlan weekPlan) {
         if(weekPlanInputDTO.getImportance() != null)
             weekPlan.setImportance(weekPlanInputDTO.getImportance());
+    }
+
+    private void updateUrgency(WeekPlanInputDTO weekPlanInputDTO, WeekPlan weekPlan) {
         if(weekPlanInputDTO.getUrgency() != null)
             weekPlan.setUrgency(weekPlanInputDTO.getUrgency());
     }
@@ -100,5 +108,4 @@ public class WeekPlanService implements PlanAccessAuthorizationService {
     private void delete(WeekPlan weekPlan) {
         repository.delete(weekPlan);
     }
-
 }

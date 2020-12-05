@@ -28,11 +28,6 @@ public class YearPlan extends PlanEntity<LocalDate> {
     public YearPlan() {
     }
 
-    public YearPlan(String content, LocalDate startDate, LocalDate endDate, Importance importance, Urgency urgency, Schedule schedule, Year year) {
-        super(content, startDate, endDate, importance, urgency, schedule);
-        this.year = year;
-    }
-
     public YearPlan(String content, LocalDate startDate, LocalDate endDate, Schedule schedule, Year year) {
         super(content, startDate, endDate, schedule);
         this.year = year;

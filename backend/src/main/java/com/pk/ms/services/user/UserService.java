@@ -36,6 +36,10 @@ public class UserService {
         return repository.save(user);
     }
 
+    public MyScheduleUser getUserById(long id) {
+        return getNotNullUserById(id);
+    }
+
     public boolean isNickUnique(String nick) {
         return isObjectNull(getByNick(nick));
     }
