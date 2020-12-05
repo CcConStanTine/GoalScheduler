@@ -1,4 +1,4 @@
-package com.pk.ms.entities.month;
+package com.pk.ms.constants;
 
 public enum MonthName {
 

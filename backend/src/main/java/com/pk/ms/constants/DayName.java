@@ -1,4 +1,4 @@
-package com.pk.ms.entities.day;
+package com.pk.ms.constants;
 
 public enum DayName {
     EMPTY(0),

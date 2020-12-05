@@ -1,14 +1,11 @@
 package com.pk.ms.entities.day;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.pk.ms.constants.DayName;
 import com.pk.ms.entities.month.Month;
-import com.pk.ms.entities.week.Week;
 
 import javax.persistence.*;
-import java.sql.Date;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 public class Day {

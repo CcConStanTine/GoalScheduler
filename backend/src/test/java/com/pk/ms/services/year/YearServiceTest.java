@@ -94,7 +94,7 @@ class YearServiceTest {
     void should_ReturnYearInYearBasicInfoDTOForm_When_YearWithGivenIdExists() {
         //given
         YearBasicInfoDTO yearBasicInfoDTOExpected = yearMapService.mapToDTO(year2020);
-        given(yearRepo.findById(1L)).willReturn(year2020);
+        given(yearRepo.findById(1L)).willReturn(java.util.Optional.ofNullable(year2020));
         //when
         YearBasicInfoDTO yearBasicInfoDTOActual = yearService.getYearDTOById(1L);
         //then

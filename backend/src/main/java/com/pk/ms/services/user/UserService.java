@@ -17,7 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 @Service
 public class UserService {
 
-    private final UserRepository userRepo;
+    private final UserRepository repository;
 
     private final UserInfoMapService userInfoMapService;
 
@@ -25,15 +25,19 @@ public class UserService {
 
     private final ImageService imageService;
 
-    public UserService(UserRepository userRepo, UserInfoMapService userInfoMapService, PasswordEncoder encoder, ImageService imageService) {
-        this.userRepo = userRepo;
+    public UserService(UserRepository repository, UserInfoMapService userInfoMapService, PasswordEncoder encoder, ImageService imageService) {
+        this.repository = repository;
         this.userInfoMapService = userInfoMapService;
         this.encoder = encoder;
         this.imageService = imageService;
     }
 
     public MyScheduleUser saveUser(MyScheduleUser user) {
-        return userRepo.save(user);
+        return repository.save(user);
+    }
+
+    public MyScheduleUser getUserById(long id) {
+        return getNotNullUserById(id);
     }
 
     public boolean isNickUnique(String nick) {
@@ -73,17 +77,11 @@ public class UserService {
     }
 
     public UserInfoDTO updateUserEmail(long userId, UserEmailUpdateDTO userEmailUpdateDTO) {
-
         String updateEmail = userEmailUpdateDTO.getEmail();
-
         if(!isEmailUnique(updateEmail))
             throw new UniqueValuesAlreadyExistsException(updateEmail);
-
         MyScheduleUser user = getNotNullUserById(userId);
-
-        if(!isObjectNull(updateEmail))
-            user.setEmail(updateEmail);
-
+        user.setEmail(updateEmail);
         saveUser(user);
         return userInfoMapService.mapToDTO(user);
     }
@@ -103,25 +101,21 @@ public class UserService {
     }
 
     private MyScheduleUser getNotNullUserById(long id) {
-        MyScheduleUser user = userRepo.findById(id);
-        if(isObjectNull(user))
-            throw new ResourceNotAvailableException();
-        return user;
+        return repository.findById(id).orElseThrow(ResourceNotAvailableException::new);
     }
 
     private MyScheduleUser getByNick(String nick) {
-        return userRepo.findByNick(nick);
+        return repository.findByNick(nick);
     }
 
     private MyScheduleUser getByEmail(String email) {
-        return userRepo.findByEmail(email);
+        return repository.findByEmail(email);
     }
-
 
     public Image getUserImage(long userId) {
         Image image = getNotNullUserById(userId).getImage();
         if(image == null)
-            return new Image();
+            return new Image("https://res.cloudinary.com/ccconstantine/image/upload/v1607097618/person_tgl8si.png");
         else
             return image;
     }

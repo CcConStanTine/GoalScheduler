@@ -6,12 +6,14 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Optional;
+
 @Repository
 public interface MonthSummaryRepository extends CrudRepository<MonthSummary, Long> {
 
-    MonthSummary findById(long id);
+    Optional<MonthSummary> findById(long id);
 
     @Query(nativeQuery = true, value = "SELECT * FROM month_summary WHERE schedule_id = ? AND month_id = ?")
-    MonthSummary findByScheduleIdAndMonthId(long scheduleId, long monthId);
+    Optional<MonthSummary> findByScheduleIdAndMonthId(long scheduleId, long monthId);
 
 }

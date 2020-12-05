@@ -1,10 +1,12 @@
 package com.pk.ms.entities.user;
 
+import com.pk.ms.entities.day.DailyRoutinePlan;
 import com.pk.ms.entities.schedule.Schedule;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -38,6 +40,9 @@ public class MyScheduleUser {
 
     @OneToOne(mappedBy = "user")
     private Schedule schedule;
+
+    @OneToMany(mappedBy = "user")
+    private List<DailyRoutinePlan> dailyRoutinePlansList;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "image_id")

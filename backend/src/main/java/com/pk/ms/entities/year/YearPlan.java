@@ -1,14 +1,19 @@
 package com.pk.ms.entities.year;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.pk.ms.abstracts.Plan;
+import com.pk.ms.abstracts.PlanDTO;
+import com.pk.ms.abstracts.PlanEntity;
+import com.pk.ms.constants.Importance;
+import com.pk.ms.constants.Urgency;
 import com.pk.ms.entities.schedule.Schedule;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.time.LocalDate;
 
 @Entity
-public class YearPlan extends Plan<LocalDate> {
+public class YearPlan extends PlanEntity<LocalDate> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "year_plan_seq")
@@ -20,18 +25,12 @@ public class YearPlan extends Plan<LocalDate> {
     @JsonIgnore
     private Year year;
 
-    @ManyToOne
-    @JoinColumn(name="schedule_id")
-    @JsonIgnore
-    private Schedule schedule;
-
     public YearPlan() {
     }
 
-    public YearPlan(String content, LocalDate startDate, LocalDate endDate, Year year, Schedule schedule) {
-        super(content, startDate, endDate);
+    public YearPlan(String content, LocalDate startDate, LocalDate endDate, Schedule schedule, Year year) {
+        super(content, startDate, endDate, schedule);
         this.year = year;
-        this.schedule = schedule;
     }
 
     public Long getYearPlanId() {
@@ -48,13 +47,5 @@ public class YearPlan extends Plan<LocalDate> {
 
     public void setYear(Year year) {
         this.year = year;
-    }
-
-    public Schedule getSchedule() {
-        return schedule;
-    }
-
-    public void setSchedule(Schedule schedule) {
-        this.schedule = schedule;
     }
 }

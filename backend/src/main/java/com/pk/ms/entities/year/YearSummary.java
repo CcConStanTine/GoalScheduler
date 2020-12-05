@@ -19,19 +19,13 @@ public class YearSummary extends Summary {
     @JsonIgnore
     private Year year;
 
-    @ManyToOne
-    @JoinColumn(name = "schedule_id")
-    @JsonIgnore
-    private Schedule schedule;
-
     public YearSummary() {
     }
 
-    public YearSummary(Year year, Schedule schedule) {
+    public YearSummary(Schedule schedule, Year year) {
+        super(schedule);
         this.year = year;
-        this.schedule = schedule;
-        countFailedAmount();
-        countFulfilledAmount();
+        countSummary();
     }
 
     public Long getYearSummaryId() {
@@ -50,31 +44,56 @@ public class YearSummary extends Summary {
         this.year = year;
     }
 
-    public Schedule getSchedule() {
-        return schedule;
-    }
-
-    public void setSchedule(Schedule schedule) {
-        this.schedule = schedule;
-    }
-
     @Override
-    public void countFulfilledAmount() {
-        int fulfilled=0;
+    public void countSummary() {
+        int fulfilled=0, failed=0;
+        double maxSum=0, actualSum=0;
         for (YearPlan yearPlan : schedule.getParticularYearPlansList(year.getYearId())) {
-            if(yearPlan.isFulfilled())
+            if(yearPlan.isFulfilled()) {
                 fulfilled++;
-        }
-        setFulfilledAmount(fulfilled);
-    }
-
-    @Override
-    public void countFailedAmount() {
-        int failed=0;
-        for (YearPlan yearPlan : schedule.getParticularYearPlansList(year.getYearId())) {
-            if(!yearPlan.isFulfilled())
+                switch(yearPlan.getImportance()) {
+                    case NOTIMPORTANT: {
+                        maxSum+=6;
+                        actualSum+=6;
+                    } break;
+                    case REGULAR: {
+                        maxSum+=15;
+                        actualSum+=15;
+                    } break;
+                    case IMPORTANT: {
+                        maxSum+=40;
+                        actualSum+=40;
+                    } break;
+                    case VERYIMPORTANT: {
+                        maxSum+=58;
+                        actualSum+=58;
+                    } break;
+                }
+            }
+            else {
                 failed++;
+                switch(yearPlan.getImportance()) {
+                    case NOTIMPORTANT: {
+                        maxSum+=6;
+                    } break;
+                    case REGULAR: {
+                        maxSum+=15;
+                    } break;
+                    case IMPORTANT: {
+                        maxSum+=40;
+                    } break;
+                    case VERYIMPORTANT: {
+                        maxSum+=58;
+                    } break;
+                }
+            }
+
         }
+        double percentagePlansRating = 0;
+        if(maxSum!=0)
+            percentagePlansRating = actualSum/maxSum * 100;
+        setFulfilledAmount(fulfilled);
         setFailedAmount(failed);
+        setPercentagePlansRating((int)percentagePlansRating);
     }
 }

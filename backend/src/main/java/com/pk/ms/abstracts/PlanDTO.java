@@ -1,11 +1,14 @@
 package com.pk.ms.abstracts;
 
+import com.pk.ms.constants.Importance;
+import com.pk.ms.constants.Urgency;
+
 import javax.persistence.MappedSuperclass;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 @MappedSuperclass
-public abstract class Plan <T> {
+public abstract class PlanDTO<T> {
 
     @NotNull
     @Size(max = 200)
@@ -17,16 +20,23 @@ public abstract class Plan <T> {
     @NotNull
     private T endDate;
 
+    private Importance importance;
+
+    private Urgency urgency;
+
     private boolean isFulfilled;
 
-    public Plan() {
+    public PlanDTO() {
     }
 
-    public Plan(String content, T startDate, T endDate) {
+    public PlanDTO(@NotNull @Size(max = 200) String content, @NotNull T startDate, @NotNull T endDate,
+                   Importance importance, Urgency urgency, boolean isFulfilled) {
         this.content = content;
         this.startDate = startDate;
         this.endDate = endDate;
-        this.isFulfilled = false;
+        this.importance = importance;
+        this.urgency = urgency;
+        this.isFulfilled = isFulfilled;
     }
 
     public String getContent() {
@@ -51,6 +61,22 @@ public abstract class Plan <T> {
 
     public void setEndDate(T endDate) {
         this.endDate = endDate;
+    }
+
+    public Importance getImportance() {
+        return importance;
+    }
+
+    public void setImportance(Importance importance) {
+        this.importance = importance;
+    }
+
+    public Urgency getUrgency() {
+        return urgency;
+    }
+
+    public void setUrgency(Urgency urgency) {
+        this.urgency = urgency;
     }
 
     public boolean isFulfilled() {

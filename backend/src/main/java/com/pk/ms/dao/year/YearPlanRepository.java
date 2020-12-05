@@ -6,11 +6,12 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface YearPlanRepository extends CrudRepository<YearPlan, Long> {
 
-    YearPlan findById(long id);
+    Optional<YearPlan> findById(long id);
 
     @Query(nativeQuery = true, value = "SELECT * FROM year_plan WHERE schedule_id = ? AND year_id = ?")
     List<YearPlan> findYearPlansByScheduleIdAndYearId(long scheduleId, long yearId);
