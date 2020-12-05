@@ -41,7 +41,7 @@ public class YearSummaryService implements SummaryAccessAuthorizationService {
 
     public YearSummary updateYearSummary(long scheduleId, long yearSummaryId) {
         YearSummary yearSummary = getAuthorizedNotNullYearSummaryById(scheduleId, yearSummaryId);
-        countMonthSummary(yearSummary);
+        yearSummary.countSummary();
         return save(yearSummary);
     }
 
@@ -61,10 +61,5 @@ public class YearSummaryService implements SummaryAccessAuthorizationService {
 
     private YearSummary save(YearSummary yearSummary) {
         return repository.save(yearSummary);
-    }
-
-    private void countMonthSummary(YearSummary yearSummary) {
-        yearSummary.countFulfilledAmount();
-        yearSummary.countFailedAmount();
     }
 }

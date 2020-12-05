@@ -40,7 +40,7 @@ public class MonthSummaryService implements SummaryAccessAuthorizationService {
 
     public MonthSummary updateMonthSummary(long scheduleId, long monthSummaryId) {
         MonthSummary monthSummary = getAuthorizedNotNullMonthSummaryById(scheduleId, monthSummaryId);
-        countMonthSummary(monthSummary);
+        monthSummary.countSummary();
         return save(monthSummary);
     }
 
@@ -60,11 +60,6 @@ public class MonthSummaryService implements SummaryAccessAuthorizationService {
 
     private MonthSummary save(MonthSummary monthSummary) {
         return repository.save(monthSummary);
-    }
-
-    private void countMonthSummary(MonthSummary monthSummary) {
-        monthSummary.countFulfilledAmount();
-        monthSummary.countFailedAmount();
     }
 }
 

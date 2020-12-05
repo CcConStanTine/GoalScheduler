@@ -14,6 +14,8 @@ public abstract class Summary {
 
     private int failedAmount;
 
+    private int percentagePlansRating;
+
     @ManyToOne
     @JoinColumn(name = "schedule_id")
     @JsonIgnore
@@ -42,6 +44,14 @@ public abstract class Summary {
         this.failedAmount = failedAmount;
     }
 
+    public int getPercentagePlansRating() {
+        return percentagePlansRating;
+    }
+
+    public void setPercentagePlansRating(int percentagePlansRating) {
+        this.percentagePlansRating = percentagePlansRating;
+    }
+
     public Schedule getSchedule() {
         return schedule;
     }
@@ -50,8 +60,6 @@ public abstract class Summary {
         this.schedule = schedule;
     }
 
-    public abstract void countFulfilledAmount();
-
-    public abstract void countFailedAmount();
+    public abstract void countSummary();
 }
 

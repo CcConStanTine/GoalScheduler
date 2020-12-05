@@ -2,7 +2,6 @@ package com.pk.ms.entities.day;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.pk.ms.abstracts.Summary;
-import com.pk.ms.entities.month.MonthPlan;
 import com.pk.ms.entities.schedule.Schedule;
 
 import javax.persistence.*;
@@ -26,8 +25,7 @@ public class DaySummary extends Summary {
     public DaySummary(Schedule schedule, Day day) {
         super(schedule);
         this.day = day;
-        countFulfilledAmount();
-        countFailedAmount();
+        countSummary();
     }
 
     public Long getDaySummaryId() {
@@ -47,21 +45,55 @@ public class DaySummary extends Summary {
     }
 
     @Override
-    public void countFulfilledAmount() {
-        int fulfilled=0;
-        for (DayPlan dayPlan : schedule.getParticularDayPlansList(this.day.getDayId())) {
-            if(dayPlan.isFulfilled())
-                fulfilled++;
-        }
-        setFulfilledAmount(fulfilled);
-    }
-
-    @Override
-    public void countFailedAmount() {
-        int failed=0;
+    public void countSummary() {
+        int fulfilled=0, failed=0;
+        double maxSum=0, actualSum=0;
         for (DayPlan dayPlan : schedule.getParticularDayPlansList(day.getDayId())) {
-            if(!dayPlan.isFulfilled())
+            if(dayPlan.isFulfilled()) {
+                fulfilled++;
+                switch(dayPlan.getImportance()) {
+                    case NOTIMPORTANT: {
+                        maxSum+=10;
+                        actualSum+=10;
+                    } break;
+                    case REGULAR: {
+                        maxSum+=20;
+                        actualSum+=20;
+                    } break;
+                    case IMPORTANT: {
+                        maxSum+=35;
+                        actualSum+=35;
+                    } break;
+                    case VERYIMPORTANT: {
+                        maxSum+=50;
+                        actualSum+=50;
+                    } break;
+                }
+            }
+            else {
                 failed++;
+                switch(dayPlan.getImportance()) {
+                    case NOTIMPORTANT: {
+                        maxSum+=10;
+                    } break;
+                    case REGULAR: {
+                        maxSum+=20;
+                    } break;
+                    case IMPORTANT: {
+                        maxSum+=35;
+                    } break;
+                    case VERYIMPORTANT: {
+                        maxSum+=50;
+                    } break;
+                }
+            }
+
         }
-        setFailedAmount(failed);    }
+        double percentagePlansRating = 0;
+        if(maxSum!=0)
+            percentagePlansRating = actualSum/maxSum * 100;
+        setFulfilledAmount(fulfilled);
+        setFailedAmount(failed);
+        setPercentagePlansRating((int)percentagePlansRating);
+    }
 }

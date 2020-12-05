@@ -40,7 +40,7 @@ public class DaySummaryService implements SummaryAccessAuthorizationService {
 
     public DaySummary updateDaySummary(long scheduleId, long daySummaryId) {
         DaySummary daySummary = getAuthenticatedNotNullDaySummaryById(scheduleId, daySummaryId);
-        countDaySummary(daySummary);
+        daySummary.countSummary();
         return save(daySummary);
     }
 
@@ -60,10 +60,5 @@ public class DaySummaryService implements SummaryAccessAuthorizationService {
 
     private DaySummary save(DaySummary daySummary) {
         return repository.save(daySummary);
-    }
-
-    private void countDaySummary(DaySummary daySummary) {
-        daySummary.countFulfilledAmount();
-        daySummary.countFailedAmount();
     }
 }

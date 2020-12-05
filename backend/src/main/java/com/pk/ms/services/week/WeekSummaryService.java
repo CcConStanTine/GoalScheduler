@@ -40,7 +40,7 @@ public class WeekSummaryService implements SummaryAccessAuthorizationService {
 
     public WeekSummary updateWeekSummary(long scheduleId, long weekId) {
         WeekSummary weekSummary = getAuthorizedNotNullWeekSummaryById(scheduleId, weekId);
-        countWeekSummary(weekSummary);
+        weekSummary.countSummary();
         return save(weekSummary);
     }
 
@@ -60,10 +60,5 @@ public class WeekSummaryService implements SummaryAccessAuthorizationService {
 
     private WeekSummary save(WeekSummary weekSummary) {
         return repository.save(weekSummary);
-    }
-
-    private void countWeekSummary(WeekSummary weekSummary) {
-        weekSummary.countFulfilledAmount();
-        weekSummary.countFailedAmount();
     }
 }

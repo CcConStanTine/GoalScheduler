@@ -3,7 +3,6 @@ package com.pk.ms.entities.month;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.pk.ms.abstracts.Summary;
 import com.pk.ms.entities.schedule.Schedule;
-import com.pk.ms.entities.year.YearPlan;
 
 import javax.persistence.*;
 
@@ -26,8 +25,7 @@ public class MonthSummary extends Summary {
     public MonthSummary(Schedule schedule, Month month) {
         super(schedule);
         this.month = month;
-        countFulfilledAmount();
-        countFailedAmount();
+        countSummary();
     }
 
     public Long getMonthSummaryId() {
@@ -55,22 +53,55 @@ public class MonthSummary extends Summary {
     }
 
     @Override
-    public void countFulfilledAmount() {
-        int fulfilled=0;
+    public void countSummary() {
+        int fulfilled=0, failed=0;
+        double maxSum=0, actualSum=0;
         for (MonthPlan monthPlan : schedule.getParticularMonthPlansList(month.getMonthId())) {
-            if(monthPlan.isFulfilled())
+            if(monthPlan.isFulfilled()) {
                 fulfilled++;
-        }
-        setFulfilledAmount(fulfilled);
-    }
-
-    @Override
-    public void countFailedAmount() {
-        int failed=0;
-        for (MonthPlan monthPlan : schedule.getParticularMonthPlansList(month.getMonthId())) {
-            if(!monthPlan.isFulfilled())
+                switch(monthPlan.getImportance()) {
+                    case NOTIMPORTANT: {
+                        maxSum+=7;
+                        actualSum+=7;
+                    } break;
+                    case REGULAR: {
+                        maxSum+=18;
+                        actualSum+=18;
+                    } break;
+                    case IMPORTANT: {
+                        maxSum+=40;
+                        actualSum+=40;
+                    } break;
+                    case VERYIMPORTANT: {
+                        maxSum+=58;
+                        actualSum+=58;
+                    } break;
+                }
+            }
+            else {
                 failed++;
+                switch(monthPlan.getImportance()) {
+                    case NOTIMPORTANT: {
+                        maxSum+=7;
+                    } break;
+                    case REGULAR: {
+                        maxSum+=18;
+                    } break;
+                    case IMPORTANT: {
+                        maxSum+=40;
+                    } break;
+                    case VERYIMPORTANT: {
+                        maxSum+=58;
+                    } break;
+                }
+            }
+
         }
+        double percentagePlansRating = 0;
+        if(maxSum!=0)
+            percentagePlansRating = actualSum/maxSum * 100;
+        setFulfilledAmount(fulfilled);
         setFailedAmount(failed);
+        setPercentagePlansRating((int)percentagePlansRating);
     }
 }
