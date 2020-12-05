@@ -46,12 +46,7 @@ const editEntry = async (entryType: string, data: inputData, id: number) => {
 const addEntry = async (entryType: string, data: inputData) => {
     const dayData = formatDate(data);
 
-    if (entryType === EntriesPlanType.DAY)
-        return await auth.addDayPlan(dayData);
-    else if (entryType === EntriesPlanType.MONTH)
-        return await auth.addMonthPlan(dayData);
-
-    return await auth.addYearPlan(dayData);
+    return await auth.addPlanByPlanType(entryType, dayData);
 }
 
 const RenderAddEntryInputs = ({ languagePack, entryType, entry, id }: AddEntry) => {
