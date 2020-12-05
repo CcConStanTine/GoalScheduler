@@ -22,7 +22,7 @@ const EntryPageConfirmWindow = ({ type, placeholder, optionText, closeWindowFunc
                 <p>{fulfilled ? unFulfilledPlaceholder : placeholder}</p>
                 <div className='options'>
                     <button className='default-button' onClick={sendRequestFunction}>{fulfilled ? unFullfilledOptionText : optionText}</button>
-                    <button className='default-button' onClick={() => closeWindowFunction(false)}>{languagePack[language].cancelText}</button>
+                    <button className='default-button' onClick={() => closeWindowFunction(false)}>{languagePack[language].GLOBAL.cancel}</button>
                 </div>
             </div>
         </div>

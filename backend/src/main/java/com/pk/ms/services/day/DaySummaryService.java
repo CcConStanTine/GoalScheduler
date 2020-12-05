@@ -1,100 +1,64 @@
 package com.pk.ms.services.day;
 
+import com.pk.ms.abstracts.SummaryAccessAuthorizationService;
 import com.pk.ms.dao.day.DaySummaryRepository;
 import com.pk.ms.entities.day.Day;
-import com.pk.ms.entities.day.DayPlan;
 import com.pk.ms.entities.day.DaySummary;
 import com.pk.ms.entities.schedule.Schedule;
-import com.pk.ms.exceptions.AccessDeniedException;
 import com.pk.ms.exceptions.ResourceNotAvailableException;
 import com.pk.ms.services.schedule.ScheduleService;
 import org.springframework.stereotype.Service;
 
 @Service
-public class DaySummaryService {
+public class DaySummaryService implements SummaryAccessAuthorizationService {
 
-    private final DaySummaryRepository daySummaryRepo;
+    private final DaySummaryRepository repository;
 
     private final DayService dayService;
 
     private final ScheduleService scheduleService;
 
-    public DaySummaryService(DaySummaryRepository daySummaryRepo, DayService dayService, ScheduleService scheduleService) {
-        this.daySummaryRepo = daySummaryRepo;
+    public DaySummaryService(DaySummaryRepository repository, DayService dayService, ScheduleService scheduleService) {
+        this.repository = repository;
         this.dayService = dayService;
         this.scheduleService = scheduleService;
     }
 
     public DaySummary getDaySummaryById(long scheduleId, long daySummaryId) {
-        DaySummary daySummary = getNotNullDaySummaryById(daySummaryId);
-        if(hasAccess(scheduleId, daySummary))
-            return daySummary;
-        else
-            throw new AccessDeniedException("This user cannot access this resource. ");
+        return getAuthenticatedNotNullDaySummaryById(scheduleId, daySummaryId);
     }
 
     public DaySummary getDaySummaryByScheduleIdAndDayId(long scheduleId, long dayId) {
-        DaySummary daySummary = getNotNullDaySummaryByScheduleIdAndDayId(scheduleId, dayId);
-        if(hasAccess(scheduleId, daySummary))
-            return daySummary;
-        else
-            throw new AccessDeniedException("This user cannot access this resource. ");
+        return getAuthenticatedNotNullDaySummaryByScheduleIdAndDayId(scheduleId, dayId);
     }
 
     public DaySummary createDaySummary(long scheduleId, long dayId) {
-        DaySummary daySummary = getDaySummaryByScheduleIdAndDayIdFromRepo(scheduleId, dayId);
-        if(isObjectNull(daySummary)) {
-            Day day = dayService.getDayById(dayId);
-            Schedule schedule = scheduleService.getScheduleById(scheduleId);
-            return saveDaySummary(new DaySummary(day, schedule));
-        }
-        else {
-            updateDaySummary(scheduleId, daySummary);
-            return saveDaySummary(daySummary);
-        }
+        Day day = dayService.getDayById(dayId);
+        Schedule schedule = scheduleService.getScheduleById(scheduleId);
+        return save(new DaySummary(schedule, day));
     }
 
+    public DaySummary updateDaySummary(long scheduleId, long daySummaryId) {
+        DaySummary daySummary = getAuthenticatedNotNullDaySummaryById(scheduleId, daySummaryId);
+        daySummary.countSummary();
+        return save(daySummary);
+    }
 
-    private DaySummary getNotNullDaySummaryById(long daySummaryId) {
-        DaySummary daySummary = getDaySummaryByIdFromRepo(daySummaryId);
-        if(isObjectNull(daySummary))
-            throw new ResourceNotAvailableException();
+    private DaySummary getAuthenticatedNotNullDaySummaryById(long scheduleId, long daySummaryId) {
+        DaySummary daySummary = repository.findById(daySummaryId)
+                .orElseThrow(ResourceNotAvailableException::new);
+        authorize(hasAccess(scheduleId, daySummary));
         return daySummary;
     }
 
-    private DaySummary getDaySummaryByIdFromRepo(long daySummaryId) {
-        return daySummaryRepo.findById(daySummaryId);
-    }
-
-    private DaySummary getNotNullDaySummaryByScheduleIdAndDayId(long scheduleId, long dayId) {
-        DaySummary daySummary = getDaySummaryByScheduleIdAndDayIdFromRepo(scheduleId, dayId);
-        if(isObjectNull(daySummary))
-            throw new ResourceNotAvailableException();
+    private DaySummary getAuthenticatedNotNullDaySummaryByScheduleIdAndDayId(long scheduleId, long dayId) {
+        DaySummary daySummary = repository.findByScheduleIdAndDayId(scheduleId, dayId)
+                .orElseThrow(ResourceNotAvailableException::new);
+        authorize(hasAccess(scheduleId, daySummary));
         return daySummary;
     }
 
-    private DaySummary getDaySummaryByScheduleIdAndDayIdFromRepo(long scheduleId, long dayId) {
-        return daySummaryRepo.findByScheduleIdAndDayId(scheduleId, dayId);
-    }
-
-    private DaySummary saveDaySummary(DaySummary daySummary) {
-        return daySummaryRepo.save(daySummary);
-    }
-
-    private void updateDaySummary(long scheduleId, DaySummary daySummary) {
-        if (hasAccess(scheduleId, daySummary)) {
-            daySummary.countFulfilledAmount();
-            daySummary.countFailedAmount();
-        }
-        else
-            throw new AccessDeniedException("This user cannot access this resource. ");
-    }
-
-    private boolean isObjectNull(Object object) {
-        return object == null;
-    }
-
-    private boolean hasAccess(long scheduleId, DaySummary daySummary) {
-        return daySummary.getSchedule().getScheduleId() == scheduleId;
+    private DaySummary save(DaySummary daySummary) {
+        return repository.save(daySummary);
     }
 }

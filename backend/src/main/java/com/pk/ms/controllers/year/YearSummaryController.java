@@ -39,4 +39,11 @@ public class YearSummaryController {
         return ResponseEntity.ok(yearSummaryService.createYearSummary(scheduleId, yearId));
     }
 
+    @PatchMapping("/year_summary/{year_summary_id}")
+    public ResponseEntity<YearSummary> updateYearSummary(@PathVariable("schedule_id") long scheduleId,
+                                                         @PathVariable("year_summary_id") long yearSummaryId) {
+
+        return ResponseEntity.ok(yearSummaryService.updateYearSummary(scheduleId, yearSummaryId));
+    }
+
 }

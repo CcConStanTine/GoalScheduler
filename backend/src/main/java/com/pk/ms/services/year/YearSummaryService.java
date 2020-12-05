@@ -1,102 +1,65 @@
 package com.pk.ms.services.year;
 
+import com.pk.ms.abstracts.SummaryAccessAuthorizationService;
 import com.pk.ms.dao.year.YearSummaryRepository;
 import com.pk.ms.entities.schedule.Schedule;
 import com.pk.ms.entities.year.Year;
 import com.pk.ms.entities.year.YearSummary;
-import com.pk.ms.exceptions.AccessDeniedException;
 import com.pk.ms.exceptions.ResourceNotAvailableException;
 import com.pk.ms.services.schedule.ScheduleService;
 import org.springframework.stereotype.Service;
 
 @Service
-public class YearSummaryService {
+public class YearSummaryService implements SummaryAccessAuthorizationService {
 
-    private final YearSummaryRepository yearSummaryRepo;
+    private final YearSummaryRepository repository;
 
     private final YearService yearService;
 
     private final ScheduleService scheduleService;
 
-    public YearSummaryService(YearSummaryRepository yearSummaryRepo, YearService yearService,
+    public YearSummaryService(YearSummaryRepository repository, YearService yearService,
                               ScheduleService scheduleService) {
-        this.yearSummaryRepo = yearSummaryRepo;
+        this.repository = repository;
         this.yearService = yearService;
         this.scheduleService = scheduleService;
     }
 
     public YearSummary getYearSummaryById(long scheduleId, long yearSummaryId) {
-        YearSummary yearSummary = getNotNullYearSummaryById(yearSummaryId);
-        if(hasAccess(scheduleId, yearSummary))
-            return yearSummary;
-        else
-            throw new AccessDeniedException("This user cannot access this resource. ");
+        return getAuthorizedNotNullYearSummaryById(scheduleId, yearSummaryId);
     }
 
     public YearSummary getYearSummaryByScheduleIdAndYearId(long scheduleId, long yearId) {
-        YearSummary yearSummary = getNotNullYearSummaryByScheduleIdAndYearId(scheduleId, yearId);
-        if(hasAccess(scheduleId, yearSummary))
-            return yearSummary;
-        else
-            throw new AccessDeniedException("This user cannot access this resource. ");
+        return getAuthorizedNotNullYearSummaryByScheduleIdAndYearId(scheduleId, yearId);
     }
 
     public YearSummary createYearSummary(long scheduleId, long yearId) {
-        YearSummary yearSummary = getYearSummaryByScheduleIdAndYearIdFromRepo(scheduleId, yearId);
-        if(isObjectNull(yearSummary)) {
-            Year year = yearService.getYearById(yearId);
-            Schedule schedule = scheduleService.getScheduleById(scheduleId);
-            return saveYearSummary(new YearSummary(year, schedule));
-        }
-        else {
-            updateYearSummary(scheduleId, yearSummary);
-            return saveYearSummary(yearSummary);
-        }
+        Year year = yearService.getYearById(yearId);
+        Schedule schedule = scheduleService.getScheduleById(scheduleId);
+        return save(new YearSummary(schedule, year));
     }
 
+    public YearSummary updateYearSummary(long scheduleId, long yearSummaryId) {
+        YearSummary yearSummary = getAuthorizedNotNullYearSummaryById(scheduleId, yearSummaryId);
+        yearSummary.countSummary();
+        return save(yearSummary);
+    }
 
-
-    private YearSummary getNotNullYearSummaryById(long yearSummaryId) {
-        YearSummary yearSummary = getYearSummaryByIdFromRepo(yearSummaryId);
-        if(isObjectNull(yearSummary))
-            throw new ResourceNotAvailableException();
+    private YearSummary getAuthorizedNotNullYearSummaryById(long scheduleId, long yearSummaryId) {
+        YearSummary yearSummary = repository.findById(yearSummaryId)
+                .orElseThrow(ResourceNotAvailableException::new);
+        authorize(hasAccess(scheduleId, yearSummary));
         return yearSummary;
     }
 
-    private YearSummary getYearSummaryByIdFromRepo(long yearSummaryId) {
-        return yearSummaryRepo.findById(yearSummaryId);
-    }
-
-    private YearSummary getNotNullYearSummaryByScheduleIdAndYearId(long scheduleId, long yearId) {
-        YearSummary yearSummary = getYearSummaryByScheduleIdAndYearIdFromRepo(scheduleId, yearId);
-        if(isObjectNull(yearSummary))
-            throw new ResourceNotAvailableException();
+    private YearSummary getAuthorizedNotNullYearSummaryByScheduleIdAndYearId(long scheduleId, long yearId) {
+        YearSummary yearSummary = repository.findByScheduleIdAndYearId(scheduleId, yearId)
+                .orElseThrow(ResourceNotAvailableException::new);
+        authorize(hasAccess(scheduleId, yearSummary));
         return yearSummary;
     }
 
-    private YearSummary getYearSummaryByScheduleIdAndYearIdFromRepo(long scheduleId, long yearId) {
-        return yearSummaryRepo.findByScheduleIdAndYearId(scheduleId, yearId);
+    private YearSummary save(YearSummary yearSummary) {
+        return repository.save(yearSummary);
     }
-
-    private YearSummary saveYearSummary(YearSummary yearSummary) {
-        return yearSummaryRepo.save(yearSummary);
-    }
-
-    private void updateYearSummary(long scheduleId, YearSummary yearSummary) {
-        if (hasAccess(scheduleId, yearSummary)) {
-            yearSummary.countFulfilledAmount();
-            yearSummary.countFailedAmount();
-        }
-        else
-            throw new AccessDeniedException("This user cannot access this resource. ");
-    }
-
-    private boolean isObjectNull(Object object) {
-        return object == null;
-    }
-
-    private boolean hasAccess(long scheduleId, YearSummary yearSummary) {
-        return yearSummary.getSchedule().getScheduleId() == scheduleId;
-    }
-
 }

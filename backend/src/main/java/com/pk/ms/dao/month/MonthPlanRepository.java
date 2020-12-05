@@ -6,11 +6,12 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface MonthPlanRepository extends CrudRepository<MonthPlan, Long> {
 
-    MonthPlan findById(long id);
+    Optional<MonthPlan> findById(long id);
 
     @Query(nativeQuery = true, value = "SELECT * FROM month_plan WHERE schedule_id = ? AND month_id = ?")
     List<MonthPlan> findMonthPlansByScheduleIdAndMonthId(long scheduleId, long monthId);

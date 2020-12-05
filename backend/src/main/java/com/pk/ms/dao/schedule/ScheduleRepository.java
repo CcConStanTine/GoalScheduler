@@ -4,9 +4,11 @@ import com.pk.ms.entities.schedule.Schedule;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 @Repository
 public interface ScheduleRepository extends CrudRepository<Schedule, Long> {
 
-    Schedule findById(long id);
+    Optional<Schedule> findById(long id);
 
 }

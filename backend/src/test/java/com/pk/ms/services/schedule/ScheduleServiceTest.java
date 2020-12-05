@@ -54,7 +54,7 @@ class ScheduleServiceTest {
     @DisplayName("Check if method getSchedule() return Schedule when Schedule with given id exists")
     void should_ReturnSchedule_When_ScheduleWithGivenIdExists() {
         //given
-        given(scheduleRepo.findById(1L)).willReturn(schedule1);
+        given(scheduleRepo.findById(1L)).willReturn(java.util.Optional.ofNullable(schedule1));
         //when
         Schedule scheduleActual = scheduleService.getScheduleById(1L);
         //then

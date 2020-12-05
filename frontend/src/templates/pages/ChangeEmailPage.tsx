@@ -22,14 +22,14 @@ const ChangeEmailPage: React.FC = ({ history }: any) => {
   const ChangeEmailInputData = [{
     name: "currentEmail",
     type: "email",
-    placeholder: languagePack[language].currentEmail,
+    placeholder: languagePack[language].CHANGEEMAIL.currentEmail,
     ref: register({ required: true, pattern: /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]+$/i, minLength: 2, maxLength: 50 }),
     errors: errors.currentEmail
   },
   {
     name: "newEmail",
     type: "email",
-    placeholder: languagePack[language].newEmail,
+    placeholder: languagePack[language].CHANGEEMAIL.newEmail,
     ref: register({ required: true, pattern: /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]+$/i, minLength: 2, maxLength: 50 }),
     errors: errors.newEmail
   }];
@@ -44,10 +44,10 @@ const ChangeEmailPage: React.FC = ({ history }: any) => {
         return history.goBack();
       }, 1000);
 
-      return setMessage(languagePack[language].changedUserEmailSuccessfully);
+      return setMessage(languagePack[language].CHANGEEMAIL.changedEmailSuccessfully);
     }
 
-    return setMessage(languagePack[language].theSameEmailError);
+    return setMessage(languagePack[language].CHANGEEMAIL.changedEmailFailed);
   }
 
   const sendRequestToChangeEmail = async ({ newEmail, currentEmail }: emailInterface) => {
@@ -56,16 +56,16 @@ const ChangeEmailPage: React.FC = ({ history }: any) => {
     if (email === currentEmail)
       return changeEmail(newEmail, currentEmail);
 
-    return setMessage(languagePack[language].checkOldEmailError);
+    return setMessage(languagePack[language].CHANGEEMAIL.wrongCurrentEmail);
   }
 
   return (
     <section className='change-email-page'>
-      <NavigationBar type={PageNavigationTypes.DEFAULT} history={history} placeholder={languagePack[language].changeUserEmail} />
+      <NavigationBar type={PageNavigationTypes.DEFAULT} history={history} placeholder={languagePack[language].CHANGEEMAIL.title} />
       <form onSubmit={handleSubmit(sendRequestToChangeEmail)}>
         {renderAccountFormInputs(ChangeEmailInputData)}
         {message && <p className='change-email-message'>{message}</p>}
-        <input className="default-button" type="submit" value={languagePack[language].changeUserSettingsInputValue} />
+        <input className="default-button" type="submit" value={languagePack[language].GLOBAL.save} />
       </form>
     </section>
   );

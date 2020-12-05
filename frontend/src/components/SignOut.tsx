@@ -18,7 +18,7 @@ const SignOut = () => {
         <div className='sign-out'>
             <aside onClick={logout}>
                 <FaSignOutAlt className='sign-out-icon' />
-                <p>{languagePack[language].signOutText}</p>
+                <p>{languagePack[language].SETTINGS.signOut}</p>
             </aside>
         </div>
     )

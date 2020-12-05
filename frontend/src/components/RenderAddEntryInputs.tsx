@@ -97,11 +97,11 @@ const RenderAddEntryInputs = ({ languagePack, entryType, entry, id }: AddEntry) 
                     <IonDatetime
                         displayFormat="DD MMMM YYYY"
                         onIonChange={onChange}
-                        placeholder={entryType === EntriesPlanType.DAY ? languagePack.dayInputSelectDay : languagePack.inputPlaceholderStartText}
-                        cancelText={languagePack.cancelText}
-                        doneText={languagePack.inputDateAcceptText}
+                        placeholder={entryType === EntriesPlanType.DAY ? languagePack.ADD.selectDay : languagePack.ADD.selectStartTime}
+                        cancelText={languagePack.GLOBAL.selectOptionCancel}
+                        doneText={languagePack.GLOBAL.selectOptionDone}
                         min={auth.getCurrentDate()}
-                        monthNames={languagePack.inputDateMonthNames}
+                        monthNames={languagePack.MONTHS.namesTable}
                         name={name}
                         value={value}
                         max={'2030'}
@@ -120,9 +120,9 @@ const RenderAddEntryInputs = ({ languagePack, entryType, entry, id }: AddEntry) 
                             <IonDatetime
                                 displayFormat="HH : mm"
                                 onIonChange={onChange}
-                                placeholder={languagePack.dayInputSelectStartTime}
-                                cancelText={languagePack.cancelText}
-                                doneText={languagePack.inputDateAcceptText}
+                                placeholder={languagePack.ADD.selectStartTime}
+                                cancelText={languagePack.GLOBAL.selectOptionCancel}
+                                doneText={languagePack.GLOBAL.selectOptionDone}
                                 className='default-button add-entry-input'
                                 name={name}
                                 value={value}
@@ -138,9 +138,9 @@ const RenderAddEntryInputs = ({ languagePack, entryType, entry, id }: AddEntry) 
                             <IonDatetime
                                 displayFormat="HH : mm"
                                 onIonChange={onChange}
-                                placeholder={languagePack.dayInputSelectEndTime}
-                                cancelText={languagePack.cancelText}
-                                doneText={languagePack.inputDateAcceptText}
+                                placeholder={languagePack.ADD.selectEndTime}
+                                cancelText={languagePack.GLOBAL.selectOptionCancel}
+                                doneText={languagePack.GLOBAL.selectOptionDone}
                                 className='default-button add-entry-input'
                                 name={name}
                                 value={value}
@@ -158,11 +158,11 @@ const RenderAddEntryInputs = ({ languagePack, entryType, entry, id }: AddEntry) 
                         <IonDatetime
                             displayFormat="DD MMMM YYYY"
                             onIonChange={onChange}
-                            placeholder={languagePack.inputPlaceholderEndText}
-                            cancelText={languagePack.cancelText}
-                            doneText={languagePack.inputDateAcceptText}
+                            placeholder={languagePack.ADD.selectEndTime}
+                            cancelText={languagePack.GLOBAL.selectOptionCancel}
+                            doneText={languagePack.GLOBAL.selectOptionDone}
                             min={auth.getCurrentDate()}
-                            monthNames={languagePack.inputDateMonthNames}
+                            monthNames={languagePack.MONTHS.namesTable}
                             max={'2030'}
                             className='default-button add-entry-input'
                             name={name}
@@ -181,7 +181,7 @@ const RenderAddEntryInputs = ({ languagePack, entryType, entry, id }: AddEntry) 
                         autoGrow={true}
                         inputMode={'text'}
                         onIonChange={onChange}
-                        placeholder={languagePack.textareaPlaceholderText}
+                        placeholder={languagePack.ADD.description}
                         required={true}
                         className='default-button add-entry-textarea'
                         name={name}
@@ -194,7 +194,7 @@ const RenderAddEntryInputs = ({ languagePack, entryType, entry, id }: AddEntry) 
                     minLength: 5
                 }}
             />
-            <input type='submit' className='default-button' value={entry.content ? languagePack.editEntryText : languagePack.inputSendRequestText} />
+            <input type='submit' className='default-button' value={entry.content ? languagePack.EDIT.title : languagePack.ADD.title} />
         </form>
     )
 }

@@ -1,8 +1,7 @@
 package com.pk.ms.dto.day;
 
-import com.pk.ms.entities.day.DayName;
+import com.pk.ms.constants.DayName;
 
-import java.sql.Date;
 import java.time.LocalDate;
 
 public class DayBasicInfoDTO {

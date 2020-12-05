@@ -23,21 +23,21 @@ const ChangePasswordPage: React.FC = ({ history }: any) => {
   const ChangePasswordInputData = [{
     name: "oldPassword",
     type: "text",
-    placeholder: languagePack[language].oldPassword,
+    placeholder: languagePack[language].GLOBAL.oldPassword,
     ref: register({ required: true, pattern: /^[a-zA-Z0-9-]+$/i, minLength: 2, maxLength: 50 }),
     errors: errors.oldPassword
   },
   {
     name: "newPassword",
     type: "text",
-    placeholder: languagePack[language].newPassword,
+    placeholder: languagePack[language].CHANGEPASSWORD.newPassword,
     ref: register({ required: true, pattern: /^[a-zA-Z0-9-]+$/i, minLength: 2, maxLength: 50 }),
     errors: errors.newPassword
   },
   {
     name: "newPasswordRepeat",
     type: "text",
-    placeholder: languagePack[language].newPasswordRepeat,
+    placeholder: languagePack[language].CHANGEPASSWORD.repeatNewPassword,
     ref: register({ required: true, pattern: /^[a-zA-Z0-9-]+$/i, minLength: 2, maxLength: 50 }),
     errors: errors.newPasswordRepeat
   }];
@@ -46,7 +46,7 @@ const ChangePasswordPage: React.FC = ({ history }: any) => {
     setMessage(await auth.changeUserPassword(newPassword));
 
     setTimeout(() => {
-      setMessage(languagePack[language].LogAgainMessage)
+      setMessage(languagePack[language].GLOBAL.logInAgain)
     }, 1000);
     return setTimeout(() => {
       auth.logout();
@@ -59,10 +59,10 @@ const ChangePasswordPage: React.FC = ({ history }: any) => {
       if (newPassword !== oldPassword)
         return changePasswordAndForceUserToLogAgain(newPassword)
 
-      return setMessage(languagePack[language].theSamePasswordError);
+      return setMessage(languagePack[language].CHANGEPASSWORD.changedPasswordFailed);
     }
 
-    return setMessage(languagePack[language].checkNewPasswordError);
+    return setMessage(languagePack[language].CHANGEPASSWORD.wrongNewPasswords);
   }
 
   const sendRequestToChangePassword = async ({ oldPassword, newPassword, newPasswordRepeat }: sendRequestToChangePasswordInteface) => {
@@ -71,16 +71,16 @@ const ChangePasswordPage: React.FC = ({ history }: any) => {
     if (response)
       return checkPassword(oldPassword, newPassword, newPasswordRepeat);
 
-    return setMessage(languagePack[language].checkOldPasswordError)
+    return setMessage(languagePack[language].GLOBAL.wrongPassword)
   };
 
   return (
     <section className='change-password-page'>
-      <NavigationBar type={PageNavigationTypes.DEFAULT} history={history} placeholder={languagePack[language].changePasswordText} />
+      <NavigationBar type={PageNavigationTypes.DEFAULT} history={history} placeholder={languagePack[language].CHANGEPASSWORD.title} />
       <form onSubmit={handleSubmit(sendRequestToChangePassword)}>
         {renderAccountFormInputs(ChangePasswordInputData)}
         {message && <p className='change-password-message'>{message}</p>}
-        <input className="default-button" type="submit" value={languagePack[language].changeUserSettingsInputValue} />
+        <input className="default-button" type="submit" value={languagePack[language].GLOBAL.save} />
       </form>
     </section>
   );

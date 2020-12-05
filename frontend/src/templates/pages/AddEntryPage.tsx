@@ -32,7 +32,7 @@ const AddEntryPage = ({ history }: landingPageInterface) => {
             <NavigationBar
                 type={PageNavigationTypes.DEFAULT}
                 history={history}
-                placeholder={id ? languagePack[language].editEntryText : languagePack[language].addEntryText}
+                placeholder={id ? languagePack[language].EDIT.title : languagePack[language].ADD.title}
             />
             <div className='content'>
                 {!id && <div className='entries-navigation'>

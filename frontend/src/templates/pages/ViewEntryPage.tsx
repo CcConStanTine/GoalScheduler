@@ -43,14 +43,14 @@ const ViewEntryPage = ({ history }: landingPageInterface) => {
             <NavigationBar
                 type={PageNavigationTypes.VIEWENTRY}
                 history={history}
-                placeholder={languagePack[language].viewEntry}
+                placeholder={languagePack[language].VIEWENTRY.title}
                 deleteFunction={showDeleteEntryWindow}
             />
             <div className='content'>
                 <div className="title">
-                    <p>{languagePack[language].viewStartDate}</p>
-                    <p>{languagePack[language].viewEndDate}</p>
-                    <p>{languagePack[language].viewPlanDescription}</p>
+                    <p>{languagePack[language].VIEWENTRY.startTime}</p>
+                    <p>{languagePack[language].VIEWENTRY.endTime}</p>
+                    <p>{languagePack[language].VIEWENTRY.description}</p>
                 </div>
                 <div className="data">
                     <p>{entry?.startDate}</p>
@@ -73,25 +73,25 @@ const ViewEntryPage = ({ history }: landingPageInterface) => {
 
             {deleteEntryWindow && <EntryPageConfirmWindow
                 type={EntryPageConfirmWindowTypes.DELETE}
-                placeholder={languagePack[language].entryDeleteText}
-                optionText={languagePack[language].deleteText}
+                placeholder={languagePack[language].VIEWENTRY.deleteTask}
+                optionText={languagePack[language].VIEWENTRY.deleteTaskConfirm}
                 closeWindowFunction={showDeleteEntryWindow}
                 sendRequestFunction={deleteEntry}
             />}
 
             {finishEntryWindow && <EntryPageConfirmWindow
                 type={EntryPageConfirmWindowTypes.FINISH}
-                placeholder={languagePack[language].successfulyFulfilledText}
-                optionText={languagePack[language].successfulyFulfilledTextSendOption}
+                placeholder={languagePack[language].VIEWENTRY.finishedTask}
+                optionText={languagePack[language].VIEWENTRY.finishedTaskConfirm}
                 closeWindowFunction={showFinishEntryWindow}
                 sendRequestFunction={toggleFulfilledPlan}
                 fulfilled={entry?.fulfilled}
-                unFulfilledPlaceholder={languagePack[language].unFulfilledText}
-                unFullfilledOptionText={languagePack[language].unFulfilledTextSendOption}
+                unFulfilledPlaceholder={languagePack[language].VIEWENTRY.restoreTask}
+                unFullfilledOptionText={languagePack[language].VIEWENTRY.restoreTaskConfirm}
             />}
 
             {entry?.fulfilled && <div className='fulfilled'>
-                <p>{languagePack[language].viewFulfilledPlan}</p>
+                <p>{languagePack[language].VIEWENTRY.fulfilledTask}</p>
             </div>}
         </section>
     )

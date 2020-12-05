@@ -38,4 +38,11 @@ public class MonthSummaryController {
 
         return ResponseEntity.ok(monthSummaryService.createMonthSummary(scheduleId, monthId));
     }
+
+    @PostMapping("/month_summary/{month_summary_id}")
+    public ResponseEntity<MonthSummary> updateMonthSummary(@PathVariable("schedule_id") long scheduleId,
+                                                           @PathVariable("month_summary_id") long monthSummaryId) {
+
+        return ResponseEntity.ok(monthSummaryService.updateMonthSummary(scheduleId, monthSummaryId));
+    }
 }

@@ -20,17 +20,17 @@ const RenderEntriesNavigation = ({ entryType, onClick, date }: entriesNavigation
             <button
                 className={`default-button ${setActiveClassName(EntriesPlanType.YEAR, entryType)}`}
                 onClick={() => handleOnClickValue(EntriesPlanType.YEAR)}>
-                {languagePack[language].yearPlanText}
+                {languagePack[language].GLOBAL.yearPlan}
             </button>
             <button
                 className={`default-button ${setActiveClassName(EntriesPlanType.MONTH, entryType)}`}
                 onClick={() => handleOnClickValue(EntriesPlanType.MONTH)}>
-                {languagePack[language].monthPlanText}
+                {languagePack[language].GLOBAL.monthPlan}
             </button>
             <button
                 className={`default-button ${setActiveClassName(EntriesPlanType.DAY, entryType)}`}
                 onClick={() => handleOnClickValue(EntriesPlanType.DAY)}>
-                {languagePack[language].dayPlanText}
+                {languagePack[language].GLOBAL.dayPlan}
             </button>
         </>
     )

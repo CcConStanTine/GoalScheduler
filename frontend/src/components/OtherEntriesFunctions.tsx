@@ -120,19 +120,19 @@ export const getDataByType = async (type: string, sign: string, id: number, date
 
 const setMonthName = (monthNumber: number, language: string) => {
     switch (monthNumber) {
-        case 1: return languagePack[language].january;
-        case 2: return languagePack[language].february;
-        case 3: return languagePack[language].march;
-        case 4: return languagePack[language].april;
-        case 5: return languagePack[language].may;
-        case 6: return languagePack[language].june;
-        case 7: return languagePack[language].july;
-        case 8: return languagePack[language].august;
-        case 9: return languagePack[language].september;
-        case 10: return languagePack[language].october;
-        case 11: return languagePack[language].november;
-        case 12: return languagePack[language].december;
+        case 1: return languagePack[language].MONTHS.names.january;
+        case 2: return languagePack[language].MONTHS.names.february;
+        case 3: return languagePack[language].MONTHS.names.march;
+        case 4: return languagePack[language].MONTHS.names.april;
+        case 5: return languagePack[language].MONTHS.names.may;
+        case 6: return languagePack[language].MONTHS.names.june;
+        case 7: return languagePack[language].MONTHS.names.july;
+        case 8: return languagePack[language].MONTHS.names.august;
+        case 9: return languagePack[language].MONTHS.names.september;
+        case 10: return languagePack[language].MONTHS.names.october;
+        case 11: return languagePack[language].MONTHS.names.november;
+        case 12: return languagePack[language].MONTHS.names.december;
 
-        default: return languagePack[language].january;
+        default: return languagePack[language].MONTHS.names.january;
     }
 };
