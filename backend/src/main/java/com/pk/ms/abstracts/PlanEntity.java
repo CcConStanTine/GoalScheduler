@@ -41,6 +41,15 @@ public abstract class PlanEntity <T> {
         this.schedule = schedule;
     }
 
+    public PlanEntity(String content, T startDate, T endDate, Importance importance, Urgency urgency, Schedule schedule) {
+        this.content = content;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.importance = importance;
+        this.urgency = urgency;
+        this.schedule = schedule;
+    }
+
     public String getContent() {
         return content;
     }

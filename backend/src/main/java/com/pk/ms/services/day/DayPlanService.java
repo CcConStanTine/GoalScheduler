@@ -3,6 +3,7 @@ package com.pk.ms.services.day;
 import com.pk.ms.abstracts.PlanAccessAuthorizationService;
 import com.pk.ms.dao.day.DayPlanRepository;
 import com.pk.ms.dto.day.DayPlanInputDTO;
+import com.pk.ms.entities.day.DailyRoutinePlan;
 import com.pk.ms.entities.day.DayPlan;
 import com.pk.ms.exceptions.ResourceNotAvailableException;
 import com.pk.ms.services.schedule.ScheduleService;
@@ -19,10 +20,31 @@ public class DayPlanService implements PlanAccessAuthorizationService {
 
     private final ScheduleService scheduleService;
 
-    public DayPlanService(DayPlanRepository repository, DayService dayService, ScheduleService scheduleService) {
+    private final DailyRoutinePlanService dailyRoutinePlanService;
+
+    public DayPlanService(DayPlanRepository repository, DayService dayService, ScheduleService scheduleService,
+                          DailyRoutinePlanService dailyRoutinePlanService) {
         this.repository = repository;
         this.dayService = dayService;
         this.scheduleService = scheduleService;
+        this.dailyRoutinePlanService = dailyRoutinePlanService;
+    }
+
+    public List<DayPlan> addDailyRoutinePlansToTheDayPlans(long scheduleId, long dayId) {
+        List<DailyRoutinePlan> list = dailyRoutinePlanService.getDailyRoutinePlans(scheduleId);
+        for(DailyRoutinePlan plan : list) {
+            save(crateDayPlanFromDailyRoutinePlan(scheduleId, dayId, plan));
+        }
+        return repository.findDayPlansByScheduleIdAndDayId(scheduleId, dayId);
+    }
+
+    private DayPlan crateDayPlanFromDailyRoutinePlan(long scheduleId, long dayId,
+                                                     DailyRoutinePlan dailyRoutinePlan) {
+        return new DayPlan(dailyRoutinePlan.getContent(), dailyRoutinePlan.getStartDate(),
+                dailyRoutinePlan.getEndDate(), dailyRoutinePlan.getImportance(),
+                dailyRoutinePlan.getUrgency(),
+                scheduleService.getScheduleById(scheduleId),
+                dayService.getDayById(dayId));
     }
 
     public List<DayPlan> getDayPlansByScheduleIdAndDayId(long scheduleId, long dayId) {
