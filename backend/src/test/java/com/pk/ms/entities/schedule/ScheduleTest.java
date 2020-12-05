@@ -22,7 +22,6 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 class ScheduleTest {
-    /*
 
     MyScheduleUser user;
     Schedule schedule;
@@ -62,15 +61,15 @@ class ScheduleTest {
         YearPlan yearPlan1 = new YearPlan("Test content 1",
                 LocalDate.of(2020, 1, 1),
                 LocalDate.of(2020, 5, 10),
-                year2020, schedule);
+                schedule, year2020);
         YearPlan yearPlan2 = new YearPlan("Test content 2",
                 LocalDate.of(2020, 2, 1),
                 LocalDate.of(2020, 10, 1),
-                year2020, schedule);
+                schedule, year2020);
         YearPlan yearPlan3 = new YearPlan("Test content 3",
                 LocalDate.of(2021, 2, 1),
                 LocalDate.of(2021, 10, 1),
-                year2021, schedule);
+                schedule, year2021);
         schedule.addYearPlan(yearPlan1);
         schedule.addYearPlan(yearPlan2);
         schedule.addYearPlan(yearPlan3);
@@ -91,11 +90,11 @@ class ScheduleTest {
         YearPlan yearPlan1 = new YearPlan("Test content 1",
                 LocalDate.of(2020, 1, 1),
                 LocalDate.of(2020, 5, 10),
-                year2020, schedule);
+                schedule, year2020);
         YearPlan yearPlan2 = new YearPlan("Test content 2",
                 LocalDate.of(2020, 2, 1),
                 LocalDate.of(2020, 10, 1),
-                year2020, schedule);
+                schedule, year2020);
         schedule.addYearPlan(yearPlan1);
         schedule.addYearPlan(yearPlan2);
         //when
@@ -113,15 +112,15 @@ class ScheduleTest {
         MonthPlan monthPlan1 = new MonthPlan("Test content 1",
                 LocalDate.of(2020, 1, 1),
                 LocalDate.of(2020, 1, 15),
-                month1, schedule);
+                schedule, month1);
         MonthPlan monthPlan2 = new MonthPlan("Test content 2",
                 LocalDate.of(2020, 1, 1),
                 LocalDate.of(2020, 1, 31),
-                month1, schedule);
+                schedule, month1);
         MonthPlan monthPlan3 = new MonthPlan("Test content 3",
                 LocalDate.of(2020, 2, 1),
                 LocalDate.of(2020, 2, 20),
-                month2, schedule);
+                schedule, month2);
         schedule.addMonthPlan(monthPlan1);
         schedule.addMonthPlan(monthPlan2);
         schedule.addMonthPlan(monthPlan3);
@@ -142,11 +141,11 @@ class ScheduleTest {
         MonthPlan monthPlan1 = new MonthPlan("Test content 1",
                 LocalDate.of(2020, 1, 1),
                 LocalDate.of(2020, 1, 15),
-                month1, schedule);
+                schedule, month1);
         MonthPlan monthPlan2 = new MonthPlan("Test content 2",
                 LocalDate.of(2020, 1, 1),
                 LocalDate.of(2020, 1, 31),
-                month1, schedule);
+                schedule, month1);
         schedule.addMonthPlan(monthPlan1);
         schedule.addMonthPlan(monthPlan2);
         //when
@@ -164,15 +163,15 @@ class ScheduleTest {
         WeekPlan weekPlan1 = new WeekPlan("Test content 1",
                 LocalDate.of(2020, 1, 1),
                 LocalDate.of(2020, 1, 4),
-                week1, schedule);
+                schedule, week1);
         WeekPlan weekPlan2 = new WeekPlan("Test content 2",
                 LocalDate.of(2020, 1, 1),
                 LocalDate.of(2020, 1, 5),
-                week1, schedule);
+                schedule, week1);
         WeekPlan weekPlan3 = new WeekPlan("Test content 3",
                 LocalDate.of(2020, 1, 6),
                 LocalDate.of(2020, 1, 12),
-                week2, schedule);
+                schedule, week2);
         schedule.addWeekPlan(weekPlan1);
         schedule.addWeekPlan(weekPlan2);
         schedule.addWeekPlan(weekPlan3);
@@ -193,11 +192,11 @@ class ScheduleTest {
         WeekPlan weekPlan1 = new WeekPlan("Test content 1",
                 LocalDate.of(2020, 1, 1),
                 LocalDate.of(2020, 1, 4),
-                week1, schedule);
+                schedule, week1);
         WeekPlan weekPlan2 = new WeekPlan("Test content 2",
                 LocalDate.of(2020, 1, 1),
                 LocalDate.of(2020, 1, 5),
-                week1, schedule);
+                schedule, week1);
         schedule.addWeekPlan(weekPlan1);
         schedule.addWeekPlan(weekPlan2);
         //when
@@ -215,15 +214,15 @@ class ScheduleTest {
         DayPlan dayPlan1 = new DayPlan("Test content 1",
                 LocalTime.of(6, 30),
                 LocalTime.of(8, 30),
-                day1, schedule);
+                schedule, day1);
         DayPlan dayPlan2 = new DayPlan("Test content 2",
                 LocalTime.of(9, 30),
                 LocalTime.of(12, 30),
-                day1, schedule);
+                schedule, day1);
         DayPlan dayPlan3 = new DayPlan("Test content 3",
                 LocalTime.of(6, 30),
                 LocalTime.of(8, 30),
-                day2, schedule);
+                schedule, day2);
         schedule.addDayPlan(dayPlan1);
         schedule.addDayPlan(dayPlan2);
         schedule.addDayPlan(dayPlan3);
@@ -244,11 +243,11 @@ class ScheduleTest {
         DayPlan dayPlan1 = new DayPlan("Test content 1",
                 LocalTime.of(6, 30),
                 LocalTime.of(8, 30),
-                day1, schedule);
+                schedule, day1);
         DayPlan dayPlan2 = new DayPlan("Test content 2",
                 LocalTime.of(9, 30),
                 LocalTime.of(12, 30),
-                day1, schedule);
+                schedule, day1);
         schedule.addDayPlan(dayPlan1);
         schedule.addDayPlan(dayPlan2);
         //when
@@ -256,6 +255,4 @@ class ScheduleTest {
         //then
         assertEquals(0, dayPlanList.size());
     }
-
-     */
 }

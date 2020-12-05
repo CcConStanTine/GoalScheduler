@@ -1,6 +1,5 @@
-package com.pk.ms.entities.month;
+package com.pk.ms.constants;
 
-import com.pk.ms.constants.MonthName;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.ParameterizedTest;
