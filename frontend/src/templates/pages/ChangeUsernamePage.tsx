@@ -22,14 +22,14 @@ const ChangeUsernamePage: React.FC = ({ history }: any) => {
   const ChangeNicknameInputData = [{
     name: "password",
     type: "password",
-    placeholder: languagePack[language].oldPassword,
+    placeholder: languagePack[language].GLOBAL.oldPassword,
     ref: register({ required: true, pattern: /^[a-zA-Z0-9-]+$/i, minLength: 2, maxLength: 50 }),
     errors: errors.password
   },
   {
     name: "username",
     type: "text",
-    placeholder: languagePack[language].newUsername,
+    placeholder: languagePack[language].CHANGEUSERNAME.enterNewUsername,
     ref: register({ required: true, pattern: /^[a-zA-Z0-9]+$/i, minLength: 2, maxLength: 50 }),
     errors: errors.username
   }];
@@ -41,17 +41,17 @@ const ChangeUsernamePage: React.FC = ({ history }: any) => {
 
       if (message) return setMessage(message)
 
-      setTimeout(() => setMessage(languagePack[language].LogAgainMessage), 1000);
+      setTimeout(() => setMessage(languagePack[language].GLOBAL.logInAgain), 1000);
 
       setTimeout(() => {
         auth.logout();
         return setLoggedIn!({})
       }, 2000);
 
-      return setMessage(languagePack[language].changedUsernameSuccessfully);
+      return setMessage(languagePack[language].CHANGEUSERNAME.changedUsernameSuccessfully);
     }
 
-    return setMessage(languagePack[language].theSameUsernameError);
+    return setMessage(languagePack[language].CHANGEUSERNAME.changedUsernameFailed);
   }
 
   const sendRequestToChangeUsername = async ({ password, username }: emailInterface) => {
@@ -60,16 +60,16 @@ const ChangeUsernamePage: React.FC = ({ history }: any) => {
     if (response)
       return checkUsername(username);
 
-    return setMessage(languagePack[language].checkPasswordError)
+    return setMessage(languagePack[language].GLOBAL.wrongPassword)
   }
 
   return (
     <section className='change-username-page'>
-      <NavigationBar type={PageNavigationTypes.DEFAULT} history={history} placeholder={languagePack[language].changeUsernameText} />
+      <NavigationBar type={PageNavigationTypes.DEFAULT} history={history} placeholder={languagePack[language].CHANGEUSERNAME.title} />
       <form onSubmit={handleSubmit(sendRequestToChangeUsername)}>
         {renderAccountFormInputs(ChangeNicknameInputData)}
         {message && <p className='change-username-message'>{message}</p>}
-        <input className="default-button" type="submit" value={languagePack[language].changeUserSettingsInputValue} />
+        <input className="default-button" type="submit" value={languagePack[language].GLOBAL.save} />
       </form>
     </section>
   );

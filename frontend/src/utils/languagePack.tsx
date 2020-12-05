@@ -53,6 +53,7 @@ const languagePack: languageInterface = {
             finishedTaskConfirm: 'I have',
             restoreTask: 'Do u want to restore this task?',
             restoreTaskConfirm: 'I do',
+            fulfilledTask: 'This task has been completed',
         },
         CHANGEUSERNAME: {
             title: 'Change Username',
@@ -97,6 +98,9 @@ const languagePack: languageInterface = {
             wrongPassword: 'Password is wrong',
             save: 'save',
             cancel: 'Cancel',
+        },
+        EDIT: {
+            title: 'Edit',
         },
         MONTHS: {
             names: {

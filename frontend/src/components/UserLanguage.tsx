@@ -24,7 +24,7 @@ const UserLanguage = () => {
         <div className='language'>
             <aside>
                 <FaGlobeEurope className='language-icon' />
-                <p onClick={() => setIsPickerOpen(true)}>{languagePack[language].languageText}</p>
+                <p onClick={() => setIsPickerOpen(true)}>{languagePack[language].SETTINGS.language}</p>
             </aside>
             <IonPicker
                 isOpen={isPickerOpen}
@@ -32,12 +32,12 @@ const UserLanguage = () => {
                 cssClass='picker'
                 buttons={[
                     {
-                        text: languagePack[language].cancelText,
+                        text: languagePack[language].GLOBAL.selectOptionCancel,
                         role: 'cancel',
                         handler: () => setIsPickerOpen(false)
                     },
                     {
-                        text: languagePack[language].selectLanguageText,
+                        text: languagePack[language].GLOBAL.selectOptionsDone,
                         handler: ({ First }) => {
                             changeLanguage(First.value);
                             setIsPickerOpen(false);

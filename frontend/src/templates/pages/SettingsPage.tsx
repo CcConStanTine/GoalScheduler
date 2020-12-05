@@ -15,7 +15,7 @@ const SettingsPage = ({ history }: HomeInterface) => {
 
     return (
         <section className='settings-page'>
-            <NavigationBar type={PageNavigationTypes.DEFAULT} history={history} placeholder={languagePack[language].settingsNavigationText} />
+            <NavigationBar type={PageNavigationTypes.DEFAULT} history={history} placeholder={languagePack[language].SETTINGS.title} />
             <UserData />
             <UserSettings />
         </section>

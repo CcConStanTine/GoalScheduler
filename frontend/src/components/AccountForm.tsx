@@ -19,14 +19,14 @@ const AccountForm = ({ type, history }: accountFormInterface) => {
     const LoginAccountInputData = [{
         name: "username",
         type: "text",
-        placeholder: languagePack[language].username,
+        placeholder: languagePack[language].WELCOME.username,
         ref: register({ required: true, pattern: /^[a-zA-Z0-9-]+$/i, minLength: 2, maxLength: 50 }),
         errors: errors.nickname
     },
     {
         name: "password",
         type: "password",
-        placeholder: languagePack[language].password,
+        placeholder: languagePack[language].WELCOME.password,
         ref: register({ required: true, pattern: /^[a-zA-Z0-9-]+$/i, minLength: 2, maxLength: 50 }),
         errors: errors.password
     }]
@@ -34,32 +34,32 @@ const AccountForm = ({ type, history }: accountFormInterface) => {
     const CreateAccountInputData = [{
         name: "firstName",
         type: "text",
-        placeholder: languagePack[language].firstName,
+        placeholder: languagePack[language].WELCOME.firstName,
         ref: register({ required: true, pattern: /^[a-zA-Z]+$/i, minLength: 2, maxLength: 50 }),
         errors: errors.firstName
     }, {
         name: "lastName",
         type: "text",
-        placeholder: languagePack[language].lastName,
+        placeholder: languagePack[language].WELCOME.lastName,
         ref: register({ required: true, pattern: /^[a-zA-Z]+$/i, minLength: 2, maxLength: 50 }),
         errors: errors.firstName
     }, {
         name: "email",
         type: "email",
-        placeholder: languagePack[language].email,
+        placeholder: languagePack[language].WELCOME.email,
         ref: register({ required: true, pattern: /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]+$/i, minLength: 2, maxLength: 50 }),
         errors: errors.email
     }, {
         name: "username",
         type: "text",
-        placeholder: languagePack[language].username,
+        placeholder: languagePack[language].WELCOME.username,
         ref: register({ required: true, pattern: /^[a-zA-Z0-9]+$/i, minLength: 2, maxLength: 50 }),
         errors: errors.username
     },
     {
         name: "password",
         type: "password",
-        placeholder: languagePack[language].password,
+        placeholder: languagePack[language].WELCOME.password,
         ref: register({ required: true, pattern: /^[a-zA-Z0-9]+$/i, minLength: 2, maxLength: 50 }),
         errors: errors.password
     }];
@@ -67,7 +67,7 @@ const AccountForm = ({ type, history }: accountFormInterface) => {
     const sendRequestToCreateUser = async (data: any) => {
         const { status, message } = await auth.register(data);
         if (status === 200) {
-            setTimeout(() => setRegisterMessage(languagePack[language].loggingIn), 1000);
+            setTimeout(() => setRegisterMessage(languagePack[language].WELCOME.logginIn), 1000);
             setTimeout(() => sendRequestToLoginUser(data), 2000);
         }
 
@@ -78,7 +78,7 @@ const AccountForm = ({ type, history }: accountFormInterface) => {
         const { token, code } = await auth.login(data);
         if (token && setLoggedIn) return setLoggedIn(auth.getCurrentUser);
 
-        const message = code === 200 ? languagePack[language].successfullyLoggedIn : languagePack[language].errorLoggedIn;
+        const message = code === 200 ? languagePack[language].WELCOME.logginIn : languagePack[language].WELCOME.errorLoggedIn;
 
         return setLoginMessage(message)
     }
@@ -87,7 +87,7 @@ const AccountForm = ({ type, history }: accountFormInterface) => {
         <form onSubmit={handleSubmit(sendRequestToCreateUser)}>
             {renderAccountFormInputs(CreateAccountInputData)}
             {registerMessage && <span className="database-message">{registerMessage}</span>}
-            <input className="send-form-button" type="submit" value={languagePack[language].createAccountText} />
+            <input className="send-form-button" type="submit" value={languagePack[language].WELCOME.createAccount} />
         </form>
     )
 
@@ -95,7 +95,7 @@ const AccountForm = ({ type, history }: accountFormInterface) => {
         <form onSubmit={handleSubmit(sendRequestToLoginUser)}>
             {renderAccountFormInputs(LoginAccountInputData)}
             {loginMessage && <span className="database-message">{loginMessage}</span>}
-            <input className="send-form-button" type="submit" value={languagePack[language].loginIn} />
+            <input className="send-form-button" type="submit" value={languagePack[language].WELCOME.logIn} />
         </form>
     )
 };

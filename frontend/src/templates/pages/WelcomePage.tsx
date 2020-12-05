@@ -17,16 +17,16 @@ const WelcomePage = ({ history }: landingPageInterface) => {
     return (
         <section className="welcome-page">
             <nav className="navigation">
-                <img src={appLogo} alt={languagePack[language].appLogoDescription} />
+                <img src={appLogo} alt={languagePack[language].GLOBAL.appName} />
                 <p>{appName}</p>
             </nav>
             <main className="main">
                 <div className="welcome-message">
-                    <h1>{languagePack[language].appWelcomeMessage}</h1>
+                    <h1>{languagePack[language].WELCOME.appDescription}</h1>
                 </div>
                 <div className="login-or-register-buttons">
-                    <button onClick={() => setShowRegisterPanel(true)}>{languagePack[language].signUp}</button>
-                    <button onClick={() => setShowRegisterPanel(false)}>{languagePack[language].loginIn}</button>
+                    <button onClick={() => setShowRegisterPanel(true)}>{languagePack[language].WELCOME.signUp}</button>
+                    <button onClick={() => setShowRegisterPanel(false)}>{languagePack[language].WELCOME.logIn}</button>
                 </div>
                 <div className="form-container">
                     {showRegisterPanel ?
@@ -36,8 +36,8 @@ const WelcomePage = ({ history }: landingPageInterface) => {
                     }
                 </div>
                 <div className="login-without-register">
-                    <span>{languagePack[language].appWelcomeSpanMessage}</span>
-                    <button>{languagePack[language].continueWithoutSigningInMessage}</button>
+                    <span>{languagePack[language].WELCOME.or}</span>
+                    <button>{languagePack[language].WELCOME.continueWithoutSigningIn}</button>
                 </div>
             </main>
         </section >

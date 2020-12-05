@@ -27,7 +27,7 @@ const ChangeUserPhoto: React.FC = ({ history }: any) => {
       const { fileUrl } = await auth.getUserPhoto();
       setLoggedIn!({ ...userContext, userPhoto: fileUrl });
 
-      return setMessage(languagePack[language].uploadImageSuccessed);
+      return setMessage(languagePack[language].CHANGEUSERPHOTO.upload);
     }
 
     return setMessage(response);
@@ -48,7 +48,7 @@ const ChangeUserPhoto: React.FC = ({ history }: any) => {
     if (response === "OK") {
       setLoggedIn!({ ...userContext, userPhoto: userDefaultPhoto });
 
-      return setMessage(languagePack[language].deleteImageSuccessed);
+      return setMessage(languagePack[language].CHANGEUSERPHOTO.deleteImageSuccessed);
     }
 
     return setMessage(response);
@@ -56,7 +56,7 @@ const ChangeUserPhoto: React.FC = ({ history }: any) => {
 
   return (
     <section className='change-user-photo-page'>
-      <NavigationBar type={PageNavigationTypes.DEFAULT} history={history} placeholder={languagePack[language].userPhotoText} />
+      <NavigationBar type={PageNavigationTypes.DEFAULT} history={history} placeholder={languagePack[language].CHANGEUSERPHOTO.title} />
       <div className='actual-photo'>
         <img src={photo ? URL.createObjectURL(photo) : userContext?.userPhoto} alt={`${userContext?.nick}`} />
       </div>
@@ -67,10 +67,10 @@ const ChangeUserPhoto: React.FC = ({ history }: any) => {
           ref={inputPhoto}
           accept="image/png, image/jpeg"
         />
-        <button onClick={() => inputPhoto.current?.click()}>{languagePack[language].selectPhoto}</button>
-        <button onClick={fileUploadHandler} disabled={!photo} className="upload-button">{languagePack[language].uploadImage}</button>
+        <button onClick={() => inputPhoto.current?.click()}>{languagePack[language].CHANGEUSERPHOTO.select}</button>
+        <button onClick={fileUploadHandler} disabled={!photo} className="upload-button">{languagePack[language].CHANGEUSERPHOTO.upload}</button>
       </div>
-      <button onClick={deleteUserPhoto} disabled={!showDeleteOption} className="delete-button">{languagePack[language].deletePhoto}</button>
+      <button onClick={deleteUserPhoto} disabled={!showDeleteOption} className="delete-button">{languagePack[language].CHANGEUSERPHOTO.delete}</button>
 
       {message && <p className='user-photo-message'>{message}</p>}
     </section>

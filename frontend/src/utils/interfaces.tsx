@@ -184,6 +184,7 @@ interface viewEntry {
     finishedTaskConfirm: string;
     restoreTask: string;
     restoreTaskConfirm: string;
+    fulfilledTask: string;
 }
 
 interface changeUsername {
@@ -250,7 +251,11 @@ interface months {
         november: string;
         december: string;
     },
-    namesTable: [key: string];
+    namesTable: string[];
+}
+
+interface editEntry {
+    title: string;
 }
 
 export interface languageInterface {
@@ -264,6 +269,7 @@ export interface languageInterface {
         CHANGEPASSWORD: changePassword;
         CHANGEEMAIL: changeEmail;
         CHANGEUSERPHOTO: changeUserphoto;
+        EDIT: editEntry;
         GLOBAL: global;
         MONTHS: months;
     };

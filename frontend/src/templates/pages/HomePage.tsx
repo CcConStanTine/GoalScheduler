@@ -44,15 +44,15 @@ const HomePage = ({ history }: HomeInterface) => {
             <div className='search'>
                 <input
                     value={search}
-                    placeholder={languagePack[language].search}
+                    placeholder={languagePack[language].HOME.search}
                     onChange={event => setSearch(event.target.value)} />
             </div>
             <div className='entries'>
-                <p className='today-plans'>{languagePack[language].todayPlansText}</p>
+                <p className='today-plans'>{languagePack[language].HOME.todayPlans}</p>
                 {RenderPlanEntries(todayPlans)}
             </div>
             <div className='other-plans'>
-                <p className='other-plans-text'>{languagePack[language].otherPlansText}</p>
+                <p className='other-plans-text'>{languagePack[language].HOME.otherPlans}</p>
                 <HomePageOtherEntries />
             </div>
         </div>

@@ -16,22 +16,22 @@ const UserSettings = () => {
             <UserLanguage />
             <ChangeUserCredentials
                 type={ChangeUserCredentialsTypes.USERNAME}
-                placeholder={languagePack[language].changeUsernameText}
+                placeholder={languagePack[language].CHANGEUSERNAME.title}
                 classType="username"
             />
             <ChangeUserCredentials
                 type={ChangeUserCredentialsTypes.USERPASSWORD}
-                placeholder={languagePack[language].changePasswordText}
+                placeholder={languagePack[language].CHANGEPASSWORD.title}
                 classType="password"
             />
             <ChangeUserCredentials
                 type={ChangeUserCredentialsTypes.EMAIL}
-                placeholder={languagePack[language].changeUserEmail}
+                placeholder={languagePack[language].CHANGEEMAIL.title}
                 classType="email"
             />
             <ChangeUserCredentials
                 type={ChangeUserCredentialsTypes.USERPHOTO}
-                placeholder={languagePack[language].userPhotoText}
+                placeholder={languagePack[language].CHANGEUSERPHOTO.title}
                 classType="photo"
             />
             <SignOut />
