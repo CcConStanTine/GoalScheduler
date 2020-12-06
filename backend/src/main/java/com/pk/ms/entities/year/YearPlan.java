@@ -1,15 +1,10 @@
 package com.pk.ms.entities.year;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.pk.ms.abstracts.PlanDTO;
 import com.pk.ms.abstracts.PlanEntity;
-import com.pk.ms.constants.Importance;
-import com.pk.ms.constants.Urgency;
 import com.pk.ms.entities.schedule.Schedule;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import java.time.LocalDate;
 
 @Entity

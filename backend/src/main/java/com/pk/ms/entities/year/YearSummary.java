@@ -2,6 +2,7 @@ package com.pk.ms.entities.year;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.pk.ms.abstracts.Summary;
+import com.pk.ms.constants.Importance;
 import com.pk.ms.entities.schedule.Schedule;
 
 import javax.persistence.*;
@@ -53,20 +54,20 @@ public class YearSummary extends Summary {
                 fulfilled++;
                 switch(yearPlan.getImportance()) {
                     case NOTIMPORTANT: {
-                        maxSum+=6;
-                        actualSum+=6;
+                        maxSum+= Importance.NOTIMPORTANT.getYearImportanceWeight();
+                        actualSum+=Importance.NOTIMPORTANT.getYearImportanceWeight();
                     } break;
                     case REGULAR: {
-                        maxSum+=15;
-                        actualSum+=15;
+                        maxSum+=Importance.REGULAR.getYearImportanceWeight();
+                        actualSum+=Importance.REGULAR.getYearImportanceWeight();
                     } break;
                     case IMPORTANT: {
-                        maxSum+=40;
-                        actualSum+=40;
+                        maxSum+=Importance.IMPORTANT.getYearImportanceWeight();
+                        actualSum+=Importance.IMPORTANT.getYearImportanceWeight();
                     } break;
                     case VERYIMPORTANT: {
-                        maxSum+=58;
-                        actualSum+=58;
+                        maxSum+=Importance.VERYIMPORTANT.getYearImportanceWeight();
+                        actualSum+=Importance.VERYIMPORTANT.getYearImportanceWeight();
                     } break;
                 }
             }
@@ -74,16 +75,16 @@ public class YearSummary extends Summary {
                 failed++;
                 switch(yearPlan.getImportance()) {
                     case NOTIMPORTANT: {
-                        maxSum+=6;
+                        maxSum+= Importance.NOTIMPORTANT.getYearImportanceWeight();
                     } break;
                     case REGULAR: {
-                        maxSum+=15;
+                        maxSum+=Importance.REGULAR.getYearImportanceWeight();
                     } break;
                     case IMPORTANT: {
-                        maxSum+=40;
+                        maxSum+=Importance.IMPORTANT.getYearImportanceWeight();
                     } break;
                     case VERYIMPORTANT: {
-                        maxSum+=58;
+                        maxSum+=Importance.VERYIMPORTANT.getYearImportanceWeight();
                     } break;
                 }
             }

@@ -2,6 +2,7 @@ package com.pk.ms.entities.day;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.pk.ms.abstracts.Summary;
+import com.pk.ms.constants.Importance;
 import com.pk.ms.entities.schedule.Schedule;
 
 import javax.persistence.*;
@@ -53,20 +54,20 @@ public class DaySummary extends Summary {
                 fulfilled++;
                 switch(dayPlan.getImportance()) {
                     case NOTIMPORTANT: {
-                        maxSum+=10;
-                        actualSum+=10;
+                        maxSum+= Importance.NOTIMPORTANT.getDayImportanceWeight();
+                        actualSum+=Importance.NOTIMPORTANT.getDayImportanceWeight();
                     } break;
                     case REGULAR: {
-                        maxSum+=20;
-                        actualSum+=20;
+                        maxSum+= Importance.REGULAR.getDayImportanceWeight();
+                        actualSum+=Importance.REGULAR.getDayImportanceWeight();
                     } break;
                     case IMPORTANT: {
-                        maxSum+=35;
-                        actualSum+=35;
+                        maxSum+= Importance.IMPORTANT.getDayImportanceWeight();
+                        actualSum+=Importance.IMPORTANT.getDayImportanceWeight();
                     } break;
                     case VERYIMPORTANT: {
-                        maxSum+=50;
-                        actualSum+=50;
+                        maxSum+= Importance.VERYIMPORTANT.getDayImportanceWeight();
+                        actualSum+=Importance.VERYIMPORTANT.getDayImportanceWeight();
                     } break;
                 }
             }
@@ -74,16 +75,16 @@ public class DaySummary extends Summary {
                 failed++;
                 switch(dayPlan.getImportance()) {
                     case NOTIMPORTANT: {
-                        maxSum+=10;
+                        maxSum+= Importance.NOTIMPORTANT.getDayImportanceWeight();
                     } break;
                     case REGULAR: {
-                        maxSum+=20;
+                        maxSum+= Importance.REGULAR.getDayImportanceWeight();
                     } break;
                     case IMPORTANT: {
-                        maxSum+=35;
+                        maxSum+= Importance.IMPORTANT.getDayImportanceWeight();
                     } break;
                     case VERYIMPORTANT: {
-                        maxSum+=50;
+                        maxSum+= Importance.VERYIMPORTANT.getDayImportanceWeight();
                     } break;
                 }
             }

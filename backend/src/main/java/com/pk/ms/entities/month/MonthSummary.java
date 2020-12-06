@@ -2,6 +2,7 @@ package com.pk.ms.entities.month;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.pk.ms.abstracts.Summary;
+import com.pk.ms.constants.Importance;
 import com.pk.ms.entities.schedule.Schedule;
 
 import javax.persistence.*;
@@ -61,20 +62,20 @@ public class MonthSummary extends Summary {
                 fulfilled++;
                 switch(monthPlan.getImportance()) {
                     case NOTIMPORTANT: {
-                        maxSum+=7;
-                        actualSum+=7;
+                        maxSum+=Importance.NOTIMPORTANT.getMonthImportanceWeight();
+                        actualSum+=Importance.NOTIMPORTANT.getMonthImportanceWeight();
                     } break;
                     case REGULAR: {
-                        maxSum+=18;
-                        actualSum+=18;
+                        maxSum+=Importance.REGULAR.getMonthImportanceWeight();
+                        actualSum+=Importance.REGULAR.getMonthImportanceWeight();
                     } break;
                     case IMPORTANT: {
-                        maxSum+=40;
-                        actualSum+=40;
+                        maxSum+=Importance.IMPORTANT.getMonthImportanceWeight();
+                        actualSum+=Importance.IMPORTANT.getMonthImportanceWeight();
                     } break;
                     case VERYIMPORTANT: {
-                        maxSum+=58;
-                        actualSum+=58;
+                        maxSum+=Importance.VERYIMPORTANT.getMonthImportanceWeight();
+                        actualSum+=Importance.VERYIMPORTANT.getMonthImportanceWeight();
                     } break;
                 }
             }
@@ -82,16 +83,16 @@ public class MonthSummary extends Summary {
                 failed++;
                 switch(monthPlan.getImportance()) {
                     case NOTIMPORTANT: {
-                        maxSum+=7;
+                        maxSum+=Importance.NOTIMPORTANT.getMonthImportanceWeight();
                     } break;
                     case REGULAR: {
-                        maxSum+=18;
+                        maxSum+=Importance.REGULAR.getMonthImportanceWeight();
                     } break;
                     case IMPORTANT: {
-                        maxSum+=40;
+                        maxSum+=Importance.IMPORTANT.getMonthImportanceWeight();
                     } break;
                     case VERYIMPORTANT: {
-                        maxSum+=58;
+                        maxSum+=Importance.VERYIMPORTANT.getMonthImportanceWeight();
                     } break;
                 }
             }

@@ -2,6 +2,7 @@ package com.pk.ms.entities.week;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.pk.ms.abstracts.Summary;
+import com.pk.ms.constants.Importance;
 import com.pk.ms.entities.schedule.Schedule;
 
 import javax.persistence.*;
@@ -61,20 +62,20 @@ public class WeekSummary extends Summary {
                 fulfilled++;
                 switch(weekPlan.getImportance()) {
                     case NOTIMPORTANT: {
-                        maxSum+=8;
-                        actualSum+=8;
+                        maxSum+= Importance.NOTIMPORTANT.getWeekImportanceWeight();
+                        actualSum+=Importance.NOTIMPORTANT.getWeekImportanceWeight();
                     } break;
                     case REGULAR: {
-                        maxSum+=17;
-                        actualSum+=17;
+                        maxSum+= Importance.REGULAR.getWeekImportanceWeight();
+                        actualSum+=Importance.REGULAR.getWeekImportanceWeight();
                     } break;
                     case IMPORTANT: {
-                        maxSum+=38;
-                        actualSum+=38;
+                        maxSum+= Importance.IMPORTANT.getWeekImportanceWeight();
+                        actualSum+=Importance.IMPORTANT.getWeekImportanceWeight();
                     } break;
                     case VERYIMPORTANT: {
-                        maxSum+=55;
-                        actualSum+=55;
+                        maxSum+= Importance.VERYIMPORTANT.getWeekImportanceWeight();
+                        actualSum+=Importance.VERYIMPORTANT.getWeekImportanceWeight();
                     } break;
                 }
             }
@@ -82,16 +83,16 @@ public class WeekSummary extends Summary {
                 failed++;
                 switch(weekPlan.getImportance()) {
                     case NOTIMPORTANT: {
-                        maxSum+=8;
+                        maxSum+= Importance.NOTIMPORTANT.getWeekImportanceWeight();
                     } break;
                     case REGULAR: {
-                        maxSum+=17;
+                        maxSum+= Importance.REGULAR.getWeekImportanceWeight();
                     } break;
                     case IMPORTANT: {
-                        maxSum+=38;
+                        maxSum+= Importance.IMPORTANT.getWeekImportanceWeight();
                     } break;
                     case VERYIMPORTANT: {
-                        maxSum+=55;
+                        maxSum+= Importance.VERYIMPORTANT.getWeekImportanceWeight();
                     } break;
                 }
             }
