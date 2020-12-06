@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { registerUser, loginUser, inputData } from '../utils/interfaces';
-import { PlanTypes } from '../utils/variables';
+import { PlanTypes, dateTimeTypes } from '../utils/variables';
 
 class Database {
     serverAddress = 'https://goalscheduler.herokuapp.com';
@@ -15,8 +15,14 @@ class Database {
         this.username = null!;
     }
 
-    changeDateToCorrectFormat = (date: string) => date.slice(0, 10);
-    changeDateTimeToCorrectFormat = (date: string) => date.slice(11, 19);
+    setProprietDate = (date: string, type: string) => {
+        if (type === dateTimeTypes.ADDDAY)
+            return date.slice(11, 19);
+        if (type === dateTimeTypes.EDITDAY)
+            return date.slice(0, 9);
+
+        return date.slice(0, 10);
+    }
 
     validateDate = (date: any) => {
         const year = date.slice(0, 4);
@@ -44,47 +50,30 @@ class Database {
 
     addPlanByPlanType = async (type: string, data: inputData) => {
         const { startDate } = data;
-        let id;
-        let _data = data;
-
-        if (type === PlanTypes.DAY) {
-            const { endDate, content, day } = data;
-            _data = { startDate, endDate, content };
-            id = await this.getDayByDate(day).then(({ dayId }) => dayId);
-        }
-        else if (type === PlanTypes.MONTH)
-            id = await this.getMonthByDate(startDate).then(({ monthId }) => monthId);
-        else
-            id = await this.getYearByDate(startDate).then(({ yearId }) => yearId);
+        const { day, ..._data } = data;
+        const id = await this.getPlanIdByTypeAndDate(type, day ? day : startDate);
 
         return await this.addPlanByPlanTypeAndId(type, id, _data);
     };
+
+    getPlanIdByTypeAndDate = (type: string, date: string) => axios
+        .get(`${this.serverAddress}/schedule/${this.userId}/${type}?local_date=${date}`, this.getAuthConfig())
+        .then(({ data }) => data[`${type}Id`])
+        .catch(({ response }) => console.log(response.data));
 
     addPlanByPlanTypeAndId = async (type: string, id: number, data: inputData) => axios
         .post(`${this.serverAddress}/schedule/${this.userId}/${type}/${id}/${type}_plan`, data, this.getAuthConfig())
         .then(({ data }) => data)
         .catch(({ response }) => console.log(response.data));
 
-    changeDayPlanByDayId = async (dayId: number, data: inputData) => axios
-        .patch(`${this.serverAddress}/schedule/${this.userId}/day_plan/${dayId}`, data, this.getAuthConfig())
-        .then(({ data }) => data)
-        .catch(({ response }) => console.log(response.data))
+    changePlanByType = async (type: string, id: number, data: inputData) => {
+        const { day, ..._data } = data;
 
-    changeDayPlan = async (dayId: number, data: inputData) => {
-        const { startDateTime, endDate, content } = data;
-
-        return await this.changeDayPlanByDayId(dayId, { startDate: startDateTime!, endDate, content });
-    }
-
-    changeYearPlan = async (yearId: number, data: inputData) => axios
-        .patch(`${this.serverAddress}/schedule/${this.userId}/year_plan/${yearId}`, data, this.getAuthConfig())
-        .then(({ data }) => data)
-        .catch(({ response }) => console.log(response.data))
-
-    changeMonthPlan = async (monthId: number, data: inputData) => axios
-        .patch(`${this.serverAddress}/schedule/${this.userId}/month_plan/${monthId}`, data, this.getAuthConfig())
-        .then(({ data }) => data)
-        .catch(({ response }) => console.log(response.data))
+        return axios
+            .patch(`${this.serverAddress}/schedule/${this.userId}/${type}_plan/${id}`, _data, this.getAuthConfig())
+            .then(({ data }) => data)
+            .catch(({ response }) => console.log(response.data))
+    };
 
     getDayByDayId = async (dayId: number) => axios
         .get(`${this.serverAddress}/schedule/${this.userId}/day/${dayId}`, this.getAuthConfig())
@@ -93,7 +82,7 @@ class Database {
 
     getDayPlans = async (date: string | undefined) => {
         let _date = date ? this.validateDate(date) : this.getCurrentDate();
-        const { dayId } = await this.getDayByDate(_date);
+        const dayId = await this.getPlanIdByTypeAndDate(PlanTypes.DAY, _date);
         const plans = await this.getDayPlansByDayID(dayId);
 
         return { id: dayId, plans }
@@ -111,7 +100,7 @@ class Database {
 
     getMonthPlans = async (date: string | undefined) => {
         let _date = date ? this.validateDate(date) : this.getCurrentDate();
-        const { monthId } = await this.getMonthByDate(_date);
+        const monthId = await this.getPlanIdByTypeAndDate(PlanTypes.MONTH, _date);
         const plans = await this.getMonthPlansByMonthId(monthId);
 
         return { id: monthId, plans };
@@ -127,11 +116,6 @@ class Database {
         .then(({ data }) => data)
         .catch(({ response }) => console.log(response.data))
 
-    getMonthByDate = (date: string) => axios
-        .get(`${this.serverAddress}/schedule/${this.userId}/month?local_date=${date}`, this.getAuthConfig())
-        .then(({ data }) => data)
-        .catch(({ response }) => console.log(response.data))
-
     getYearByYearId = async (yearId: number) => axios
         .get(`${this.serverAddress}/schedule/${this.userId}/year/${yearId}`, this.getAuthConfig())
         .then(({ data }) => data)
@@ -139,7 +123,7 @@ class Database {
 
     getYearPlans = async (date: string | undefined) => {
         let _date = date ? this.validateDate(date) : this.getCurrentDate();
-        const { yearId } = await this.getYearByDate(_date);
+        const yearId = await this.getPlanIdByTypeAndDate(PlanTypes.YEAR, _date);
         const plans = await this.getYearPlansByYearId(yearId);
 
         return { id: yearId, plans };
@@ -162,11 +146,6 @@ class Database {
 
     toggleFinishMonthPlanByPlanId = (monthId: number) => axios
         .patch(`${this.serverAddress}/schedule/${this.userId}/month_plan/${monthId}/fulfilled`, {}, this.getAuthConfig())
-        .then(({ data }) => data)
-        .catch(({ response }) => console.log(response.data))
-
-    getYearByDate = (date: string) => axios
-        .get(`${this.serverAddress}/schedule/${this.userId}/year?local_date=${date}`, this.getAuthConfig())
         .then(({ data }) => data)
         .catch(({ response }) => console.log(response.data))
 
@@ -200,18 +179,13 @@ class Database {
         .then(({ data }) => data)
         .catch(({ response }) => response.data.message)
 
-    getDayByDate = (date: string = this.getCurrentDate()) => axios
-        .get(`${this.serverAddress}/schedule/${this.userId}/day?local_date=${date}`, this.getAuthConfig())
-        .then(({ data }) => data)
-        .catch(({ response }) => response.data.message)
-
     getDayPlansByDayID = (dayId: number) => axios
         .get(`${this.serverAddress}/schedule/${this.userId}/day/${dayId}/day_plans`, this.getAuthConfig())
         .then(({ data }) => data)
         .catch(({ response }) => response.data.message)
 
     getTodayPlans = async () => {
-        const { dayId } = await this.getDayByDate();
+        const dayId = await this.getPlanIdByTypeAndDate(PlanTypes.DAY, this.getCurrentDate());
         const todayPlans = await this.getDayPlansByDayID(dayId);
         return todayPlans;
     }

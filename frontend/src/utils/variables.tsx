@@ -46,6 +46,12 @@ export const EntriesPlanType = {
     DAY: 'day'
 }
 
+export const dateTimeTypes = {
+    ADDDAY: 'addDay',
+    EDITDAY: 'editDay',
+    DEFAULT: 'default',
+}
+
 export const navigationTypes = {
     ADDITION: 'addition',
     SUBTRACTION: 'subtraction'
@@ -55,7 +61,7 @@ export const AddEntryPageDefaultValues = {
     startDate: '',
     endDate: '',
     content: '',
-    startDateTime: '',
+    day: '',
 }
 
 
