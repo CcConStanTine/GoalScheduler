@@ -8,7 +8,6 @@ import auth from '../../authentication/database';
 import { useParams } from "react-router-dom";
 import { FaPen, FaCheck, FaTimes } from 'react-icons/fa';
 import EntryPageConfirmWindow from '../../components/EntryPageConfirmWindow';
-import { getEntryDataByType } from '../../components/ViewEntryPageFunctons';
 import { landingPageInterface, ViewEntryRouteParams, ViewEntryParams } from '../../utils/interfaces';
 
 const ViewEntryPage = ({ history }: landingPageInterface) => {
@@ -20,7 +19,7 @@ const ViewEntryPage = ({ history }: landingPageInterface) => {
 
     useEffect(() => {
         const getEntryData = async () => {
-            const entryData = await getEntryDataByType(type, parseInt(id));
+            const entryData = await auth.getPlanByTypeAndId(type, parseInt(id))
 
             setEntry(entryData);
         }

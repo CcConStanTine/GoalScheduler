@@ -3,11 +3,11 @@ import { PageNavigationTypes, EntriesPlanType } from '../../utils/variables';
 import languagePack from '../../utils/languagePack';
 import NavigationBar from '../../components/NavigationBar';
 import { LanguageContext } from '../../authentication/LanguageContext';
+import auth from '../../authentication/database';
 import { useParams } from "react-router-dom";
 import { landingPageInterface, ViewEntryRouteParams, EditEntryParams } from '../../utils/interfaces';
 import RenderAddEntryInputs from '../../components/RenderAddEntryInputs';
 import RenderEntriesNavigation from '../../components/RenderEntriesNavigation';
-import { getEntryDataByType } from '../../components/ViewEntryPageFunctons';
 
 const AddEntryPage = ({ history }: landingPageInterface) => {
     const { language } = useContext(LanguageContext);
@@ -18,7 +18,7 @@ const AddEntryPage = ({ history }: landingPageInterface) => {
     useEffect(() => {
         if (id) {
             const getEntryData = async () => {
-                const entryData = await getEntryDataByType(type, parseInt(id));
+                const entryData = await auth.getPlanByTypeAndId(type, parseInt(id));
                 setEntryType(type);
                 setEntry(entryData);
             }

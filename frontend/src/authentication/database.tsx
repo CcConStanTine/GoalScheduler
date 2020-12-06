@@ -85,6 +85,11 @@ class Database {
         .then(({ data }) => data)
         .catch(({ response }) => console.log(response.data));
 
+    getPlanByTypeAndId = (type: string, id: number) => axios
+        .get(`${this.serverAddress}/schedule/${this.userId}/${type}_plans/${id}`, this.getAuthConfig())
+        .then(({ data }) => data)
+        .catch(({ response }) => response.data.message)
+
     getDayByDayId = async (dayId: number) => axios
         .get(`${this.serverAddress}/schedule/${this.userId}/day/${dayId}`, this.getAuthConfig())
         .then(({ data }) => data)
@@ -97,11 +102,6 @@ class Database {
 
         return { id: dayId, plans }
     }
-
-    getMonthPlanByMonthPlanId = (monthId: number) => axios
-        .get(`${this.serverAddress}/schedule/${this.userId}/month_plans/${monthId}`, this.getAuthConfig())
-        .then(({ data }) => data)
-        .catch(({ response }) => console.log(response.data))
 
     getMonthById = async (monthId: number) => axios
         .get(`${this.serverAddress}/schedule/${this.userId}/month/${monthId}`, this.getAuthConfig())
@@ -143,16 +143,6 @@ class Database {
         .get(`${this.serverAddress}/schedule/${this.userId}/year/${yearId}/year_plans`, this.getAuthConfig())
         .then(({ data }) => data)
         .catch(({ response }) => console.log(response.data))
-
-    getYearPlanByYearPlanId = (yearId: number) => axios
-        .get(`${this.serverAddress}/schedule/${this.userId}/year_plans/${yearId}`, this.getAuthConfig())
-        .then(({ data }) => data)
-        .catch(({ response }) => console.log(response.data))
-
-    getDayPlanByPlanId = (planId: number) => axios
-        .get(`${this.serverAddress}/schedule/${this.userId}/day_plans/${planId}`, this.getAuthConfig())
-        .then(({ data }) => data)
-        .catch(({ response }) => response.data.message)
 
     getDaysByDate = (date: string) => axios
         .get(`${this.serverAddress}/schedule/${this.userId}/days?local_date=${this.validateDate(date)}`, this.getAuthConfig())
