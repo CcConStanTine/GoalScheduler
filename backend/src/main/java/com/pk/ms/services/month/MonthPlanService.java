@@ -43,7 +43,7 @@ public class MonthPlanService implements PlanAccessAuthorizationService {
                 monthPlanInputDTO.getEndDate(), scheduleService.getScheduleById(scheduleId), month);
         updateImportance(monthPlanInputDTO, monthPlan);
         updateUrgency(monthPlanInputDTO, monthPlan);
-        return monthPlan;
+        return save(monthPlan);
     }
 
     public MonthPlan updateMonthPlan(long scheduleId, long monthPlanId, MonthPlanInputDTO monthPlanInputDTO) {
