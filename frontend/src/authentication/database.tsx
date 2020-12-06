@@ -18,7 +18,7 @@ class Database {
     setProprietDate = (date: string, type: string) => {
         if (type === dateTimeTypes.ADDDAY)
             return date.slice(11, 19);
-        if (type === dateTimeTypes.EDITDAY)
+        else if (type === dateTimeTypes.EDITDAY)
             return date.slice(0, 9);
 
         return date.slice(0, 10);
@@ -74,6 +74,11 @@ class Database {
             .then(({ data }) => data)
             .catch(({ response }) => console.log(response.data))
     };
+
+    toggleFinishPlanByTypeAndId = (type: string, id: number) => axios
+        .patch(`${this.serverAddress}/schedule/${this.userId}/${type}_plan/${id}/fulfilled`, {}, this.getAuthConfig())
+        .then(({ data }) => data)
+        .catch(({ response }) => console.log(response.data));
 
     getDayByDayId = async (dayId: number) => axios
         .get(`${this.serverAddress}/schedule/${this.userId}/day/${dayId}`, this.getAuthConfig())
@@ -134,18 +139,8 @@ class Database {
         .then(({ data }) => data)
         .catch(({ response }) => console.log(response.data))
 
-    toggleFinishYearPlanByPlanId = (yearId: number) => axios
-        .patch(`${this.serverAddress}/schedule/${this.userId}/year_plan/${yearId}/fulfilled`, {}, this.getAuthConfig())
-        .then(({ data }) => data)
-        .catch(({ response }) => console.log(response.data))
-
     deleteMonthPlanByMonthId = (monthId: number) => axios
         .delete(`${this.serverAddress}/schedule/${this.userId}/month_plan/${monthId}`, this.getAuthConfig())
-        .then(({ data }) => data)
-        .catch(({ response }) => console.log(response.data))
-
-    toggleFinishMonthPlanByPlanId = (monthId: number) => axios
-        .patch(`${this.serverAddress}/schedule/${this.userId}/month_plan/${monthId}/fulfilled`, {}, this.getAuthConfig())
         .then(({ data }) => data)
         .catch(({ response }) => console.log(response.data))
 
@@ -156,11 +151,6 @@ class Database {
 
     getYearPlanByYearPlanId = (yearId: number) => axios
         .get(`${this.serverAddress}/schedule/${this.userId}/year_plans/${yearId}`, this.getAuthConfig())
-        .then(({ data }) => data)
-        .catch(({ response }) => console.log(response.data))
-
-    toggleFinishDayPlanByPlanId = (planId: number) => axios
-        .patch(`${this.serverAddress}/schedule/${this.userId}/day_plan/${planId}/fulfilled`, {}, this.getAuthConfig())
         .then(({ data }) => data)
         .catch(({ response }) => console.log(response.data))
 
