@@ -28,7 +28,7 @@ public class YearService {
     }
 
     public Year getYearByYearNumber(int yearNumber) {
-        return getNotNullYearById(yearNumber);
+        return getNotNullYearByYearNumber(yearNumber);
     }
 
     public List<YearBasicInfoDTO> getAllYearsDTOs() {
