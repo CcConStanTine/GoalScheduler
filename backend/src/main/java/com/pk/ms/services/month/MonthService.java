@@ -55,7 +55,7 @@ public class MonthService {
     }
 
     private Month getNotNullMonthByLocalDate(LocalDate date) {
-        return repository.findByYearIdAndMonthNumber(
+        return repository.findByYearIdAndMonthName(
                 yearService.getYearByYearNumber(date.getYear()).getYearId(), date.getMonthValue())
                 .orElseThrow(ResourceNotAvailableException::new);
     }
