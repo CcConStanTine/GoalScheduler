@@ -42,7 +42,7 @@ public class WeekPlanService implements PlanAccessAuthorizationService {
                 weekPlanInputDTO.getEndDate(), scheduleService.getScheduleById(scheduleId), week);
         updateImportance(weekPlanInputDTO, weekPlan);
         updateUrgency(weekPlanInputDTO, weekPlan);
-        return weekPlan;
+        return save(weekPlan);
     }
 
     public WeekPlan updateWeekPlan(long scheduleId, long weekPlanId, WeekPlanInputDTO weekPlanInputDTO) {

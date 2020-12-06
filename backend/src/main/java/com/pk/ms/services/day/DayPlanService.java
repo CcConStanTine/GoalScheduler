@@ -61,7 +61,7 @@ public class DayPlanService implements PlanAccessAuthorizationService {
                 dayService.getDayById(dayId));
         updateImportance(dayPlanInputDTO, dayPlan);
         updateUrgency(dayPlanInputDTO, dayPlan);
-        return dayPlan;
+        return save(dayPlan);
     }
 
     public DayPlan updateDayPlan(long scheduleId, long dayPlanId, DayPlanInputDTO dayPlanInputDTO) {
