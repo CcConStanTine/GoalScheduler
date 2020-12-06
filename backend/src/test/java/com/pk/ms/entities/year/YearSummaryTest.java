@@ -4,14 +4,14 @@ import com.pk.ms.constants.Importance;
 import com.pk.ms.constants.Urgency;
 import com.pk.ms.entities.schedule.Schedule;
 import com.pk.ms.entities.user.MyScheduleUser;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class YearSummaryTest {
 
