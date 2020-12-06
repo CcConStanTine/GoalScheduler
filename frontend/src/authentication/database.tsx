@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { registerUser, loginUser, inputData } from '../utils/interfaces';
-import { PlanTypes } from '../utils/variables';
+import { PlanTypes, dateTimeTypes } from '../utils/variables';
 
 class Database {
     serverAddress = 'https://goalscheduler.herokuapp.com';
@@ -15,8 +15,14 @@ class Database {
         this.username = null!;
     }
 
-    changeDateToCorrectFormat = (date: string) => date.slice(0, 10);
-    changeDateTimeToCorrectFormat = (date: string) => date.slice(11, 19);
+    setProprietDate = (date: string, type: string) => {
+        if (type === dateTimeTypes.ADDDAY)
+            return date.slice(11, 19);
+        if (type === dateTimeTypes.EDITDAY)
+            return date.slice(0, 9);
+
+        return date.slice(0, 10);
+    }
 
     validateDate = (date: any) => {
         const year = date.slice(0, 4);
@@ -50,31 +56,24 @@ class Database {
         return await this.addPlanByPlanTypeAndId(type, id, _data);
     };
 
+    getPlanIdByTypeAndDate = (type: string, date: string) => axios
+        .get(`${this.serverAddress}/schedule/${this.userId}/${type}?local_date=${date}`, this.getAuthConfig())
+        .then(({ data }) => data[`${type}Id`])
+        .catch(({ response }) => console.log(response.data));
+
     addPlanByPlanTypeAndId = async (type: string, id: number, data: inputData) => axios
         .post(`${this.serverAddress}/schedule/${this.userId}/${type}/${id}/${type}_plan`, data, this.getAuthConfig())
         .then(({ data }) => data)
         .catch(({ response }) => console.log(response.data));
 
-    changeDayPlanByDayId = async (dayId: number, data: inputData) => axios
-        .patch(`${this.serverAddress}/schedule/${this.userId}/day_plan/${dayId}`, data, this.getAuthConfig())
-        .then(({ data }) => data)
-        .catch(({ response }) => console.log(response.data))
+    changePlanByType = async (type: string, id: number, data: inputData) => {
+        const { day, ..._data } = data;
 
-    changeDayPlan = async (dayId: number, data: inputData) => {
-        const { startDateTime, endDate, content } = data;
-
-        return await this.changeDayPlanByDayId(dayId, { startDate: startDateTime!, endDate, content });
-    }
-
-    changeYearPlan = async (yearId: number, data: inputData) => axios
-        .patch(`${this.serverAddress}/schedule/${this.userId}/year_plan/${yearId}`, data, this.getAuthConfig())
-        .then(({ data }) => data)
-        .catch(({ response }) => console.log(response.data))
-
-    changeMonthPlan = async (monthId: number, data: inputData) => axios
-        .patch(`${this.serverAddress}/schedule/${this.userId}/month_plan/${monthId}`, data, this.getAuthConfig())
-        .then(({ data }) => data)
-        .catch(({ response }) => console.log(response.data))
+        return axios
+            .patch(`${this.serverAddress}/schedule/${this.userId}/${type}_plan/${id}`, _data, this.getAuthConfig())
+            .then(({ data }) => data)
+            .catch(({ response }) => console.log(response.data))
+    };
 
     getDayByDayId = async (dayId: number) => axios
         .get(`${this.serverAddress}/schedule/${this.userId}/day/${dayId}`, this.getAuthConfig())
@@ -148,11 +147,6 @@ class Database {
     toggleFinishMonthPlanByPlanId = (monthId: number) => axios
         .patch(`${this.serverAddress}/schedule/${this.userId}/month_plan/${monthId}/fulfilled`, {}, this.getAuthConfig())
         .then(({ data }) => data)
-        .catch(({ response }) => console.log(response.data))
-
-    getPlanIdByTypeAndDate = (type: string, date: string) => axios
-        .get(`${this.serverAddress}/schedule/${this.userId}/${type}?local_date=${date}`, this.getAuthConfig())
-        .then(({ data }) => data[`${type}Id`])
         .catch(({ response }) => console.log(response.data))
 
     getYearPlansByYearId = (yearId: number) => axios
