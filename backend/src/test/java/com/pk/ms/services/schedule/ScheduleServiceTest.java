@@ -10,16 +10,14 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.junit.jupiter.MockitoSettings;
-import org.mockito.quality.Strictness;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import static org.junit.jupiter.api.Assertions.*;
+import java.util.Optional;
+
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.BDDMockito.willReturn;
 import static org.mockito.Mockito.verify;
 
-@MockitoSettings(strictness = Strictness.STRICT_STUBS)
 @ExtendWith(SpringExtension.class)
 class ScheduleServiceTest {
 
@@ -41,6 +39,17 @@ class ScheduleServiceTest {
     }
 
     @Test
+    @DisplayName("Check if method saveSchedule() call repository method save()")
+    void should_MethodSaveScheduleCallRepositoryMethodSave() {
+        //given
+        given(scheduleRepo.findById(1L)).willReturn(Optional.of(schedule1));
+        //when
+        scheduleService.saveSchedule(schedule1);
+        //
+        verify(scheduleRepo, Mockito.times(1)).save(schedule1);
+    }
+
+    @Test
     @DisplayName("Check if method getSchedule() throws ResourceNotAvailableException when Schedule with given id does not exist")
     void should_ThrowResourceNotAvailableException_When_ScheduleWithGivenIdDoNotExists() {
         //given
@@ -48,17 +57,5 @@ class ScheduleServiceTest {
         //when + then
         assertThrows(ResourceNotAvailableException.class, () -> scheduleService.getScheduleById(1L));
         verify(scheduleRepo, Mockito.times(1)).findById(1L);
-    }
-
-    @Test
-    @DisplayName("Check if method getSchedule() return Schedule when Schedule with given id exists")
-    void should_ReturnSchedule_When_ScheduleWithGivenIdExists() {
-        //given
-        given(scheduleRepo.findById(1L)).willReturn(java.util.Optional.ofNullable(schedule1));
-        //when
-        Schedule scheduleActual = scheduleService.getScheduleById(1L);
-        //then
-        verify(scheduleRepo, Mockito.times(1)).findById(1L);
-        assertSame(schedule1, scheduleActual);
     }
 }
