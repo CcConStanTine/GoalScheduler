@@ -1,15 +1,6 @@
 import { PlanTypes } from '../utils/variables';
 import auth from '../authentication/database';
 
-export const deletePlanByType = async (type: string, id: number) => {
-    if (type === PlanTypes.YEAR)
-        return await auth.deleteYearPlanByYearId(id);
-    else if (type === PlanTypes.MONTH)
-        return await auth.deleteMonthPlanByMonthId(id);
-
-    return await auth.deleteDayPlanByPlanId(id)
-}
-
 export const getEntryDataByType = async (type: string, id: number) => {
     if (type === PlanTypes.DAY)
         return await auth.getDayPlanByPlanId(id);

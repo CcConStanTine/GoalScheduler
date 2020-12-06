@@ -8,7 +8,7 @@ import auth from '../../authentication/database';
 import { useParams } from "react-router-dom";
 import { FaPen, FaCheck, FaTimes } from 'react-icons/fa';
 import EntryPageConfirmWindow from '../../components/EntryPageConfirmWindow';
-import { getEntryDataByType, deletePlanByType } from '../../components/ViewEntryPageFunctons';
+import { getEntryDataByType } from '../../components/ViewEntryPageFunctons';
 import { landingPageInterface, ViewEntryRouteParams, ViewEntryParams } from '../../utils/interfaces';
 
 const ViewEntryPage = ({ history }: landingPageInterface) => {
@@ -29,7 +29,7 @@ const ViewEntryPage = ({ history }: landingPageInterface) => {
     }, [id, finishEntryWindow, type])
 
     const deleteEntry = async () => {
-        await deletePlanByType(type, parseInt(id));
+        await auth.deletePlanByTypeAndId(type, parseInt(id));
         return history.goBack();
     }
 

@@ -72,11 +72,16 @@ class Database {
         return axios
             .patch(`${this.serverAddress}/schedule/${this.userId}/${type}_plan/${id}`, _data, this.getAuthConfig())
             .then(({ data }) => data)
-            .catch(({ response }) => console.log(response.data))
+            .catch(({ response }) => console.log(response.data));
     };
 
     toggleFinishPlanByTypeAndId = (type: string, id: number) => axios
         .patch(`${this.serverAddress}/schedule/${this.userId}/${type}_plan/${id}/fulfilled`, {}, this.getAuthConfig())
+        .then(({ data }) => data)
+        .catch(({ response }) => console.log(response.data));
+
+    deletePlanByTypeAndId = (type: string, id: number) => axios
+        .delete(`${this.serverAddress}/schedule/${this.userId}/${type}_plan/${id}`, this.getAuthConfig())
         .then(({ data }) => data)
         .catch(({ response }) => console.log(response.data));
 
@@ -134,16 +139,6 @@ class Database {
         return { id: yearId, plans };
     }
 
-    deleteYearPlanByYearId = (yearId: number) => axios
-        .delete(`${this.serverAddress}/schedule/${this.userId}/year_plan/${yearId}`, this.getAuthConfig())
-        .then(({ data }) => data)
-        .catch(({ response }) => console.log(response.data))
-
-    deleteMonthPlanByMonthId = (monthId: number) => axios
-        .delete(`${this.serverAddress}/schedule/${this.userId}/month_plan/${monthId}`, this.getAuthConfig())
-        .then(({ data }) => data)
-        .catch(({ response }) => console.log(response.data))
-
     getYearPlansByYearId = (yearId: number) => axios
         .get(`${this.serverAddress}/schedule/${this.userId}/year/${yearId}/year_plans`, this.getAuthConfig())
         .then(({ data }) => data)
@@ -153,11 +148,6 @@ class Database {
         .get(`${this.serverAddress}/schedule/${this.userId}/year_plans/${yearId}`, this.getAuthConfig())
         .then(({ data }) => data)
         .catch(({ response }) => console.log(response.data))
-
-    deleteDayPlanByPlanId = (planId: number) => axios
-        .delete(`${this.serverAddress}/schedule/${this.userId}/day_plan/${planId}`, this.getAuthConfig())
-        .then(({ data }) => data)
-        .catch(({ response }) => response.data.message)
 
     getDayPlanByPlanId = (planId: number) => axios
         .get(`${this.serverAddress}/schedule/${this.userId}/day_plans/${planId}`, this.getAuthConfig())
