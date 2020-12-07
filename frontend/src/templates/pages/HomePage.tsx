@@ -2,7 +2,7 @@ import React, { useContext, useState, useEffect } from 'react';
 import { AppContext } from '../../authentication/AppContext';
 import { LanguageContext } from '../../authentication/LanguageContext';
 import auth from '../../authentication/database';
-import { PageNavigationTypes } from '../../utils/variables';
+import { PageNavigationTypes, PlanTypes } from '../../utils/variables';
 import languagePack from '../../utils/languagePack';
 import NavigationBar from '../../components/NavigationBar';
 import userDefaultPhoto from '../../images/planner.jpg';
@@ -29,9 +29,9 @@ const HomePage = ({ history }: HomeInterface) => {
         }
 
         const updateTodayPlans = async () => {
-            const todayPlansTable = await auth.getTodayPlans();
+            const { plans } = await auth.getTypePlans(PlanTypes.DAY);
 
-            setTodayPlans(todayPlansTable);
+            setTodayPlans(plans);
         }
 
         updateUserInfo();

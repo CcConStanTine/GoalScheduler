@@ -3,8 +3,9 @@ import renderPlanEntries from './RenderPlanEntries';
 import { EntriesPlanType } from '../utils/variables';
 import RenderEntriesNavigation from './RenderEntriesNavigation';
 import RenderEntriesDateNavigation from './RenderEntriesDateNavigation';
-import { getActualDateAsAObject, getRequestByType, getDataByType } from './OtherEntriesFunctions';
+import { getActualDateAsAObject, getDataByType } from './OtherEntriesFunctions';
 import { dateParams, entryParams } from '../utils/interfaces';
+import auth from '../authentication/database';
 
 const HomePageOtherEntries = () => {
     const [date, setDate] = useState<dateParams>(getActualDateAsAObject());
@@ -22,7 +23,7 @@ const HomePageOtherEntries = () => {
 
     const handlePlanData = async (type: string = EntriesPlanType.YEAR, date?: string) => {
         setEntryType(type);
-        const { plans, id } = await getRequestByType(type, date);
+        const { plans, id } = await auth.getTypePlans(type, date);
         setId(id);
 
         return setEntryData(plans);

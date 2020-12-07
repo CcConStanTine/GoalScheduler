@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { registerUser, loginUser, inputData } from '../utils/interfaces';
-import { PlanTypes, dateTimeTypes } from '../utils/variables';
+import { dateTimeTypes } from '../utils/variables';
 
 class Database {
     serverAddress = 'https://goalscheduler.herokuapp.com';
@@ -105,35 +105,13 @@ class Database {
         .then(({ data }) => data)
         .catch(({ response }) => console.log(response.data));
 
-    getDayPlans = async (date: string | undefined) => {
-        let _date = date ? this.validateDate(date) : this.getCurrentDate();
-        const dayId = await this.getPlanIdByTypeAndDate(PlanTypes.DAY, _date);
-        const plans = await this.getTypePlansByTypeAndId(PlanTypes.DAY, dayId);
+    getTypePlans = async (type: string, date?: string | undefined) => {
+        const _date = date ? this.validateDate(date) : this.getCurrentDate();
+        const id = await this.getPlanIdByTypeAndDate(type, _date);
+        const plans = await this.getTypePlansByTypeAndId(type, id);
 
-        return { id: dayId, plans }
-    }
-
-    getMonthPlans = async (date: string | undefined) => {
-        let _date = date ? this.validateDate(date) : this.getCurrentDate();
-        const monthId = await this.getPlanIdByTypeAndDate(PlanTypes.MONTH, _date);
-        const plans = await this.getTypePlansByTypeAndId(PlanTypes.MONTH, monthId);
-
-        return { id: monthId, plans };
-    }
-
-    getYearPlans = async (date: string | undefined) => {
-        let _date = date ? this.validateDate(date) : this.getCurrentDate();
-        const yearId = await this.getPlanIdByTypeAndDate(PlanTypes.YEAR, _date);
-        const plans = await this.getTypePlansByTypeAndId(PlanTypes.YEAR, yearId);
-
-        return { id: yearId, plans };
-    }
-
-    getTodayPlans = async () => {
-        const dayId = await this.getPlanIdByTypeAndDate(PlanTypes.DAY, this.getCurrentDate());
-        const todayPlans = await this.getTypePlansByTypeAndId(PlanTypes.DAY, dayId);
-        return todayPlans;
-    }
+        return { id, plans };
+    };
 
     deleteUserPhoto = () => axios
         .delete(this.getUserValue('image'), this.getAuthConfig())
