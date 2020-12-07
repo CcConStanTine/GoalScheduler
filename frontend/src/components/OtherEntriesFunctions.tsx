@@ -96,22 +96,22 @@ export const getRequestByType = async (type: string, date?: string) => {
 
 export const getDataByType = async (type: string, sign: string, id: number, date: dateParams) => {
     if (type === EntriesPlanType.YEAR) {
-        const { yearId: _id, yearNumber: year } = await auth.getYearByYearId(setIdValue(sign, type, id!));
+        const { yearId: _id, yearNumber: year } = await auth.getTypeDataById(type, setIdValue(sign, type, id!));
         const plans = await auth.getYearPlansByYearId(_id);
 
         return { _id, _date: { ...date, year }, plans };
     }
     else if (type === EntriesPlanType.MONTH) {
-        const monthList = await auth.getMonthsByDate(getDateAsAString(date));
-        const { monthId: _id, monthName } = await auth.getMonthById(setIdValue(sign, type, id!, monthList));
+        const monthList = await auth.getTypeDataByDate(type, getDateAsAString(date));
+        const { monthId: _id, monthName } = await auth.getTypeDataById(type, setIdValue(sign, type, id!, monthList));
         const { plans } = await auth.getMonthPlans(getDateAsAString(date, monthName));
         const month = setMonthValue(monthName);
 
         return { _id, _date: { ...date, month }, plans };
     }
 
-    const dayList = await auth.getDaysByDate(getDateAsAString(date));
-    const { dayId: _id, dayDate } = await auth.getDayByDayId(setIdValue(sign, type, id!, dayList));
+    const dayList = await auth.getTypeDataByDate(type, getDateAsAString(date));
+    const { dayId: _id, dayDate } = await auth.getTypeDataById(type, setIdValue(sign, type, id!, dayList));
     const { plans } = await auth.getDayPlans(dayDate);
     const day = dayDate.slice(dayDate.length - 2, dayDate.length);
 

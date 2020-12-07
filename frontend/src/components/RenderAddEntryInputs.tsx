@@ -55,7 +55,7 @@ const RenderAddEntryInputs = ({ languagePack, entryType, entry, id }: AddEntry) 
             const setInputEntries = async () => {
                 const { startDate, endDate, content, dayPlanId } = entry;
                 if (entryType === EntriesPlanType.DAY) {
-                    const { dayDate } = await auth.getDayByDayId(dayPlanId!);
+                    const { dayDate } = await auth.getTypeDataById(entryType, dayPlanId!);
                     return reset({
                         day: dayDate,
                         startDate,
