@@ -1,5 +1,6 @@
 package com.pk.ms.services.user;
 
+import com.pk.ms.constants.URL;
 import com.pk.ms.dao.user.UserRepository;
 import com.pk.ms.dto.user.UserBasicInfoUpdateDTO;
 import com.pk.ms.dto.user.UserEmailUpdateDTO;
@@ -21,6 +22,9 @@ import org.mockito.quality.Strictness;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -36,8 +40,10 @@ class UserServiceTest {
     @Mock
     UserRepository userRepo;
 
+    @Mock
     UserInfoMapService userInfoMapService;
 
+    @Mock
     ImageService imageService;
 
     PasswordEncoder encoder = new BCryptPasswordEncoder();
@@ -60,204 +66,378 @@ class UserServiceTest {
     }
 
     @Test
-    @DisplayName("Check if method saveUser() returns saved user")
-    void should_ReturnSavedUser() {
+    @DisplayName("Check if method saveUser() calls repository method save()")
+    void should_MethodSaveUserCallRepositoryMethodSave() {
         //given
         given(userRepo.save(user1)).willReturn(user1);
         //when
-        MyScheduleUser user3 = userService.saveUser(user1);
+        userService.saveUser(user1);
         //then
-        assertSame(user3, user1);
+        verify(userRepo, Mockito.times(1)).save(user1);
     }
 
     @Test
-    @DisplayName("Check if method checkIfUniqueNick() returns true when nick is unique")
-    void should_ReturnTrue_When_NickIsUnique() {
+    @DisplayName("Check if method saveUser() returns MyScheduleUser class type")
+    void should_MethodSaveReturnsMyScheduleUserClassType() {
         //given
-        given(userRepo.findByNick("uniqueNick")).willReturn(null);
+        given(userRepo.save(user1)).willReturn(user1);
+        //when + when
+        assertEquals(MyScheduleUser.class, userService.saveUser(user1).getClass());
+    }
+
+    @Test
+    @DisplayName("Check if method getUserById() calls repository method findById()")
+    void should_MethodGetUserByIdCallsRepositoryMethodFindById() {
+        //given
+        given(userRepo.findById(1L)).willReturn(Optional.of(user1));
+        //when
+        userService.getUserById(1L);
+        //then
+        verify(userRepo, Mockito.times(1)).findById(1L);
+    }
+
+    @Test
+    @DisplayName("Check if method getUserById() throws ResourceNotAvailableException when user with given id does not exist")
+    void should_MethodGetUserByIdThrowsResourceNotAvailableException_When_UserWithGivenIdDoesNotExist() {
+        //given
+        given(userRepo.findById(1L)).willReturn(Optional.empty());
+        //when+then
+        assertThrows(ResourceNotAvailableException.class,
+                () -> userService.getUserById(1L));
+    }
+
+    @Test
+    @DisplayName("Check if method getUserById() returns MyScheduleUser class type")
+    void should_MethodGetUserByIdReturnsMyScheduleUserClassType() {
+        //given
+        given(userRepo.findById(1L)).willReturn(Optional.of(user1));
+        //when + when
+        assertEquals(MyScheduleUser.class, userService.getUserById(1L).getClass());
+    }
+
+    @Test
+    @DisplayName("Check if method isNickUnique() calls repository method existsByNick()")
+    void should_MethodIsNickUniqueCallsRepositoryMethodFindByNick() {
+        //given
+        given(userRepo.existsByNick("CaptainJohn")).willReturn(true);
+        //when
+        userService.isNickUnique("CaptainJohn");
+        //then
+        verify(userRepo, Mockito.times(1)).existsByNick("CaptainJohn");
+    }
+
+    @Test
+    @DisplayName("Check if method isUniqueNick() returns true when nick is unique")
+    void should_MethodIsNickUniqueReturnsTrue_When_NickIsUnique() {
+        //given
+        given(userRepo.existsByNick("uniqueNick")).willReturn(true);
         //when
         boolean result = userService.isNickUnique("uniqueNick");
         //then
-        verify(userRepo, Mockito.times(1)).findByNick(anyString());
         assertTrue(result);
     }
 
     @Test
-    @DisplayName("Check if method checkIfUniqueNick() returns false when nick is not unique")
-    void should_ReturnFalse_When_NickIsNotUnique() {
+    @DisplayName("Check if method isUniqueNick() returns false when nick is not unique")
+    void should_MethodIsNickUniqueReturnsFalse_When_NickIsNotUnique() {
         //given
-        given(userRepo.findByNick("CaptainJohn")).willReturn(user1);
+        given(userRepo.existsByNick("CaptainJohn")).willReturn(false);
         //when
         boolean result = userService.isNickUnique("CaptainJohn");
         //then
-        verify(userRepo, Mockito.times(1)).findByNick(anyString());
+        verify(userRepo, Mockito.times(1)).existsByNick(anyString());
         assertFalse(result);
     }
 
     @Test
-    @DisplayName("Check if method checkIfUniqueEmail() returns true when email is unique")
-    void should_ReturnTrue_When_EmailIsUnique() {
+    @DisplayName("Check if method isUniqueEmail() calls repository method existsByEmail()")
+    void should_MethodIsUniqueEmailCallsRepositoryMethodExistsMyEmail() {
         //given
-        given(userRepo.findByEmail("uniqueEmail@gmail.com")).willReturn(null);
+        given(userRepo.existsByEmail("johnbravo@gmail.com")).willReturn(true);
         //when
-        boolean result = userService.isEmailUnique("uniqueEmail@gmail.com");
+        userService.isEmailUnique("johnbravo@gmail.com");
         //then
-        verify(userRepo, Mockito.times(1)).findByEmail(anyString());
+        verify(userRepo, Mockito.times(1)).existsByEmail("johnbravo@gmail.com");
+    }
+
+    @Test
+    @DisplayName("Check if method isUniqueEmail() returns true when email is unique")
+    void should_MethodIsEmailUniqueReturnsTrue_When_EmailIsUnique() {
+        //given
+        given(userRepo.existsByEmail("johnbravo@gmail.com")).willReturn(true);
+        //when
+        boolean result = userService.isEmailUnique("johnbravo@gmail.com");
+        //then
         assertTrue(result);
     }
 
     @Test
-    @DisplayName("Check if method checkIfUniqueEmail() returns false when email is not unique")
-    void should_ReturnFalse_When_EmailIsNotUnique() {
+    @DisplayName("Check if method isUniqueEmail() returns false when email is not unique")
+    void should_MethodIsEmailUniqueReturnsFalse_When_EmailIsNotUnique() {
         //given
-        given(userRepo.findByEmail("johnbravo@gmail.com")).willReturn(user1);
+        given(userRepo.existsByEmail("johnbravo@gmail.com")).willReturn(false);
         //when
         boolean result = userService.isEmailUnique("johnbravo@gmail.com");
         //then
-        verify(userRepo, Mockito.times(1)).findByEmail(anyString());
         assertFalse(result);
     }
 
     @Test
-    @DisplayName("Check if method getUserInfo() throws ResourceNotAvailableException when User is null")
-    void should_MethodGetUserInfoThrowResourceNotAvailableException_When_UserIsNull() {
+    @DisplayName("Check if method getUserInfo() calls repository method findById()")
+    void should_MethodGetUserInfoCallsRepositoryMethodFindById() {
         //given
-        given(userRepo.findById(3L)).willReturn(null);
-        //when + then
-        assertThrows(ResourceNotAvailableException.class, () -> userService.getUserInfo(3L));
-    }
-
-    @Test
-    @DisplayName("Check if method getUserInfo() returns mapped UserInfoDTO when User is not null")
-    void should_ReturnMappedUserInfoDTO_When_UserIsNotNull() {
-        //given
-        UserInfoDTO userInfoDTOExpected = new UserInfoDTO(user1.getUserId(), user1.getFirstName(),
-                user1.getLastName(), user1.getNick(), user1.getEmail());
-        given(userRepo.findById(1L)).willReturn(java.util.Optional.ofNullable(user1));
+        given(userRepo.findById(1L)).willReturn(Optional.of(user1));
         //when
-        UserInfoDTO userInfoDTOActual = userService.getUserInfo(1L);
+        userService.getUserInfo(1L);
         //then
-        assertAll(
-                () -> assertEquals(userInfoDTOExpected.getUserId(),     userInfoDTOActual.getUserId()),
-                () -> assertEquals(userInfoDTOExpected.getFirstName(),  userInfoDTOActual.getFirstName()),
-                () -> assertEquals(userInfoDTOExpected.getLastName(),   userInfoDTOActual.getLastName()),
-                () -> assertEquals(userInfoDTOExpected.getNick(),       userInfoDTOActual.getNick()),
-                () -> assertEquals(userInfoDTOExpected.getEmail(),      userInfoDTOActual.getEmail())
-        );
+        verify(userRepo, Mockito.times(1)).findById(1L);
     }
 
     @Test
-    @DisplayName("Check if method updateBasicUserInfo() throws ResourceNotAvailableException when User is null")
-    void should_MethodUpdateBasicUserInfoThrowResourceNotAvailableException_When_UserIsNull() {
+    @DisplayName("Check if method getUserInfo() throws ResourceNotAvailableException when user with given id does not exist")
+    void should_MethodGetUserInfoThrowsResourceNotAvailableException_When_UserWithGivenIdDoesNotExist() {
         //given
-        UserBasicInfoUpdateDTO userBasicInfoUpdateDTO = new UserBasicInfoUpdateDTO();
-        given(userRepo.findById(3L)).willReturn(null);
-        //when + then
+        given(userRepo.findById(1L)).willReturn(Optional.empty());
+        //when+then
         assertThrows(ResourceNotAvailableException.class,
-                () -> userService.updateBasicUserInfo(3L, userBasicInfoUpdateDTO));
+                () -> userService.getUserInfo(1L));
     }
 
     @Test
-    @DisplayName("Check if method updateBasicUserInfo() throws UniqueValuesAlreadyExistsException when input nick is not unique")
-    void should_ThrowUniqueValuesAlreadyExistsException_When_InputNickIsNotUnique() {
+    @DisplayName("Check if method getUserInfo() returns UserInfoDTO class type")
+    void should_MethodGetUserInfoReturnsMyScheduleUserClassType() {
+        //given
+        given(userRepo.findById(1L)).willReturn(Optional.of(user1));
+        //when + when
+        assertEquals(UserInfoDTO.class, userService.getUserInfo(1L).getClass());
+    }
+
+    @Test
+    @DisplayName("Check if method updateBasicUserInfo() throws UniqueValuesAlreadyExistsException when nick is not unique")
+    void should_MethodUpdateBasicUserInfoThrowsUniqueValuesAlreadyExistsException_When_NickIsNotUnique() {
         //given
         UserBasicInfoUpdateDTO userBasicInfoUpdateDTO = new UserBasicInfoUpdateDTO(user1.getFirstName(),
                 user1.getLastName(), user1.getNick());
-        given(userRepo.findByNick("CaptainJohn")).willReturn(user1);
+        given(userRepo.existsByNick("CaptainJohn")).willReturn(true);
         //when + then
         assertThrows(UniqueValuesAlreadyExistsException.class,
                 () -> userService.updateBasicUserInfo(1L, userBasicInfoUpdateDTO));
     }
 
     @Test
-    @DisplayName("Check if method updateBasicUserInfo() update user attributes when input nick is unique")
-    void should_UpdateUserAttributes_When_InputNickIsUnique() {
+    @DisplayName("Check if method updateBasicUserInfo() calls repository method findById()")
+    void should_MethodUpdateBasicUserInfoCallsRepositoryMethodFindById() {
         //given
-        UserBasicInfoUpdateDTO userBasicInfoUpdateDTO = new UserBasicInfoUpdateDTO("UniqueFirstName",
-                "UniqueLastName", "UniqueNick");
-        given(userRepo.findById(1L)).willReturn(java.util.Optional.ofNullable(user1));
-        given(userRepo.save(user1)).willReturn(user1);
-        given(userRepo.findByNick("UniqueNick")).willReturn(null);
+        given(userRepo.findById(1L)).willReturn(Optional.of(user1));
         //when
-        UserInfoDTO userInfoDTOActual = userService.updateBasicUserInfo(1L, userBasicInfoUpdateDTO);
+        userService.updateBasicUserInfo(1L, new UserBasicInfoUpdateDTO());
+        //then
+        verify(userRepo, Mockito.times(1)).findById(1L);
+    }
+
+    @Test
+    @DisplayName("Check if method updateBasicUserInfo() throws ResourceNotAvailableException when user with given id does not exist")
+    void should_MethodUpdateBasicUserInfoThrowsResourceNotAvailableException_When_UserWithGivenIdDoesNotExist() {
+        //given
+        given(userRepo.findById(1L)).willReturn(Optional.empty());
+        //when+then
+        assertThrows(ResourceNotAvailableException.class,
+                () -> userService.updateBasicUserInfo(1L, new UserBasicInfoUpdateDTO()));
+    }
+
+    @Test
+    @DisplayName("Check if method updateBasicUserInfo() calls repository method save()")
+    void should_MethodUpdateBasicUserInfoCallsRepositoryMethodSave() {
+        //given
+        given(userRepo.findById(1L)).willReturn(Optional.of(user1));
+        given(userRepo.save(user1)).willReturn(user1);
+        //when
+        userService.updateBasicUserInfo(1L, new UserBasicInfoUpdateDTO());
+        //then
+        verify(userRepo, Mockito.times(1)).save(user1);
+    }
+
+    @Test
+    @DisplayName("Check if method updateBasicUserInfo() updates MyScheduleUser's basic fields when they are not nulls")
+    void should_MethodUpdateBasicUserInfoUpdatesMyScheduleUserBasicFieldsWhenTheyAreNotNulls() {
+        //given
+        UserBasicInfoUpdateDTO userBasicInfoUpdateDTO = new UserBasicInfoUpdateDTO(
+                "NewFirstName", "NewLastName", "NewNick");
+        given(userRepo.findById(1L)).willReturn(Optional.of(user1));
+        //when
+        userService.updateBasicUserInfo(1L, userBasicInfoUpdateDTO);
         //then
         assertAll(
-                () -> assertEquals(user1.getFirstName(),   userInfoDTOActual.getFirstName()),
-                () -> assertEquals(user1.getLastName(),    userInfoDTOActual.getLastName()),
-                () -> assertEquals(user1.getNick(),        userInfoDTOActual.getNick())
+                () -> assertEquals(userBasicInfoUpdateDTO.getFirstName(), user1.getFirstName()),
+                () -> assertEquals(userBasicInfoUpdateDTO.getLastName(), user1.getLastName()),
+                () -> assertEquals(userBasicInfoUpdateDTO.getNick(), user1.getNick())
         );
     }
 
     @Test
-    @DisplayName("Check if method updateUserEmail() throws ResourceNotAvailableException when User is null")
-    void should_MethodUpdateUserEmailThrowResourceNotAvailableException_When_UserIsNull() {
+    @DisplayName("Check if method updateBasicUserInfo() do not update MyScheduleUser's basic fields when they are nulls")
+    void should_MethodUpdateBasicUserInfoDoNotUpdateMyScheduleUserBasicFieldsWhenTheyAreNulls() {
         //given
-        UserEmailUpdateDTO userEmailUpdateDTO = new UserEmailUpdateDTO();
-        given(userRepo.findById(3L)).willReturn(null);
-        //when + then
-        assertThrows(ResourceNotAvailableException.class,
-                () -> userService.updateUserEmail(3L, userEmailUpdateDTO));
+        UserBasicInfoUpdateDTO updateUserBasicInfoUpdateDTO = new UserBasicInfoUpdateDTO();
+        given(userRepo.findById(1L)).willReturn(Optional.of(user1));
+        UserBasicInfoUpdateDTO expectedValues = new UserBasicInfoUpdateDTO(
+                user1.getFirstName(), user1.getLastName(), user1.getNick());
+        //when
+        userService.updateBasicUserInfo(1L, updateUserBasicInfoUpdateDTO);
+        //then
+        assertAll(
+                () -> assertEquals(expectedValues.getFirstName(), user1.getFirstName()),
+                () -> assertEquals(expectedValues.getLastName(), user1.getLastName()),
+                () -> assertEquals(expectedValues.getNick(), user1.getNick())
+        );
     }
 
     @Test
-    @DisplayName("Check if method updateUserEmail() throws UniqueValuesAlreadyExistsException when input email is not unique")
-    void should_ThrowUniqueValuesAlreadyExistsException_When_InputEmailIsNotUnique() {
+    @DisplayName("Check if method updateUserEmail() throws UniqueValuesAlreadyExistsException when email is not unique")
+    void should_MethodUpdateUserEmailThrowsUniqueValuesAlreadyExistsException_When_NickIsNotUnique() {
         //given
         UserEmailUpdateDTO userEmailUpdateDTO = new UserEmailUpdateDTO("johnbravo@gmail.com");
-        given(userRepo.findByEmail("johnbravo@gmail.com")).willReturn(user1);
+        given(userRepo.existsByEmail("johnbravo@gmail.com")).willReturn(true);
         //when + then
         assertThrows(UniqueValuesAlreadyExistsException.class,
                 () -> userService.updateUserEmail(1L, userEmailUpdateDTO));
     }
 
     @Test
-    @DisplayName("Check if method updateUserEmail() update user email when input email is unique")
-    void should_UpdateUserEmail_When_InputEmailIsUnique() {
+    @DisplayName("Check if method updateUserEmail() calls repository method findById()")
+    void should_MethodUpdateUserEmailCallsRepositoryMethodFindById() {
         //given
-        UserEmailUpdateDTO userEmailUpdateDTO = new UserEmailUpdateDTO("UniqueEmail@gmail.com");
-        given(userRepo.findById(1L)).willReturn(java.util.Optional.ofNullable(user1));
-        given(userRepo.save(user1)).willReturn(user1);
-        given(userRepo.findByEmail("UniqueEmail@gmail.com")).willReturn(null);
+        given(userRepo.findById(1L)).willReturn(Optional.of(user1));
         //when
-        UserInfoDTO userInfoDTOActual = userService.updateUserEmail(1L, userEmailUpdateDTO);
+        userService.updateUserEmail(1L, new UserEmailUpdateDTO());
         //then
-        assertEquals(user1.getEmail(), userEmailUpdateDTO.getEmail());
+        verify(userRepo, Mockito.times(1)).findById(1L);
     }
 
     @Test
-    @DisplayName("Check if method updateUserPassword() throws ResourceNotAvailableException when User is null")
-    void should_MethodUpdateUserPasswordThrowResourceNotAvailableException_When_UserIsNull() {
+    @DisplayName("Check if method updateUserEmail() throws ResourceNotAvailableException when user with given id does not exist")
+    void should_MethodUpdateUserEmailThrowsResourceNotAvailableException_When_UserWithGivenIdDoesNotExist() {
         //given
-        UserPasswordUpdateDTO userPasswordUpdateDTO = new UserPasswordUpdateDTO();
-        given(userRepo.findById(3L)).willReturn(null);
-        //when + then
+        given(userRepo.findById(1L)).willReturn(Optional.empty());
+        //when+then
         assertThrows(ResourceNotAvailableException.class,
-                () -> userService.updateUserPassword(3L, userPasswordUpdateDTO));
+                () -> userService.updateUserEmail(1L, new UserEmailUpdateDTO()));
     }
 
     @Test
-    @DisplayName("Check if method updateUserPassword() update and encode user password")
-    void should_UpdateAndEncodeUserPassword() {
+    @DisplayName("Check if method updateUserEmail() calls repository method save()")
+    void should_MethodUpdateUserEmailCallsRepositoryMethodSave() {
         //given
-        UserPasswordUpdateDTO userPasswordUpdateDTO = new UserPasswordUpdateDTO("newPassword");
-        given(userRepo.findById(1L)).willReturn(java.util.Optional.ofNullable(user1));
+        given(userRepo.findById(1L)).willReturn(Optional.of(user1));
         given(userRepo.save(user1)).willReturn(user1);
         //when
-        userService.updateUserPassword(1L, userPasswordUpdateDTO);
+        userService.updateUserEmail(1L, new UserEmailUpdateDTO());
         //then
-        assertNotEquals(userPasswordUpdateDTO.getPassword(), user1.getPassword());
+        verify(userRepo, Mockito.times(1)).save(user1);
+    }
+
+    @Test
+    @DisplayName("Check if method updateUserEmail() updates MyScheduleUser's email")
+    void should_MethodUpdateUserEmailUpdatesMyScheduleUserEmail() {
+        //given
+        UserEmailUpdateDTO userEmailUpdateDTO = new UserEmailUpdateDTO("somenewemaail@gmail.com");
+        given(userRepo.findById(1L)).willReturn(Optional.of(user1));
+        //when
+        userService.updateUserEmail(1L, userEmailUpdateDTO);
+        //then
+        assertEquals(userEmailUpdateDTO.getEmail(), user1.getEmail());
+    }
+
+    @Test
+    @DisplayName("Check if method updateUserPassword() calls repository method findById()")
+    void should_MethodUpdateUserPasswordCallsRepositoryMethodFindById() {
+        //given
+        given(userRepo.findById(1L)).willReturn(Optional.of(user1));
+        //when
+        userService.updateUserPassword(1L, new UserPasswordUpdateDTO("pass1234"));
+        //then
+        verify(userRepo, Mockito.times(1)).findById(1L);
+    }
+
+    @Test
+    @DisplayName("Check if method updateUserPassword() throws ResourceNotAvailableException when user with given id does not exist")
+    void should_MethodUpdateUserPasswordThrowsResourceNotAvailableException_When_UserWithGivenIdDoesNotExist() {
+        //given
+        given(userRepo.findById(1L)).willReturn(Optional.empty());
+        //when+then
+        assertThrows(ResourceNotAvailableException.class,
+                () -> userService.updateUserPassword(1L, new UserPasswordUpdateDTO()));
+    }
+
+    @Test
+    @DisplayName("Check if method updateUserPassword() calls repository method save()")
+    void should_MethodUpdateUserPasswordCallsRepositoryMethodSave() {
+        //given
+        given(userRepo.findById(1L)).willReturn(Optional.of(user1));
+        given(userRepo.save(user1)).willReturn(user1);
+        //when
+        userService.updateUserPassword(1L, new UserPasswordUpdateDTO("pass1234"));
+        //then
+        verify(userRepo, Mockito.times(1)).save(user1);
     }
 
     @Test
     @DisplayName("Check if method updateUserPassword() returns proper message")
     void should_ReturnProperMessage() {
         //given
-        UserPasswordUpdateDTO userPasswordUpdateDTO = new UserPasswordUpdateDTO("newPassword");
-        given(userRepo.findById(1L)).willReturn(java.util.Optional.ofNullable(user1));
+        given(userRepo.findById(1L)).willReturn(Optional.of(user1));
         given(userRepo.save(user1)).willReturn(user1);
         //when
-        String message = userService.updateUserPassword(1L, userPasswordUpdateDTO);
+        String message = userService.updateUserPassword(1L, new UserPasswordUpdateDTO("pass1234"));
         //then
         assertEquals("Password changed successfully. ", message);
+    }
+
+    @Test
+    @DisplayName("Check if method getUserImage() calls repository method findById()")
+    void should_MethodGetUserImageCallsRepositoryMethodFindById() {
+        //given
+        given(userRepo.findById(1L)).willReturn(Optional.of(user1));
+        //when
+        userService.getUserImage(1L);
+        //then
+        verify(userRepo, Mockito.times(1)).findById(1L);
+    }
+
+    @Test
+    @DisplayName("Check if method getUserImage() throws ResourceNotAvailableException when user with given id does not exist")
+    void should_MethodGetUserImageThrowsResourceNotAvailableException_When_UserWithGivenIdDoesNotExist() {
+        //given
+        given(userRepo.findById(1L)).willReturn(Optional.empty());
+        //when+then
+        assertThrows(ResourceNotAvailableException.class,
+                () -> userService.getUserImage(1L));
+    }
+
+    @Test
+    @DisplayName("Check if method getUserImage() returns Image with default URL1 when user has no image")
+    void should_MethodGetUserImageReturnsImageWithDefaultURL1_When_UserHasNoImage() {
+        //given
+        given(userRepo.findById(1L)).willReturn(Optional.of(user1));
+        //when
+        Image image = userService.getUserImage(1L);
+        //then
+        assertEquals(URL.URL1.getURL(), image.getFileUrl());
+    }
+
+    @Test
+    @DisplayName("Check if method getUserImage() returns user's image when user has image assigned")
+    void should_MethodGetUserImageReturnsUserImage_When_UserHasImageAssigned() {
+        //given
+        Image expectedImage = new Image("someURL");
+        user1.setImage(expectedImage);
+        given(userRepo.findById(1L)).willReturn(Optional.of(user1));
+        //when
+        Image actualImage = userService.getUserImage(1L);
+        //then
+        assertAll(
+                () -> assertSame(expectedImage, actualImage),
+                () -> assertEquals(expectedImage.getFileUrl(), actualImage.getFileUrl())
+        );
     }
 }

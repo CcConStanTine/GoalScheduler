@@ -11,8 +11,10 @@ public interface UserRepository extends CrudRepository<MyScheduleUser, Long> {
 
     Optional<MyScheduleUser> findById(long id);
 
-    MyScheduleUser findByNick(String nick);
+    boolean existsByNick(String nick);
 
-    MyScheduleUser findByEmail(String email);
+    boolean existsByEmail(String email);
+
+    MyScheduleUser findByNick(String nick);
 
 }

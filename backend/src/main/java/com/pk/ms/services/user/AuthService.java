@@ -108,9 +108,9 @@ public class AuthService {
     }
 
     public void validateRequest(SignupRequest signUpRequest) {
-        if(!userService.isNickUnique(signUpRequest.getUsername()))
+        if(userService.isNickUnique(signUpRequest.getUsername()))
             throw new UniqueValuesAlreadyExistsException(signUpRequest);
-        if(!userService.isEmailUnique(signUpRequest.getEmail()))
+        if(userService.isEmailUnique(signUpRequest.getEmail()))
             throw new UniqueValuesAlreadyExistsException(signUpRequest.getEmail());
     }
 
