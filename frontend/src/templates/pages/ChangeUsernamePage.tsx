@@ -1,7 +1,7 @@
 import React, { useContext, useState } from 'react';
 import { AppContext } from '../../authentication/AppContext';
 import { LanguageContext } from '../../authentication/LanguageContext';
-import auth from '../../authentication/database';
+import DataRequests from '../../authentication/DataRequests';
 import { useForm } from "react-hook-form";
 import renderAccountFormInputs from '../../components/RenderAccountFormInputs';
 import { PageNavigationTypes } from '../../utils/variables';
@@ -35,16 +35,16 @@ const ChangeUsernamePage: React.FC = ({ history }: any) => {
   }];
 
   const checkUsername = async (username: string) => {
-    const { nick, firstName, lastName } = await auth.getCurrentUserInfo();
+    const { nick, firstName, lastName } = await DataRequests.getCurrentUserInfo();
     if (nick !== username) {
-      const { message } = await auth.changeUsername(firstName, lastName, username);
+      const { message } = await DataRequests.changeUsername(firstName, lastName, username);
 
       if (message) return setMessage(message)
 
       setTimeout(() => setMessage(languagePack[language].GLOBAL.logInAgain), 1000);
 
       setTimeout(() => {
-        auth.logout();
+        DataRequests.logout();
         return setLoggedIn!({})
       }, 2000);
 
@@ -55,7 +55,7 @@ const ChangeUsernamePage: React.FC = ({ history }: any) => {
   }
 
   const sendRequestToChangeUsername = async ({ password, username }: emailInterface) => {
-    const response = await auth.checkIfPasswordIsCorrect(password);
+    const response = await DataRequests.checkIfPasswordIsCorrect(password);
 
     if (response)
       return checkUsername(username);

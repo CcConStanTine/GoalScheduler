@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import { IonDatetime, IonTextarea } from '@ionic/react';
-import auth from '../authentication/database';
+import DataRequests from '../authentication/DataRequests';
 import { inputData, EditEntryParams } from '../utils/interfaces';
 import { useHistory } from 'react-router-dom';
 import { AddEntryPageDefaultValues as defaultValues, EntriesPlanType, dateTimeTypes } from '../utils/variables';
@@ -19,16 +19,16 @@ const formatDate = (data: inputData, type: string) => {
     if (day) {
         return {
             content,
-            day: auth.setProprietDate(day, dateTimeTypes.DEFAULT),
-            startDate: auth.setProprietDate(startDate, type),
-            endDate: auth.setProprietDate(endDate, type),
+            day: DataRequests.setProprietDate(day, dateTimeTypes.DEFAULT),
+            startDate: DataRequests.setProprietDate(startDate, type),
+            endDate: DataRequests.setProprietDate(endDate, type),
         }
     }
 
     return {
         content,
-        startDate: auth.setProprietDate(startDate, type),
-        endDate: auth.setProprietDate(endDate, type),
+        startDate: DataRequests.setProprietDate(startDate, type),
+        endDate: DataRequests.setProprietDate(endDate, type),
     };
 }
 
@@ -36,14 +36,14 @@ const editEntry = async (entryType: string, data: inputData, id: number) => {
     const type = entryType === EntriesPlanType.DAY ? dateTimeTypes.EDITDAY : dateTimeTypes.DEFAULT;
     const dayData = formatDate(data, type);
 
-    return await auth.changePlanByType(entryType, id, dayData);
+    return await DataRequests.changePlanByType(entryType, id, dayData);
 }
 
 const addEntry = async (entryType: string, data: inputData) => {
     const type = entryType === EntriesPlanType.DAY ? dateTimeTypes.ADDDAY : dateTimeTypes.DEFAULT;
     const dayData = formatDate(data, type);
 
-    return await auth.addPlanByPlanType(entryType, dayData);
+    return await DataRequests.addPlanByPlanType(entryType, dayData);
 }
 
 const RenderAddEntryInputs = ({ languagePack, entryType, entry, id }: AddEntry) => {
@@ -55,7 +55,7 @@ const RenderAddEntryInputs = ({ languagePack, entryType, entry, id }: AddEntry) 
             const setInputEntries = async () => {
                 const { startDate, endDate, content, dayPlanId } = entry;
                 if (entryType === EntriesPlanType.DAY) {
-                    const { dayDate } = await auth.getTypeDataById(entryType, dayPlanId!);
+                    const { dayDate } = await DataRequests.getTypeDataById(entryType, dayPlanId!);
                     return reset({
                         day: dayDate,
                         startDate,
@@ -152,7 +152,7 @@ const RenderAddEntryInputs = ({ languagePack, entryType, entry, id }: AddEntry) 
                                 placeholder={entryType === EntriesPlanType.DAY ? languagePack.ADD.selectDay : languagePack.ADD.selectStartTime}
                                 cancelText={languagePack.GLOBAL.selectOptionCancel}
                                 doneText={languagePack.GLOBAL.selectOptionDone}
-                                min={auth.getCurrentDate()}
+                                min={DataRequests.getCurrentDate()}
                                 monthNames={languagePack.MONTHS.namesTable}
                                 name={name}
                                 value={value}
@@ -172,7 +172,7 @@ const RenderAddEntryInputs = ({ languagePack, entryType, entry, id }: AddEntry) 
                                 placeholder={languagePack.ADD.selectEndTime}
                                 cancelText={languagePack.GLOBAL.selectOptionCancel}
                                 doneText={languagePack.GLOBAL.selectOptionDone}
-                                min={auth.getCurrentDate()}
+                                min={DataRequests.getCurrentDate()}
                                 monthNames={languagePack.MONTHS.namesTable}
                                 max={'2030'}
                                 className='default-button add-entry-input'

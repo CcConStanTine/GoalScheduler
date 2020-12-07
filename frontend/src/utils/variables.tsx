@@ -52,6 +52,15 @@ export const dateTimeTypes = {
     DEFAULT: 'default',
 }
 
+export const requestMethods = {
+    POST: 'post',
+    GET: 'get',
+    PATCH: 'patch',
+    DELETE: 'delete',
+    NOAUTH: 'noAuthentication',
+    DEFAULT: 'default'
+}
+
 export const navigationTypes = {
     ADDITION: 'addition',
     SUBTRACTION: 'subtraction'

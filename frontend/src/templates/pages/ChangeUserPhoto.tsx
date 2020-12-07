@@ -1,7 +1,7 @@
 import React, { useContext, useState, useRef, useEffect } from 'react';
 import { AppContext } from '../../authentication/AppContext';
 import { LanguageContext } from '../../authentication/LanguageContext';
-import auth from '../../authentication/database';
+import DataRequests from '../../authentication/DataRequests';
 import { PageNavigationTypes } from '../../utils/variables';
 import languagePack from '../../utils/languagePack';
 import NavigationBar from '../../components/NavigationBar';
@@ -21,10 +21,10 @@ const ChangeUserPhoto: React.FC = ({ history }: any) => {
   const fileUploadHandler = async () => {
     const formData = new FormData();
     formData.append('file', photo!);
-    const response = await auth.changeUserPhoto(formData);
+    const response = await DataRequests.changeUserPhoto(formData);
 
     if (response === "OK") {
-      const { fileUrl } = await auth.getUserPhoto();
+      const { fileUrl } = await DataRequests.getUserPhoto();
       setLoggedIn!({ ...userContext, userPhoto: fileUrl });
 
       return setMessage(languagePack[language].CHANGEUSERPHOTO.upload);
@@ -35,7 +35,7 @@ const ChangeUserPhoto: React.FC = ({ history }: any) => {
 
   useEffect(() => {
     const showDeleteUserPhotoOption = async () => {
-      const { imageId } = await auth.getUserPhoto();
+      const { imageId } = await DataRequests.getUserPhoto();
 
       return setShowDeleteOption(!!imageId);
     };
@@ -43,7 +43,7 @@ const ChangeUserPhoto: React.FC = ({ history }: any) => {
   }, [userContext?.userPhoto])
 
   const deleteUserPhoto = async () => {
-    const response = await auth.deleteUserPhoto();
+    const response = await DataRequests.deleteUserPhoto();
 
     if (response === "OK") {
       setLoggedIn!({ ...userContext, userPhoto: userDefaultPhoto });

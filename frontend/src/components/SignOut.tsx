@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import auth from '../authentication/database';
+import DataRequests from '../authentication/DataRequests';
 import { AppContext } from '../authentication/AppContext';
 import { LanguageContext } from '../authentication/LanguageContext';
 import languagePack from '../utils/languagePack';
@@ -10,7 +10,7 @@ const SignOut = () => {
     const { language } = useContext(LanguageContext);
 
     const logout = () => {
-        auth.logout();
+        DataRequests.logout();
         setLoggedIn!({});
     }
 

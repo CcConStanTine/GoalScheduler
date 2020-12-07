@@ -1,5 +1,5 @@
 import React, { useState, useEffect, createContext, ReactNode } from 'react';
-import auth from './database';
+import DataRequests from './DataRequests';
 
 interface AppContextInterface {
     userContext?: {
@@ -25,8 +25,8 @@ export const UseAppContext = ({ children }: UseAppContextInterface) => {
 
     useEffect(() => {
         const getUserData = async () => {
-            const { token } = auth.getCurrentUser();
-            const userInfo = token && await auth.getCurrentUserInfo();
+            const { token } = DataRequests.getCurrentUser();
+            const userInfo = token && await DataRequests.getCurrentUserInfo();
             setLoggedIn({ token, ...userInfo })
         }
         getUserData()

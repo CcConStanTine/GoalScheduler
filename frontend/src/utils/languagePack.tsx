@@ -95,7 +95,7 @@ const languagePack: languageInterface = {
             selectOptionsDone: 'Done',
             selectOptionCancel: 'Cancel',
             logInAgain: 'You need to log in again',
-            oldPassword: 'Old Password',
+            oldPassword: 'Password',
             wrongPassword: 'Password is wrong',
             save: 'save',
             cancel: 'Cancel',

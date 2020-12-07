@@ -1,7 +1,7 @@
 import React, { useContext, useState } from 'react';
 import { AppContext } from '../../authentication/AppContext';
 import { LanguageContext } from '../../authentication/LanguageContext';
-import auth from '../../authentication/database';
+import DataRequests from '../../authentication/DataRequests';
 import { useForm } from "react-hook-form";
 import renderAccountFormInputs from '../../components/RenderAccountFormInputs';
 import { PageNavigationTypes } from '../../utils/variables';
@@ -43,13 +43,13 @@ const ChangePasswordPage: React.FC = ({ history }: any) => {
   }];
 
   const changePasswordAndForceUserToLogAgain = async (newPassword: string) => {
-    setMessage(await auth.changeUserPassword(newPassword));
+    setMessage(await DataRequests.changeUserPassword(newPassword));
 
     setTimeout(() => {
       setMessage(languagePack[language].GLOBAL.logInAgain)
     }, 1000);
     return setTimeout(() => {
-      auth.logout();
+      DataRequests.logout();
       setLoggedIn!({});
     }, 2000);
   }
@@ -66,7 +66,7 @@ const ChangePasswordPage: React.FC = ({ history }: any) => {
   }
 
   const sendRequestToChangePassword = async ({ oldPassword, newPassword, newPasswordRepeat }: sendRequestToChangePasswordInteface) => {
-    const response = await auth.checkIfPasswordIsCorrect(oldPassword);
+    const response = await DataRequests.checkIfPasswordIsCorrect(oldPassword);
 
     if (response)
       return checkPassword(oldPassword, newPassword, newPasswordRepeat);

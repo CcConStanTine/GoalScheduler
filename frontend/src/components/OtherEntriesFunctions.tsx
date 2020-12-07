@@ -1,7 +1,7 @@
 import { EntriesPlanType, navigationTypes } from '../utils/variables';
 import languagePack from '../utils/languagePack';
 import { dateParams } from '../utils/interfaces';
-import auth from '../authentication/database';
+import DataRequests from '../authentication/DataRequests';
 
 export const getActualDateAsAObject = () => {
     const date = new Date();
@@ -87,23 +87,23 @@ export const setActiveClassName = (type: string, entryType: string) => {
 
 export const getDataByType = async (type: string, sign: string, id: number, date: dateParams) => {
     if (type === EntriesPlanType.YEAR) {
-        const { yearId: _id, yearNumber: year } = await auth.getTypeDataById(type, setIdValue(sign, type, id!));
-        const plans = await auth.getTypePlansByTypeAndId(type, _id);
+        const { yearId: _id, yearNumber: year } = await DataRequests.getTypeDataById(type, setIdValue(sign, type, id!));
+        const plans = await DataRequests.getTypePlansByTypeAndId(type, _id);
 
         return { _id, _date: { ...date, year }, plans };
     }
     else if (type === EntriesPlanType.MONTH) {
-        const monthList = await auth.getTypeDataByDate(type, getDateAsAString(date));
-        const { monthId: _id, monthName } = await auth.getTypeDataById(type, setIdValue(sign, type, id!, monthList));
-        const { plans } = await auth.getTypePlans(type, getDateAsAString(date, monthName));
+        const monthList = await DataRequests.getTypeDataByDate(type, getDateAsAString(date));
+        const { monthId: _id, monthName } = await DataRequests.getTypeDataById(type, setIdValue(sign, type, id!, monthList));
+        const { plans } = await DataRequests.getTypePlans(type, getDateAsAString(date, monthName));
         const month = setMonthValue(monthName);
 
         return { _id, _date: { ...date, month }, plans };
     }
 
-    const dayList = await auth.getTypeDataByDate(type, getDateAsAString(date));
-    const { dayId: _id, dayDate } = await auth.getTypeDataById(type, setIdValue(sign, type, id!, dayList));
-    const { plans } = await auth.getTypePlans(type, dayDate);
+    const dayList = await DataRequests.getTypeDataByDate(type, getDateAsAString(date));
+    const { dayId: _id, dayDate } = await DataRequests.getTypeDataById(type, setIdValue(sign, type, id!, dayList));
+    const { plans } = await DataRequests.getTypePlans(type, dayDate);
     const day = dayDate.slice(dayDate.length - 2, dayDate.length);
 
     return { _id, _date: { ...date, day }, plans };

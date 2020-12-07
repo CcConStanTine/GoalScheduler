@@ -1,7 +1,7 @@
 import React, { useContext, useState, useEffect } from 'react';
 import { AppContext } from '../../authentication/AppContext';
 import { LanguageContext } from '../../authentication/LanguageContext';
-import auth from '../../authentication/database';
+import DataRequests from '../../authentication/DataRequests';
 import { PageNavigationTypes, PlanTypes } from '../../utils/variables';
 import languagePack from '../../utils/languagePack';
 import NavigationBar from '../../components/NavigationBar';
@@ -20,16 +20,16 @@ const HomePage = ({ history }: HomeInterface) => {
     const [todayPlans, setTodayPlans] = useState([]);
 
     useEffect(() => {
-        const { token } = auth.getCurrentUser();
+        const { token } = DataRequests.getCurrentUser();
         const updateUserInfo = async () => {
-            const userInfo = await auth.getCurrentUserInfo();
-            const { fileUrl } = token && await auth.getUserPhoto();
+            const userInfo = await DataRequests.getCurrentUserInfo();
+            const { fileUrl } = token && await DataRequests.getUserPhoto();
 
             setLoggedIn && setLoggedIn({ ...userInfo, token, userPhoto: fileUrl ? fileUrl : userDefaultPhoto })
         }
 
         const updateTodayPlans = async () => {
-            const { plans } = await auth.getTypePlans(PlanTypes.DAY);
+            const { plans } = await DataRequests.getTypePlans(PlanTypes.DAY);
 
             setTodayPlans(plans);
         }

@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import languagePack from '../../utils/languagePack';
 import NavigationBar from '../../components/NavigationBar';
 import { LanguageContext } from '../../authentication/LanguageContext';
-import auth from '../../authentication/database';
+import DataRequests from '../../authentication/DataRequests';
 import { useParams } from "react-router-dom";
 import { FaPen, FaCheck, FaTimes } from 'react-icons/fa';
 import EntryPageConfirmWindow from '../../components/EntryPageConfirmWindow';
@@ -19,7 +19,7 @@ const ViewEntryPage = ({ history }: landingPageInterface) => {
 
     useEffect(() => {
         const getEntryData = async () => {
-            const entryData = await auth.getPlanByTypeAndId(type, parseInt(id))
+            const entryData = await DataRequests.getPlanByTypeAndId(type, parseInt(id))
 
             setEntry(entryData);
         }
@@ -28,12 +28,12 @@ const ViewEntryPage = ({ history }: landingPageInterface) => {
     }, [id, finishEntryWindow, type])
 
     const deleteEntry = async () => {
-        await auth.deletePlanByTypeAndId(type, parseInt(id));
+        await DataRequests.deletePlanByTypeAndId(type, parseInt(id));
         return history.goBack();
     }
 
     const toggleFulfilledPlan = async () => {
-        await auth.toggleFinishPlanByTypeAndId(type, parseInt(id));
+        await DataRequests.toggleFinishPlanByTypeAndId(type, parseInt(id));
 
         return showFinishEntryWindow(false);
     }

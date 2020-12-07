@@ -5,7 +5,7 @@ import RenderEntriesNavigation from './RenderEntriesNavigation';
 import RenderEntriesDateNavigation from './RenderEntriesDateNavigation';
 import { getActualDateAsAObject, getDataByType } from './OtherEntriesFunctions';
 import { dateParams, entryParams } from '../utils/interfaces';
-import auth from '../authentication/database';
+import DataRequests from '../authentication/DataRequests';
 
 const HomePageOtherEntries = () => {
     const [date, setDate] = useState<dateParams>(getActualDateAsAObject());
@@ -23,7 +23,7 @@ const HomePageOtherEntries = () => {
 
     const handlePlanData = async (type: string = EntriesPlanType.YEAR, date?: string) => {
         setEntryType(type);
-        const { plans, id } = await auth.getTypePlans(type, date);
+        const { plans, id } = await DataRequests.getTypePlans(type, date);
         setId(id);
 
         return setEntryData(plans);

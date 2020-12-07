@@ -3,7 +3,7 @@ import { useForm } from "react-hook-form";
 import { AccountFormTypes } from '../utils/variables';
 import languagePack from '../utils/languagePack';
 import { accountFormInterface } from '../utils/interfaces';
-import auth from '../authentication/database';
+import DataRequests from '../authentication/DataRequests';
 import renderAccountFormInputs from './RenderAccountFormInputs';
 import { AppContext } from '../authentication/AppContext';
 import { LanguageContext } from '../authentication/LanguageContext';
@@ -65,7 +65,7 @@ const AccountForm = ({ type, history }: accountFormInterface) => {
     }];
 
     const sendRequestToCreateUser = async (data: any) => {
-        const { status, message } = await auth.register(data);
+        const { status, message } = await DataRequests.register(data);
         if (status === 200) {
             setTimeout(() => setRegisterMessage(languagePack[language].WELCOME.logginIn), 1000);
             setTimeout(() => sendRequestToLoginUser(data), 2000);
@@ -75,10 +75,12 @@ const AccountForm = ({ type, history }: accountFormInterface) => {
     }
 
     const sendRequestToLoginUser = async (data: any) => {
-        const { token, code } = await auth.login(data);
-        if (token && setLoggedIn) return setLoggedIn(auth.getCurrentUser);
+        const userData = await DataRequests.login(data);
+        DataRequests.setLocalStorageValues(userData);
 
-        const message = code === 200 ? languagePack[language].WELCOME.logginIn : languagePack[language].WELCOME.errorLoggedIn;
+        if (userData.token && setLoggedIn) return setLoggedIn(DataRequests.getCurrentUser);
+
+        const message = userData.status ? languagePack[language].WELCOME.errorLoggedIn : languagePack[language].WELCOME.logginIn;
 
         return setLoginMessage(message)
     }

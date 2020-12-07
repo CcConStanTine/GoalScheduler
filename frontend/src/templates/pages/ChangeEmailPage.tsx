@@ -1,7 +1,7 @@
 import React, { useContext, useState } from 'react';
 import { AppContext } from '../../authentication/AppContext';
 import { LanguageContext } from '../../authentication/LanguageContext';
-import auth from '../../authentication/database';
+import DataRequests from '../../authentication/DataRequests';
 import { useForm } from "react-hook-form";
 import renderAccountFormInputs from '../../components/RenderAccountFormInputs';
 import { PageNavigationTypes } from '../../utils/variables';
@@ -36,7 +36,7 @@ const ChangeEmailPage: React.FC = ({ history }: any) => {
 
   const changeEmail = async (newEmail: string, currentEmail: string) => {
     if (currentEmail !== newEmail) {
-      const { email } = await auth.changeUserEmail(newEmail);
+      const { email } = await DataRequests.changeUserEmail(newEmail);
 
       setLoggedIn && setLoggedIn({ ...userContext, email });
 
@@ -51,7 +51,7 @@ const ChangeEmailPage: React.FC = ({ history }: any) => {
   }
 
   const sendRequestToChangeEmail = async ({ newEmail, currentEmail }: emailInterface) => {
-    const { email } = await auth.getCurrentUserInfo();
+    const { email } = await DataRequests.getCurrentUserInfo();
 
     if (email === currentEmail)
       return changeEmail(newEmail, currentEmail);
