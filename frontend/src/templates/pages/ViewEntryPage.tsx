@@ -4,10 +4,10 @@ import { Link } from 'react-router-dom';
 import languagePack from '../../utils/languagePack';
 import NavigationBar from '../../components/NavigationBar';
 import { LanguageContext } from '../../authentication/LanguageContext';
+import auth from '../../authentication/database';
 import { useParams } from "react-router-dom";
 import { FaPen, FaCheck, FaTimes } from 'react-icons/fa';
 import EntryPageConfirmWindow from '../../components/EntryPageConfirmWindow';
-import { getEntryDataByType, deletePlanByType, togglePlanByType } from '../../components/ViewEntryPageFunctons';
 import { landingPageInterface, ViewEntryRouteParams, ViewEntryParams } from '../../utils/interfaces';
 
 const ViewEntryPage = ({ history }: landingPageInterface) => {
@@ -19,7 +19,7 @@ const ViewEntryPage = ({ history }: landingPageInterface) => {
 
     useEffect(() => {
         const getEntryData = async () => {
-            const entryData = await getEntryDataByType(type, parseInt(id));
+            const entryData = await auth.getPlanByTypeAndId(type, parseInt(id))
 
             setEntry(entryData);
         }
@@ -28,12 +28,12 @@ const ViewEntryPage = ({ history }: landingPageInterface) => {
     }, [id, finishEntryWindow, type])
 
     const deleteEntry = async () => {
-        await deletePlanByType(type, parseInt(id));
+        await auth.deletePlanByTypeAndId(type, parseInt(id));
         return history.goBack();
     }
 
     const toggleFulfilledPlan = async () => {
-        await togglePlanByType(type, parseInt(id));
+        await auth.toggleFinishPlanByTypeAndId(type, parseInt(id));
 
         return showFinishEntryWindow(false);
     }
