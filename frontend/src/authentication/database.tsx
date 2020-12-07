@@ -100,28 +100,23 @@ class Database {
         .then(({ data }) => data)
         .catch(({ response }) => console.log(response.data));
 
-    //----------------------------------------------------276 LINES OF CODE-----
-    //----------------------------------------------------266 LINES OF CODE-----
-    //----------------------------------------------------256 LINES OF CODE-----
-    //----------------------------------------------------246 LINES OF CODE-----
+    getTypePlansByTypeAndId = (type: string, id: number) => axios
+        .get(`${this.serverAddress}/schedule/${this.userId}/${type}/${id}/${type}_plans`, this.getAuthConfig())
+        .then(({ data }) => data)
+        .catch(({ response }) => console.log(response.data));
 
     getDayPlans = async (date: string | undefined) => {
         let _date = date ? this.validateDate(date) : this.getCurrentDate();
         const dayId = await this.getPlanIdByTypeAndDate(PlanTypes.DAY, _date);
-        const plans = await this.getDayPlansByDayID(dayId);
+        const plans = await this.getTypePlansByTypeAndId(PlanTypes.DAY, dayId);
 
         return { id: dayId, plans }
     }
 
-    getMonthPlansByMonthId = (monthId: number) => axios
-        .get(`${this.serverAddress}/schedule/${this.userId}/month/${monthId}/month_plans`, this.getAuthConfig())
-        .then(({ data }) => data)
-        .catch(({ response }) => console.log(response.data))
-
     getMonthPlans = async (date: string | undefined) => {
         let _date = date ? this.validateDate(date) : this.getCurrentDate();
         const monthId = await this.getPlanIdByTypeAndDate(PlanTypes.MONTH, _date);
-        const plans = await this.getMonthPlansByMonthId(monthId);
+        const plans = await this.getTypePlansByTypeAndId(PlanTypes.MONTH, monthId);
 
         return { id: monthId, plans };
     }
@@ -129,24 +124,14 @@ class Database {
     getYearPlans = async (date: string | undefined) => {
         let _date = date ? this.validateDate(date) : this.getCurrentDate();
         const yearId = await this.getPlanIdByTypeAndDate(PlanTypes.YEAR, _date);
-        const plans = await this.getYearPlansByYearId(yearId);
+        const plans = await this.getTypePlansByTypeAndId(PlanTypes.YEAR, yearId);
 
         return { id: yearId, plans };
     }
 
-    getYearPlansByYearId = (yearId: number) => axios
-        .get(`${this.serverAddress}/schedule/${this.userId}/year/${yearId}/year_plans`, this.getAuthConfig())
-        .then(({ data }) => data)
-        .catch(({ response }) => console.log(response.data))
-
-    getDayPlansByDayID = (dayId: number) => axios
-        .get(`${this.serverAddress}/schedule/${this.userId}/day/${dayId}/day_plans`, this.getAuthConfig())
-        .then(({ data }) => data)
-        .catch(({ response }) => response.data.message)
-
     getTodayPlans = async () => {
         const dayId = await this.getPlanIdByTypeAndDate(PlanTypes.DAY, this.getCurrentDate());
-        const todayPlans = await this.getDayPlansByDayID(dayId);
+        const todayPlans = await this.getTypePlansByTypeAndId(PlanTypes.DAY, dayId);
         return todayPlans;
     }
 

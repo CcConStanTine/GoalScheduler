@@ -97,7 +97,7 @@ export const getRequestByType = async (type: string, date?: string) => {
 export const getDataByType = async (type: string, sign: string, id: number, date: dateParams) => {
     if (type === EntriesPlanType.YEAR) {
         const { yearId: _id, yearNumber: year } = await auth.getTypeDataById(type, setIdValue(sign, type, id!));
-        const plans = await auth.getYearPlansByYearId(_id);
+        const plans = await auth.getTypePlansByTypeAndId(type, _id);
 
         return { _id, _date: { ...date, year }, plans };
     }
