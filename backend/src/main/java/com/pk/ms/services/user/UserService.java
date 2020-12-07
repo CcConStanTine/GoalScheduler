@@ -1,5 +1,6 @@
 package com.pk.ms.services.user;
 
+import com.pk.ms.constants.URL;
 import com.pk.ms.dao.user.UserRepository;
 import com.pk.ms.dto.user.UserEmailUpdateDTO;
 import com.pk.ms.dto.user.UserInfoDTO;
@@ -41,11 +42,11 @@ public class UserService {
     }
 
     public boolean isNickUnique(String nick) {
-        return isObjectNull(getByNick(nick));
+        return repository.existsByNick(nick);
     }
 
     public boolean isEmailUnique(String email) {
-        return isObjectNull(getByEmail(email));
+        return repository.existsByEmail(email);
     }
 
     public UserInfoDTO getUserInfo(long id) {
@@ -56,20 +57,20 @@ public class UserService {
 
         String nick = userBasicInfoUpdateDTO.getNick();
 
-        if(!isNickUnique(userBasicInfoUpdateDTO.getNick()))
+        if(isNickUnique(userBasicInfoUpdateDTO.getNick()))
             throw new UniqueValuesAlreadyExistsException(userBasicInfoUpdateDTO);
 
         MyScheduleUser user = getNotNullUserById(userId);
 
         String firstName = userBasicInfoUpdateDTO.getFirstName();
-        if(!isObjectNull(firstName))
+        if(isObjectNotNull(firstName))
             user.setFirstName(firstName);
 
         String lastName = userBasicInfoUpdateDTO.getLastName();
-        if(!isObjectNull(lastName))
+        if(isObjectNotNull(lastName))
             user.setLastName(lastName);
 
-        if(!isObjectNull(nick))
+        if(isObjectNotNull(nick))
             user.setNick(nick);
 
         saveUser(user);
@@ -78,7 +79,7 @@ public class UserService {
 
     public UserInfoDTO updateUserEmail(long userId, UserEmailUpdateDTO userEmailUpdateDTO) {
         String updateEmail = userEmailUpdateDTO.getEmail();
-        if(!isEmailUnique(updateEmail))
+        if(isEmailUnique(updateEmail))
             throw new UniqueValuesAlreadyExistsException(updateEmail);
         MyScheduleUser user = getNotNullUserById(userId);
         user.setEmail(updateEmail);
@@ -96,26 +97,18 @@ public class UserService {
         return "Password changed successfully. ";
     }
 
-    private boolean isObjectNull(Object object) {
-        return object == null;
+    private boolean isObjectNotNull(Object object) {
+        return object != null;
     }
 
     private MyScheduleUser getNotNullUserById(long id) {
         return repository.findById(id).orElseThrow(ResourceNotAvailableException::new);
     }
 
-    private MyScheduleUser getByNick(String nick) {
-        return repository.findByNick(nick);
-    }
-
-    private MyScheduleUser getByEmail(String email) {
-        return repository.findByEmail(email);
-    }
-
     public Image getUserImage(long userId) {
         Image image = getNotNullUserById(userId).getImage();
         if(image == null)
-            return new Image("https://res.cloudinary.com/ccconstantine/image/upload/v1607097618/person_tgl8si.png");
+            return new Image(URL.URL1.getURL());
         else
             return image;
     }
@@ -143,5 +136,4 @@ public class UserService {
         saveUser(user);
         return imageService.deleteImage(image);
     }
-
 }
