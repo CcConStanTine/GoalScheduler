@@ -9,25 +9,6 @@ export const getActualDateAsAObject = () => {
     return { year: date.getFullYear(), month: date.getMonth() + 1, day: date.getDate() };
 }
 
-export const setMonthValue = (monthName: string) => {
-    switch (monthName) {
-        case 'JANUARY': return 1;
-        case 'FEBRUARY': return 2;
-        case 'MARCH': return 3;
-        case 'APRIL': return 4;
-        case 'MAY': return 5;
-        case 'JUNE': return 6;
-        case 'JULY': return 7;
-        case 'AUGUST': return 8;
-        case 'SEPTEMBER': return 9;
-        case 'OCTOBER': return 10;
-        case 'NOVEMBER': return 11;
-        case 'DECEMBER': return 12;
-
-        default: return 1;
-    }
-};
-
 export const getDateAsAString = (date: dateParams, monthName?: string) => {
     const { year, month, day } = date;
     let _month = month;
@@ -40,14 +21,10 @@ export const getDateAsAString = (date: dateParams, monthName?: string) => {
     return `${year}-${monthValue}-${day}`;
 };
 
-const getFirstAndLastId = (entryType: string, entryList: any) => {
-    if (entryType === EntriesPlanType.MONTH)
-        return { firstId: entryList[0].monthId, lastId: entryList[entryList.length - 1].monthId };
-    else if (entryType === EntriesPlanType.DAY)
-        return { firstId: entryList[0].dayId, lastId: entryList[entryList.length - 1].dayId };
-
-    return { firstId: null, lastId: 1 };
-}
+const getFirstAndLastId = (entryType: string, entryList: any) => ({
+    firstId: entryList[0][`${entryType}Id`],
+    lastId: entryList[entryList.length - 1][`${entryType}Id`]
+});
 
 const calculateId = (sign: string, firstId: number, lastId: number, id: number) => {
     if (sign === navigationTypes.ADDITION)
@@ -59,23 +36,17 @@ const calculateId = (sign: string, firstId: number, lastId: number, id: number) 
 export const setIdValue = (sign: string, entryType: string, id: number, entryList?: any) => {
     const { firstId, lastId } = getFirstAndLastId(entryType, entryList);
 
-    if (firstId)
-        return calculateId(sign, firstId, lastId, id);
-
-    if (sign === navigationTypes.ADDITION)
-        return ++id
-
-    return --id < 1 ? lastId : id;
+    return calculateId(sign, firstId, lastId, id);
 };
 
 export const setPlaceholderValue = (date: dateParams, entryType: string, language: string) => {
     const { year, month, day } = date;
     const monthValue = setMonthName(month, language);
 
-    if (entryType === EntriesPlanType.YEAR) return year
-    else if (entryType === EntriesPlanType.MONTH) return `${monthValue} ${year}`
+    if (entryType === EntriesPlanType.YEAR) return year;
+    else if (entryType === EntriesPlanType.MONTH) return `${monthValue} ${year}`;
 
-    return `${day} ${monthValue} ${year}`
+    return `${day} ${monthValue} ${year}`;
 };
 
 export const setActiveClassName = (type: string, entryType: string) => {
@@ -85,45 +56,37 @@ export const setActiveClassName = (type: string, entryType: string) => {
     return null;
 };
 
-export const getDataByType = async (type: string, sign: string, id: number, date: dateParams) => {
-    if (type === EntriesPlanType.YEAR) {
-        const { yearId: _id, yearNumber: year } = await DataRequests.getTypeDataById(type, setIdValue(sign, type, id!));
-        const plans = await DataRequests.getTypePlansByTypeAndId(type, _id);
+const getPlansByEntryType = async (type: string, data: any, date: dateParams) => {
+    const { yearId, yearNumber, monthName, dayDate } = data;
 
-        return { _id, _date: { ...date, year }, plans };
+    if (type === EntriesPlanType.YEAR) {
+        const plans = await DataRequests.getTypePlansByTypeAndId(type, yearId);
+        const typeValue = yearNumber;
+
+        return { plans, typeValue };
     }
     else if (type === EntriesPlanType.MONTH) {
-        const monthList = await DataRequests.getTypeDataByDate(type, getDateAsAString(date));
-        const { monthId: _id, monthName } = await DataRequests.getTypeDataById(type, setIdValue(sign, type, id!, monthList));
-        const { plans } = await DataRequests.getTypePlans(type, getDateAsAString(date, monthName));
-        const month = setMonthValue(monthName);
+        const plans = await DataRequests.getTypePlans(type, getDateAsAString(date, monthName));
+        const typeValue = setMonthValue(monthName);
 
-        return { _id, _date: { ...date, month }, plans };
+        return { plans, typeValue }
     }
 
-    const dayList = await DataRequests.getTypeDataByDate(type, getDateAsAString(date));
-    const { dayId: _id, dayDate } = await DataRequests.getTypeDataById(type, setIdValue(sign, type, id!, dayList));
-    const { plans } = await DataRequests.getTypePlans(type, dayDate);
-    const day = dayDate.slice(dayDate.length - 2, dayDate.length);
+    const plans = await DataRequests.getTypePlans(type, dayDate);
+    const typeValue = dayDate.slice(dayDate.length - 2, dayDate.length);
 
-    return { _id, _date: { ...date, day }, plans };
+    return { plans, typeValue }
+}
+
+export const getDataByType = async (type: string, sign: string, id: number, date: dateParams) => {
+    const planList = await DataRequests.getTypeDataByDate(type, getDateAsAString(date));
+    const data = await DataRequests.getTypeDataById(type, setIdValue(sign, type, id!, planList));
+
+    const { plans, typeValue } = await getPlansByEntryType(type, data, date);
+
+    return { _id: data[`${type}Id`], _date: { ...date, [`${type}`]: typeValue }, plans };
 };
 
-const setMonthName = (monthNumber: number, language: string) => {
-    switch (monthNumber) {
-        case 1: return languagePack[language].MONTHS.names.january;
-        case 2: return languagePack[language].MONTHS.names.february;
-        case 3: return languagePack[language].MONTHS.names.march;
-        case 4: return languagePack[language].MONTHS.names.april;
-        case 5: return languagePack[language].MONTHS.names.may;
-        case 6: return languagePack[language].MONTHS.names.june;
-        case 7: return languagePack[language].MONTHS.names.july;
-        case 8: return languagePack[language].MONTHS.names.august;
-        case 9: return languagePack[language].MONTHS.names.september;
-        case 10: return languagePack[language].MONTHS.names.october;
-        case 11: return languagePack[language].MONTHS.names.november;
-        case 12: return languagePack[language].MONTHS.names.december;
+const setMonthName = (monthNumber: number, language: string) => languagePack[language].MONTHS.namesTable[monthNumber - 1];
 
-        default: return languagePack[language].MONTHS.names.january;
-    }
-};
+export const setMonthValue = (monthName: string) => languagePack['en-US'].MONTHS.namesTable.map(month => month.toUpperCase()).indexOf(monthName) + 1;

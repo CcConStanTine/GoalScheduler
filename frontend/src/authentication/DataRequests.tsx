@@ -91,7 +91,7 @@ class DataRequests extends UserCredentialsRequests {
         const id = await this.getPlanIdByTypeAndDate(type, _date);
         const plans = await this.getTypePlansByTypeAndId(type, id);
 
-        return { id, plans };
+        return plans;
     };
 }
 

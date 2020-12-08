@@ -29,7 +29,7 @@ const HomePage = ({ history }: HomeInterface) => {
         }
 
         const updateTodayPlans = async () => {
-            const { plans } = await DataRequests.getTypePlans(PlanTypes.DAY);
+            const plans = await DataRequests.getTypePlans(PlanTypes.DAY);
 
             setTodayPlans(plans);
         }

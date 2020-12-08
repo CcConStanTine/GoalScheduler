@@ -23,7 +23,9 @@ const HomePageOtherEntries = () => {
 
     const handlePlanData = async (type: string = EntriesPlanType.YEAR, date?: string) => {
         setEntryType(type);
-        const { plans, id } = await DataRequests.getTypePlans(type, date);
+        const _date = date ? DataRequests.validateDate(date) : DataRequests.getCurrentDate();
+        const id = await DataRequests.getPlanIdByTypeAndDate(type, _date);
+        const plans = await DataRequests.getTypePlans(type, date);
         setId(id);
 
         return setEntryData(plans);
