@@ -18,6 +18,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.BDDMockito.given;
@@ -30,10 +31,13 @@ class YearServiceTest {
     @Mock
     YearRepository yearRepo;
 
+    @Mock
     YearMapService yearMapService;
 
     Year year2020;
     Year year2021;
+    YearBasicInfoDTO year2020BasicInfoDTO;
+    YearBasicInfoDTO year2021BasicInfoDTO;
 
     YearService yearService;
 
@@ -43,8 +47,66 @@ class YearServiceTest {
         year2021 = new Year(2021);
         year2020.setYearId(1L);
         year2021.setYearId(2L);
-        yearMapService = new YearMapService();
+        year2020BasicInfoDTO = new YearBasicInfoDTO(year2020.getYearId(), year2020.getYearNumber(),
+                year2020.isLeapYear(), year2020.getDaysAmount());
+        year2021BasicInfoDTO = new YearBasicInfoDTO(year2021.getYearId(), year2021.getYearNumber(),
+                year2021.isLeapYear(), year2021.getDaysAmount());
         yearService = new YearService(yearRepo, yearMapService);
+    }
+
+    @Test
+    @DisplayName("Check if method getYearById() calls repository's method findById()")
+    void should_MethodGetYearByIdCallsRepositoryMethodFindById() {
+        //given
+        given(yearRepo.findById(1L)).willReturn(Optional.of(year2020));
+        //when
+        yearService.getYearById(1L);
+        //then
+        verify(yearRepo, Mockito.times(1)).findById(1L);
+    }
+
+    @Test
+    @DisplayName("Check if method getYearById() throws ResourceNotAvailableException when year with given id does not exist")
+    void should_MethodGetYearByIdThrowsResourceNotAvailableException_When_GivenYearDoesNotExist() {
+        //given
+        given(yearRepo.findById(1L)).willReturn(Optional.empty());
+        //when + then
+        assertThrows(ResourceNotAvailableException.class,
+                () -> yearService.getYearById(1L));
+
+    }
+
+    @Test
+    @DisplayName("Check if method getYearByYearNumber() calls repository's method findByYearNumber()")
+    void should_MethodGetYearByYearNumberCallsRepositoryMethodFindById() {
+        //given
+        given(yearRepo.findByYearNumber(2020)).willReturn(Optional.of(year2020));
+        //when
+        yearService.getYearByYearNumber(2020);
+        //then
+        verify(yearRepo, Mockito.times(1)).findByYearNumber(2020);
+    }
+
+    @Test
+    @DisplayName("Check if method getYearByYearNumber() throws ResourceNotAvailableException when year with given yearNumber does not exist")
+    void should_MethodGetYearByYearNumberThrowsResourceNotAvailableException_When_GivenYearDoesNotExist() {
+        //given
+        given(yearRepo.findByYearNumber(2020)).willReturn(Optional.empty());
+        //when + then
+        assertThrows(ResourceNotAvailableException.class,
+                () -> yearService.getYearByYearNumber(2020));
+
+    }
+
+    @Test
+    @DisplayName("Check if method getAllYearsDTOs() calls repository's method findAll()")
+    void should_MethodGetAllYearDTOsCallsRepositoryMethodFindAll() {
+        //given
+        given(yearRepo.findAll()).willReturn(Arrays.asList(year2020, year2021));
+        //when
+        yearService.getAllYearsDTOs();
+        //then
+        verify(yearRepo, Mockito.times(1)).findAll();
     }
 
     @Test
@@ -61,45 +123,12 @@ class YearServiceTest {
     }
 
     @Test
-    @DisplayName("Check if method getAllYearsDTOs() return all Years in YearBasicInfoDTO form when Years exist")
-    void should_ReturnAllYearsInYearBasicInfoDTOForm_When_YearsExist() {
+    @DisplayName("Check if method getYearDTO() throws ResourceNotAvailableException when there is no Year with given id")
+    void should_ThrowsResourceNotAvailableException_When_ThereIsNoYearWithGivenId() {
         //given
-        List<YearBasicInfoDTO> yearBasicInfoDTOListExpected =
-                Arrays.asList(yearMapService.mapToDTO(year2020), yearMapService.mapToDTO(year2021));
-        given(yearRepo.findAll()).willReturn(Arrays.asList(year2020, year2021));
-        //when
-        List<YearBasicInfoDTO> yearBasicInfoDTOListActual = yearService.getAllYearsDTOs();
-        //then
-        assertAll(
-                () -> assertEquals(2, yearBasicInfoDTOListExpected.size()),
-                () -> assertEquals(yearBasicInfoDTOListExpected.get(0).getYearId(),
-                        yearBasicInfoDTOListActual.get(0).getYearId()),
-                () -> assertEquals(yearBasicInfoDTOListExpected.get(1).getYearId(),
-                        yearBasicInfoDTOListActual.get(1).getYearId())
-        );
-    }
-
-    @Test
-    @DisplayName("Check if method getYearDTO(long yearId) throws ResourceNotAvailableException when there is no Year with given id")
-    void should_ThrowResourceNotAvailableException_When_ThereIsNoYearWithGivenId() {
-        //given
-        given(yearRepo.findById(3L)).willReturn(null);
+        given(yearRepo.findById(3L)).willReturn(Optional.empty());
         //when + then
         assertThrows(ResourceNotAvailableException.class, () -> yearService.getYearById(3L));
         verify(yearRepo, Mockito.times(1)).findById(3L);
     }
-
-    @Test
-    @DisplayName("Check if method getYearDTO(long yearId) return Year in YearBasicInfoDTO form when Year with given id exists")
-    void should_ReturnYearInYearBasicInfoDTOForm_When_YearWithGivenIdExists() {
-        //given
-        YearBasicInfoDTO yearBasicInfoDTOExpected = yearMapService.mapToDTO(year2020);
-        given(yearRepo.findById(1L)).willReturn(java.util.Optional.ofNullable(year2020));
-        //when
-        YearBasicInfoDTO yearBasicInfoDTOActual = yearService.getYearDTOById(1L);
-        //then
-        verify(yearRepo, Mockito.times(1)).findById(1L);
-        assertEquals(yearBasicInfoDTOActual.getYearId(), yearBasicInfoDTOExpected.getYearId());
-    }
-
 }
