@@ -53,10 +53,8 @@ public class YearSummaryService implements SummaryAccessAuthorizationService {
     }
 
     private YearSummary getAuthorizedNotNullYearSummaryByScheduleIdAndYearId(long scheduleId, long yearId) {
-        YearSummary yearSummary = repository.findByScheduleIdAndYearId(scheduleId, yearId)
+        return repository.findByScheduleIdAndYearId(scheduleId, yearId)
                 .orElseThrow(ResourceNotAvailableException::new);
-        authorize(hasAccess(scheduleId, yearSummary));
-        return yearSummary;
     }
 
     private YearSummary save(YearSummary yearSummary) {

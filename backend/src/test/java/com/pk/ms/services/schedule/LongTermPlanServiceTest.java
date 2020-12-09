@@ -311,11 +311,15 @@ class LongTermPlanServiceTest {
     void should_MethodUpdateFulfilledStatusUpdateLongTermPlanFulFilledField() {
         //given
         longTermPlan1.setFulfilled(false);
+        boolean expected1 = longTermPlan1.isFulfilled();
         given(longTermPlanRepo.findById(1L)).willReturn(Optional.of(longTermPlan1));
         //when
         longTermPlanService.updateFulfilledStatus(1L, 1);
         //then
-        assertTrue(longTermPlan1.isFulfilled());
+        assertAll(
+                () -> assertFalse(expected1),
+                () -> assertTrue(longTermPlan1.isFulfilled())
+        );
     }
 
     @Test
