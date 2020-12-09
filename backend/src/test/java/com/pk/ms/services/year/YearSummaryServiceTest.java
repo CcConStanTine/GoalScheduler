@@ -1,10 +1,7 @@
 package com.pk.ms.services.year;
 
 import com.pk.ms.constants.Importance;
-import com.pk.ms.constants.Urgency;
-import com.pk.ms.dao.year.YearPlanRepository;
 import com.pk.ms.dao.year.YearSummaryRepository;
-import com.pk.ms.dto.year.YearPlanInputDTO;
 import com.pk.ms.entities.schedule.Schedule;
 import com.pk.ms.entities.user.MyScheduleUser;
 import com.pk.ms.entities.year.Year;
@@ -22,8 +19,6 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.time.LocalDate;
-import java.util.Arrays;
-import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
