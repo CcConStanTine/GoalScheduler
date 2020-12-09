@@ -4,7 +4,7 @@ import { requestMethods } from '../utils/variables';
 import AppConfig from './AppConfig';
 
 class UserCredentialsRequests extends AppConfig {
-    getLocalStorageAndSetConstructorValues = () => {
+    private getLocalStorageAndSetConstructorValues = () => {
         const { token, id, username } = JSON.parse(localStorage.getItem('user')!);
 
         this.token = token;
@@ -12,18 +12,9 @@ class UserCredentialsRequests extends AppConfig {
         this.username = username;
     }
 
-    setLocalStorageValues = (data: any) => {
-        if (data.token)
-            localStorage.setItem('user', JSON.stringify(data));
+    private getUserValue = (value: string) => `${this.serverAddress}/user/${this.userId}/${value}`;
 
-        return {
-            ...data
-        };
-    }
-
-    getUserValue = (value: string) => `${this.serverAddress}/user/${this.userId}/${value}`;
-
-    handleUserCredentials = async (method: string, value: string, data?: object | FormData | loginUser | registerUser) => {
+    private handleUserCredentials = async (method: string, value: string, data?: object | FormData | loginUser | registerUser) => {
         switch (method) {
             case requestMethods.GET:
                 return axios
@@ -58,34 +49,43 @@ class UserCredentialsRequests extends AppConfig {
         }
     }
 
-    deleteUserPhoto = () => this.handleUserCredentials(requestMethods.DELETE, 'image');
+    public deleteUserPhoto = () => this.handleUserCredentials(requestMethods.DELETE, 'image');
 
-    getUserPhoto = () => this.handleUserCredentials(requestMethods.GET, 'image');
+    public getUserPhoto = () => this.handleUserCredentials(requestMethods.GET, 'image');
 
-    changeUserPhoto = (file: FormData) => this.handleUserCredentials(requestMethods.POST, 'image', file);
+    public changeUserPhoto = (file: FormData) => this.handleUserCredentials(requestMethods.POST, 'image', file);
 
-    changeUsername = (firstName: string, lastName: string, nick: string,) => this.handleUserCredentials(requestMethods.PATCH, 'basic', { firstName, lastName, nick });
+    public changeUsername = (firstName: string, lastName: string, nick: string,) => this.handleUserCredentials(requestMethods.PATCH, 'basic', { firstName, lastName, nick });
 
-    changeUserEmail = (email: string) => this.handleUserCredentials(requestMethods.PATCH, 'email', { email });
+    public changeUserEmail = (email: string) => this.handleUserCredentials(requestMethods.PATCH, 'email', { email });
 
-    changeUserPassword = (password: string) => this.handleUserCredentials(requestMethods.PATCH, 'password', { password });
+    public changeUserPassword = (password: string) => this.handleUserCredentials(requestMethods.PATCH, 'password', { password });
 
-    checkIfPasswordIsCorrect = (password: string) => this.handleUserCredentials(requestMethods.DEFAULT, 'sign-in', { username: this.username, password });
+    public checkIfPasswordIsCorrect = (password: string) => this.handleUserCredentials(requestMethods.DEFAULT, 'sign-in', { username: this.username, password });
 
-    getCurrentUserInfo = () => this.handleUserCredentials(requestMethods.GET, 'info');
+    public getCurrentUserInfo = () => this.handleUserCredentials(requestMethods.GET, 'info');
 
-    register = (data: registerUser) => this.handleUserCredentials(requestMethods.NOAUTH, 'sign-up', data);
+    public register = (data: registerUser) => this.handleUserCredentials(requestMethods.NOAUTH, 'sign-up', data);
 
-    login = (data: loginUser): any => this.handleUserCredentials(requestMethods.NOAUTH, 'sign-in', data);
+    public login = (data: loginUser): any => this.handleUserCredentials(requestMethods.NOAUTH, 'sign-in', data);
 
-    getCurrentUser = () => {
+    public setLocalStorageValues = (data: any) => {
+        if (data.token)
+            localStorage.setItem('user', JSON.stringify(data));
+
+        return {
+            ...data
+        };
+    }
+
+    public getCurrentUser = () => {
         if (localStorage.getItem('user'))
             this.getLocalStorageAndSetConstructorValues();
 
         return { token: this.token }
     }
 
-    logout = () => localStorage.removeItem("user");
+    public logout = () => localStorage.removeItem("user");
 
 }
 
