@@ -250,7 +250,7 @@ class LongTermPlanServiceTest {
         given(longTermPlanRepo.findById(1L)).willReturn(Optional.empty());
         //when + then
         assertThrows(ResourceNotAvailableException.class,
-                () -> longTermPlanService.updateLongTermPlan(1L, 1L, longTermPlanInputDTO));
+                () -> longTermPlanService.deleteLongTermPlan(1L, 1L));
     }
 
     @Test
@@ -260,7 +260,7 @@ class LongTermPlanServiceTest {
         given(longTermPlanRepo.findById(3L)).willReturn(Optional.of(longTermPlan3));
         //when + then
         assertThrows(AccessDeniedException.class,
-                () -> longTermPlanService.updateLongTermPlan(1L, 3L, longTermPlanInputDTO));
+                () -> longTermPlanService.deleteLongTermPlan(1L, 3L));
     }
 
 
@@ -329,7 +329,7 @@ class LongTermPlanServiceTest {
         given(longTermPlanRepo.findById(1L)).willReturn(Optional.of(longTermPlan1));
         given(longTermPlanRepo.save(longTermPlan1)).willReturn(longTermPlan1);
         //when
-        longTermPlanService.updateLongTermPlan(1L, 1, longTermPlanInputDTO);
+        longTermPlanService.updateFulfilledStatus(1L, 1);
         //then
         verify(longTermPlanRepo, Mockito.times(1)).save(any(LongTermPlan.class));
     }
