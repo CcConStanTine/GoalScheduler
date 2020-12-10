@@ -281,7 +281,7 @@ class YearPlanServiceTest {
     }
 
     @Test
-    @DisplayName("Check if method updateYearPlan() update long term plan fields")
+    @DisplayName("Check if method updateYearPlan() update year plan fields")
     void should_MethodUpdateYearPlanUpdateYearPlanFields() {
         //given
         yearPlanInputDTO.setContent("updated content");
@@ -425,7 +425,7 @@ class YearPlanServiceTest {
 
     @Test
     @DisplayName("Check if method updateFulfilledStatus() updates fulfilled field")
-    void should_MethodUpdateFulfilledStatusUpdateLongTermPlanFulFilledField() {
+    void should_MethodUpdateFulfilledStatusUpdateYearPlanFulFilledField() {
         //given
         yearPlan1.setFulfilled(false);
         boolean expected1 = yearPlan1.isFulfilled();
