@@ -52,10 +52,8 @@ public class WeekSummaryService implements SummaryAccessAuthorizationService {
     }
 
     private WeekSummary getAuthorizedNotNullWeekSummaryByScheduleIdAndWeekId(long scheduleId, long weekId) {
-        WeekSummary weekSummary = repository.findByScheduleIdAndWeekId(scheduleId, weekId)
+        return repository.findByScheduleIdAndWeekId(scheduleId, weekId)
                 .orElseThrow(ResourceNotAvailableException::new);
-        authorize(hasAccess(scheduleId, weekSummary));
-        return weekSummary;
     }
 
     private WeekSummary save(WeekSummary weekSummary) {

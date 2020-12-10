@@ -52,10 +52,8 @@ public class MonthSummaryService implements SummaryAccessAuthorizationService {
     }
 
     private MonthSummary getAuthorizedNotNullMonthSummaryByScheduleIdAndMonthId(long scheduleId, long monthId) {
-        MonthSummary monthSummary = repository.findByScheduleIdAndMonthId(scheduleId, monthId)
+        return repository.findByScheduleIdAndMonthId(scheduleId, monthId)
                 .orElseThrow(ResourceNotAvailableException::new);
-        authorize(hasAccess(scheduleId, monthSummary));
-        return monthSummary;
     }
 
     private MonthSummary save(MonthSummary monthSummary) {
