@@ -21,16 +21,16 @@ const ChangeUserPhoto: React.FC = ({ history }: any) => {
   const fileUploadHandler = async () => {
     const formData = new FormData();
     formData.append('file', photo!);
-    const response = await DataRequests.changeUserPhoto(formData);
+    const { path, message } = await DataRequests.changeUserPhoto(formData);
 
-    if (response === "OK") {
+    if (path) {
       const { fileUrl } = await DataRequests.getUserPhoto();
       setLoggedIn!({ ...userContext, userPhoto: fileUrl });
 
       return setMessage(languagePack[language].CHANGEUSERPHOTO.upload);
     }
 
-    return setMessage(response);
+    return setMessage(message);
   }
 
   useEffect(() => {

@@ -13,10 +13,6 @@ export enum RequestsMethods {
     PATCH = 'patch',
 };
 
-export interface UserSignUp {
-    message: string;
-};
-
 export interface UserSignIn extends FailedResponse {
     token: string;
     type: string;
@@ -25,3 +21,34 @@ export interface UserSignIn extends FailedResponse {
     email: string;
     roles: string[];
 };
+
+export interface UserSignUp extends FailedResponse {
+    message: string;
+};
+
+export interface GetUserInfo extends FailedResponse {
+    userId: number;
+    firstName: string;
+    lastName: string;
+    nick: string;
+    email: string;
+}
+
+export interface GetUserPhoto extends FailedResponse {
+    imageId: null,
+    fileUrl: string;
+}
+
+export interface PostUserPhoto extends FailedResponse {
+    imageId: number,
+    fileUrl: string;
+}
+
+export interface ReturnToken {
+    token: string;
+}
+
+
+
+
+

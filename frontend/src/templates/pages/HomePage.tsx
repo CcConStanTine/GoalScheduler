@@ -23,7 +23,7 @@ const HomePage = ({ history }: HomeInterface) => {
         const { token } = DataRequests.getCurrentUser();
         const updateUserInfo = async () => {
             const userInfo = await DataRequests.getCurrentUserInfo();
-            const { fileUrl } = token && await DataRequests.getUserPhoto();
+            const fileUrl = token && await DataRequests.getUserPhoto();
 
             setLoggedIn && setLoggedIn({ ...userInfo, token, userPhoto: fileUrl ? fileUrl : userDefaultPhoto })
         }
