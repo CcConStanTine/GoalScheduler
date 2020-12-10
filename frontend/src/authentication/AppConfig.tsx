@@ -1,9 +1,9 @@
 class AppConfig {
-    serverAddress = 'https://goalscheduler.herokuapp.com';
-    axiosType = "Bearer";
-    token: string;
-    userId: number;
-    username: string;
+    protected readonly serverAddress = 'https://goalscheduler.herokuapp.com';
+    private readonly axiosType = "Bearer";
+    protected token: string;
+    protected userId: number;
+    protected username: string;
 
     constructor() {
         this.token = null!;
@@ -11,7 +11,7 @@ class AppConfig {
         this.username = null!;
     }
 
-    getAuthConfig = () => ({
+    protected getAuthConfig = () => ({
         headers: {
             Authorization: `${this.axiosType} ${this.token}`,
         }
