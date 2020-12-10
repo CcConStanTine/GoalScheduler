@@ -6,12 +6,10 @@ class UserCredentialsRequests extends AppConfig {
     private getLocalStorageAndSetConstructorValues = () => {
         const { token, id, username } = JSON.parse(localStorage.getItem('user')!);
 
-        this.token = token;
-        this.userId = id;
-        this.username = username;
+        this.setUserValues = { token, id, username };
     }
 
-    private getUserValue = (value: string) => `/user/${this.userId}/${value}`;
+    private getUserValue = (value: string) => `/user/${this.getUserId}/${value}`;
 
     public deleteUserPhoto = () =>
         this.handleRequests(RequestsMethods.DELETE, this.getUserValue('image'));
@@ -29,7 +27,7 @@ class UserCredentialsRequests extends AppConfig {
         this.handleRequests(RequestsMethods.POST, 'sign-in', data);
 
     public checkIfPasswordIsCorrect = (password: string) =>
-        this.handleRequests(RequestsMethods.POST, 'sign-in', { username: this.username, password });
+        this.handleRequests(RequestsMethods.POST, 'sign-in', { username: this.getUserame, password });
 
     public changeUserPhoto = (file: FormData) =>
         this.handleRequests(RequestsMethods.POST, this.getUserValue('image'), file);
@@ -57,7 +55,7 @@ class UserCredentialsRequests extends AppConfig {
             this.getLocalStorageAndSetConstructorValues();
         }
 
-        return { token: this.token }
+        return { token: this.getToken }
     }
 
     public logout = () => localStorage.removeItem("user");

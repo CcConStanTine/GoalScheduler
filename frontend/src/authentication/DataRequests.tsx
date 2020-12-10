@@ -5,7 +5,7 @@ import UserCredentialsRequests from './UserCredentialsRequests';
 
 class DataRequests extends UserCredentialsRequests {
 
-    private getScheduleValue = (value: string) => `/schedule/${this.userId}/${value}`;
+    private getScheduleValue = (value: string) => `/schedule/${this.getUserId}/${value}`;
 
     public setProprietDate = (date: string, type: string) => {
         if (type === dateTimeTypes.ADDDAY)
