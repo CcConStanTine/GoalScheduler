@@ -434,7 +434,7 @@ class MonthPlanServiceTest {
 
     @Test
     @DisplayName("Check if method updateFulfilledStatus() updates fulfilled field")
-    void should_MethodUpdateFulfilledStatusUpdateLongTermPlanFulFilledField() {
+    void should_MethodUpdateFulfilledStatusUpdateMonthPlanFulFilledField() {
         //given
         monthPlan1.setFulfilled(false);
         boolean expected1 = monthPlan1.isFulfilled();
