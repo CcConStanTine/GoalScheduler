@@ -1,9 +1,12 @@
-import axios from 'axios';
 import { inputData } from '../utils/interfaces';
+import { RequestsMethods } from '../utils/requestsInterfaces';
 import { dateTimeTypes } from '../utils/variables';
 import UserCredentialsRequests from './UserCredentialsRequests';
 
 class DataRequests extends UserCredentialsRequests {
+
+    private getScheduleValue = (value: string) => `/schedule/${this.userId}/${value}`;
+
     public setProprietDate = (date: string, type: string) => {
         if (type === dateTimeTypes.ADDDAY)
             return date.slice(11, 19);
@@ -37,54 +40,36 @@ class DataRequests extends UserCredentialsRequests {
         return await this.addPlanByPlanTypeAndId(type, id, _data);
     };
 
-    public getPlanIdByTypeAndDate = (type: string, date: string) => axios
-        .get(`${this.serverAddress}/schedule/${this.userId}/${type}?local_date=${this.validateDate(date)}`, this.getAuthConfig())
-        .then(({ data }) => data[`${type}Id`])
-        .catch(({ response }) => console.log(response.data));
+    public getPlanIdByTypeAndDate = (type: string, date: string) =>
+        this.handleRequests(RequestsMethods.GET, this.getScheduleValue(`${type}?local_date=${this.validateDate(date)}`))
+            .then(data => data[`${type}Id`]);
 
-    public addPlanByPlanTypeAndId = async (type: string, id: number, data: inputData) => axios
-        .post(`${this.serverAddress}/schedule/${this.userId}/${type}/${id}/${type}_plan`, data, this.getAuthConfig())
-        .then(({ data }) => data)
-        .catch(({ response }) => console.log(response.data));
+    public addPlanByPlanTypeAndId = async (type: string, id: number, data: inputData) =>
+        this.handleRequests(RequestsMethods.POST, this.getScheduleValue(`${type}/${id}/${type}_plan`), data);
 
     public changePlanByType = async (type: string, id: number, data: inputData) => {
         const { day, ..._data } = data;
 
-        return axios
-            .patch(`${this.serverAddress}/schedule/${this.userId}/${type}_plan/${id}`, _data, this.getAuthConfig())
-            .then(({ data }) => data)
-            .catch(({ response }) => console.log(response.data));
+        return this.handleRequests(RequestsMethods.PATCH, this.getScheduleValue(`${type}_plan/${id}`), _data);
     };
 
-    public toggleFinishPlanByTypeAndId = (type: string, id: number) => axios
-        .patch(`${this.serverAddress}/schedule/${this.userId}/${type}_plan/${id}/fulfilled`, {}, this.getAuthConfig())
-        .then(({ data }) => data)
-        .catch(({ response }) => console.log(response.data));
+    public toggleFinishPlanByTypeAndId = (type: string, id: number) =>
+        this.handleRequests(RequestsMethods.PATCH, this.getScheduleValue(`${type}_plan/${id}/fulfilled`), {});
 
-    public deletePlanByTypeAndId = (type: string, id: number) => axios
-        .delete(`${this.serverAddress}/schedule/${this.userId}/${type}_plan/${id}`, this.getAuthConfig())
-        .then(({ data }) => data)
-        .catch(({ response }) => console.log(response.data));
+    public deletePlanByTypeAndId = (type: string, id: number) =>
+        this.handleRequests(RequestsMethods.DELETE, this.getScheduleValue(`${type}_plan/${id}`));
 
-    public getPlanByTypeAndId = (type: string, id: number) => axios
-        .get(`${this.serverAddress}/schedule/${this.userId}/${type}_plans/${id}`, this.getAuthConfig())
-        .then(({ data }) => data)
-        .catch(({ response }) => response.data.message);
+    public getPlanByTypeAndId = (type: string, id: number) =>
+        this.handleRequests(RequestsMethods.GET, this.getScheduleValue(`${type}_plans/${id}`));
 
-    public getTypeDataByDate = (type: string, date: string) => axios
-        .get(`${this.serverAddress}/schedule/${this.userId}/${type}s?local_date=${this.validateDate(date)}`, this.getAuthConfig())
-        .then(({ data }) => data)
-        .catch(({ response }) => response.data.message);
+    public getTypeDataByDate = (type: string, date: string) =>
+        this.handleRequests(RequestsMethods.GET, this.getScheduleValue(`${type}s?local_date=${this.validateDate(date)}`));
 
-    public getTypeDataById = (type: string, id: number) => axios
-        .get(`${this.serverAddress}/schedule/${this.userId}/${type}/${id}`, this.getAuthConfig())
-        .then(({ data }) => data)
-        .catch(({ response }) => console.log(response.data));
+    public getTypeDataById = (type: string, id: number) =>
+        this.handleRequests(RequestsMethods.GET, this.getScheduleValue(`${type}/${id}`));
 
-    public getTypePlansByTypeAndId = (type: string, id: number) => axios
-        .get(`${this.serverAddress}/schedule/${this.userId}/${type}/${id}/${type}_plans`, this.getAuthConfig())
-        .then(({ data }) => data)
-        .catch(({ response }) => console.log(response.data));
+    public getTypePlansByTypeAndId = (type: string, id: number) =>
+        this.handleRequests(RequestsMethods.GET, this.getScheduleValue(`${type}/${id}/${type}_plans`));
 
     public getTypePlans = async (type: string, date?: string | undefined) => {
         const _date = date ? this.validateDate(date) : this.getCurrentDate();

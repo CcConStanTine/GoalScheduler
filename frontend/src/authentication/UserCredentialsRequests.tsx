@@ -13,25 +13,35 @@ class UserCredentialsRequests extends AppConfig {
 
     private getUserValue = (value: string) => `/user/${this.userId}/${value}`;
 
-    public deleteUserPhoto = () => this.handleRequests(this.getUserValue('image'), RequestsMethods.DELETE);
+    public deleteUserPhoto = () =>
+        this.handleRequests(RequestsMethods.DELETE, this.getUserValue('image'));
 
-    public getUserPhoto = () => this.handleRequests(this.getUserValue('image'), RequestsMethods.GET);
+    public getCurrentUserInfo = () =>
+        this.handleRequests(RequestsMethods.GET, this.getUserValue('info'));
 
-    public changeUserPhoto = (file: FormData) => this.handleRequests(this.getUserValue('image'), RequestsMethods.POST, file);
+    public getUserPhoto = () =>
+        this.handleRequests(RequestsMethods.GET, this.getUserValue('image'));
 
-    public changeUsername = (firstName: string, lastName: string, nick: string,) => this.handleRequests(this.getUserValue('basic'), RequestsMethods.PATCH, { firstName, lastName, nick });
+    public register = (data: registerUser) =>
+        this.handleRequests(RequestsMethods.POST, 'sign-up', data);
 
-    public changeUserEmail = (email: string) => this.handleRequests(this.getUserValue('email'), RequestsMethods.PATCH, { email });
+    public login = (data: loginUser): Promise<UserSignIn> =>
+        this.handleRequests(RequestsMethods.POST, 'sign-in', data);
 
-    public changeUserPassword = (password: string) => this.handleRequests(this.getUserValue('password'), RequestsMethods.PATCH, { password });
+    public checkIfPasswordIsCorrect = (password: string) =>
+        this.handleRequests(RequestsMethods.POST, 'sign-in', { username: this.username, password });
 
-    public checkIfPasswordIsCorrect = (password: string) => this.handleRequests('sign-in', RequestsMethods.POST, { username: this.username, password });
+    public changeUserPhoto = (file: FormData) =>
+        this.handleRequests(RequestsMethods.POST, this.getUserValue('image'), file);
 
-    public getCurrentUserInfo = () => this.handleRequests(this.getUserValue('info'), RequestsMethods.GET);
+    public changeUsername = (firstName: string, lastName: string, nick: string,) =>
+        this.handleRequests(RequestsMethods.PATCH, this.getUserValue('basic'), { firstName, lastName, nick });
 
-    public register = (data: registerUser) => this.handleRequests('sign-up', RequestsMethods.POST, data);
+    public changeUserEmail = (email: string) =>
+        this.handleRequests(RequestsMethods.PATCH, this.getUserValue('email'), { email });
 
-    public login = (data: loginUser): Promise<UserSignIn> => this.handleRequests('sign-in', RequestsMethods.POST, data);
+    public changeUserPassword = (password: string) =>
+        this.handleRequests(RequestsMethods.PATCH, this.getUserValue('password'), { password });
 
     public setLocalStorageValues = (data: any) => {
         if (data.token)

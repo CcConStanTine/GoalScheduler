@@ -15,7 +15,7 @@ class AppConfig {
         this.username = null!;
     }
 
-    protected handleRequests = async (url: string, method: RequestsMethods, data?: object | FormData | loginUser | registerUser) => {
+    protected handleRequests = async (method: RequestsMethods, url: string, data?: object | FormData | loginUser | registerUser) => {
         axios.defaults.baseURL = `${this.serverAddress}/`;
         axios.defaults.headers.common['Authorization'] = `${this.axiosType} ${this.token}`;
 
