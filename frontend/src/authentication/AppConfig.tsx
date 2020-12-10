@@ -1,12 +1,6 @@
 import axios from 'axios';
 import { registerUser, loginUser } from '../utils/interfaces';
-import { RequestsMethods } from '../utils/requestsInterfaces';
-
-interface UserValues {
-    token: string;
-    id: number;
-    username: string;
-}
+import { RequestsMethods, AuthConfig, UserValues } from '../utils/requestsInterfaces';
 
 class AppConfig {
     protected readonly serverAddress: string = "https://goalscheduler.herokuapp.com";
@@ -30,7 +24,7 @@ class AppConfig {
             .catch(({ response }) => response.data);
     }
 
-    protected getAuthConfig = () => ({
+    protected getAuthConfig = (): AuthConfig => ({
         headers: {
             Authorization: `${this.axiosType} ${this.token}`,
         }

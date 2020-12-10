@@ -5,15 +5,16 @@ import NavigationBar from '../../components/NavigationBar';
 import { LanguageContext } from '../../authentication/LanguageContext';
 import DataRequests from '../../authentication/DataRequests';
 import { useParams } from "react-router-dom";
-import { landingPageInterface, ViewEntryRouteParams, EditEntryParams } from '../../utils/interfaces';
+import { landingPageInterface, ViewEntryRouteParams } from '../../utils/interfaces';
 import RenderAddEntryInputs from '../../components/RenderAddEntryInputs';
 import RenderEntriesNavigation from '../../components/RenderEntriesNavigation';
+import { ReturnPlans } from '../../utils/requestsInterfaces';
 
 const AddEntryPage = ({ history }: landingPageInterface) => {
     const { language } = useContext(LanguageContext);
     const [entryType, setEntryType] = useState<string>(EntriesPlanType.DAY);
     const { id, type } = useParams<ViewEntryRouteParams>();
-    const [entry, setEntry] = useState<EditEntryParams>({});
+    const [entry, setEntry] = useState<ReturnPlans>();
 
     useEffect(() => {
         if (id) {
@@ -42,7 +43,7 @@ const AddEntryPage = ({ history }: landingPageInterface) => {
                     />
                 </div>
                 }
-                <RenderAddEntryInputs languagePack={languagePack[language]} entryType={entryType} entry={entry} id={parseInt(id)} />
+                <RenderAddEntryInputs languagePack={languagePack[language]} entryType={entryType} entry={entry ? entry : undefined} id={parseInt(id)} />
             </div>
         </section>
     )
