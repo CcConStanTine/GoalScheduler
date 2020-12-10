@@ -174,7 +174,7 @@ class MonthServiceTest {
         given(yearService.getYearByYearNumber(2020)).willReturn(year2020);
         given(repository.findAllByYearId(1L)).willReturn(Arrays.asList(month1_2020, month2_2020));
         //when
-        List<MonthBasicInfoDTO> list = monthService.getMonthDTOsByYearId(1L);
+        List<MonthBasicInfoDTO> list = monthService.getMonthDTOsByLocalDate(LocalDate.of(2020, 1 ,1));
         //then
         assertEquals(2, list.size());
     }
@@ -186,7 +186,7 @@ class MonthServiceTest {
         given(yearService.getYearByYearNumber(2020)).willReturn(year2020);
         given(repository.findAllByYearId(1L)).willReturn(Collections.emptyList());
         //when
-        List<MonthBasicInfoDTO> list = monthService.getMonthDTOsByYearId(1L);
+        List<MonthBasicInfoDTO> list = monthService.getMonthDTOsByLocalDate(LocalDate.of(2020, 1 ,1));
         //then
         assertEquals(0, list.size());
     }
