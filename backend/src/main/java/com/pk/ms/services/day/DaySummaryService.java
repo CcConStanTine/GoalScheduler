@@ -52,10 +52,8 @@ public class DaySummaryService implements SummaryAccessAuthorizationService {
     }
 
     private DaySummary getAuthenticatedNotNullDaySummaryByScheduleIdAndDayId(long scheduleId, long dayId) {
-        DaySummary daySummary = repository.findByScheduleIdAndDayId(scheduleId, dayId)
+        return repository.findByScheduleIdAndDayId(scheduleId, dayId)
                 .orElseThrow(ResourceNotAvailableException::new);
-        authorize(hasAccess(scheduleId, daySummary));
-        return daySummary;
     }
 
     private DaySummary save(DaySummary daySummary) {

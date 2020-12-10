@@ -174,7 +174,7 @@ class YearPlanServiceTest {
 
     @Test
     @DisplayName("Check if method createYearPlan() calls yearService's method getYearById()")
-    void should_Method() {
+    void should_MethodCreateYearPlanCallsYearServiceMethodGetYearById() {
         //given
         given(yearService.getYearById(1L)).willReturn(year2020);
         //when
@@ -368,7 +368,7 @@ class YearPlanServiceTest {
         given(repository.findById(1L)).willReturn(Optional.empty());
         //when + then
         assertThrows(ResourceNotAvailableException.class,
-                () -> yearPlanService.updateYearPlan(1L, 1L, yearPlanInputDTO));
+                () -> yearPlanService.deleteYearPlan(1L, 1L));
     }
 
     @Test
@@ -378,7 +378,7 @@ class YearPlanServiceTest {
         given(repository.findById(4L)).willReturn(Optional.of(yearPlan4));
         //when + then
         assertThrows(AccessDeniedException.class,
-                () -> yearPlanService.updateYearPlan(1L, 4L, yearPlanInputDTO));
+                () -> yearPlanService.deleteYearPlan(1L, 4L));
     }
 
     @Test
@@ -414,8 +414,8 @@ class YearPlanServiceTest {
     }
 
     @Test
-    @DisplayName("Check if method updateFulfilledStatus() throws AccessDeniedException given User has no access to the LongTermPlan with given id")
-    void should_MethodUpdateFulfilledStatusThrowAccessDeniedException_When_UserHasNoAccessToTheLongTermPLanWithGivenId() {
+    @DisplayName("Check if method updateFulfilledStatus() throws AccessDeniedException given User has no access to the plan with given id")
+    void should_MethodUpdateFulfilledStatusThrowAccessDeniedException_When_UserHasNoAccessToThePLanWithGivenId() {
         //given
         given(repository.findById(4L)).willReturn(Optional.of(yearPlan4));
         //when + then
@@ -446,7 +446,7 @@ class YearPlanServiceTest {
         given(repository.findById(1L)).willReturn(Optional.of(yearPlan1));
         given(repository.save(yearPlan1)).willReturn(yearPlan1);
         //when
-        yearPlanService.updateYearPlan(1L, 1, yearPlanInputDTO);
+        yearPlanService.updateFulfilledStatus(1L, 1);
         //then
         verify(repository, Mockito.times(1)).save(any(YearPlan.class));
     }
