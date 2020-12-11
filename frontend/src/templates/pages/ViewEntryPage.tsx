@@ -8,12 +8,13 @@ import DataRequests from '../../authentication/DataRequests';
 import { useParams } from "react-router-dom";
 import { FaPen, FaCheck, FaTimes } from 'react-icons/fa';
 import EntryPageConfirmWindow from '../../components/EntryPageConfirmWindow';
-import { landingPageInterface, ViewEntryRouteParams, ViewEntryParams } from '../../utils/interfaces';
+import { landingPageInterface, ViewEntryRouteParams } from '../../utils/interfaces';
+import { Plans } from '../../utils/requestsInterfaces';
 
 const ViewEntryPage = ({ history }: landingPageInterface) => {
     const { language } = useContext(LanguageContext);
     const { id, type } = useParams<ViewEntryRouteParams>();
-    const [entry, setEntry] = useState<ViewEntryParams>({});
+    const [entry, setEntry] = useState<Plans>();
     const [deleteEntryWindow, showDeleteEntryWindow] = useState<boolean>(false);
     const [finishEntryWindow, showFinishEntryWindow] = useState<boolean>(false);
 

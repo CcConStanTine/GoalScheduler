@@ -2,14 +2,15 @@ import React, { useEffect } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import { IonDatetime, IonTextarea } from '@ionic/react';
 import DataRequests from '../authentication/DataRequests';
-import { inputData, EditEntryParams } from '../utils/interfaces';
+import { inputData } from '../utils/interfaces';
+import { Plans } from '../utils/requestsInterfaces';
 import { useHistory } from 'react-router-dom';
 import { AddEntryPageDefaultValues as defaultValues, EntriesPlanType, dateTimeTypes } from '../utils/variables';
 
 interface AddEntry {
     languagePack: any;
     entryType: any;
-    entry: EditEntryParams;
+    entry?: Plans;
     id: number;
 }
 
@@ -51,7 +52,7 @@ const RenderAddEntryInputs = ({ languagePack, entryType, entry, id }: AddEntry) 
     const { handleSubmit, control, reset } = useForm<inputData>({ defaultValues });
 
     useEffect(() => {
-        if (entry.content) {
+        if (entry?.content) {
             const setInputEntries = async () => {
                 const { startDate, endDate, content, dayPlanId } = entry;
                 if (entryType === EntriesPlanType.DAY) {
@@ -75,7 +76,7 @@ const RenderAddEntryInputs = ({ languagePack, entryType, entry, id }: AddEntry) 
     }, [entry, reset, entryType])
 
     const onSubmit = async (data: inputData) => {
-        if (entry.content)
+        if (entry?.content)
             await editEntry(entryType, data, id);
         else
             await addEntry(entryType, data);
@@ -206,7 +207,7 @@ const RenderAddEntryInputs = ({ languagePack, entryType, entry, id }: AddEntry) 
                     minLength: 5
                 }}
             />
-            <input type='submit' className='default-button' value={entry.content ? languagePack.EDIT.title : languagePack.ADD.title} />
+            <input type='submit' className='default-button' value={entry?.content ? languagePack.EDIT.title : languagePack.ADD.title} />
         </form>
     )
 }

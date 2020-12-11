@@ -9,7 +9,7 @@ import DataRequests from '../authentication/DataRequests';
 
 const HomePageOtherEntries = () => {
     const [date, setDate] = useState<dateParams>(getActualDateAsAObject());
-    const [id, setId] = useState<number | null>(null);
+    const [id, setId] = useState<number | undefined>();
     const [entryType, setEntryType] = useState<string>(EntriesPlanType.YEAR);
     const [entryData, setEntryData] = useState<entryParams>([]);
 

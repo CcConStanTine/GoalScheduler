@@ -48,7 +48,46 @@ export interface ReturnToken {
     token: string;
 }
 
+export interface Plans extends FailedResponse {
+    content?: string;
+    endDate?: string;
+    fulfilled?: boolean;
+    importance?: string;
+    startDate?: string;
+    urgency?: string;
+    yearPlanId?: number;
+    monthPlanId?: number;
+    dayPlanId?: number;
+}
 
+export interface ReturnPlans extends FailedResponse {
+    [key: number]: Plans;
+    map: any;
+}
+
+export interface ReturnTypeDataById extends FailedResponse {
+    dayId?: number;
+    dayName?: string;
+    dayDate?: string;
+    monthId?: number;
+    monthName?: string;
+    daysAmount?: number;
+    yearId?: number;
+    yearNumber?: number;
+    leapYear?: boolean;
+};
+
+export interface AuthConfig {
+    headers: {
+        Authorization: string;
+    }
+}
+
+export interface UserValues {
+    token: string;
+    id: number;
+    username: string;
+}
 
 
 

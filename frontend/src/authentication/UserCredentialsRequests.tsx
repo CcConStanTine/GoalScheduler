@@ -17,7 +17,7 @@ class UserCredentialsRequests extends AppConfig {
         this.setUserValues = { token, id, username };
     }
 
-    private getUserValue = (value: string) => `/user/${this.getUserId}/${value}`;
+    private getUserValue = (value: string): string => `/user/${this.getUserId}/${value}`;
 
     public deleteUserPhoto = () =>
         this.handleRequests(RequestsMethods.DELETE, this.getUserValue('image'));

@@ -1,13 +1,18 @@
 import { inputData } from '../utils/interfaces';
-import { RequestsMethods } from '../utils/requestsInterfaces';
+import {
+    RequestsMethods,
+    ReturnPlans,
+    ReturnTypeDataById,
+    Plans,
+} from '../utils/requestsInterfaces';
 import { dateTimeTypes } from '../utils/variables';
 import UserCredentialsRequests from './UserCredentialsRequests';
 
 class DataRequests extends UserCredentialsRequests {
 
-    private getScheduleValue = (value: string) => `/schedule/${this.getUserId}/${value}`;
+    private getScheduleValue = (value: string): string => `/schedule/${this.getUserId}/${value}`;
 
-    public setProprietDate = (date: string, type: string) => {
+    public setProprietDate = (date: string, type: string): string => {
         if (type === dateTimeTypes.ADDDAY)
             return date.slice(11, 19);
         else if (type === dateTimeTypes.EDITDAY)
@@ -16,7 +21,7 @@ class DataRequests extends UserCredentialsRequests {
         return date.slice(0, 10);
     }
 
-    public validateDate = (date: any) => {
+    public validateDate = (date: string): string => {
         const year = date.slice(0, 4);
         const month = date.slice(5, 7);
         const day = parseInt(date.slice(8, 10));
@@ -26,13 +31,13 @@ class DataRequests extends UserCredentialsRequests {
         return _date;
     }
 
-    public getCurrentDate = () => {
+    public getCurrentDate = (): string => {
         const date = new Date();
 
         return `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate() < 10 ? `0${date.getDate()}` : date.getDate()}`;
     }
 
-    public addPlanByPlanType = async (type: string, data: inputData) => {
+    public addPlanByPlanType = async (type: string, data: inputData): Promise<Plans> => {
         const { startDate } = data;
         const { day, ..._data } = data;
         const id = await this.getPlanIdByTypeAndDate(type, day ? day : startDate);
@@ -40,38 +45,38 @@ class DataRequests extends UserCredentialsRequests {
         return await this.addPlanByPlanTypeAndId(type, id, _data);
     };
 
-    public getPlanIdByTypeAndDate = (type: string, date: string) =>
+    public getPlanIdByTypeAndDate = (type: string, date: string): Promise<number> =>
         this.handleRequests(RequestsMethods.GET, this.getScheduleValue(`${type}?local_date=${this.validateDate(date)}`))
             .then(data => data[`${type}Id`]);
 
-    public addPlanByPlanTypeAndId = async (type: string, id: number, data: inputData) =>
+    public addPlanByPlanTypeAndId = async (type: string, id: number, data: inputData): Promise<Plans> =>
         this.handleRequests(RequestsMethods.POST, this.getScheduleValue(`${type}/${id}/${type}_plan`), data);
 
-    public changePlanByType = async (type: string, id: number, data: inputData) => {
+    public changePlanByType = async (type: string, id: number, data: inputData): Promise<Plans> => {
         const { day, ..._data } = data;
 
         return this.handleRequests(RequestsMethods.PATCH, this.getScheduleValue(`${type}_plan/${id}`), _data);
     };
 
-    public toggleFinishPlanByTypeAndId = (type: string, id: number) =>
+    public toggleFinishPlanByTypeAndId = (type: string, id: number): Promise<Plans> =>
         this.handleRequests(RequestsMethods.PATCH, this.getScheduleValue(`${type}_plan/${id}/fulfilled`), {});
 
     public deletePlanByTypeAndId = (type: string, id: number) =>
         this.handleRequests(RequestsMethods.DELETE, this.getScheduleValue(`${type}_plan/${id}`));
 
-    public getPlanByTypeAndId = (type: string, id: number) =>
+    public getPlanByTypeAndId = (type: string, id: number): Promise<ReturnPlans> =>
         this.handleRequests(RequestsMethods.GET, this.getScheduleValue(`${type}_plans/${id}`));
 
-    public getTypeDataByDate = (type: string, date: string) =>
+    public getTypeDataByDate = (type: string, date: string): Promise<ReturnTypeDataById> =>
         this.handleRequests(RequestsMethods.GET, this.getScheduleValue(`${type}s?local_date=${this.validateDate(date)}`));
 
-    public getTypeDataById = (type: string, id: number) =>
+    public getTypeDataById = (type: string, id: number): Promise<ReturnTypeDataById> =>
         this.handleRequests(RequestsMethods.GET, this.getScheduleValue(`${type}/${id}`));
 
     public getTypePlansByTypeAndId = (type: string, id: number) =>
         this.handleRequests(RequestsMethods.GET, this.getScheduleValue(`${type}/${id}/${type}_plans`));
 
-    public getTypePlans = async (type: string, date?: string | undefined) => {
+    public getTypePlans = async (type: string, date?: string) => {
         const _date = date ? this.validateDate(date) : this.getCurrentDate();
         const id = await this.getPlanIdByTypeAndDate(type, _date);
         const plans = await this.getTypePlansByTypeAndId(type, id);
