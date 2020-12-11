@@ -43,7 +43,8 @@ const ChangePasswordPage: React.FC = ({ history }: any) => {
   }];
 
   const changePasswordAndForceUserToLogAgain = async (newPassword: string) => {
-    setMessage(await DataRequests.changeUserPassword(newPassword));
+    const { message } = await DataRequests.changeUserPassword(newPassword);
+    setMessage(message);
 
     setTimeout(() => {
       setMessage(languagePack[language].GLOBAL.logInAgain)

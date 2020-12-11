@@ -4,6 +4,7 @@ import {
     ReturnPlans,
     ReturnTypeDataById,
     Plans,
+    DeleteOrChange,
 } from '../utils/requestsInterfaces';
 import { dateTimeTypes } from '../utils/variables';
 import UserCredentialsRequests from './UserCredentialsRequests';
@@ -61,7 +62,7 @@ class DataRequests extends UserCredentialsRequests {
     public toggleFinishPlanByTypeAndId = (type: string, id: number): Promise<Plans> =>
         this.handleRequests(RequestsMethods.PATCH, this.getScheduleValue(`${type}_plan/${id}/fulfilled`), {});
 
-    public deletePlanByTypeAndId = (type: string, id: number) =>
+    public deletePlanByTypeAndId = (type: string, id: number): Promise<DeleteOrChange> =>
         this.handleRequests(RequestsMethods.DELETE, this.getScheduleValue(`${type}_plan/${id}`));
 
     public getPlanByTypeAndId = (type: string, id: number): Promise<ReturnPlans> =>

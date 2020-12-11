@@ -7,6 +7,7 @@ import {
     GetUserPhoto,
     PostUserPhoto,
     ReturnToken,
+    DeleteOrChange,
 } from '../utils/requestsInterfaces';
 import AppConfig from './AppConfig';
 
@@ -19,10 +20,10 @@ class UserCredentialsRequests extends AppConfig {
 
     private getUserValue = (value: string): string => `/user/${this.getUserId}/${value}`;
 
-    public deleteUserPhoto = () =>
+    public deleteUserPhoto = (): Promise<DeleteOrChange> =>
         this.handleRequests(RequestsMethods.DELETE, this.getUserValue('image'));
 
-    public changeUserPassword = (password: string) =>
+    public changeUserPassword = (password: string): Promise<DeleteOrChange> =>
         this.handleRequests(RequestsMethods.PATCH, this.getUserValue('password'), { password });
 
     public getCurrentUserInfo = (): Promise<GetUserInfo> =>

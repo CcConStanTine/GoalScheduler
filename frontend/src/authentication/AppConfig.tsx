@@ -3,7 +3,7 @@ import { registerUser, loginUser } from '../utils/interfaces';
 import { RequestsMethods, AuthConfig, UserValues } from '../utils/requestsInterfaces';
 
 class AppConfig {
-    protected readonly serverAddress: string = "https://goalscheduler.herokuapp.com";
+    private readonly serverAddress: string = "https://goalscheduler.herokuapp.com";
     private readonly axiosType = "Bearer";
     private token: string;
     private userId: number;

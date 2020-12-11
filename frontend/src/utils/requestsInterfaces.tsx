@@ -89,5 +89,8 @@ export interface UserValues {
     username: string;
 }
 
+export interface DeleteOrChange extends FailedResponse {
+    message: string;
+}
 
 

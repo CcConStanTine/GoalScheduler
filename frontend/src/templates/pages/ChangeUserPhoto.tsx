@@ -43,15 +43,15 @@ const ChangeUserPhoto: React.FC = ({ history }: any) => {
   }, [userContext?.userPhoto])
 
   const deleteUserPhoto = async () => {
-    const response = await DataRequests.deleteUserPhoto();
+    const { message, status } = await DataRequests.deleteUserPhoto();
 
-    if (response === "OK") {
+    if (!status) {
       setLoggedIn!({ ...userContext, userPhoto: userDefaultPhoto });
 
       return setMessage(languagePack[language].CHANGEUSERPHOTO.deleteImageSuccessed);
     }
 
-    return setMessage(response);
+    return setMessage(message);
   }
 
   return (
