@@ -12,7 +12,6 @@ import com.pk.ms.entities.schedule.Schedule;
 import com.pk.ms.entities.user.MyScheduleUser;
 import com.pk.ms.exceptions.ResourceNotAvailableException;
 import com.pk.ms.services.schedule.ScheduleService;
-import org.apache.tomcat.jni.Local;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

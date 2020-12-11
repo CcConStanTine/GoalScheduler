@@ -1,10 +1,10 @@
 package com.pk.ms.entities.schedule;
 
-import com.pk.ms.entities.day.Day;
 import com.pk.ms.constants.DayName;
+import com.pk.ms.constants.MonthName;
+import com.pk.ms.entities.day.Day;
 import com.pk.ms.entities.day.DayPlan;
 import com.pk.ms.entities.month.Month;
-import com.pk.ms.constants.MonthName;
 import com.pk.ms.entities.month.MonthPlan;
 import com.pk.ms.entities.user.MyScheduleUser;
 import com.pk.ms.entities.week.Week;
@@ -19,7 +19,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class ScheduleTest {
 
