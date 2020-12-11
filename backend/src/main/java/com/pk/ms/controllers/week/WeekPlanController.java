@@ -1,6 +1,7 @@
 package com.pk.ms.controllers.week;
 
 import com.pk.ms.dto.week.WeekPlanInputDTO;
+import com.pk.ms.entities.DeleteMessage;
 import com.pk.ms.entities.week.WeekPlan;
 import com.pk.ms.services.week.WeekPlanService;
 import org.springframework.http.ResponseEntity;
@@ -58,10 +59,10 @@ public class WeekPlanController {
     }
 
     @DeleteMapping("/week_plan/{week_plan_id}")
-    public ResponseEntity<String> deleteWeekPlan(@PathVariable("schedule_id") long scheduleId,
-                                                 @PathVariable("week_plan_id") long weekPlanId) {
+    public ResponseEntity<DeleteMessage> deleteWeekPlan(@PathVariable("schedule_id") long scheduleId,
+                                                        @PathVariable("week_plan_id") long weekPlanId) {
 
-        return ResponseEntity.ok(weekPlanService.deleteWeekPlan(scheduleId, weekPlanId));
+        return ResponseEntity.ok(new DeleteMessage(weekPlanService.deleteWeekPlan(scheduleId, weekPlanId)));
     }
 
 }

@@ -1,6 +1,7 @@
 package com.pk.ms.controllers.schedule;
 
 import com.pk.ms.dto.schedule.LongTermPlanInputDTO;
+import com.pk.ms.entities.DeleteMessage;
 import com.pk.ms.entities.schedule.LongTermPlan;
 import com.pk.ms.services.schedule.LongTermPlanService;
 import org.springframework.http.ResponseEntity;
@@ -51,9 +52,9 @@ public class LongTermPlanController {
     }
 
     @DeleteMapping("/long_term_plan/{long_term_plan_id}")
-    public ResponseEntity<String> deleteLongTermPlan(@PathVariable("schedule_id") long scheduleId,
-                                                     @PathVariable("long_term_plan_id") long ltpId) {
+    public ResponseEntity<DeleteMessage> deleteLongTermPlan(@PathVariable("schedule_id") long scheduleId,
+                                                            @PathVariable("long_term_plan_id") long ltpId) {
 
-        return ResponseEntity.ok(longTermPlanService.deleteLongTermPlan(scheduleId, ltpId));
+        return ResponseEntity.ok(new DeleteMessage(longTermPlanService.deleteLongTermPlan(scheduleId, ltpId)));
     }
 }

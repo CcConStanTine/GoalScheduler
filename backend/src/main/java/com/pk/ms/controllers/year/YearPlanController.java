@@ -1,6 +1,7 @@
 package com.pk.ms.controllers.year;
 
 import com.pk.ms.dto.year.YearPlanInputDTO;
+import com.pk.ms.entities.DeleteMessage;
 import com.pk.ms.entities.year.YearPlan;
 import com.pk.ms.services.year.YearPlanService;
 import org.springframework.http.ResponseEntity;
@@ -58,10 +59,10 @@ public class YearPlanController {
     }
 
     @DeleteMapping("/year_plan/{year_plan_id}")
-    public ResponseEntity<String> deleteYearPlan(@PathVariable("schedule_id") long scheduleId,
-                                                 @PathVariable("year_plan_id") long yearPlanId) {
+    public ResponseEntity<DeleteMessage> deleteYearPlan(@PathVariable("schedule_id") long scheduleId,
+                                                        @PathVariable("year_plan_id") long yearPlanId) {
 
-        return ResponseEntity.ok(yearPlanService.deleteYearPlan(scheduleId, yearPlanId));
+        return ResponseEntity.ok(new DeleteMessage(yearPlanService.deleteYearPlan(scheduleId, yearPlanId)));
     }
 
 }

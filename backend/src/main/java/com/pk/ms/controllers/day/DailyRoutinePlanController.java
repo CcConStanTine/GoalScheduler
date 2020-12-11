@@ -1,6 +1,7 @@
 package com.pk.ms.controllers.day;
 
 import com.pk.ms.dto.day.DailyRoutinePlanInputDTO;
+import com.pk.ms.entities.DeleteMessage;
 import com.pk.ms.entities.day.DailyRoutinePlan;
 import com.pk.ms.services.day.DailyRoutinePlanService;
 import org.springframework.http.ResponseEntity;
@@ -46,8 +47,8 @@ public class DailyRoutinePlanController {
     }
 
     @DeleteMapping(value = "/daily_routine_plans/{daily_routine_plan_id}")
-    public ResponseEntity<String> deleteDailyRoutinePlan(@PathVariable("user_id") long userId,
-                                                         @PathVariable("daily_routine_plan_id") long dailyRoutinePlanId) {
-        return ResponseEntity.ok(dailyRoutinePlanService.deleteDailyRoutinePlan(userId, dailyRoutinePlanId));
+    public ResponseEntity<DeleteMessage> deleteDailyRoutinePlan(@PathVariable("user_id") long userId,
+                                                                @PathVariable("daily_routine_plan_id") long dailyRoutinePlanId) {
+        return ResponseEntity.ok(new DeleteMessage(dailyRoutinePlanService.deleteDailyRoutinePlan(userId, dailyRoutinePlanId)));
     }
 }

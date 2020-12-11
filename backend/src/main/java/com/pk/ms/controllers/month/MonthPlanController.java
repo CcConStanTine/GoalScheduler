@@ -1,6 +1,7 @@
 package com.pk.ms.controllers.month;
 
 import com.pk.ms.dto.month.MonthPlanInputDTO;
+import com.pk.ms.entities.DeleteMessage;
 import com.pk.ms.entities.month.MonthPlan;
 import com.pk.ms.services.month.MonthPlanService;
 import org.springframework.http.ResponseEntity;
@@ -57,10 +58,10 @@ public class MonthPlanController {
     }
 
     @DeleteMapping("/month_plan/{month_plan_id}")
-    public ResponseEntity<String> deleteMonthPlan(@PathVariable("schedule_id") long scheduleId,
-                                                  @PathVariable("month_plan_id") long monthPlanId) {
+    public ResponseEntity<DeleteMessage> deleteMonthPlan(@PathVariable("schedule_id") long scheduleId,
+                                                         @PathVariable("month_plan_id") long monthPlanId) {
 
-        return ResponseEntity.ok(monthPlanService.deleteMonthPlan(scheduleId, monthPlanId));
+        return ResponseEntity.ok(new DeleteMessage(monthPlanService.deleteMonthPlan(scheduleId, monthPlanId)));
     }
 
 

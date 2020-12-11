@@ -1,8 +1,10 @@
 package com.pk.ms.controllers.day;
 
 import com.pk.ms.dto.day.DayPlanInputDTO;
+import com.pk.ms.entities.DeleteMessage;
 import com.pk.ms.entities.day.DayPlan;
 import com.pk.ms.services.day.DayPlanService;
+import org.hibernate.sql.Delete;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -64,9 +66,9 @@ public class DayPlanController {
     }
 
     @DeleteMapping("/day_plan/{day_plan_id}")
-    public ResponseEntity<String> deleteDayPlan(@PathVariable("schedule_id") long scheduleId,
-                                                @PathVariable("day_plan_id") long dayPlanId) {
+    public ResponseEntity<DeleteMessage> deleteDayPlan(@PathVariable("schedule_id") long scheduleId,
+                                                       @PathVariable("day_plan_id") long dayPlanId) {
 
-        return ResponseEntity.ok(dayPlanService.deleteDayPlan(scheduleId, dayPlanId));
+        return ResponseEntity.ok(new DeleteMessage(dayPlanService.deleteDayPlan(scheduleId, dayPlanId)));
     }
 }
