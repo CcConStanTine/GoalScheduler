@@ -300,7 +300,7 @@ class WeekPlanServiceTest {
         //given
         weekPlanInputDTO.setContent("updated content");
         weekPlanInputDTO.setStartDate(LocalDate.of(2020, 1, 2));
-        weekPlanInputDTO.setStartDate(LocalDate.of(2020, 1, 3));
+        weekPlanInputDTO.setEndDate(LocalDate.of(2020, 1, 3));
         weekPlanInputDTO.setImportance(Importance.VERYIMPORTANT);
         weekPlanInputDTO.setUrgency(Urgency.VERYURGENT);
         given(repository.findById(1L)).willReturn(Optional.of(weekPlan1));

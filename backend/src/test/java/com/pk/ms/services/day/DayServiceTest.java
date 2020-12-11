@@ -62,7 +62,7 @@ class DayServiceTest {
         day1 = new Day(LocalDate.of(2020, 1, 1), DayName.WEDNESDAY, month1);
         day2 = new Day(LocalDate.of(2020, 1, 2), DayName.THURSDAY, month1);
         day1.setDayId(1L);
-        day1.setDayId(25L);
+        day1.setDayId(2L);
 
         dayBasicInfoDTO = new DayBasicInfoDTO(day1.getDayId(),
                 day1.getDayDate(), day1.getDayName());

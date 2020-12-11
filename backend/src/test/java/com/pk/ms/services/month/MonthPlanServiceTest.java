@@ -295,7 +295,7 @@ class MonthPlanServiceTest {
         //given
         monthPlanInputDTO.setContent("updated content");
         monthPlanInputDTO.setStartDate(LocalDate.of(2020, 1, 15));
-        monthPlanInputDTO.setStartDate(LocalDate.of(2020, 1, 16));
+        monthPlanInputDTO.setEndDate(LocalDate.of(2020, 1, 16));
         monthPlanInputDTO.setImportance(Importance.VERYIMPORTANT);
         monthPlanInputDTO.setUrgency(Urgency.VERYURGENT);
         given(repository.findById(1L)).willReturn(Optional.of(monthPlan1));

@@ -286,7 +286,7 @@ class YearPlanServiceTest {
         //given
         yearPlanInputDTO.setContent("updated content");
         yearPlanInputDTO.setStartDate(LocalDate.of(2020, 3, 1));
-        yearPlanInputDTO.setStartDate(LocalDate.of(2020, 5, 15));
+        yearPlanInputDTO.setEndDate(LocalDate.of(2020, 5, 15));
         yearPlanInputDTO.setImportance(Importance.VERYIMPORTANT);
         yearPlanInputDTO.setUrgency(Urgency.VERYURGENT);
         given(repository.findById(1L)).willReturn(Optional.of(yearPlan1));

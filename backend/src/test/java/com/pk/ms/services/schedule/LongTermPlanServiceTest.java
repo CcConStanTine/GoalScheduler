@@ -168,7 +168,7 @@ class LongTermPlanServiceTest {
         //given
         longTermPlanInputDTO.setContent("updated content");
         longTermPlanInputDTO.setStartDate(LocalDate.of(2021, 1, 1));
-        longTermPlanInputDTO.setStartDate(LocalDate.of(2026, 12, 31));
+        longTermPlanInputDTO.setEndDate(LocalDate.of(2026, 12, 31));
         longTermPlanInputDTO.setImportance(Importance.VERYIMPORTANT);
         longTermPlanInputDTO.setUrgency(Urgency.VERYURGENT);
         given(longTermPlanRepo.findById(1L)).willReturn(Optional.of(longTermPlan1));
