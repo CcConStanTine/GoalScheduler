@@ -2,17 +2,16 @@ import React, { useState, useContext } from 'react';
 import { useForm } from "react-hook-form";
 import { AccountFormTypes } from '../utils/variables';
 import languagePack from '../utils/languagePack';
-import { accountFormInterface } from '../utils/interfaces';
+import { accountFormInterface, registerUser, loginUser } from '../utils/interfaces';
 import DataRequests from '../authentication/DataRequests';
 import renderAccountFormInputs from './RenderAccountFormInputs';
 import { AppContext } from '../authentication/AppContext';
 import { LanguageContext } from '../authentication/LanguageContext';
 
-
-const AccountForm = ({ type, history }: accountFormInterface) => {
+const AccountForm = ({ type }: accountFormInterface): JSX.Element => {
     const { register, handleSubmit, errors } = useForm();
-    const [loginMessage, setLoginMessage] = useState('');
-    const [registerMessage, setRegisterMessage] = useState('');
+    const [loginMessage, setLoginMessage] = useState<string>('');
+    const [registerMessage, setRegisterMessage] = useState<string>('');
     const { setLoggedIn } = useContext(AppContext);
     const { language } = useContext(LanguageContext);
 
@@ -64,7 +63,7 @@ const AccountForm = ({ type, history }: accountFormInterface) => {
         errors: errors.password
     }];
 
-    const sendRequestToCreateUser = async (data: any) => {
+    const sendRequestToCreateUser = async (data: registerUser): Promise<void> => {
         const { status, message } = await DataRequests.register(data);
         if (status === 200) {
             setTimeout(() => setRegisterMessage(languagePack[language].WELCOME.logginIn), 1000);
@@ -74,7 +73,7 @@ const AccountForm = ({ type, history }: accountFormInterface) => {
         return setRegisterMessage(message);
     }
 
-    const sendRequestToLoginUser = async (data: any) => {
+    const sendRequestToLoginUser = async (data: loginUser): Promise<void> => {
         const userData = await DataRequests.login(data);
         DataRequests.setLocalStorageValues(userData);
 

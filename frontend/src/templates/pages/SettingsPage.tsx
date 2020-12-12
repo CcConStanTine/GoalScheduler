@@ -6,16 +6,12 @@ import UserData from '../../components/UserData';
 import UserSettings from '../../components/UserSettings';
 import { LanguageContext } from '../../authentication/LanguageContext';
 
-interface HomeInterface {
-    history: any
-}
-
-const SettingsPage = ({ history }: HomeInterface) => {
+const SettingsPage = (): JSX.Element => {
     const { language } = useContext(LanguageContext);
 
     return (
         <section className='settings-page'>
-            <NavigationBar type={PageNavigationTypes.DEFAULT} history={history} placeholder={languagePack[language].SETTINGS.title} />
+            <NavigationBar type={PageNavigationTypes.DEFAULT} placeholder={languagePack[language].SETTINGS.title} />
             <UserData />
             <UserSettings />
         </section>

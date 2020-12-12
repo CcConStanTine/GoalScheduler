@@ -2,19 +2,12 @@ import React, { useEffect } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import { IonDatetime, IonTextarea } from '@ionic/react';
 import DataRequests from '../authentication/DataRequests';
-import { inputData } from '../utils/interfaces';
+import { inputData, FormatDate, AddEntry } from '../utils/interfaces';
 import { Plans } from '../utils/requestsInterfaces';
 import { useHistory } from 'react-router-dom';
 import { AddEntryPageDefaultValues as defaultValues, EntriesPlanType, dateTimeTypes } from '../utils/variables';
 
-interface AddEntry {
-    languagePack: any;
-    entryType: any;
-    entry?: Plans;
-    id: number;
-}
-
-const formatDate = (data: inputData, type: string) => {
+const formatDate = (data: inputData, type: string): FormatDate => {
     const { startDate, endDate, day, content } = data;
 
     if (day) {
@@ -33,21 +26,21 @@ const formatDate = (data: inputData, type: string) => {
     };
 }
 
-const editEntry = async (entryType: string, data: inputData, id: number) => {
+const editEntry = async (entryType: string, data: inputData, id: number): Promise<Plans> => {
     const type = entryType === EntriesPlanType.DAY ? dateTimeTypes.EDITDAY : dateTimeTypes.DEFAULT;
     const dayData = formatDate(data, type);
 
     return await DataRequests.changePlanByType(entryType, id, dayData);
 }
 
-const addEntry = async (entryType: string, data: inputData) => {
+const addEntry = async (entryType: string, data: inputData): Promise<Plans> => {
     const type = entryType === EntriesPlanType.DAY ? dateTimeTypes.ADDDAY : dateTimeTypes.DEFAULT;
     const dayData = formatDate(data, type);
 
     return await DataRequests.addPlanByPlanType(entryType, dayData);
 }
 
-const RenderAddEntryInputs = ({ languagePack, entryType, entry, id }: AddEntry) => {
+const RenderAddEntryInputs = ({ languagePack, entryType, entry, id }: AddEntry): JSX.Element => {
     const history = useHistory();
     const { handleSubmit, control, reset } = useForm<inputData>({ defaultValues });
 
@@ -75,7 +68,7 @@ const RenderAddEntryInputs = ({ languagePack, entryType, entry, id }: AddEntry) 
         }
     }, [entry, reset, entryType])
 
-    const onSubmit = async (data: inputData) => {
+    const onSubmit = async (data: inputData): Promise<void> => {
         if (entry?.content)
             await editEntry(entryType, data, id);
         else

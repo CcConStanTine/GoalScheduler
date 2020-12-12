@@ -4,11 +4,10 @@ import languagePack from '../../utils/languagePack';
 import { AppContext } from '../../authentication/AppContext';
 import { LanguageContext } from '../../authentication/LanguageContext';
 import AccountForm from '../../components/AccountForm';
-import { landingPageInterface } from '../../utils/interfaces';
-import { Redirect } from 'react-router-dom'
+import { Redirect } from 'react-router-dom';
 
-const WelcomePage = ({ history }: landingPageInterface) => {
-    const [showRegisterPanel, setShowRegisterPanel] = useState(false);
+const WelcomePage = (): JSX.Element => {
+    const [showRegisterPanel, setShowRegisterPanel] = useState<Boolean>(false);
     const { userContext } = useContext(AppContext);
     const { language } = useContext(LanguageContext);
 
@@ -30,9 +29,9 @@ const WelcomePage = ({ history }: landingPageInterface) => {
                 </div>
                 <div className="form-container">
                     {showRegisterPanel ?
-                        <AccountForm type={AccountFormTypes.CREATE} history={history} />
+                        <AccountForm type={AccountFormTypes.CREATE} />
                         :
-                        <AccountForm type={AccountFormTypes.LOGIN} history={history} />
+                        <AccountForm type={AccountFormTypes.LOGIN} />
                     }
                 </div>
                 <div className="login-without-register">

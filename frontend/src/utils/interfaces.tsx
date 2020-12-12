@@ -1,6 +1,4 @@
-export interface landingPageInterface {
-    history: any
-}
+import { Plans } from './requestsInterfaces';
 
 export interface inputData {
     startDate: string;
@@ -8,6 +6,22 @@ export interface inputData {
     content: string;
     startDateTime?: string;
     day?: string;
+}
+
+export interface EmailInterface {
+    newEmail: string;
+    currentEmail: string;
+}
+
+export interface EmailInterface {
+    password: string;
+    username: string;
+}
+
+export interface ChangePasswordInteface {
+    oldPassword: string;
+    newPassword: string;
+    newPasswordRepeat: string;
 }
 
 export interface dateParams {
@@ -42,13 +56,27 @@ export interface ViewEntryParams {
 
 export interface entriesNavigation {
     entryType: string;
-    onClick: any;
+    onClick: Function;
     date?: dateParams;
 }
 
 export interface entryParams {
     [index: number]: singleEntryParams;
     map: any;
+}
+
+export interface AddEntry {
+    languagePack: any;
+    entryType: any;
+    entry?: Plans;
+    id: number;
+}
+
+export interface FormatDate {
+    content: string;
+    day?: string;
+    startDate: string;
+    endDate: string;
 }
 
 export interface singleEntryParams {
@@ -80,20 +108,8 @@ export interface loginUser {
     password: string
 }
 
-export interface createAccountDataInterface {
-    nickname: string,
-    password: string,
-    email: string,
-    name: string,
-}
-
 export interface accountFormInterface {
-    type: String,
-    history: any
-}
-
-export interface appInterface {
-    history: any
+    type: String;
 }
 
 export interface renderAccountDataInterface {

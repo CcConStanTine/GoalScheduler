@@ -7,17 +7,13 @@ import renderAccountFormInputs from '../../components/RenderAccountFormInputs';
 import { PageNavigationTypes } from '../../utils/variables';
 import languagePack from '../../utils/languagePack';
 import NavigationBar from '../../components/NavigationBar';
+import { EmailInterface } from '../../utils/interfaces';
 
-interface emailInterface {
-  password: string;
-  username: string;
-}
-
-const ChangeUsernamePage: React.FC = ({ history }: any) => {
+const ChangeUsernamePage = (): JSX.Element => {
   const { setLoggedIn } = useContext(AppContext);
   const { language } = useContext(LanguageContext);
   const { register, handleSubmit, errors } = useForm();
-  const [message, setMessage] = useState('');
+  const [message, setMessage] = useState<string>('');
 
   const ChangeNicknameInputData = [{
     name: "password",
@@ -54,7 +50,7 @@ const ChangeUsernamePage: React.FC = ({ history }: any) => {
     return setMessage(languagePack[language].CHANGEUSERNAME.changedUsernameFailed);
   }
 
-  const sendRequestToChangeUsername = async ({ password, username }: emailInterface) => {
+  const sendRequestToChangeUsername = async ({ password, username }: EmailInterface) => {
     const response = await DataRequests.checkIfPasswordIsCorrect(password);
 
     if (response)
@@ -65,7 +61,7 @@ const ChangeUsernamePage: React.FC = ({ history }: any) => {
 
   return (
     <section className='change-username-page'>
-      <NavigationBar type={PageNavigationTypes.DEFAULT} history={history} placeholder={languagePack[language].CHANGEUSERNAME.title} />
+      <NavigationBar type={PageNavigationTypes.DEFAULT} placeholder={languagePack[language].CHANGEUSERNAME.title} />
       <form onSubmit={handleSubmit(sendRequestToChangeUsername)}>
         {renderAccountFormInputs(ChangeNicknameInputData)}
         {message && <p className='change-username-message'>{message}</p>}

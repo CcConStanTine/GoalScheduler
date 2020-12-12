@@ -7,13 +7,13 @@ import { getActualDateAsAObject, getDataByType } from './OtherEntriesFunctions';
 import { dateParams, entryParams } from '../utils/interfaces';
 import DataRequests from '../authentication/DataRequests';
 
-const HomePageOtherEntries = () => {
+const HomePageOtherEntries = (): JSX.Element => {
     const [date, setDate] = useState<dateParams>(getActualDateAsAObject());
     const [id, setId] = useState<number | undefined>();
     const [entryType, setEntryType] = useState<string>(EntriesPlanType.YEAR);
     const [entryData, setEntryData] = useState<entryParams>([]);
 
-    const changeEntry = async (sign: string) => {
+    const changeEntry = async (sign: string): Promise<void> => {
         const { _id, _date, plans } = await getDataByType(entryType, sign, id!, date);
         setId(_id);
         setDate(_date);
@@ -21,7 +21,7 @@ const HomePageOtherEntries = () => {
         return setEntryData(plans);
     };
 
-    const handlePlanData = async (type: string = EntriesPlanType.YEAR, date?: string) => {
+    const handlePlanData = async (type: string = EntriesPlanType.YEAR, date?: string): Promise<void> => {
         setEntryType(type);
         const _date = date ? DataRequests.validateDate(date) : DataRequests.getCurrentDate();
         const id = await DataRequests.getPlanIdByTypeAndDate(type, _date);

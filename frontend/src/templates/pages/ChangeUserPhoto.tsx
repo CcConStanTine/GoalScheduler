@@ -7,16 +7,16 @@ import languagePack from '../../utils/languagePack';
 import NavigationBar from '../../components/NavigationBar';
 import userDefaultPhoto from '../../images/planner.jpg';
 
-const ChangeUserPhoto: React.FC = ({ history }: any) => {
+const ChangeUserPhoto = (): JSX.Element => {
   const { userContext, setLoggedIn } = useContext(AppContext);
-  const [photo, setPhoto] = useState(null);
+  const [photo, setPhoto] = useState<null | File>(null);
   const { language } = useContext(LanguageContext);
-  const [message, setMessage] = useState('');
-  const [showDeleteOption, setShowDeleteOption] = useState(false);
+  const [message, setMessage] = useState<string>('');
+  const [showDeleteOption, setShowDeleteOption] = useState<Boolean>(false);
 
   const inputPhoto = useRef<HTMLInputElement>(null);
 
-  const updatePhoto = (photo: any) => setPhoto(photo)
+  const updatePhoto = (photo: File) => setPhoto(photo);
 
   const fileUploadHandler = async () => {
     const formData = new FormData();
@@ -56,7 +56,7 @@ const ChangeUserPhoto: React.FC = ({ history }: any) => {
 
   return (
     <section className='change-user-photo-page'>
-      <NavigationBar type={PageNavigationTypes.DEFAULT} history={history} placeholder={languagePack[language].CHANGEUSERPHOTO.title} />
+      <NavigationBar type={PageNavigationTypes.DEFAULT} placeholder={languagePack[language].CHANGEUSERPHOTO.title} />
       <div className='actual-photo'>
         <img src={photo ? URL.createObjectURL(photo) : userContext?.userPhoto} alt={`${userContext?.nick}`} />
       </div>

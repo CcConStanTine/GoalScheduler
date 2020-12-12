@@ -5,12 +5,12 @@ import NavigationBar from '../../components/NavigationBar';
 import { LanguageContext } from '../../authentication/LanguageContext';
 import DataRequests from '../../authentication/DataRequests';
 import { useParams } from "react-router-dom";
-import { landingPageInterface, ViewEntryRouteParams } from '../../utils/interfaces';
+import { ViewEntryRouteParams } from '../../utils/interfaces';
 import RenderAddEntryInputs from '../../components/RenderAddEntryInputs';
 import RenderEntriesNavigation from '../../components/RenderEntriesNavigation';
 import { ReturnPlans } from '../../utils/requestsInterfaces';
 
-const AddEntryPage = ({ history }: landingPageInterface) => {
+const AddEntryPage = (): JSX.Element => {
     const { language } = useContext(LanguageContext);
     const [entryType, setEntryType] = useState<string>(EntriesPlanType.DAY);
     const { id, type } = useParams<ViewEntryRouteParams>();
@@ -18,7 +18,7 @@ const AddEntryPage = ({ history }: landingPageInterface) => {
 
     useEffect(() => {
         if (id) {
-            const getEntryData = async () => {
+            const getEntryData = async (): Promise<void> => {
                 const entryData = await DataRequests.getPlanByTypeAndId(type, parseInt(id));
                 setEntryType(type);
                 setEntry(entryData);
@@ -32,7 +32,6 @@ const AddEntryPage = ({ history }: landingPageInterface) => {
         <section className='add-entry-page'>
             <NavigationBar
                 type={PageNavigationTypes.DEFAULT}
-                history={history}
                 placeholder={id ? languagePack[language].EDIT.title : languagePack[language].ADD.title}
             />
             <div className='content'>

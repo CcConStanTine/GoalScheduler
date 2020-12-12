@@ -5,7 +5,7 @@ import { navigationTypes } from '../utils/variables';
 import { LanguageContext } from '../authentication/LanguageContext';
 import { entriesNavigation } from '../utils/interfaces';
 
-const RenderEntriesDateNavigation = ({ entryType, onClick, date }: entriesNavigation) => {
+const RenderEntriesDateNavigation = ({ entryType, onClick, date }: entriesNavigation): JSX.Element => {
     const { language } = useContext(LanguageContext);
 
     return (

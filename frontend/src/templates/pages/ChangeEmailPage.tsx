@@ -7,17 +7,15 @@ import renderAccountFormInputs from '../../components/RenderAccountFormInputs';
 import { PageNavigationTypes } from '../../utils/variables';
 import languagePack from '../../utils/languagePack';
 import NavigationBar from '../../components/NavigationBar';
+import { EmailInterface } from '../../utils/interfaces';
+import { useHistory } from 'react-router-dom';
 
-interface emailInterface {
-  newEmail: string;
-  currentEmail: string;
-}
-
-const ChangeEmailPage: React.FC = ({ history }: any) => {
+const ChangeEmailPage = (): JSX.Element => {
   const { userContext, setLoggedIn } = useContext(AppContext);
   const { language } = useContext(LanguageContext);
   const { register, handleSubmit, errors } = useForm();
-  const [message, setMessage] = useState('');
+  const [message, setMessage] = useState<string>('');
+  const history = useHistory();
 
   const ChangeEmailInputData = [{
     name: "currentEmail",
@@ -34,7 +32,7 @@ const ChangeEmailPage: React.FC = ({ history }: any) => {
     errors: errors.newEmail
   }];
 
-  const changeEmail = async (newEmail: string, currentEmail: string) => {
+  const changeEmail = async (newEmail: string, currentEmail: string): Promise<void> => {
     if (currentEmail !== newEmail) {
       const { email } = await DataRequests.changeUserEmail(newEmail);
 
@@ -50,7 +48,7 @@ const ChangeEmailPage: React.FC = ({ history }: any) => {
     return setMessage(languagePack[language].CHANGEEMAIL.changedEmailFailed);
   }
 
-  const sendRequestToChangeEmail = async ({ newEmail, currentEmail }: emailInterface) => {
+  const sendRequestToChangeEmail = async ({ newEmail, currentEmail }: EmailInterface): Promise<void> => {
     const { email } = await DataRequests.getCurrentUserInfo();
 
     if (email === currentEmail)
@@ -61,7 +59,7 @@ const ChangeEmailPage: React.FC = ({ history }: any) => {
 
   return (
     <section className='change-email-page'>
-      <NavigationBar type={PageNavigationTypes.DEFAULT} history={history} placeholder={languagePack[language].CHANGEEMAIL.title} />
+      <NavigationBar type={PageNavigationTypes.DEFAULT} placeholder={languagePack[language].CHANGEEMAIL.title} />
       <form onSubmit={handleSubmit(sendRequestToChangeEmail)}>
         {renderAccountFormInputs(ChangeEmailInputData)}
         {message && <p className='change-email-message'>{message}</p>}

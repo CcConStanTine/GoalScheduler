@@ -8,18 +8,20 @@ import DataRequests from '../../authentication/DataRequests';
 import { useParams } from "react-router-dom";
 import { FaPen, FaCheck, FaTimes } from 'react-icons/fa';
 import EntryPageConfirmWindow from '../../components/EntryPageConfirmWindow';
-import { landingPageInterface, ViewEntryRouteParams } from '../../utils/interfaces';
+import { ViewEntryRouteParams } from '../../utils/interfaces';
 import { Plans } from '../../utils/requestsInterfaces';
+import { useHistory } from 'react-router-dom';
 
-const ViewEntryPage = ({ history }: landingPageInterface) => {
+const ViewEntryPage = (): JSX.Element => {
     const { language } = useContext(LanguageContext);
     const { id, type } = useParams<ViewEntryRouteParams>();
     const [entry, setEntry] = useState<Plans>();
     const [deleteEntryWindow, showDeleteEntryWindow] = useState<boolean>(false);
     const [finishEntryWindow, showFinishEntryWindow] = useState<boolean>(false);
+    const history = useHistory();
 
     useEffect(() => {
-        const getEntryData = async () => {
+        const getEntryData = async (): Promise<void> => {
             const entryData = await DataRequests.getPlanByTypeAndId(type, parseInt(id))
 
             setEntry(entryData);
@@ -28,12 +30,12 @@ const ViewEntryPage = ({ history }: landingPageInterface) => {
         getEntryData();
     }, [id, finishEntryWindow, type])
 
-    const deleteEntry = async () => {
+    const deleteEntry = async (): Promise<void> => {
         await DataRequests.deletePlanByTypeAndId(type, parseInt(id));
         return history.goBack();
     }
 
-    const toggleFulfilledPlan = async () => {
+    const toggleFulfilledPlan = async (): Promise<void> => {
         await DataRequests.toggleFinishPlanByTypeAndId(type, parseInt(id));
 
         return showFinishEntryWindow(false);
@@ -43,7 +45,6 @@ const ViewEntryPage = ({ history }: landingPageInterface) => {
         <section className={`view-entry-page ${entry?.fulfilled}`}>
             <NavigationBar
                 type={PageNavigationTypes.VIEWENTRY}
-                history={history}
                 placeholder={languagePack[language].VIEWENTRY.title}
                 deleteFunction={showDeleteEntryWindow}
             />

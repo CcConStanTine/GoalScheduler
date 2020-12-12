@@ -14,9 +14,9 @@ const AppTabs: React.FC = () => {
   const { userContext } = useContext(AppContext);
 
   if (!userContext?.token) return <Redirect to="/welcome" />
+
   return (
     <Switch>
-      {/* {console.table(userContext)} */}
       <Route exact path="/app/home" component={HomePage}></Route>
       <Route exact path="/app/settings" component={SettingsPage}></Route>
       <Route exact path="/app/add" component={AddEntryPage}></Route>

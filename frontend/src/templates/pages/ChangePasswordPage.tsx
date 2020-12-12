@@ -7,18 +7,13 @@ import renderAccountFormInputs from '../../components/RenderAccountFormInputs';
 import { PageNavigationTypes } from '../../utils/variables';
 import languagePack from '../../utils/languagePack';
 import NavigationBar from '../../components/NavigationBar';
+import { ChangePasswordInteface } from '../../utils/interfaces'
 
-interface sendRequestToChangePasswordInteface {
-  oldPassword: string;
-  newPassword: string;
-  newPasswordRepeat: string;
-}
-
-const ChangePasswordPage: React.FC = ({ history }: any) => {
+const ChangePasswordPage = (): JSX.Element => {
   const { setLoggedIn } = useContext(AppContext);
   const { language } = useContext(LanguageContext);
   const { register, handleSubmit, errors } = useForm();
-  const [message, setMessage] = useState('')
+  const [message, setMessage] = useState<string>('');
 
   const ChangePasswordInputData = [{
     name: "oldPassword",
@@ -55,7 +50,7 @@ const ChangePasswordPage: React.FC = ({ history }: any) => {
     }, 2000);
   }
 
-  const checkPassword = (oldPassword: string, newPassword: string, newPasswordRepeat: string) => {
+  const checkPassword = (oldPassword: string, newPassword: string, newPasswordRepeat: string): void | Promise<NodeJS.Timeout> => {
     if (newPassword === newPasswordRepeat) {
       if (newPassword !== oldPassword)
         return changePasswordAndForceUserToLogAgain(newPassword)
@@ -66,7 +61,7 @@ const ChangePasswordPage: React.FC = ({ history }: any) => {
     return setMessage(languagePack[language].CHANGEPASSWORD.wrongNewPasswords);
   }
 
-  const sendRequestToChangePassword = async ({ oldPassword, newPassword, newPasswordRepeat }: sendRequestToChangePasswordInteface) => {
+  const sendRequestToChangePassword = async ({ oldPassword, newPassword, newPasswordRepeat }: ChangePasswordInteface) => {
     const response = await DataRequests.checkIfPasswordIsCorrect(oldPassword);
 
     if (response)
@@ -77,7 +72,7 @@ const ChangePasswordPage: React.FC = ({ history }: any) => {
 
   return (
     <section className='change-password-page'>
-      <NavigationBar type={PageNavigationTypes.DEFAULT} history={history} placeholder={languagePack[language].CHANGEPASSWORD.title} />
+      <NavigationBar type={PageNavigationTypes.DEFAULT} placeholder={languagePack[language].CHANGEPASSWORD.title} />
       <form onSubmit={handleSubmit(sendRequestToChangePassword)}>
         {renderAccountFormInputs(ChangePasswordInputData)}
         {message && <p className='change-password-message'>{message}</p>}
