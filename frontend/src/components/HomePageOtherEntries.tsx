@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import renderPlanEntries from './RenderPlanEntries';
 import { EntriesPlanType } from '../utils/variables';
 import RenderEntriesNavigation from './RenderEntriesNavigation';
@@ -6,12 +6,16 @@ import RenderEntriesDateNavigation from './RenderEntriesDateNavigation';
 import { getActualDateAsAObject, getDataByType } from './OtherEntriesFunctions';
 import { dateParams, entryParams } from '../utils/interfaces';
 import DataRequests from '../authentication/DataRequests';
+import { LanguageContext } from '../authentication/LanguageContext';
+import { Link } from 'react-router-dom';
+import languagePack from '../utils/languagePack';
 
 const HomePageOtherEntries = (): JSX.Element => {
     const [date, setDate] = useState<dateParams>(getActualDateAsAObject());
     const [id, setId] = useState<number | undefined>();
     const [entryType, setEntryType] = useState<string>(EntriesPlanType.YEAR);
     const [entryData, setEntryData] = useState<entryParams>([]);
+    const { language } = useContext(LanguageContext)
 
     const changeEntry = async (sign: string): Promise<void> => {
         const { _id, _date, plans } = await getDataByType(entryType, sign, id!, date);
@@ -50,7 +54,14 @@ const HomePageOtherEntries = (): JSX.Element => {
                 />
             </div>
             <div className='entries'>
-                {renderPlanEntries(entryData)}
+                {!entryData.length ?
+                    <div className='empty-entry'>
+                        <p>{languagePack[language].HOME.emptyEntries}</p>
+                        <Link to={`/app/add/${entryType}`}>
+                            <button className='default-button'>{languagePack[language].HOME.addEntry}</button>
+                        </Link>
+                    </div>
+                    : renderPlanEntries(entryData)}
             </div>
         </div>
     )

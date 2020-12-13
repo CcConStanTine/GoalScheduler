@@ -26,6 +26,7 @@ const AddEntryPage = (): JSX.Element => {
 
             getEntryData();
         }
+        else if (type && !id) setEntryType(type);
     }, [id, type])
 
     return (

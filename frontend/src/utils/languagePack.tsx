@@ -24,6 +24,8 @@ const languagePack: languageInterface = {
             search: 'Search schedule',
             todayPlans: "Today's plans:",
             otherPlans: 'Other plans:',
+            emptyEntries: 'Empty?',
+            addEntry: 'Add Entry',
         },
         ADD: {
             title: 'Add task',
@@ -143,6 +145,8 @@ const languagePack: languageInterface = {
             search: 'Szukaj planu',
             todayPlans: "Dzisiejsze plany",
             otherPlans: 'Inne plany',
+            emptyEntries: 'Brak planów',
+            addEntry: 'Dodaj',
         },
         ADD: {
             title: 'Dodaj zadanie',

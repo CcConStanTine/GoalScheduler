@@ -501,6 +501,21 @@ form{
             flex-direction: column;
             width: 100%;
 
+            .empty-entry{
+                text-align: center;
+
+                p{
+                    margin: 20px 0 10px;
+                }
+
+                .default-button{
+                    background-color: white;
+                    color: black;
+                    border: 1px solid black;
+                    width: 70%;
+                }
+            }
+
             .data-navigation{
                 width: 100%;
                 display: flex;

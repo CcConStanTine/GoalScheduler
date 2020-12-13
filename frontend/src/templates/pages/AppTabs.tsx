@@ -20,6 +20,7 @@ const AppTabs: React.FC = () => {
       <Route exact path="/app/home" component={HomePage}></Route>
       <Route exact path="/app/settings" component={SettingsPage}></Route>
       <Route exact path="/app/add" component={AddEntryPage}></Route>
+      <Route exact path="/app/add/:type" component={AddEntryPage}></Route>
       <Route exact path="/app/edit/:type/:id" component={AddEntryPage}></Route>
       <Route exact path="/app/change-password" component={ChangePasswordPage}></Route>
       <Route exact path="/app/change-email" component={ChangeEmailPage}></Route>

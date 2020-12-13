@@ -169,6 +169,8 @@ interface home {
     search: string;
     todayPlans: string;
     otherPlans: string;
+    emptyEntries: string;
+    addEntry: string;
 }
 
 interface add {
