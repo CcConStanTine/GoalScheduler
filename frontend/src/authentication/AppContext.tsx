@@ -1,5 +1,7 @@
-import React, { useState, useEffect, createContext, ReactNode } from 'react';
+import React, { useState, useEffect, createContext, ReactNode, useContext } from 'react';
+import { LoadingPageContext } from './LoadingPageContext';
 import DataRequests from './DataRequests';
+import LoaderPage from '../components/Loader';
 
 interface AppContextInterface {
     userContext?: {
@@ -21,16 +23,21 @@ interface UseAppContextInterface {
 export const AppContext = createContext<AppContextInterface>({});
 
 export const UseAppContext = ({ children }: UseAppContextInterface) => {
+    const { loading, setLoading } = useContext(LoadingPageContext);
     const [userContext, setLoggedIn] = useState({});
 
     useEffect(() => {
         const getUserData = async () => {
             const { token } = DataRequests.getCurrentUser();
             const userInfo = token && await DataRequests.getCurrentUserInfo();
-            setLoggedIn({ token, ...userInfo })
+            setLoggedIn({ token, ...userInfo });
+            setLoading!(false);
         }
         getUserData()
-    }, []);
+    }, [setLoading]);
+
+    if (loading)
+        return <LoaderPage />
 
     return (
         <AppContext.Provider value={{ userContext, setLoggedIn }}>

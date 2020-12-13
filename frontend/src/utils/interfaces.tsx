@@ -63,6 +63,7 @@ export interface entriesNavigation {
 export interface entryParams {
     [index: number]: singleEntryParams;
     map: any;
+    length: any;
 }
 
 export interface AddEntry {
