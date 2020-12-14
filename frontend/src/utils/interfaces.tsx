@@ -237,6 +237,7 @@ interface changeUserphoto {
     title: string;
     select: string;
     upload: string;
+    uploadFailed: string;
     delete: string;
     uploadImageSuccessed: string;
     deleteImageSuccessed: string;

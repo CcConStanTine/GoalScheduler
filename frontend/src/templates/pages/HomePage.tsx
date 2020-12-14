@@ -5,7 +5,6 @@ import DataRequests from '../../authentication/DataRequests';
 import { PageNavigationTypes, PlanTypes } from '../../utils/variables';
 import languagePack from '../../utils/languagePack';
 import NavigationBar from '../../components/NavigationBar';
-import userDefaultPhoto from '../../images/planner.jpg';
 import RenderPlanEntries from '../../components/RenderPlanEntries';
 import HomePageOtherEntries from '../../components/HomePageOtherEntries';
 
@@ -19,9 +18,9 @@ const HomePage = (): JSX.Element => {
 
         const updateUserInfo = async (): Promise<void> => {
             const userInfo = await DataRequests.getCurrentUserInfo();
-            const fileUrl = token && await DataRequests.getUserPhoto();
+            const { fileUrl: userPhoto } = await DataRequests.getUserPhoto();
 
-            setLoggedIn && setLoggedIn({ ...userInfo, token, userPhoto: fileUrl ? fileUrl : userDefaultPhoto })
+            setLoggedIn && setLoggedIn({ ...userInfo, token, userPhoto })
         }
 
         const updateTodayPlans = async (): Promise<void> => {

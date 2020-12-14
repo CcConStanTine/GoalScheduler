@@ -5,7 +5,6 @@ import DataRequests from '../../authentication/DataRequests';
 import { PageNavigationTypes } from '../../utils/variables';
 import languagePack from '../../utils/languagePack';
 import NavigationBar from '../../components/NavigationBar';
-import userDefaultPhoto from '../../images/planner.jpg';
 
 const ChangeUserPhoto = (): JSX.Element => {
   const { userContext, setLoggedIn } = useContext(AppContext);
@@ -21,16 +20,15 @@ const ChangeUserPhoto = (): JSX.Element => {
   const fileUploadHandler = async () => {
     const formData = new FormData();
     formData.append('file', photo!);
-    const { path, message } = await DataRequests.changeUserPhoto(formData);
+    const { fileUrl: userPhoto, path } = await DataRequests.changeUserPhoto(formData);
 
-    if (path) {
-      const { fileUrl } = await DataRequests.getUserPhoto();
-      setLoggedIn!({ ...userContext, userPhoto: fileUrl });
+    if (!path) {
+      setLoggedIn!({ ...userContext, userPhoto });
 
-      return setMessage(languagePack[language].CHANGEUSERPHOTO.upload);
+      return setMessage(languagePack[language].CHANGEUSERPHOTO.uploadImageSuccessed);
     }
 
-    return setMessage(message);
+    return setMessage(languagePack[language].CHANGEUSERPHOTO.uploadFailed);
   }
 
   useEffect(() => {
@@ -44,9 +42,10 @@ const ChangeUserPhoto = (): JSX.Element => {
 
   const deleteUserPhoto = async () => {
     const { message, status } = await DataRequests.deleteUserPhoto();
+    const { fileUrl } = await DataRequests.getUserPhoto();
 
     if (!status) {
-      setLoggedIn!({ ...userContext, userPhoto: userDefaultPhoto });
+      setLoggedIn!({ ...userContext, userPhoto: fileUrl });
 
       return setMessage(languagePack[language].CHANGEUSERPHOTO.deleteImageSuccessed);
     }
