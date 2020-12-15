@@ -20,7 +20,15 @@ const ChangeUserPhoto = (): JSX.Element => {
 
   const inputPhoto = useRef<HTMLInputElement>(null);
 
-  const updatePhoto = (photo: File) => setPhoto(photo);
+  const updatePhoto = (photo: File) => {
+    if (photo.size > 1000000) {
+      setPhoto(null);
+      return setMessage(languagePack[language].CHANGEUSERPHOTO.uploadFailed);
+    }
+
+    setMessage('');
+    return setPhoto(photo);
+  };
 
   const fileUploadHandler = async () => {
     setLoading!(true);
