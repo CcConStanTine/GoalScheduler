@@ -36,11 +36,9 @@ export const UseAppContext = ({ children }: UseAppContextInterface) => {
         getUserData()
     }, [setLoading]);
 
-    if (loading)
-        return <LoaderPage />
-
     return (
         <AppContext.Provider value={{ userContext, setLoggedIn }}>
+            {loading && <LoaderPage />}
             {children}
         </AppContext.Provider>
     )

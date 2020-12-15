@@ -41,8 +41,8 @@ class UserCredentialsRequests extends AppConfig {
     public checkIfPasswordIsCorrect = (password: string): Promise<UserSignIn> =>
         this.handleRequests(RequestsMethods.POST, 'sign-in', { username: this.getUserame, password });
 
-    public changeUserPhoto = (file: FormData): Promise<PostUserPhoto> =>
-        this.handleRequests(RequestsMethods.POST, this.getUserValue('image'), file);
+    public changeUserPhoto = (file: FormData, config: any) =>
+        this.UploadFileWithProgessBar(this.getUserValue('image'), file, config);
 
     public changeUsername = (firstName: string, lastName: string, nick: string): Promise<GetUserInfo> =>
         this.handleRequests(RequestsMethods.PATCH, this.getUserValue('basic'), { firstName, lastName, nick });

@@ -1,14 +1,19 @@
 import React, { useContext, useState, useRef, useEffect } from 'react';
 import { AppContext } from '../../authentication/AppContext';
+import { LoadingPageContext } from '../../authentication/LoadingPageContext';
 import { LanguageContext } from '../../authentication/LanguageContext';
 import DataRequests from '../../authentication/DataRequests';
 import { PageNavigationTypes } from '../../utils/variables';
 import languagePack from '../../utils/languagePack';
 import NavigationBar from '../../components/NavigationBar';
+import LoaderPage from '../../components/Loader';
 
 const ChangeUserPhoto = (): JSX.Element => {
   const { userContext, setLoggedIn } = useContext(AppContext);
+  const { setLoading } = useContext(LoadingPageContext);
   const [photo, setPhoto] = useState<null | File>(null);
+  const [defaultPhoto, setDefaultPhoto] = useState<string>('');
+  const [uploadPercentage, setUploadPercentage] = useState(0);
   const { language } = useContext(LanguageContext);
   const [message, setMessage] = useState<string>('');
   const [showDeleteOption, setShowDeleteOption] = useState<Boolean>(false);
@@ -18,22 +23,33 @@ const ChangeUserPhoto = (): JSX.Element => {
   const updatePhoto = (photo: File) => setPhoto(photo);
 
   const fileUploadHandler = async () => {
+    setLoading!(true);
     const formData = new FormData();
     formData.append('file', photo!);
-    const { fileUrl: userPhoto, path } = await DataRequests.changeUserPhoto(formData);
 
-    if (!path) {
-      setLoggedIn!({ ...userContext, userPhoto });
+    const config = {
+      onUploadProgress: (progressEvent: any) => {
+        let percentCompleted = Math.round((progressEvent.loaded * 100) / progressEvent.total);
+        setUploadPercentage(percentCompleted);
 
-      return setMessage(languagePack[language].CHANGEUSERPHOTO.uploadImageSuccessed);
+        if (percentCompleted === 100) {
+          setLoggedIn!({ ...userContext, userPhoto: URL.createObjectURL(photo) });
+
+          return setMessage(languagePack[language].CHANGEUSERPHOTO.uploadImageSuccessed);
+        }
+      }
     }
 
-    return setMessage(languagePack[language].CHANGEUSERPHOTO.uploadFailed);
+    await DataRequests.changeUserPhoto(formData, config);
+
+    setLoading!(false);
   }
 
   useEffect(() => {
     const showDeleteUserPhotoOption = async () => {
-      const { imageId } = await DataRequests.getUserPhoto();
+      const { imageId, fileUrl } = await DataRequests.getUserPhoto();
+
+      setDefaultPhoto(fileUrl);
 
       return setShowDeleteOption(!!imageId);
     };
@@ -55,9 +71,10 @@ const ChangeUserPhoto = (): JSX.Element => {
 
   return (
     <section className='change-user-photo-page'>
+      {(uploadPercentage > 0 && uploadPercentage < 100) && <LoaderPage loadingProgress={uploadPercentage} />}
       <NavigationBar type={PageNavigationTypes.DEFAULT} placeholder={languagePack[language].CHANGEUSERPHOTO.title} />
       <div className='actual-photo'>
-        <img src={photo ? URL.createObjectURL(photo) : userContext?.userPhoto} alt={`${userContext?.nick}`} />
+        <img src={photo ? URL.createObjectURL(photo) : defaultPhoto} alt={`${userContext?.nick}`} />
       </div>
       <div className="options">
         <input
