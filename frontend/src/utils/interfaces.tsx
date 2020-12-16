@@ -111,6 +111,8 @@ export interface loginUser {
 
 export interface accountFormInterface {
     type: String;
+    headerSignUp?: String;
+    headerLogIn?: String;
 }
 
 export interface renderAccountDataInterface {

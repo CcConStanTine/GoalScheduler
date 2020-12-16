@@ -5,9 +5,9 @@ import { UseThemeContext } from '../authentication/ThemeContext';
 import { UseLanguageContext } from '../authentication/LanguageContext';
 import { UseLoadingContext } from '../authentication/LoadingPageContext';
 
-import AppTabs from '../templates/pages/AppTabs';
-import WelcomePage from '../templates/pages/WelcomePage';
-import NotFoundPage from '../templates/pages/NotFoundPage';
+import AppTabs from '../templates/routes/AppTabs';
+import WelcomePage from '../templates/routes/WelcomePage';
+import NotFoundPage from '../templates/pages/mobile/NotFoundPage';
 
 const App = () => (
   <UseLoadingContext>

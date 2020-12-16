@@ -1,12 +1,12 @@
 import React, { useContext, useState, useEffect } from 'react';
-import { AppContext } from '../../authentication/AppContext';
-import { LanguageContext } from '../../authentication/LanguageContext';
-import DataRequests from '../../authentication/DataRequests';
-import { PageNavigationTypes, PlanTypes } from '../../utils/variables';
-import languagePack from '../../utils/languagePack';
-import NavigationBar from '../../components/NavigationBar';
-import RenderPlanEntries from '../../components/RenderPlanEntries';
-import HomePageOtherEntries from '../../components/HomePageOtherEntries';
+import { AppContext } from '../../../authentication/AppContext';
+import { LanguageContext } from '../../../authentication/LanguageContext';
+import DataRequests from '../../../authentication/DataRequests';
+import { PageNavigationTypes, PlanTypes } from '../../../utils/variables';
+import languagePack from '../../../utils/languagePack';
+import NavigationBar from '../../../components/NavigationBar';
+import RenderPlanEntries from '../../../components/RenderPlanEntries';
+import HomePageOtherEntries from '../../../components/HomePageOtherEntries';
 
 const HomePage = (): JSX.Element => {
     const { setLoggedIn } = useContext(AppContext);

@@ -4,6 +4,10 @@ import { selectLanguageInterface } from './interfaces';
 export const appName = "MySchedule";
 export const appLogo = AppImage;
 
+export enum ScreenSizes {
+    Mobile = 900,
+}
+
 export const AccountFormTypes = {
     CREATE: 'create',
     LOGIN: 'login',

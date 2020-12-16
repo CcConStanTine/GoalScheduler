@@ -1,17 +1,16 @@
-import React, { useState, useContext } from 'react';
-import { appLogo, appName, AccountFormTypes } from '../../utils/variables';
-import languagePack from '../../utils/languagePack';
-import { AppContext } from '../../authentication/AppContext';
-import { LanguageContext } from '../../authentication/LanguageContext';
-import AccountForm from '../../components/AccountForm';
-import { Redirect } from 'react-router-dom';
+import React, { useContext } from 'react';
+import { appLogo, appName, AccountFormTypes } from '../../../utils/variables';
+import languagePack from '../../../utils/languagePack';
+import AccountForm from '../../../components/AccountForm';
+import { LanguageContext } from '../../../authentication/LanguageContext';
 
-const WelcomePage = (): JSX.Element => {
-    const [showRegisterPanel, setShowRegisterPanel] = useState<Boolean>(false);
-    const { userContext } = useContext(AppContext);
+interface WelcomePageMobile {
+    showRegisterPanel: boolean,
+    setShowRegisterPanel: (value: boolean) => void
+}
+
+const WelcomePage = ({ showRegisterPanel, setShowRegisterPanel }: WelcomePageMobile): JSX.Element => {
     const { language } = useContext(LanguageContext);
-
-    if (userContext?.token) return <Redirect to="/app/home" />
 
     return (
         <section className="welcome-page">

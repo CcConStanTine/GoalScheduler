@@ -1,15 +1,15 @@
 import React, { useContext, useState, useEffect } from 'react';
-import { PageNavigationTypes, EntryPageConfirmWindowTypes } from '../../utils/variables';
+import { PageNavigationTypes, EntryPageConfirmWindowTypes } from '../../../utils/variables';
 import { Link } from 'react-router-dom';
-import languagePack from '../../utils/languagePack';
-import NavigationBar from '../../components/NavigationBar';
-import { LanguageContext } from '../../authentication/LanguageContext';
-import DataRequests from '../../authentication/DataRequests';
+import languagePack from '../../../utils/languagePack';
+import NavigationBar from '../../../components/NavigationBar';
+import { LanguageContext } from '../../../authentication/LanguageContext';
+import DataRequests from '../../../authentication/DataRequests';
 import { useParams } from "react-router-dom";
 import { FaPen, FaCheck, FaTimes } from 'react-icons/fa';
-import EntryPageConfirmWindow from '../../components/EntryPageConfirmWindow';
-import { ViewEntryRouteParams } from '../../utils/interfaces';
-import { Plans } from '../../utils/requestsInterfaces';
+import EntryPageConfirmWindow from '../../../components/EntryPageConfirmWindow';
+import { ViewEntryRouteParams } from '../../../utils/interfaces';
+import { Plans } from '../../../utils/requestsInterfaces';
 import { useHistory } from 'react-router-dom';
 
 const ViewEntryPage = (): JSX.Element => {

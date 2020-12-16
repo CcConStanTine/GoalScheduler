@@ -1,12 +1,12 @@
 import React, { useContext, useState, useRef, useEffect } from 'react';
-import { AppContext } from '../../authentication/AppContext';
-import { LoadingPageContext } from '../../authentication/LoadingPageContext';
-import { LanguageContext } from '../../authentication/LanguageContext';
-import DataRequests from '../../authentication/DataRequests';
-import { PageNavigationTypes } from '../../utils/variables';
-import languagePack from '../../utils/languagePack';
-import NavigationBar from '../../components/NavigationBar';
-import LoaderPage from '../../components/Loader';
+import { AppContext } from '../../../authentication/AppContext';
+import { LoadingPageContext } from '../../../authentication/LoadingPageContext';
+import { LanguageContext } from '../../../authentication/LanguageContext';
+import DataRequests from '../../../authentication/DataRequests';
+import { PageNavigationTypes } from '../../../utils/variables';
+import languagePack from '../../../utils/languagePack';
+import NavigationBar from '../../../components/NavigationBar';
+import LoaderPage from '../../../components/Loader';
 
 const ChangeUserPhoto = (): JSX.Element => {
   const { userContext, setLoggedIn } = useContext(AppContext);

@@ -1,14 +1,14 @@
 import React, { useContext, useState, useEffect } from 'react';
-import { PageNavigationTypes, EntriesPlanType } from '../../utils/variables';
-import languagePack from '../../utils/languagePack';
-import NavigationBar from '../../components/NavigationBar';
-import { LanguageContext } from '../../authentication/LanguageContext';
-import DataRequests from '../../authentication/DataRequests';
+import { PageNavigationTypes, EntriesPlanType } from '../../../utils/variables';
+import languagePack from '../../../utils/languagePack';
+import NavigationBar from '../../../components/NavigationBar';
+import { LanguageContext } from '../../../authentication/LanguageContext';
+import DataRequests from '../../../authentication/DataRequests';
 import { useParams } from "react-router-dom";
-import { ViewEntryRouteParams } from '../../utils/interfaces';
-import RenderAddEntryInputs from '../../components/RenderAddEntryInputs';
-import RenderEntriesNavigation from '../../components/RenderEntriesNavigation';
-import { ReturnPlans } from '../../utils/requestsInterfaces';
+import { ViewEntryRouteParams } from '../../../utils/interfaces';
+import RenderAddEntryInputs from '../../../components/RenderAddEntryInputs';
+import RenderEntriesNavigation from '../../../components/RenderEntriesNavigation';
+import { ReturnPlans } from '../../../utils/requestsInterfaces';
 
 const AddEntryPage = (): JSX.Element => {
     const { language } = useContext(LanguageContext);

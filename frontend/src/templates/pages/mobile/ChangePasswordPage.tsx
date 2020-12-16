@@ -1,13 +1,13 @@
 import React, { useContext, useState } from 'react';
-import { AppContext } from '../../authentication/AppContext';
-import { LanguageContext } from '../../authentication/LanguageContext';
-import DataRequests from '../../authentication/DataRequests';
+import { AppContext } from '../../../authentication/AppContext';
+import { LanguageContext } from '../../../authentication/LanguageContext';
+import DataRequests from '../../../authentication/DataRequests';
 import { useForm } from "react-hook-form";
-import renderAccountFormInputs from '../../components/RenderAccountFormInputs';
-import { PageNavigationTypes } from '../../utils/variables';
-import languagePack from '../../utils/languagePack';
-import NavigationBar from '../../components/NavigationBar';
-import { ChangePasswordInteface } from '../../utils/interfaces'
+import renderAccountFormInputs from '../../../components/RenderAccountFormInputs';
+import { PageNavigationTypes } from '../../../utils/variables';
+import languagePack from '../../../utils/languagePack';
+import NavigationBar from '../../../components/NavigationBar';
+import { ChangePasswordInteface } from '../../../utils/interfaces'
 
 const ChangePasswordPage = (): JSX.Element => {
   const { setLoggedIn } = useContext(AppContext);

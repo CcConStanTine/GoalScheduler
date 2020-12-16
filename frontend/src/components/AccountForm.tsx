@@ -7,13 +7,15 @@ import DataRequests from '../authentication/DataRequests';
 import renderAccountFormInputs from './RenderAccountFormInputs';
 import { AppContext } from '../authentication/AppContext';
 import { LanguageContext } from '../authentication/LanguageContext';
+import { LoadingPageContext } from '../authentication/LoadingPageContext';
 
-const AccountForm = ({ type }: accountFormInterface): JSX.Element => {
+const AccountForm = ({ type, headerSignUp, headerLogIn }: accountFormInterface): JSX.Element => {
     const { register, handleSubmit, errors } = useForm();
     const [loginMessage, setLoginMessage] = useState<string>('');
     const [registerMessage, setRegisterMessage] = useState<string>('');
     const { setLoggedIn } = useContext(AppContext);
     const { language } = useContext(LanguageContext);
+    const { setLoading } = useContext(LoadingPageContext);
 
     const LoginAccountInputData = [{
         name: "username",
@@ -64,7 +66,6 @@ const AccountForm = ({ type }: accountFormInterface): JSX.Element => {
     }];
 
     const sendRequestToCreateUser = async (data: registerUser): Promise<void> => {
-        console.log('klik');
         const { status, message } = await DataRequests.register(data);
         if (!status) {
             setTimeout(() => setRegisterMessage(languagePack[language].WELCOME.logginIn), 1000);
@@ -75,18 +76,20 @@ const AccountForm = ({ type }: accountFormInterface): JSX.Element => {
     }
 
     const sendRequestToLoginUser = async (data: loginUser): Promise<void> => {
+        setLoading!(true);
         const userData = await DataRequests.login(data);
         DataRequests.setLocalStorageValues(userData);
+        setLoading!(false);
 
         if (userData.token && setLoggedIn) return setLoggedIn(DataRequests.getCurrentUser);
 
         const message = userData.status ? languagePack[language].WELCOME.errorLoggedIn : languagePack[language].WELCOME.logginIn;
-
         return setLoginMessage(message)
     }
 
     if (type === AccountFormTypes.CREATE) return (
         <form onSubmit={handleSubmit(sendRequestToCreateUser)}>
+            {headerSignUp && <h1 className='header'>{headerSignUp}</h1>}
             {renderAccountFormInputs(CreateAccountInputData)}
             {registerMessage && <span className="database-message">{registerMessage}</span>}
             <input className="default-button send-form-button" type="submit" value={languagePack[language].WELCOME.createAccount} />
@@ -95,6 +98,7 @@ const AccountForm = ({ type }: accountFormInterface): JSX.Element => {
 
     return (
         <form onSubmit={handleSubmit(sendRequestToLoginUser)}>
+            {headerLogIn && <h1 className='header'>{headerLogIn}</h1>}
             {renderAccountFormInputs(LoginAccountInputData)}
             {loginMessage && <span className="database-message">{loginMessage}</span>}
             <input className="default-button send-form-button" type="submit" value={languagePack[language].WELCOME.logInButton} />

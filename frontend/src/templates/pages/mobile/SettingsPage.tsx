@@ -1,10 +1,10 @@
 import React, { useContext } from 'react';
-import { PageNavigationTypes } from '../../utils/variables';
-import languagePack from '../../utils/languagePack';
-import NavigationBar from '../../components/NavigationBar';
-import UserData from '../../components/UserData';
-import UserSettings from '../../components/UserSettings';
-import { LanguageContext } from '../../authentication/LanguageContext';
+import { PageNavigationTypes } from '../../../utils/variables';
+import languagePack from '../../../utils/languagePack';
+import NavigationBar from '../../../components/NavigationBar';
+import UserData from '../../../components/UserData';
+import UserSettings from '../../../components/UserSettings';
+import { LanguageContext } from '../../../authentication/LanguageContext';
 
 const SettingsPage = (): JSX.Element => {
     const { language } = useContext(LanguageContext);
