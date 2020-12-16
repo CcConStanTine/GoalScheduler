@@ -5,7 +5,6 @@ import {
     UserSignUp,
     GetUserInfo,
     GetUserPhoto,
-    PostUserPhoto,
     ReturnToken,
     DeleteOrChange,
 } from '../utils/requestsInterfaces';

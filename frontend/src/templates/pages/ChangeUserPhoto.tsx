@@ -12,7 +12,7 @@ const ChangeUserPhoto = (): JSX.Element => {
   const { userContext, setLoggedIn } = useContext(AppContext);
   const { setLoading } = useContext(LoadingPageContext);
   const [photo, setPhoto] = useState<null | File>(null);
-  const [defaultPhoto, setDefaultPhoto] = useState<string>('');
+  const [defaultPhoto, setDefaultPhoto] = useState<string>(userContext?.userPhoto ? userContext?.userPhoto : '');
   const [uploadPercentage, setUploadPercentage] = useState(0);
   const { language } = useContext(LanguageContext);
   const [message, setMessage] = useState<string>('');

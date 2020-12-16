@@ -64,8 +64,9 @@ const AccountForm = ({ type }: accountFormInterface): JSX.Element => {
     }];
 
     const sendRequestToCreateUser = async (data: registerUser): Promise<void> => {
+        console.log('klik');
         const { status, message } = await DataRequests.register(data);
-        if (status === 200) {
+        if (!status) {
             setTimeout(() => setRegisterMessage(languagePack[language].WELCOME.logginIn), 1000);
             setTimeout(() => sendRequestToLoginUser(data), 2000);
         }
