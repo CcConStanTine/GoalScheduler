@@ -22,7 +22,7 @@ const formatDate = (data: inputData, type: string): FormatDate => {
     return {
         content,
         startDate: DataRequests.setProprietDate(startDate, type),
-        endDate: DataRequests.setProprietDate(endDate, type),
+        endDate: DataRequests.setProprietDate(startDate, type),
     };
 }
 
@@ -141,7 +141,7 @@ const RenderAddEntryInputs = ({ languagePack, entryType, entry, id }: AddEntry):
                     <Controller
                         render={({ onChange, name, value }) =>
                             <IonDatetime
-                                displayFormat="DD MMMM YYYY"
+                                displayFormat={entryType === EntriesPlanType.MONTH ? "MMMM YYYY" : "YYYY"}
                                 onIonChange={onChange}
                                 placeholder={entryType === EntriesPlanType.DAY ? languagePack.ADD.selectDay : languagePack.ADD.selectStartTime}
                                 cancelText={languagePack.GLOBAL.selectOptionCancel}
@@ -158,27 +158,6 @@ const RenderAddEntryInputs = ({ languagePack, entryType, entry, id }: AddEntry):
                         rules={{
                             required: true
                         }} />
-                    <Controller
-                        render={({ onChange, name, value }) =>
-                            <IonDatetime
-                                displayFormat="DD MMMM YYYY"
-                                onIonChange={onChange}
-                                placeholder={languagePack.ADD.selectEndTime}
-                                cancelText={languagePack.GLOBAL.selectOptionCancel}
-                                doneText={languagePack.GLOBAL.selectOptionDone}
-                                min={DataRequests.getCurrentDate()}
-                                monthNames={languagePack.MONTHS.namesTable}
-                                max={'2030'}
-                                className='default-button add-entry-input'
-                                name={name}
-                                value={value}
-                            />}
-                        control={control}
-                        name='endDate'
-                        rules={{
-                            required: true
-                        }}
-                    />
                 </>
             }
             <Controller
