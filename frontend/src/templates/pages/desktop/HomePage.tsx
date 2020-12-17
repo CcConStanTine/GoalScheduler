@@ -3,12 +3,15 @@ import { AppContext } from '../../../authentication/AppContext';
 import { LanguageContext } from '../../../authentication/LanguageContext';
 import DataRequests from '../../../authentication/DataRequests';
 import { PlanTypes } from '../../../utils/variables';
-import { FaHome, FaUser, FaComment, FaInfoCircle, FaCog, FaLock, FaSignOutAlt } from 'react-icons/fa';
+import { DesktopDisplayOptions } from '../../../utils/interfaces';
+import MainContent from '../../../components/DesktopMainContent';
+import DesktopMenu from '../../../components/DesktopMenu';
 
 const HomePage = () => {
     const { setLoggedIn } = useContext(AppContext);
     const { language } = useContext(LanguageContext);
     const [todayPlans, setTodayPlans] = useState([]);
+    const [display, setDisplay] = useState<DesktopDisplayOptions>(DesktopDisplayOptions.HOME);
 
     useEffect(() => {
         const { token } = DataRequests.getCurrentUser();
@@ -30,26 +33,8 @@ const HomePage = () => {
     }, [setLoggedIn])
     return (
         <div className='home-page-desktop'>
-            <aside>
-                <ul className='icons'>
-                    <li><FaHome /></li>
-                    <li><FaUser /></li>
-                    <li><FaComment /></li>
-                    <li><FaInfoCircle /></li>
-                    <li><FaCog /></li>
-                    <li><FaLock /></li>
-                    <li><FaSignOutAlt /></li>
-                </ul>
-                <ul className='menu'>
-                    <li>Home</li>
-                    <li>Profile</li>
-                    <li>Messages</li>
-                    <li>Help</li>
-                    <li>Settings</li>
-                    <li>Password</li>
-                    <li>Sign Out</li>
-                </ul>
-            </aside>
+            <DesktopMenu onClick={setDisplay} />
+            <MainContent display={display} />
         </div>
     )
 }

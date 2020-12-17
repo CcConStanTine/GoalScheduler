@@ -8,6 +8,14 @@ export interface inputData {
     day?: string;
 }
 
+export enum DesktopDisplayOptions {
+    HOME = 'home',
+    PROFILE = 'profile',
+    MESSAGES = 'messages',
+    HELP = 'help',
+    SETTINGS = 'settings',
+    PASSWORD = 'password'
+}
 export interface EmailInterface {
     newEmail: string;
     currentEmail: string;
