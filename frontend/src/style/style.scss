@@ -1050,3 +1050,55 @@ form{
         }
     }
 }
+
+.home-page-desktop{
+    display: flex;
+    flex-direction: row;
+    background-color: #707070;
+
+    aside{
+        height: 100vh;
+        font-size: 20px;
+        display: flex;
+        flex-direction: row;
+
+        ul{
+            list-style: none;
+            background-color: navy;
+            transition: transform .3s linear;
+
+            &.icons{
+                position: fixed;
+                height: 100vh;
+                z-index: 1;
+            }
+
+            &.menu{
+                transform: translateX(-100%);
+                padding-left: 50px;
+
+                li{
+                    padding-right: 100px;
+                }
+
+                &:hover{
+                    transform: translateX(0);
+                }
+            }
+
+            li{
+                padding: 20px;
+                font-size: 20px;
+                color: white;
+
+                &:hover{
+                    cursor: pointer;
+                }
+            }
+        }
+
+        ul.icons:hover ~ ul.menu{
+            transform: translateX(0);
+        }
+    }
+}
