@@ -90,6 +90,9 @@ const languagePack: languageInterface = {
             uploadImageSuccessed: 'Image Uploaded Successfully',
             deleteImageSuccessed: 'Image Deleted Successfully',
         },
+        PROFILE: {
+            title: 'Profile',
+        },
         GLOBAL: {
             appName: `${appName}`,
             yearPlan: 'Year Plan',
@@ -211,6 +214,9 @@ const languagePack: languageInterface = {
             delete: 'Usuń zdjęcie',
             uploadImageSuccessed: 'Pomyślnie zmieniono zdjęcie',
             deleteImageSuccessed: 'Pomyślnie usunięto zdjęcie',
+        },
+        PROFILE: {
+            title: 'Profile',
         },
         GLOBAL: {
             appName: `${appName}`,

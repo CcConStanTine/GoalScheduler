@@ -4,8 +4,8 @@ import { LanguageContext } from '../../../authentication/LanguageContext';
 import DataRequests from '../../../authentication/DataRequests';
 import { PlanTypes } from '../../../utils/variables';
 import { DesktopDisplayOptions } from '../../../utils/interfaces';
-import MainContent from '../../../components/DesktopMainContent';
-import DesktopMenu from '../../../components/DesktopMenu';
+import RenderHomeContentByDisplay from '../../../components/DesktopComponents/RenderHomeContentByDisplay';
+import Menu from '../../../components/DesktopComponents/Menu';
 
 const HomePage = () => {
     const { setLoggedIn } = useContext(AppContext);
@@ -33,8 +33,8 @@ const HomePage = () => {
     }, [setLoggedIn])
     return (
         <div className='home-page-desktop'>
-            <DesktopMenu onClick={setDisplay} />
-            <MainContent display={display} />
+            <Menu onClick={setDisplay} />
+            <RenderHomeContentByDisplay display={display} />
         </div>
     )
 }

@@ -32,6 +32,14 @@ export interface ChangePasswordInteface {
     newPasswordRepeat: string;
 }
 
+export enum UserOptionsEnum {
+    USERNAME = 'username',
+    EMAIL = 'changeEmail',
+    USERPHOTO = 'changeUserPhoto',
+    PASSWORD = 'changePassword',
+    DEFAULT = '',
+}
+
 export interface dateParams {
     year: number;
     month: number;
@@ -289,6 +297,10 @@ interface editEntry {
     title: string;
 }
 
+interface profile {
+    title: string;
+}
+
 export interface languageInterface {
     [key: string]: {
         WELCOME: welcome;
@@ -301,6 +313,7 @@ export interface languageInterface {
         CHANGEEMAIL: changeEmail;
         CHANGEUSERPHOTO: changeUserphoto;
         EDIT: editEntry;
+        PROFILE: profile;
         GLOBAL: global;
         MONTHS: months;
     };

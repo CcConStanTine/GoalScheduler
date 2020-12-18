@@ -1,14 +1,14 @@
 import React, { useContext } from 'react';
 import { FaHome, FaUser, FaComment, FaInfoCircle, FaCog, FaLock, FaSignOutAlt } from 'react-icons/fa';
-import { DesktopDisplayOptions } from '../utils/interfaces';
-import DataRequests from '../authentication/DataRequests';
-import { AppContext } from '../authentication/AppContext'
+import { DesktopDisplayOptions } from '../../utils/interfaces';
+import DataRequests from '../../authentication/DataRequests';
+import { AppContext } from '../../authentication/AppContext'
 
 interface Menu {
     onClick: any;
 }
 
-const DesktopMenu = ({ onClick }: Menu) => {
+const Menu = ({ onClick }: Menu) => {
     const { setLoggedIn } = useContext(AppContext)
 
     const logOutUser = () => {
@@ -40,4 +40,4 @@ const DesktopMenu = ({ onClick }: Menu) => {
     )
 };
 
-export default DesktopMenu;
+export default Menu;

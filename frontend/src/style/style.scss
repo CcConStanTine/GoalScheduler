@@ -123,6 +123,34 @@
             }
         }
     }
+
+    .home-page-desktop{
+        background-color: #707070;
+
+        aside{
+            ul{
+                background-color: #444;
+            }
+        }
+    }
+
+    .settings-page-desktop{
+        .entry-container{
+            &::before{
+                background-color: white;
+            }
+    
+            &::after{
+                background-color: white;
+            }
+    
+            &.title{
+                &::before{
+                    background-color: white;
+                }
+            }
+        }
+    }
 }
 
 .default-button{
@@ -1054,7 +1082,6 @@ form{
 .home-page-desktop{
     display: flex;
     flex-direction: row;
-    background-color: #707070;
 
     aside{
         height: 100vh;
@@ -1070,7 +1097,7 @@ form{
             &.icons{
                 position: fixed;
                 height: 100vh;
-                z-index: 1;
+                z-index: 3;
             }
 
             &.menu{
@@ -1083,6 +1110,7 @@ form{
 
                 &:hover{
                     transform: translateX(0);
+                    z-index: 2;
                 }
             }
 
@@ -1099,6 +1127,159 @@ form{
 
         ul.icons:hover ~ ul.menu{
             transform: translateX(0);
+            z-index: 2;
+        }
+    }
+}
+
+.settings-page-desktop, .profile-page-desktop{
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    position: absolute;
+    z-index: 0;
+    width: 100%;
+
+    .entry-container{
+        width: 70%;
+        padding: 20px;
+        position: relative;
+
+        p{
+            padding: 10px;
+        }
+
+        &::before{
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 1px;
+            background-color: lightgray;
+        }
+
+        &::after{
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 1px;
+            background-color: black;
+            transition: width .3s linear;
+        }
+
+        &:hover{
+            &::after{
+                width: 100%;
+            }
+        }
+
+        &.title{
+            &::before{
+                background-color: black;
+            }
+
+            h1{
+                font-size: 30px;
+            }
+        }
+
+        &.language{
+            padding-bottom: 25px;
+
+            select{
+                padding: 10px;
+                margin-left: 10px;
+                cursor: pointer;
+            }
+        }
+
+        &.dark-mode{
+
+            .switcher{
+                margin: 20px 20px 10px;
+                width: 40px;
+                height: 12px;
+                padding: unset;
+                border-radius: 10px;
+                background-color: lightgray;
+                position: relative;
+                cursor: pointer;
+
+                .toggler{
+                    padding: unset;
+                    width: 20px;
+                    height: 20px;
+                    background-color: white;
+                    border-radius: 10px;
+                    border: 1px solid lightgray;
+                    position: absolute;
+                    top: 50%;
+                    left: 0;
+                    transform: translateY(-50%);
+                    transition: left 1s easy;
+
+                    &.darktheme{
+                        left: calc(100% - 20px);
+                    }
+
+                    &.lighttheme{
+                        left: 0;
+                    }
+                }
+            }
+        }
+    }
+}
+
+.profile-page-desktop{
+    .content-container{
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        width: 70%;
+        padding: 20px;
+
+        .user-credentials{
+            width: 40%;
+
+            img{
+                width: 100%;
+            }
+
+            ul{
+                list-style: none;
+        
+                li{
+                    display: flex;
+                    flex-direction: row;
+                    font-size: 24px;
+        
+                    span{
+                        display: block;
+                        padding: 10px 20px;
+        
+                        svg{
+                            font-size: 20px;
+                        }
+                    }
+        
+                    p{
+                        padding: 10px 20px 10px 0;
+                    }
+                }
+            }
+        }
+
+        .user-options{
+            width: 55%;
+
+
+            .entry-container{
+                width: 100%;
+            }
         }
     }
 }
