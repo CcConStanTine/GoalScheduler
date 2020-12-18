@@ -9,7 +9,7 @@ import { AppContext } from '../authentication/AppContext';
 import { LanguageContext } from '../authentication/LanguageContext';
 import { LoadingPageContext } from '../authentication/LoadingPageContext';
 
-const AccountForm = ({ type, headerSignUp, headerLogIn }: accountFormInterface): JSX.Element => {
+const AccountForm = ({ type, headerSignUp, headerLogIn, mobile }: accountFormInterface): JSX.Element => {
     const { register, handleSubmit, errors } = useForm();
     const [loginMessage, setLoginMessage] = useState<string>('');
     const [registerMessage, setRegisterMessage] = useState<string>('');
@@ -89,19 +89,19 @@ const AccountForm = ({ type, headerSignUp, headerLogIn }: accountFormInterface):
 
     if (type === AccountFormTypes.CREATE) return (
         <form onSubmit={handleSubmit(sendRequestToCreateUser)}>
-            {headerSignUp && <h1 className='header'>{headerSignUp}</h1>}
+            {!mobile && <h1 className='header'>{headerSignUp}</h1>}
             {renderAccountFormInputs(CreateAccountInputData)}
             {registerMessage && <span className="database-message">{registerMessage}</span>}
-            <input className="default-button send-form-button" type="submit" value={languagePack[language].WELCOME.createAccount} />
+            <input className={mobile ? 'default-button send-form-button' : 'desktop-default-button two'} type="submit" value={languagePack[language].WELCOME.createAccount} />
         </form>
     )
 
     return (
         <form onSubmit={handleSubmit(sendRequestToLoginUser)}>
-            {headerLogIn && <h1 className='header'>{headerLogIn}</h1>}
+            {!mobile && <h1 className='header'>{headerLogIn}</h1>}
             {renderAccountFormInputs(LoginAccountInputData)}
             {loginMessage && <span className="database-message">{loginMessage}</span>}
-            <input className="default-button send-form-button" type="submit" value={languagePack[language].WELCOME.logInButton} />
+            <input className={mobile ? 'default-button send-form-button' : 'desktop-default-button two'} type="submit" value={languagePack[language].WELCOME.logInButton} />
         </form>
     )
 };

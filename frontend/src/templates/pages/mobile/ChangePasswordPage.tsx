@@ -9,7 +9,11 @@ import languagePack from '../../../utils/languagePack';
 import NavigationBar from '../../../components/NavigationBar';
 import { ChangePasswordInteface } from '../../../utils/interfaces'
 
-const ChangePasswordPage = (): JSX.Element => {
+interface PasswordPage {
+  mobile?: boolean;
+}
+
+const ChangePasswordPage = ({ mobile = true }: PasswordPage): JSX.Element => {
   const { setLoggedIn } = useContext(AppContext);
   const { language } = useContext(LanguageContext);
   const { register, handleSubmit, errors } = useForm();
@@ -71,12 +75,12 @@ const ChangePasswordPage = (): JSX.Element => {
   };
 
   return (
-    <section className='change-password-page'>
-      <NavigationBar type={PageNavigationTypes.DEFAULT} placeholder={languagePack[language].CHANGEPASSWORD.title} />
+    <section className={`change-password-page ${!mobile && 'desktop'}`}>
+      {mobile && <NavigationBar type={PageNavigationTypes.DEFAULT} placeholder={languagePack[language].CHANGEPASSWORD.title} />}
       <form onSubmit={handleSubmit(sendRequestToChangePassword)}>
         {renderAccountFormInputs(ChangePasswordInputData)}
         {message && <p className='change-password-message'>{message}</p>}
-        <input className="default-button" type="submit" value={languagePack[language].GLOBAL.save} />
+        <input className={mobile ? "default-button" : "desktop-default-button two"} type="submit" value={languagePack[language].GLOBAL.save} />
       </form>
     </section>
   );

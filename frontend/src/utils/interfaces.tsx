@@ -14,7 +14,6 @@ export enum DesktopDisplayOptions {
     MESSAGES = 'messages',
     HELP = 'help',
     SETTINGS = 'settings',
-    PASSWORD = 'password'
 }
 export interface EmailInterface {
     newEmail: string;
@@ -129,6 +128,7 @@ export interface accountFormInterface {
     type: String;
     headerSignUp?: String;
     headerLogIn?: String;
+    mobile?: boolean;
 }
 
 export interface renderAccountDataInterface {

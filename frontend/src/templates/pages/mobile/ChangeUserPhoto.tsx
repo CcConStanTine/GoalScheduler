@@ -8,7 +8,11 @@ import languagePack from '../../../utils/languagePack';
 import NavigationBar from '../../../components/NavigationBar';
 import LoaderPage from '../../../components/Loader';
 
-const ChangeUserPhoto = (): JSX.Element => {
+interface UserPhoto {
+  mobile?: boolean
+}
+
+const ChangeUserPhoto = ({ mobile = true }: UserPhoto): JSX.Element => {
   const { userContext, setLoggedIn } = useContext(AppContext);
   const { setLoading } = useContext(LoadingPageContext);
   const [photo, setPhoto] = useState<null | File>(null);
@@ -78,9 +82,9 @@ const ChangeUserPhoto = (): JSX.Element => {
   }
 
   return (
-    <section className='change-user-photo-page'>
+    <section className={`change-user-photo-page ${!mobile && 'desktop'}`}>
       {(uploadPercentage > 0 && uploadPercentage < 100) && <LoaderPage loadingProgress={uploadPercentage} />}
-      <NavigationBar type={PageNavigationTypes.DEFAULT} placeholder={languagePack[language].CHANGEUSERPHOTO.title} />
+      {mobile && <NavigationBar type={PageNavigationTypes.DEFAULT} placeholder={languagePack[language].CHANGEUSERPHOTO.title} />}
       <div className='actual-photo'>
         <img src={photo ? URL.createObjectURL(photo) : defaultPhoto} alt={`${userContext?.nick}`} />
       </div>

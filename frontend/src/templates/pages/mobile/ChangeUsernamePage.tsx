@@ -9,7 +9,11 @@ import languagePack from '../../../utils/languagePack';
 import NavigationBar from '../../../components/NavigationBar';
 import { EmailInterface } from '../../../utils/interfaces';
 
-const ChangeUsernamePage = (): JSX.Element => {
+interface Username {
+  mobile?: boolean;
+}
+
+const ChangeUsernamePage = ({ mobile = true }: Username): JSX.Element => {
   const { setLoggedIn } = useContext(AppContext);
   const { language } = useContext(LanguageContext);
   const { register, handleSubmit, errors } = useForm();
@@ -60,12 +64,12 @@ const ChangeUsernamePage = (): JSX.Element => {
   }
 
   return (
-    <section className='change-username-page'>
-      <NavigationBar type={PageNavigationTypes.DEFAULT} placeholder={languagePack[language].CHANGEUSERNAME.title} />
+    <section className={`change-username-page ${!mobile && 'desktop'}`}>
+      {mobile && <NavigationBar type={PageNavigationTypes.DEFAULT} placeholder={languagePack[language].CHANGEUSERNAME.title} />}
       <form onSubmit={handleSubmit(sendRequestToChangeUsername)}>
         {renderAccountFormInputs(ChangeNicknameInputData)}
         {message && <p className='change-username-message'>{message}</p>}
-        <input className="default-button" type="submit" value={languagePack[language].GLOBAL.save} />
+        <input className={mobile ? "default-button" : "desktop-default-button two"} type="submit" value={languagePack[language].GLOBAL.save} />
       </form>
     </section>
   );

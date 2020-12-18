@@ -42,7 +42,7 @@ const languagePack: languageInterface = {
             changeUsername: 'Change Username',
             changePassword: 'Change Password',
             changeEmail: 'Change Email',
-            changeUserPhoto: 'Change Use Photo',
+            changeUserPhoto: 'Change User Photo',
             signOut: 'Sign Out',
         },
         VIEWENTRY: {

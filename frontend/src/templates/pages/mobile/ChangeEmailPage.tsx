@@ -10,7 +10,11 @@ import NavigationBar from '../../../components/NavigationBar';
 import { EmailInterface } from '../../../utils/interfaces';
 import { useHistory } from 'react-router-dom';
 
-const ChangeEmailPage = (): JSX.Element => {
+interface EmailPage {
+  mobile?: boolean;
+}
+
+const ChangeEmailPage = ({ mobile = true }: EmailPage): JSX.Element => {
   const { userContext, setLoggedIn } = useContext(AppContext);
   const { language } = useContext(LanguageContext);
   const { register, handleSubmit, errors } = useForm();
@@ -58,12 +62,12 @@ const ChangeEmailPage = (): JSX.Element => {
   }
 
   return (
-    <section className='change-email-page'>
-      <NavigationBar type={PageNavigationTypes.DEFAULT} placeholder={languagePack[language].CHANGEEMAIL.title} />
+    <section className={`change-email-page ${!mobile && 'desktop'}`}>
+      {mobile && <NavigationBar type={PageNavigationTypes.DEFAULT} placeholder={languagePack[language].CHANGEEMAIL.title} />}
       <form onSubmit={handleSubmit(sendRequestToChangeEmail)}>
         {renderAccountFormInputs(ChangeEmailInputData)}
         {message && <p className='change-email-message'>{message}</p>}
-        <input className="default-button" type="submit" value={languagePack[language].GLOBAL.save} />
+        <input className={mobile ? "default-button" : "desktop-default-button two"} type="submit" value={languagePack[language].GLOBAL.save} />
       </form>
     </section>
   );
