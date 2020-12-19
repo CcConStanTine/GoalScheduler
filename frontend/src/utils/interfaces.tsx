@@ -301,6 +301,10 @@ interface profile {
     title: string;
 }
 
+interface help {
+    title: string;
+}
+
 export interface languageInterface {
     [key: string]: {
         WELCOME: welcome;
@@ -314,6 +318,7 @@ export interface languageInterface {
         CHANGEUSERPHOTO: changeUserphoto;
         EDIT: editEntry;
         PROFILE: profile;
+        HELP: help;
         GLOBAL: global;
         MONTHS: months;
     };

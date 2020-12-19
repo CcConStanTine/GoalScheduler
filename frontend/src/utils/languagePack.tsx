@@ -93,6 +93,9 @@ const languagePack: languageInterface = {
         PROFILE: {
             title: 'Profile',
         },
+        HELP: {
+            title: 'Help',
+        },
         GLOBAL: {
             appName: `${appName}`,
             yearPlan: 'Year Plan',
@@ -216,7 +219,10 @@ const languagePack: languageInterface = {
             deleteImageSuccessed: 'Pomyślnie usunięto zdjęcie',
         },
         PROFILE: {
-            title: 'Profile',
+            title: 'Profil',
+        },
+        HELP: {
+            title: 'Pomoc',
         },
         GLOBAL: {
             appName: `${appName}`,
