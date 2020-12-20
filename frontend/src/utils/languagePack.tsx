@@ -21,6 +21,7 @@ const languagePack: languageInterface = {
             userRegisterSuccessfuly: 'User registered successfully',
         },
         HOME: {
+            title: 'Home',
             search: 'Search schedule',
             todayPlans: "Today's plans:",
             otherPlans: 'Other plans:',
@@ -149,6 +150,7 @@ const languagePack: languageInterface = {
             userRegisterSuccessfuly: 'Zarejestrowany',
         },
         HOME: {
+            title: 'Kalendarz',
             search: 'Szukaj planu',
             todayPlans: "Dzisiejsze plany",
             otherPlans: 'Inne plany',

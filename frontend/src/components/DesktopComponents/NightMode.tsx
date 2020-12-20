@@ -1,6 +1,5 @@
 import React, { useContext } from 'react';
 import languagePack from '../../utils/languagePack';
-import { FaMoon } from 'react-icons/fa';
 import { ThemeContext } from '../../authentication/ThemeContext';
 import { LanguageContext } from '../../authentication/LanguageContext';
 import checkUsedTheme from './../CheckUserTheme';

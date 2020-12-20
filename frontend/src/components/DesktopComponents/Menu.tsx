@@ -1,15 +1,19 @@
 import React, { useContext } from 'react';
-import { FaHome, FaUser, FaComment, FaInfoCircle, FaCog, FaSignOutAlt } from 'react-icons/fa';
+import { FaHome, FaUser, FaInfoCircle, FaCog, FaSignOutAlt } from 'react-icons/fa';
 import { DesktopDisplayOptions } from '../../utils/interfaces';
 import DataRequests from '../../authentication/DataRequests';
-import { AppContext } from '../../authentication/AppContext'
+import { AppContext } from '../../authentication/AppContext';
+import { LanguageContext } from '../../authentication/LanguageContext';
+import languagePack from '../../utils/languagePack';
 
-interface Menu {
+interface MenuInterface {
     onClick: any;
 }
 
-const Menu = ({ onClick }: Menu) => {
-    const { setLoggedIn } = useContext(AppContext)
+const Menu = ({ onClick }: MenuInterface) => {
+    const { setLoggedIn } = useContext(AppContext);
+    const { language } = useContext(LanguageContext);
+
 
     const logOutUser = () => {
         DataRequests.logout();
@@ -21,18 +25,16 @@ const Menu = ({ onClick }: Menu) => {
             <ul className='icons'>
                 <li><FaHome /></li>
                 <li><FaUser /></li>
-                <li><FaComment /></li>
                 <li><FaInfoCircle /></li>
                 <li><FaCog /></li>
                 <li><FaSignOutAlt /></li>
             </ul>
             <ul className='menu'>
-                <li onClick={() => onClick(DesktopDisplayOptions.HOME)}>Home</li>
-                <li onClick={() => onClick(DesktopDisplayOptions.PROFILE)}>Profile</li>
-                <li onClick={() => onClick(DesktopDisplayOptions.MESSAGES)}>Messages</li>
-                <li onClick={() => onClick(DesktopDisplayOptions.HELP)}>Help</li>
-                <li onClick={() => onClick(DesktopDisplayOptions.SETTINGS)}>Settings</li>
-                <li onClick={logOutUser}>Sign Out</li>
+                <li onClick={() => onClick(DesktopDisplayOptions.HOME)}>{languagePack[language].HOME.title}</li>
+                <li onClick={() => onClick(DesktopDisplayOptions.PROFILE)}>{languagePack[language].PROFILE.title}</li>
+                <li onClick={() => onClick(DesktopDisplayOptions.HELP)}>{languagePack[language].HELP.title}</li>
+                <li onClick={() => onClick(DesktopDisplayOptions.SETTINGS)}>{languagePack[language].SETTINGS.title}</li>
+                <li onClick={logOutUser}>{languagePack[language].SETTINGS.signOut}</li>
             </ul>
         </aside>
     )

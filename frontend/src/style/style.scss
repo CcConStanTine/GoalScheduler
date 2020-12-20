@@ -135,7 +135,7 @@
         }
     }
 
-    .settings-page-desktop,.profile-page-desktop{
+    .settings-page-desktop,.profile-page-desktop, .help-page-desktop{
         .entry-container{
             &::before{
                 background-color: white;
@@ -148,6 +148,12 @@
             &.title{
                 &::before{
                     background-color: white;
+                }
+            }
+
+            summary{
+                p{
+                    background-image: url('../images/chevron-dark-theme.png');
                 }
             }
         }
@@ -611,7 +617,7 @@ form{
     width: 100%;
 
     &.desktop{
-        padding: 20px 0;
+        padding: 0 0 20px;
 
         form{
             align-items: flex-start;
@@ -637,15 +643,13 @@ form{
 
     &.desktop{
         width: unset;
-        padding: 20px 0;
+        padding: 0 0 20px;
         text-align: left;
 
         .actual-photo{
             justify-content: flex-start;
 
             img{
-                border-radius: 0;
-                height: unset;
                 margin-left: calc((220px - 130px)/2);
             }
         }
@@ -1272,24 +1276,28 @@ form{
     .content-container{
         display: flex;
         flex-direction: row;
-        justify-content: space-between;
+        justify-content: space-around;
         width: 70%;
         padding: 20px;
 
         .user-credentials{
             width: 30%;
+            padding-top: 20px;
 
             img{
-                width: 100%;
+                width: 260px;
+                height: 260px;
+                border-radius: 50%;
             }
 
             ul{
+                margin-top: 30px;
                 list-style: none;
         
                 li{
                     display: flex;
                     flex-direction: row;
-                    font-size: 24px;
+                    font-size: 20px;
         
                     span{
                         display: block;
@@ -1313,6 +1321,10 @@ form{
 
             .entry-container{
                 width: 100%;
+
+                summary{
+                    font-weight: normal;
+                }
                 
                 h1:hover{
                     cursor: pointer;
@@ -1322,7 +1334,7 @@ form{
     }
 }
 
-.help-page-desktop{
+.help-page-desktop,.user-options{
     .question-container{
         &[open] summary p{
             transform: rotate(180deg);
@@ -1339,11 +1351,12 @@ form{
 
         summary{
             cursor: pointer;
-            font-size: 22px;
+            font-size: 24px;
             display: flex;
             justify-content: space-between;
             align-items: center;
             padding: 10px 0;
+            font-weight: bold;
 
             &:focus{
                 outline: none;
@@ -1360,7 +1373,7 @@ form{
                 background-position: center;
                 background-size: contain;
                 background-repeat: no-repeat;
-                background-image: url('../images/chevron-down.png');
+                background-image: url('../images/chevron.png');
                 transition: all .2s linear;
             }
             
@@ -1369,7 +1382,7 @@ form{
         span{
             display: block;
             padding: 10px 10px 0;
-            font-size: 20px;
+            font-size: 16px;
             transition: all .2s linear;
         }
     }

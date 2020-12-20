@@ -8,10 +8,24 @@ export interface inputData {
     day?: string;
 }
 
+export interface QuestionContent {
+    title: string;
+    answer: string | JSX.Element;
+}
+
+export interface renderQues {
+    [key: number]: QuestionContent
+    map: any;
+}
+
+export interface Questions {
+    [key: string]: renderQues
+};
+
+
 export enum DesktopDisplayOptions {
     HOME = 'home',
     PROFILE = 'profile',
-    MESSAGES = 'messages',
     HELP = 'help',
     SETTINGS = 'settings',
 }
@@ -29,14 +43,6 @@ export interface ChangePasswordInteface {
     oldPassword: string;
     newPassword: string;
     newPasswordRepeat: string;
-}
-
-export enum UserOptionsEnum {
-    USERNAME = 'username',
-    EMAIL = 'changeEmail',
-    USERPHOTO = 'changeUserPhoto',
-    PASSWORD = 'changePassword',
-    DEFAULT = '',
 }
 
 export interface dateParams {
@@ -184,6 +190,7 @@ interface welcome {
 }
 
 interface home {
+    title: string;
     search: string;
     todayPlans: string;
     otherPlans: string;

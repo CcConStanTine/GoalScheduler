@@ -1,5 +1,5 @@
 import AppImage from '../images/app_logo.png';
-import { selectLanguageInterface } from './interfaces';
+import { Questions, selectLanguageInterface } from './interfaces';
 
 export const appName = "MySchedule";
 export const appLogo = AppImage;
@@ -68,6 +68,16 @@ export const AddEntryPageDefaultValues = {
     day: '',
 }
 
+export const userQuestions: Questions = {
+    'en-US': [{
+        title: 'Dlaczego tak długo zajmuje wczytanie aplikacji',
+        answer: 'Jest to uzależnione od połączenia internetowego, każde zapytanie wysyłane jest do bazdy danych, z której zwracana jest odpowiedź.'
+    }],
+    'pl-PL': [{
+        title: 'Dlaczego tak długo zajmuje wczytanie aplikacji',
+        answer: 'Jest to uzależnione od połączenia internetowego, każde zapytanie wysyłane jest do bazdy danych, z której zwracana jest odpowiedź.'
+    }]
+}
 
 export const languageOptions: selectLanguageInterface = {
     'en-US': [{
