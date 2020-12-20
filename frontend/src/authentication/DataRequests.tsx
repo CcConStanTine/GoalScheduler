@@ -1,4 +1,5 @@
-import { inputData } from '../utils/interfaces';
+import { setMonthName } from '../components/OtherEntriesFunctions';
+import { inputData, DateSequences } from '../utils/interfaces';
 import {
     RequestsMethods,
     ReturnPlans,
@@ -20,6 +21,33 @@ class DataRequests extends UserCredentialsRequests {
             return date.slice(0, 9);
 
         return date.slice(0, 10);
+    };
+
+    changeEngToPlDate = (date: string, type: DateSequences, language: string, monthAsString?: boolean): string => {
+        const year = date.slice(0, 4);
+        const month = date.slice(5, 7);
+        const day = date.slice(8, 10);
+
+        if (type === DateSequences.DAY)
+            return `${day} ${month} ${year}`;
+        else if (type === DateSequences.MONTH) {
+            console.log(month);
+            if (monthAsString)
+                return `${setMonthName(parseInt(month), language)} ${year}`;
+
+            return `${month} ${year}`;
+        }
+
+        return year;
+    }
+
+    public setDateBySequence = (date: string, type: DateSequences): number => {
+        if (type === DateSequences.DAY)
+            return parseInt(date.slice(0, 2));
+        else if (type === DateSequences.MONTH)
+            return parseInt(date.slice(0, 2));
+
+        return parseInt(date.slice(0, 4));
     }
 
     public validateDate = (date: string): string => {

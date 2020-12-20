@@ -1,16 +1,15 @@
 import React, { useEffect, useContext, useState } from 'react';
 import { AppContext } from '../../../authentication/AppContext';
-import { LanguageContext } from '../../../authentication/LanguageContext';
+import { DatePickerContext } from '../../../authentication/DatePicker';
 import DataRequests from '../../../authentication/DataRequests';
-import { PlanTypes } from '../../../utils/variables';
 import { DesktopDisplayOptions } from '../../../utils/interfaces';
 import RenderHomeContentByDisplay from '../../../components/DesktopComponents/RenderHomeContentByDisplay';
 import Menu from '../../../components/DesktopComponents/Menu';
+import DateTimePicker from '../../../components/DesktopComponents/DateTimePicker';
 
 const HomePage = () => {
     const { setLoggedIn } = useContext(AppContext);
-    const { language } = useContext(LanguageContext);
-    const [todayPlans, setTodayPlans] = useState([]);
+    const { isDatePickerActive } = useContext(DatePickerContext);
     const [display, setDisplay] = useState<DesktopDisplayOptions>(DesktopDisplayOptions.HOME);
 
     useEffect(() => {
@@ -23,18 +22,13 @@ const HomePage = () => {
             setLoggedIn && setLoggedIn({ ...userInfo, token, userPhoto })
         }
 
-        const updateTodayPlans = async (): Promise<void> => {
-            const plans = await DataRequests.getTypePlans(PlanTypes.DAY);
-            setTodayPlans(plans);
-        }
-
         updateUserInfo();
-        updateTodayPlans();
     }, [setLoggedIn])
     return (
         <div className='home-page-desktop'>
             <Menu onClick={setDisplay} />
             <RenderHomeContentByDisplay display={display} />
+            {isDatePickerActive && <DateTimePicker />}
         </div>
     )
 }

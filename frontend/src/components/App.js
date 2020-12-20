@@ -4,6 +4,7 @@ import { UseAppContext } from '../authentication/AppContext';
 import { UseThemeContext } from '../authentication/ThemeContext';
 import { UseLanguageContext } from '../authentication/LanguageContext';
 import { UseLoadingContext } from '../authentication/LoadingPageContext';
+import { UseDatePickerContext } from '../authentication/DatePicker';
 
 import AppTabs from '../templates/routes/AppTabs';
 import WelcomePage from '../templates/routes/WelcomePage';
@@ -14,16 +15,18 @@ const App = () => (
     <UseAppContext>
       <UseThemeContext>
         <UseLanguageContext>
-          <Router>
-            <Switch>
-              <Route path="/app" >
-                <AppTabs />
-              </Route>
-              <Route exact path="/welcome" component={WelcomePage} />
-              <Redirect exact path="/" to="/app/home" />
-              <Route path="*" component={NotFoundPage} />
-            </Switch>
-          </Router>
+          <UseDatePickerContext>
+            <Router>
+              <Switch>
+                <Route path="/app" >
+                  <AppTabs />
+                </Route>
+                <Route exact path="/welcome" component={WelcomePage} />
+                <Redirect exact path="/" to="/app/home" />
+                <Route path="*" component={NotFoundPage} />
+              </Switch>
+            </Router>
+          </UseDatePickerContext>
         </UseLanguageContext>
       </UseThemeContext>
     </UseAppContext>

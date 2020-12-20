@@ -189,6 +189,12 @@ interface welcome {
     userRegisterSuccessfuly: string;
 }
 
+export enum DateSequences {
+    DAY = 'day',
+    MONTH = 'month',
+    YEAR = 'year',
+}
+
 interface home {
     title: string;
     search: string;
