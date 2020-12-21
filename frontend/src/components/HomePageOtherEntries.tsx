@@ -1,6 +1,5 @@
 import React, { useEffect, useState, useContext } from 'react';
 import renderPlanEntries from './RenderPlanEntries';
-import { EntriesPlanType } from '../utils/variables';
 import RenderEntriesNavigation from './RenderEntriesNavigation';
 import RenderEntriesDateNavigation from './RenderEntriesDateNavigation';
 import { getActualDateAsAObject, getDataByType } from './OtherEntriesFunctions';
@@ -9,11 +8,12 @@ import DataRequests from '../authentication/DataRequests';
 import { LanguageContext } from '../authentication/LanguageContext';
 import { Link } from 'react-router-dom';
 import languagePack from '../utils/languagePack';
+import { PlanTypes } from '../utils/enums';
 
 const HomePageOtherEntries = (): JSX.Element => {
     const [date, setDate] = useState<dateParams>(getActualDateAsAObject());
     const [id, setId] = useState<number | undefined>();
-    const [entryType, setEntryType] = useState<string>(EntriesPlanType.YEAR);
+    const [entryType, setEntryType] = useState<PlanTypes>(PlanTypes.YEAR);
     const [entryData, setEntryData] = useState<entryParams>([]);
     const { language } = useContext(LanguageContext)
 
@@ -25,7 +25,7 @@ const HomePageOtherEntries = (): JSX.Element => {
         return setEntryData(plans);
     };
 
-    const handlePlanData = async (type: string = EntriesPlanType.YEAR, date?: string): Promise<void> => {
+    const handlePlanData = async (type: PlanTypes = PlanTypes.YEAR, date?: string): Promise<void> => {
         setEntryType(type);
         const _date = date ? DataRequests.validateDate(date) : DataRequests.getCurrentDate();
         const id = await DataRequests.getPlanIdByTypeAndDate(type, _date);
@@ -35,7 +35,7 @@ const HomePageOtherEntries = (): JSX.Element => {
         return setEntryData(plans);
     };
 
-    useEffect(() => { handlePlanData(EntriesPlanType.YEAR) }, []);
+    useEffect(() => { handlePlanData(PlanTypes.YEAR) }, []);
 
     return (
         <div className='other-entries-container'>

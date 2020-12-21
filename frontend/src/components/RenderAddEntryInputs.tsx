@@ -6,6 +6,7 @@ import { inputData, FormatDate, AddEntry } from '../utils/interfaces';
 import { Plans } from '../utils/requestsInterfaces';
 import { useHistory } from 'react-router-dom';
 import { AddEntryPageDefaultValues as defaultValues, EntriesPlanType, dateTimeTypes } from '../utils/variables';
+import { PlanTypes } from '../utils/enums';
 
 const formatDate = (data: inputData, type: string): FormatDate => {
     const { startDate, endDate, day, content } = data;
@@ -26,14 +27,14 @@ const formatDate = (data: inputData, type: string): FormatDate => {
     };
 }
 
-const editEntry = async (entryType: string, data: inputData, id: number): Promise<Plans> => {
+const editEntry = async (entryType: PlanTypes, data: inputData, id: number): Promise<Plans> => {
     const type = entryType === EntriesPlanType.DAY ? dateTimeTypes.EDITDAY : dateTimeTypes.DEFAULT;
     const dayData = formatDate(data, type);
 
     return await DataRequests.changePlanByType(entryType, id, dayData);
 }
 
-const addEntry = async (entryType: string, data: inputData): Promise<Plans> => {
+const addEntry = async (entryType: PlanTypes, data: inputData): Promise<Plans> => {
     const type = entryType === EntriesPlanType.DAY ? dateTimeTypes.ADDDAY : dateTimeTypes.DEFAULT;
     const dayData = formatDate(data, type);
 

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import DataRequests from '../../../authentication/DataRequests';
 import { OpenWindow } from '../../../utils/interfaces';
-import { PlanTypes } from '../../../utils/variables';
+import { PlanTypes } from '../../../utils/enums';
 
 const WindowContainer = ({ id, type, setOpenWindow }: OpenWindow) => {
     const [dayPlanList, setDayPlanList] = useState([]);

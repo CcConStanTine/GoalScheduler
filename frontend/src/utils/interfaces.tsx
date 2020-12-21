@@ -1,3 +1,4 @@
+import { PlanTypes } from './enums';
 import { Plans } from './requestsInterfaces';
 
 export interface inputData {
@@ -53,7 +54,7 @@ export interface dateParams {
 
 export interface ViewEntryRouteParams {
     id: string;
-    type: string;
+    type: PlanTypes;
 }
 
 export interface EditEntryParams {

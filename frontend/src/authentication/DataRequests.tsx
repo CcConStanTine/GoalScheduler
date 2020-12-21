@@ -1,3 +1,4 @@
+import { PlanTypes } from '../utils/enums';
 import { inputData, DateSequences, DateTypes } from '../utils/interfaces';
 import {
     RequestsMethods,
@@ -62,7 +63,7 @@ class DataRequests extends UserCredentialsRequests {
         return `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate() < 10 ? `0${date.getDate()}` : date.getDate()}`;
     }
 
-    public addPlanByPlanType = async (type: string, data: inputData): Promise<Plans> => {
+    public addPlanByPlanType = async (type: PlanTypes, data: inputData): Promise<Plans> => {
         const { startDate } = data;
         const { day, ..._data } = data;
         const id = await this.getPlanIdByTypeAndDate(type, day ? day : startDate);
@@ -70,38 +71,38 @@ class DataRequests extends UserCredentialsRequests {
         return await this.addPlanByPlanTypeAndId(type, id, _data);
     };
 
-    public getPlanIdByTypeAndDate = (type: string, date: string): Promise<number> =>
+    public getPlanIdByTypeAndDate = (type: PlanTypes, date: string): Promise<number> =>
         this.handleRequests(RequestsMethods.GET, this.getScheduleValue(`${type}?local_date=${this.validateDate(date)}`))
             .then(data => data[`${type}Id`]);
 
-    public addPlanByPlanTypeAndId = async (type: string, id: number, data: inputData): Promise<Plans> =>
+    public addPlanByPlanTypeAndId = async (type: PlanTypes, id: number, data: inputData): Promise<Plans> =>
         this.handleRequests(RequestsMethods.POST, this.getScheduleValue(`${type}/${id}/${type}_plan`), data);
 
-    public changePlanByType = async (type: string, id: number, data: inputData): Promise<Plans> => {
+    public changePlanByType = async (type: PlanTypes, id: number, data: inputData): Promise<Plans> => {
         const { day, ..._data } = data;
 
         return this.handleRequests(RequestsMethods.PATCH, this.getScheduleValue(`${type}_plan/${id}`), _data);
     };
 
-    public toggleFinishPlanByTypeAndId = (type: string, id: number): Promise<Plans> =>
+    public toggleFinishPlanByTypeAndId = (type: PlanTypes, id: number): Promise<Plans> =>
         this.handleRequests(RequestsMethods.PATCH, this.getScheduleValue(`${type}_plan/${id}/fulfilled`), {});
 
-    public deletePlanByTypeAndId = (type: string, id: number): Promise<DeleteOrChange> =>
+    public deletePlanByTypeAndId = (type: PlanTypes, id: number): Promise<DeleteOrChange> =>
         this.handleRequests(RequestsMethods.DELETE, this.getScheduleValue(`${type}_plan/${id}`));
 
-    public getPlanByTypeAndId = (type: string, id: number): Promise<ReturnPlans> =>
+    public getPlanByTypeAndId = (type: PlanTypes, id: number): Promise<ReturnPlans> =>
         this.handleRequests(RequestsMethods.GET, this.getScheduleValue(`${type}_plans/${id}`));
 
-    public getTypeDataByDate = (type: string, date: string): Promise<ReturnTypeData> =>
+    public getTypeDataByDate = (type: PlanTypes, date: string): Promise<ReturnTypeData> =>
         this.handleRequests(RequestsMethods.GET, this.getScheduleValue(`${type}s?local_date=${this.validateDate(date)}`));
 
-    public getTypeDataById = (type: string, id: number): Promise<ReturnTypeDataById> =>
+    public getTypeDataById = (type: PlanTypes, id: number): Promise<ReturnTypeDataById> =>
         this.handleRequests(RequestsMethods.GET, this.getScheduleValue(`${type}/${id}`));
 
-    public getTypePlansByTypeAndId = (type: string, id: number) =>
+    public getTypePlansByTypeAndId = (type: PlanTypes, id: number) =>
         this.handleRequests(RequestsMethods.GET, this.getScheduleValue(`${type}/${id}/${type}_plans`));
 
-    public getTypePlans = async (type: string, date?: string) => {
+    public getTypePlans = async (type: PlanTypes, date?: string) => {
         const _date = date ? this.validateDate(date) : this.getCurrentDate();
         const id = await this.getPlanIdByTypeAndDate(type, _date);
         const plans = await this.getTypePlansByTypeAndId(type, id);

@@ -2,6 +2,7 @@ import { EntriesPlanType, navigationTypes } from '../utils/variables';
 import languagePack from '../utils/languagePack';
 import { dateParams } from '../utils/interfaces';
 import DataRequests from '../authentication/DataRequests';
+import { PlanTypes } from '../utils/enums';
 
 export const getActualDateAsAObject = () => {
     const date = new Date();
@@ -56,7 +57,7 @@ export const setActiveClassName = (type: string, entryType: string) => {
     return null;
 };
 
-const getPlansByEntryType = async (type: string, data: any, date: dateParams) => {
+const getPlansByEntryType = async (type: PlanTypes, data: any, date: dateParams) => {
     const { yearId, yearNumber, monthName, dayDate } = data;
 
     if (type === EntriesPlanType.YEAR) {
@@ -78,7 +79,7 @@ const getPlansByEntryType = async (type: string, data: any, date: dateParams) =>
     return { plans, typeValue }
 }
 
-export const getDataByType = async (type: string, sign: string, id: number, date: dateParams) => {
+export const getDataByType = async (type: PlanTypes, sign: string, id: number, date: dateParams) => {
     const planList = await DataRequests.getTypeDataByDate(type, getDateAsAString(date));
     const data = await DataRequests.getTypeDataById(type, setIdValue(sign, type, id!, planList));
 

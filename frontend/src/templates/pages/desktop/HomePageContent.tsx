@@ -6,7 +6,7 @@ import DataRequests from '../../../authentication/DataRequests';
 import { DatePickerContext } from '../../../authentication/DatePicker';
 import { DateSequences, DateTypes, ContextMenu, OpenWindow, OpenWindowTypes } from '../../../utils/interfaces';
 import { ReturnTypeDataById, ReturnTypeData } from '../../../utils/requestsInterfaces';
-import { PlanTypes } from '../../../utils/variables';
+import { PlanTypes } from '../../../utils/enums';
 import { setMonthName } from '../../../components/OtherEntriesFunctions';
 import ContextMenuContainer from '../../../components/DesktopComponents/ContextMenuContainer';
 import WindowContainer from './WindowContainer';
