@@ -195,6 +195,11 @@ export enum DateSequences {
     YEAR = 'year',
 }
 
+export enum DateTypes {
+    NORMAL = 'normal',
+    REQUEST = 'request'
+}
+
 interface home {
     title: string;
     search: string;
@@ -318,6 +323,10 @@ interface help {
     title: string;
 }
 
+interface days {
+    daysAsAnArray: string[];
+}
+
 export interface languageInterface {
     [key: string]: {
         WELCOME: welcome;
@@ -334,5 +343,6 @@ export interface languageInterface {
         HELP: help;
         GLOBAL: global;
         MONTHS: months;
+        DAYS: days;
     };
 }

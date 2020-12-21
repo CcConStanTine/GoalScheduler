@@ -75,7 +75,18 @@ export interface ReturnTypeDataById extends FailedResponse {
     yearId?: number;
     yearNumber?: number;
     leapYear?: boolean;
+    // map?: any;
+    // filter?: any;
+    // indexOf?: any;
+    // findIndex: any;
 };
+
+export interface ReturnTypeData extends FailedResponse {
+    [key: number]: ReturnTypeDataById;
+    findIndex: any;
+    forEach: any;
+    length: any;
+}
 
 export interface AuthConfig {
     headers: {

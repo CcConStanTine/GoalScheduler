@@ -1,10 +1,10 @@
-import { setMonthName } from '../components/OtherEntriesFunctions';
-import { inputData, DateSequences } from '../utils/interfaces';
+import { inputData, DateSequences, DateTypes } from '../utils/interfaces';
 import {
     RequestsMethods,
     ReturnPlans,
     ReturnTypeDataById,
     Plans,
+    ReturnTypeData,
     DeleteOrChange,
 } from '../utils/requestsInterfaces';
 import { dateTimeTypes } from '../utils/variables';
@@ -13,6 +13,18 @@ import UserCredentialsRequests from './UserCredentialsRequests';
 class DataRequests extends UserCredentialsRequests {
 
     private getScheduleValue = (value: string): string => `/schedule/${this.getUserId}/${value}`;
+
+    public convertDate = (toType: DateTypes, date: string): string => {
+        const isToTypeNormal = toType === DateTypes.NORMAL
+        const day = isToTypeNormal ? date.slice(0, 4) : date.slice(0, 2);
+        const month = isToTypeNormal ? date.slice(5, 7) : date.slice(3, 5);
+        const year = isToTypeNormal ? date.slice(8, 10) : date.slice(6, 10);
+
+        if (toType === DateTypes.NORMAL)
+            return `${day}-${month}-${year}`;
+
+        return `${year}-${month}-${day}`;
+    }
 
     public setProprietDate = (date: string, type: string): string => {
         if (type === dateTimeTypes.ADDDAY)
@@ -80,7 +92,7 @@ class DataRequests extends UserCredentialsRequests {
     public getPlanByTypeAndId = (type: string, id: number): Promise<ReturnPlans> =>
         this.handleRequests(RequestsMethods.GET, this.getScheduleValue(`${type}_plans/${id}`));
 
-    public getTypeDataByDate = (type: string, date: string): Promise<ReturnTypeDataById> =>
+    public getTypeDataByDate = (type: string, date: string): Promise<ReturnTypeData> =>
         this.handleRequests(RequestsMethods.GET, this.getScheduleValue(`${type}s?local_date=${this.validateDate(date)}`));
 
     public getTypeDataById = (type: string, id: number): Promise<ReturnTypeDataById> =>

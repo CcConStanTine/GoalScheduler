@@ -58,9 +58,19 @@
         .calendar-container{
             .day{
                 background-color: #707070;
+                color: white;
+
+                &.empty{
+                    background-color: #888;
+                    border-color: #888;
+
+                    &:hover{
+                        border-color: #888;
+                    }
+                }
 
                 &:hover{
-                    border-color: navy;
+                    border-color: white;
                 }
             }
         }
@@ -1156,16 +1166,17 @@ form{
 }
 
 .desktop-date-time-picker-container{
-    position: absolute;
+    position: fixed;
     z-index: 999;
     top: 0;
     left: 0;
-    height: 100vh;
-    width: 100vw;
+    height: 100%;
+    width: 100%;
     background-color: rgba(0,0,0,.5);
     display: flex;
     align-items: center;
     justify-content: center;
+    overflow: hidden;
 
     .date-time-picker{
         background-color: white;
@@ -1543,9 +1554,16 @@ form{
         // background-color: #00B3DF;
         flex-wrap: wrap;
 
+        .day_number{
+            width: calc(100%/7 - 30px);
+            margin: 15px;
+            text-align: center;
+            font-size: 24px;
+        }
+
         .day{
             width: calc(100% / 7 - 30px);
-            height: calc(100vh / 7 - 15px);
+            height: 125px;
             border: 1px solid rgb(220,220,220);
             display: flex;
             flex-direction: column;
@@ -1553,7 +1571,8 @@ form{
             margin: 15px;
             border-radius: 15px;
             background-color: rgb(240, 240, 240);
-            transition: border-color .1s linear;
+            transition: all .1s linear;
+            outline: unset;
 
             &.today{
                 border-color: navy;
@@ -1564,8 +1583,20 @@ form{
             }
 
             &:hover{
-                border-color: rgb(120,120,120);
+                border-color: white;
                 cursor: pointer;
+                transform: scale(1.1);
+            }
+
+            &.empty{
+                background-color: rgb(250,250,250);
+                border-color: rgb(250, 250, 250);
+
+                &:hover{
+                    border-color:rgb(250, 250, 250);
+                    transform: scale(1);
+                    cursor: unset;
+                }
             }
 
             .no-day{

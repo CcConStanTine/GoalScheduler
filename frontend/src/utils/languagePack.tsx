@@ -129,6 +129,9 @@ const languagePack: languageInterface = {
                 december: 'December',
             },
             namesTable: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+        },
+        DAYS: {
+            daysAsAnArray: ['MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT', 'SUN']
         }
     },
     'pl-PL': {
@@ -258,6 +261,9 @@ const languagePack: languageInterface = {
                 december: 'Grudzień',
             },
             namesTable: ['Styczeń', 'Luty', 'Marzec', 'Kwiecień', 'Maj', 'Czerwiec', 'Lipiec', 'Sierpień', 'Wrzesień', 'Październik', 'Listopad', 'Grudzień'],
+        },
+        DAYS: {
+            daysAsAnArray: ['PON', 'WT', 'ŚR', 'CZW', 'PT', 'SOB', 'NDZ']
         }
     }
 }
