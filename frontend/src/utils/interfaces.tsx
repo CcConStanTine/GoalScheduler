@@ -150,7 +150,35 @@ export interface inputDataInterface {
     errors?: ErrorTypeInterface
 }
 
+export enum OpenWindowTypes {
+    EDIT = 'edit',
+    DELETE = 'delete',
+    SHOW = 'show',
+}
+
+export interface OpenWindowProperties {
+    id?: number;
+    isActive: boolean;
+    type?: OpenWindowTypes;
+}
+
+export interface OpenWindow {
+    setOpenWindow?: (value: OpenWindowProperties) => void;
+    id?: number;
+    isActive: boolean;
+    type?: OpenWindowTypes;
+}
+
+export interface ContextMenuProperties {
+    pageX?: number;
+    pageY?: number;
+    id?: number;
+    isActive: boolean;
+}
+
 export interface ContextMenu {
+    setOpenWindow?: (value: OpenWindowProperties) => void;
+    setContextMenu?: (value: ContextMenuProperties) => void;
     pageX?: number;
     pageY?: number;
     id?: number;

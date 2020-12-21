@@ -4,11 +4,12 @@ import languagePack from '../../../utils/languagePack';
 import { LanguageContext } from '../../../authentication/LanguageContext';
 import DataRequests from '../../../authentication/DataRequests';
 import { DatePickerContext } from '../../../authentication/DatePicker';
-import { DateSequences, DateTypes, ContextMenu } from '../../../utils/interfaces';
+import { DateSequences, DateTypes, ContextMenu, OpenWindow, OpenWindowTypes } from '../../../utils/interfaces';
 import { ReturnTypeDataById, ReturnTypeData } from '../../../utils/requestsInterfaces';
 import { PlanTypes } from '../../../utils/variables';
 import { setMonthName } from '../../../components/OtherEntriesFunctions';
 import ContextMenuContainer from '../../../components/DesktopComponents/ContextMenuContainer';
+import WindowContainer from './WindowContainer';
 
 const getDayValue = (dayName: string) => {
     switch (dayName) {
@@ -31,9 +32,19 @@ const getDayValue = (dayName: string) => {
     }
 }
 
-const renderDays = (dayList: ReturnTypeData | [], setContextMenu: any) => {
+const renderDays = (dayList: ReturnTypeData | [], setContextMenu: any, setOpenWindow: any) => {
     const firstDayOfTheMonth = getDayValue(dayList[0].dayName ? dayList[0].dayName : 'MONDAY');
     const dayTable = [];
+
+    let timer: number;
+
+    const pressedDayButton = (dayId: number) => {
+        timer = window.setTimeout(() => {
+            setOpenWindow({ isActive: true, id: dayId, type: OpenWindowTypes.SHOW })
+        }, 1000);
+    }
+
+    const releaseDayButton = () => clearTimeout(timer)
 
 
     for (let i = 0; i < firstDayOfTheMonth; i++) {
@@ -45,6 +56,9 @@ const renderDays = (dayList: ReturnTypeData | [], setContextMenu: any) => {
     return dayTable.map(({ dayId, empty, id }: any, index: number) => <button
         disabled={empty}
         className={empty ? 'day empty' : 'day'}
+        onMouseUp={() => releaseDayButton()}
+        onMouseDown={() => pressedDayButton(dayId)}
+        onClick={() => setOpenWindow({ isActive: true, id: dayId, type: OpenWindowTypes.SHOW })}
         onContextMenu={event => {
             event.preventDefault();
             setContextMenu({ pageX: event.pageX - 20, pageY: event.pageY - 20, id: dayId, isActive: true })
@@ -59,6 +73,7 @@ const HomePageContent = () => {
     const { isDatePickerActive, openDatePicker, date } = useContext(DatePickerContext);
     const [dayList, setDayList] = useState<ReturnTypeData | []>([]);
     const [contextMenu, setContextMenu] = useState<ContextMenu>({ isActive: false });
+    const [openWindow, setOpenWindow] = useState<OpenWindow>({ isActive: false });
 
     const setDate = () => {
         const monthName = setMonthName(DataRequests.getSequenceFromDate(date, DateSequences.MONTH), language);
@@ -85,11 +100,19 @@ const HomePageContent = () => {
                 date={<p onClick={() => openDatePicker!(!isDatePickerActive)}>{setDate()}</p>} />
             <div className='calendar-container'>
                 {languagePack[language].DAYS.daysAsAnArray.map(day => <p key={day} className='day_number'>{day}</p>)}
-                {dayList.length && renderDays(dayList, setContextMenu)}
+                {dayList.length && renderDays(dayList, setContextMenu, setOpenWindow)}
                 {contextMenu.isActive && <ContextMenuContainer
+                    setContextMenu={setContextMenu}
+                    setOpenWindow={setOpenWindow}
                     pageX={contextMenu.pageX}
                     pageY={contextMenu.pageY}
-                    isActive={contextMenu.isActive} />}
+                    isActive={contextMenu.isActive}
+                    id={contextMenu.id} />}
+                {openWindow.isActive && <WindowContainer
+                    setOpenWindow={setOpenWindow}
+                    id={openWindow.id}
+                    type={openWindow.type}
+                    isActive={openWindow.isActive} />}
             </div>
         </section>
     );
