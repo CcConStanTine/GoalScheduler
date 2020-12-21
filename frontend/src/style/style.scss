@@ -54,6 +54,31 @@
     background-color: var(--dark_mode-background-color);
     color: white;
 
+    .home-page-content{
+        .calendar-container{
+            .day{
+                background-color: #707070;
+
+                &:hover{
+                    border-color: navy;
+                }
+            }
+        }
+    }
+
+    .desktop-date-time-picker-container{
+        .date-time-picker{
+            background-color: #707070;
+            border: 1px solid white;
+
+            .bottom-info{
+                .set-time{
+                    border-color: navy;
+                }
+            }
+        }
+    }
+
     .navigation{
         background-color: var(--dark_mode-background-color);
 
@@ -135,7 +160,9 @@
         }
     }
 
-    .settings-page-desktop,.profile-page-desktop, .help-page-desktop{
+    .settings-page-desktop,.profile-page-desktop, .help-page-desktop,.home-page-content{
+        background-color: #707070;
+        
         .entry-container{
             &::before{
                 background-color: white;
@@ -1207,6 +1234,7 @@ form{
 
             .set-time{
                 background-color: navy;
+                cursor: pointer;
             }
         }
     }
@@ -1472,7 +1500,7 @@ form{
             justify-content: space-between;
             align-items: center;
             padding: 10px 0;
-            font-weight: bold;
+            font-weight: normal;
 
             &:focus{
                 outline: none;
@@ -1485,7 +1513,6 @@ form{
 
             p{
                 width: 40px;
-                // height: 30px;
                 background-position: center;
                 background-size: contain;
                 background-repeat: no-repeat;
