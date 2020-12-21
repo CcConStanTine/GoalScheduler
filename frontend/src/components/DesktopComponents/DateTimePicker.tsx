@@ -9,12 +9,11 @@ import { DateSequences } from '../../utils/interfaces';
 const DateTimePicker = () => {
     const { openDatePicker, setDate, date } = useContext(DatePickerContext);
     const { language } = useContext(LanguageContext);
-    const [monthName, setMonth] = useState<string>(setMonthName(DataRequests.setDateBySequence(DataRequests.changeEngToPlDate(date, DateSequences.MONTH, language), DateSequences.MONTH), language));
-    const [year, setYear] = useState<number>(DataRequests.setDateBySequence(DataRequests.changeEngToPlDate(date, DateSequences.YEAR, language), DateSequences.YEAR));
+    const [monthName, setMonth] = useState<string>(setMonthName(DataRequests.getSequenceFromDate(date, DateSequences.MONTH), language));
+    const [year, setYear] = useState<number>(DataRequests.getSequenceFromDate(date, DateSequences.YEAR));
 
     const setTime = () => {
-        const monthNumber = setMonthValue(monthName.toUpperCase());
-        setDate!(`${year}-${monthNumber < 10 ? `0${monthNumber}` : monthNumber}-01`);
+        setDate!(`01-${setMonthValue(monthName) < 10 ? `0${setMonthValue(monthName)}` : setMonthValue(monthName)}-${year}`);
         openDatePicker!(false);
     }
 

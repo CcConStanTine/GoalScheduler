@@ -23,31 +23,13 @@ class DataRequests extends UserCredentialsRequests {
         return date.slice(0, 10);
     };
 
-    changeEngToPlDate = (date: string, type: DateSequences, language: string, monthAsString?: boolean): string => {
-        const year = date.slice(0, 4);
-        const month = date.slice(5, 7);
-        const day = date.slice(8, 10);
-
-        if (type === DateSequences.DAY)
-            return `${day} ${month} ${year}`;
-        else if (type === DateSequences.MONTH) {
-            console.log(month);
-            if (monthAsString)
-                return `${setMonthName(parseInt(month), language)} ${year}`;
-
-            return `${month} ${year}`;
-        }
-
-        return year;
-    }
-
-    public setDateBySequence = (date: string, type: DateSequences): number => {
-        if (type === DateSequences.DAY)
+    public getSequenceFromDate = (date: string, sequence: DateSequences): number => {
+        if (sequence === DateSequences.DAY)
             return parseInt(date.slice(0, 2));
-        else if (type === DateSequences.MONTH)
-            return parseInt(date.slice(0, 2));
+        else if (sequence === DateSequences.MONTH)
+            return parseInt(date.slice(3, 5));
 
-        return parseInt(date.slice(0, 4));
+        return parseInt(date.slice(6, 10));
     }
 
     public validateDate = (date: string): string => {
@@ -60,8 +42,10 @@ class DataRequests extends UserCredentialsRequests {
         return _date;
     }
 
-    public getCurrentDate = (): string => {
+    public getCurrentDate = (language?: string): string => {
         const date = new Date();
+        if (language)
+            return `${date.getDate() < 10 ? `0${date.getDate()}` : date.getDate()}-${date.getMonth() + 1}-${date.getFullYear()}`;
 
         return `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate() < 10 ? `0${date.getDate()}` : date.getDate()}`;
     }

@@ -1,13 +1,31 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './style/style.scss';
-import App from './components/App.js';
+import App from './components/App';
 import '@ionic/react/css/core.css';
+import { UseLoadingContext } from './authentication/LoadingPageContext';
+import { UseThemeContext } from './authentication/ThemeContext';
+import { UseLanguageContext } from './authentication/LanguageContext';
+import { BrowserRouter as Router } from 'react-router-dom';
+import { UseDatePickerContext } from './authentication/DatePicker';
+import { UseAppContext } from './authentication/AppContext';
 // import reportWebVitals from './reportWebVitals';
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <UseLoadingContext>
+      <UseAppContext>
+        <UseThemeContext>
+          <UseLanguageContext>
+            <UseDatePickerContext>
+              <Router>
+                <App />
+              </Router>
+            </UseDatePickerContext>
+          </UseLanguageContext>
+        </UseThemeContext>
+      </UseAppContext>
+    </UseLoadingContext>
   </React.StrictMode>,
   document.getElementById('root')
 );

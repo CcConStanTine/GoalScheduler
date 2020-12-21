@@ -23,11 +23,11 @@ const Menu = ({ onClick }: MenuInterface) => {
     return (
         <aside>
             <ul className='icons'>
-                <li><FaHome /></li>
-                <li><FaUser /></li>
-                <li><FaInfoCircle /></li>
-                <li><FaCog /></li>
-                <li><FaSignOutAlt /></li>
+                <li onClick={() => onClick(DesktopDisplayOptions.HOME)}><FaHome /></li>
+                <li onClick={() => onClick(DesktopDisplayOptions.PROFILE)}><FaUser /></li>
+                <li onClick={() => onClick(DesktopDisplayOptions.HELP)}><FaInfoCircle /></li>
+                <li onClick={() => onClick(DesktopDisplayOptions.SETTINGS)}><FaCog /></li>
+                <li onClick={logOutUser}><FaSignOutAlt /></li>
             </ul>
             <ul className='menu'>
                 <li onClick={() => onClick(DesktopDisplayOptions.HOME)}>{languagePack[language].HOME.title}</li>

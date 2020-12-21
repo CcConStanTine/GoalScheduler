@@ -24,6 +24,7 @@ const WelcomePage = (): JSX.Element => {
                         <div className="overlay-panel overlay-right">
                             <h1>Hello, Friend!</h1>
                             <p>Enter your personal details and start journey with us</p>
+                            <p className='important'>MOBILE VIEW FINISHED, DESKTOP IN PROGRESS</p>
                             <button className="desktop-default-button" onClick={() => setActive("right-panel-active")}>Sign Up</button>
                         </div>
                     </div>

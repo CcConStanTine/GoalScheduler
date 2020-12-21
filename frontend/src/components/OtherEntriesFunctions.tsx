@@ -95,4 +95,4 @@ export const getDataByType = async (type: string, sign: string, id: number, date
 
 export const setMonthName = (monthNumber: number, language: string) => languagePack[language].MONTHS.namesTable[monthNumber - 1];
 
-export const setMonthValue = (monthName: string) => languagePack['en-US'].MONTHS.namesTable.map(month => month.toUpperCase()).indexOf(monthName) + 1;
+export const setMonthValue = (monthName: string) => languagePack['en-US'].MONTHS.namesTable.map(month => month.toUpperCase()).indexOf(monthName.toUpperCase()) + 1;

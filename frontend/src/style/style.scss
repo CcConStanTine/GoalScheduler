@@ -933,6 +933,15 @@ form{
     display: flex;
     justify-content: center;
 
+    .important{
+        position: absolute;
+        top: 15%;
+        padding: 50px;
+        line-height: 50px;
+        color: white;
+        font-size: 30px;
+    }
+
     h1 {
         font-weight: bold;
         margin: 0;
@@ -1061,6 +1070,8 @@ form{
         }
 
         &.right-panel-active{
+            position: relative;
+
             .sign-in-container {
                 transform: translateX(100%);
             }
@@ -1225,6 +1236,7 @@ form{
             &.menu{
                 transform: translateX(-100%);
                 padding-left: 50px;
+                z-index: 2;
 
                 li{
                     padding-right: 100px;
