@@ -56,6 +56,16 @@
 
     .home-page-content{
         .calendar-container{
+            .context-menu{
+                background-color: #707070;
+
+                p{
+                    &:hover{
+                        background-color: #444;
+                    }
+                }
+            }
+
             .day{
                 background-color: #707070;
                 color: white;
@@ -1554,6 +1564,34 @@ form{
         // background-color: #00B3DF;
         flex-wrap: wrap;
 
+        .context-menu{
+            width: 150px;
+            position: absolute;
+            top: 0;
+            left: 0;
+            border: 1px solid lightgray;
+            background-color: white;
+            cursor: pointer;
+            border-radius: 15px;
+
+            p{
+                padding: 10px 20px;
+
+                &:nth-child(1){
+                    border-radius: 15px 15px 0 0;
+                }
+
+                &:nth-last-child(1){
+                    border-radius: 0 0 15px 15px;
+                }
+
+                &:hover{
+                    background-color: navy;
+                    color: white;
+                }
+            }
+        }
+
         .day_number{
             width: calc(100%/7 - 30px);
             margin: 15px;
@@ -1583,7 +1621,7 @@ form{
             }
 
             &:hover{
-                border-color: white;
+                border-color: rgb(220,220,220);
                 cursor: pointer;
                 transform: scale(1.1);
             }

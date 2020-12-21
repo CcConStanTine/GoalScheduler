@@ -150,6 +150,13 @@ export interface inputDataInterface {
     errors?: ErrorTypeInterface
 }
 
+export interface ContextMenu {
+    pageX?: number;
+    pageY?: number;
+    id?: number;
+    isActive: boolean;
+}
+
 export interface ErrorTypeInterface {
     type?: string,
     message?: string
