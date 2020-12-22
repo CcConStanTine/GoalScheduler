@@ -16,10 +16,11 @@ class DataRequests extends UserCredentialsRequests {
     private getScheduleValue = (value: string): string => `/schedule/${this.getUserId}/${value}`;
 
     public convertDate = (toType: DateTypes, date: string): string => {
-        const isToTypeNormal = toType === DateTypes.NORMAL
-        const day = isToTypeNormal ? date.slice(0, 4) : date.slice(0, 2);
+        const isToTypeNormal = toType === DateTypes.NORMAL;
+
+        const day = isToTypeNormal ? date.slice(8, 10) : date.slice(0, 2);
         const month = isToTypeNormal ? date.slice(5, 7) : date.slice(3, 5);
-        const year = isToTypeNormal ? date.slice(8, 10) : date.slice(6, 10);
+        const year = isToTypeNormal ? date.slice(0, 4) : date.slice(6, 10);
 
         if (toType === DateTypes.NORMAL)
             return `${day}-${month}-${year}`;

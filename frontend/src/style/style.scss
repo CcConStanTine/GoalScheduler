@@ -55,6 +55,35 @@
     color: white;
 
     .home-page-content{
+        .window-container{
+            .type-container{
+                background-color: #707070;
+                border: 1px solid white;
+
+                .day-plans{
+                    .question-container{
+                        &::after{
+                            background-color: white;
+                        }
+                    }
+                }
+
+                .empty-plans{
+                    .chevron{
+                        background-image: url('../images/chevron-dark-theme.png');
+                    }
+
+                    .desktop-default-button{
+                        &.two{
+                            border-color: white;
+                            background-color: #707070;
+                            cursor: pointer;
+                        }
+                    }
+                }
+            }
+        }
+
         .calendar-container{
             .context-menu{
                 background-color: #707070;
@@ -91,9 +120,24 @@
             background-color: #707070;
             border: 1px solid white;
 
+            .date-selection{
+                .months-container,.years-container{
+                    .months,.years{
+                        p{
+                            &.active{
+                                border-color: white;
+                                color: white;
+                                font-weight: bold;
+                            }
+                        }
+                    }
+                }
+            }
+
             .bottom-info{
-                .set-time{
-                    border-color: navy;
+                .desktop-default-button{
+                    border-color: white;
+                    background-color: #707070;
                 }
             }
         }
@@ -1332,6 +1376,18 @@ form{
             padding: 10px;
         }
 
+        &.question-container{
+            &::after{
+                background-color: lightgray;
+            }
+
+            &:nth-last-child(1){
+                &::after,&::before{
+                    display: none;
+                }
+            }
+        }
+
         &::before{
             content: "";
             position: absolute;
@@ -1499,7 +1555,14 @@ form{
     }
 }
 
-.help-page-desktop,.user-options{
+.help-page-desktop,.user-options,.home-page-content{
+
+    &.home-page-content{
+        .question-container{
+            width: 100%;
+        }
+    }
+
     .question-container{
         &[open] summary p{
             transform: rotate(180deg);
@@ -1651,22 +1714,140 @@ form{
     }
 
     .window-container{
-        position: fixed;
+        position: absolute;
         top: 0;
         left: 0;
         width: 100%;
-        height: 100%;
+        min-height: 100%;
+        height: fit-content;
         background-color: rgba(0,0,0,0.5);
         z-index: 3;
         display: flex;
-        align-items: center;
         justify-content: center;
 
         .type-container{
+            margin-top: 20vh;
+            margin-bottom: 20vh;
             width: 50%;
-            height: 80%;
             background-color: white;
             border-radius: 15px;
+            height: fit-content;
+
+            .empty-plans{
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                justify-content: space-between;
+                padding: 20px 10px 20px;
+
+                div{
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+
+                    p{
+                        margin-bottom: 20px;
+                        padding: 0;
+
+                        &.date{
+                            font-size: 18px;
+                        }
+                    }
+                }
+
+                p{
+                    padding: 20px;
+                    cursor: pointer;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+
+                    .chevron{
+                        display: block;
+                        width: 40px;
+                        height: 20px;
+                        background-position: center;
+                        background-size: contain;
+                        background-repeat: no-repeat;
+                        background-image: url('../images/chevron.png');
+                        transition: all .2s linear;
+                        transform: rotate(90deg);
+    
+                        &.next{
+                            transform: rotate(-90deg);
+                        }
+                    }
+                }
+            }
+
+            .day-plans{
+                display: flex;
+                flex-direction: column;
+
+                .empty-plans{
+                    padding-bottom: 20px;
+                    border-bottom: 1px solid lightgray;
+                }
+
+                .question-container{
+                    margin: 0 20px;
+                    width: calc(100% - 40px);
+                    
+                    .entry-data-container{
+                        display: flex;
+                        flex-direction: row;
+                        justify-content: space-between;
+
+                        div{
+                            display: flex;
+                            flex-direction: column;
+
+                            &.options{
+                                display: flex;
+                                flex-direction: column;
+                                justify-content: space-around;
+
+                                span{
+                                    padding: 15px 12px;
+                                    cursor: pointer;
+                                }
+                            }
+                        }
+                    }
+
+                    summary{
+                        width: 100%;
+
+                        svg{
+                            margin: 0 10px;
+                        }
+                        
+                        .content{
+                            width: 90%;
+                            height: 30px;
+                            overflow: hidden;
+                            padding: 0;
+                            font-size: 24px;
+                            font-weight: bold;
+                            display: flex;
+                            align-items: flex-start;
+                        }
+                    }
+
+                    p{
+                        display: flex;
+                        flex-direction: row;
+                        align-items: center;
+
+                        span{
+                            display: inline;
+                            padding: unset;
+                            margin-left: 10px;
+                            font-weight: bold;
+                        }
+                    }
+                }
+            }
         }
     }
 }
