@@ -4,7 +4,7 @@ const checkUsedTheme = (theme: string) => {
 
     if (theme === 'darktheme') {
         rootClassList!.add('darktheme');
-        bodyStyle.backgroundColor = "black";
+        bodyStyle.backgroundColor = "#707070";
     }
     else {
         rootClassList!.remove('darktheme')

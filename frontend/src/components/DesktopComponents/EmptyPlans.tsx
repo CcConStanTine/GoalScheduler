@@ -4,6 +4,7 @@ import DataRequests from '../../authentication/DataRequests';
 import { LanguageContext } from '../../authentication/LanguageContext';
 import { PlanTypes } from '../../utils/enums';
 import { DateSequences, DateTypes, OpenWindowTypes } from '../../utils/interfaces';
+import languagePack from '../../utils/languagePack';
 import { setMonthName } from '../OtherEntriesFunctions';
 
 interface EmpPlans {
@@ -14,18 +15,29 @@ interface EmpPlans {
 
 const EmptyPlans = ({ empty, setOpenWindow, id }: EmpPlans) => {
     const [date, setDate] = useState<string>('');
-    const { language } = useContext(LanguageContext)
+    const { language } = useContext(LanguageContext);
+
+    const formatDate = () => {
+        const convertedDate = DataRequests.convertDate(DateTypes.NORMAL, date);
+        const day = DataRequests.getSequenceFromDate(convertedDate, DateSequences.DAY);
+        const month = DataRequests.getSequenceFromDate(convertedDate, DateSequences.MONTH);
+        const year = DataRequests.getSequenceFromDate(convertedDate, DateSequences.YEAR);
+
+        return `${day} ${setMonthName(month, language)} ${year}`;
+    }
+
+    const checkDate = () => {
+        const numberOfSeconds = new Date(date).getTime() / 1000;
+        const currentNumberOfSeconds = new Date(DataRequests.getCurrentDate()).getTime() / 1000;
+
+        return numberOfSeconds >= currentNumberOfSeconds && <button className='desktop-default-button two'>{languagePack[language].ADD.addTask}</button>
+    }
 
     useEffect(() => {
         const getDateById = async () => {
             const { dayDate } = await DataRequests.getTypeDataById(PlanTypes.DAY, id);
 
-            const convertedDate = DataRequests.convertDate(DateTypes.NORMAL, dayDate!);
-            const day = DataRequests.getSequenceFromDate(convertedDate, DateSequences.DAY);
-            const month = DataRequests.getSequenceFromDate(convertedDate, DateSequences.MONTH);
-            const year = DataRequests.getSequenceFromDate(convertedDate, DateSequences.YEAR);
-
-            setDate(`${day} ${setMonthName(month, language)} ${year}`)
+            setDate(dayDate!);
         }
 
         getDateById();
@@ -35,9 +47,8 @@ const EmptyPlans = ({ empty, setOpenWindow, id }: EmpPlans) => {
         <div className='empty-plans'>
             <p onClick={() => setOpenWindow({ isActive: true, id: id - 1, type: OpenWindowTypes.SHOW })}><span className='chevron previous'></span></p>
             <div>
-                <p className='date'>{date}</p>
-                {empty && <p>Looks like you dont have a plans for this day</p>}
-                <button className='desktop-default-button two'>Add Plan</button>
+                <p className='date'>{date && formatDate()}</p>
+                {checkDate()}
             </div>
             <p onClick={() => setOpenWindow({ isActive: true, id: id + 1, type: OpenWindowTypes.SHOW })}><span className='chevron next'></span></p>
         </div>

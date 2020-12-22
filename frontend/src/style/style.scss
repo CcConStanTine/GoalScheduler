@@ -9,7 +9,7 @@
 }
 
 :root{
-    --dark_mode-background-color: black;
+    --dark_mode-background-color: #707070;
     --dm-dark-mode-bgc: #707070;
     --lt-dark-mode-bgc: black;
     --language-bgc: rgb(22, 163, 22);
@@ -55,6 +55,7 @@
     color: white;
 
     .home-page-content{
+        background-color: #707070;
         .window-container{
             .type-container{
                 background-color: #707070;
@@ -1327,8 +1328,10 @@ form{
             }
 
             &.menu{
+                position: fixed;
                 transform: translateX(-100%);
                 padding-left: 50px;
+                height: 100vh;
                 z-index: 2;
 
                 li{
@@ -1746,11 +1749,11 @@ form{
                     align-items: center;
 
                     p{
-                        margin-bottom: 20px;
                         padding: 0;
 
                         &.date{
                             font-size: 18px;
+                            padding: 10px 0;
                         }
                     }
                 }
