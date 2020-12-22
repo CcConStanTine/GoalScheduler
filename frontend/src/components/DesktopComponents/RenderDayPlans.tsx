@@ -5,11 +5,11 @@ import languagePack from '../../utils/languagePack';
 import { FaPen, FaTrash } from 'react-icons/fa'
 import EmptyPlans from './EmptyPlans';
 
-const RenderDayPlans = ({ planList, setOpenWindow, id }: any) => {
+const RenderDayPlans = ({ planList, setOpenWindow, id, setRecentlyAddedPlanId }: any) => {
     const { language } = useContext(LanguageContext)
     return (
         <div className='day-plans'>
-            <EmptyPlans empty={false} setOpenWindow={setOpenWindow} id={id} />
+            <EmptyPlans setOpenWindow={setOpenWindow} id={id} setRecentlyAddedPlanId={setRecentlyAddedPlanId} />
             {planList.map(({ dayPlanId, startDate, endDate, content, fulfilled }: EditEntryParams) =>
                 <details className='question-container entry-container' key={dayPlanId} open>
                     <summary>

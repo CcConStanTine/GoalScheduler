@@ -7,6 +7,7 @@ import RenderDayPlans from '../../../components/DesktopComponents/RenderDayPlans
 
 const WindowContainer = ({ id, type, setOpenWindow }: OpenWindow) => {
     const [dayPlanList, setDayPlanList] = useState([]);
+    const [recentlyAddedPlanId, setRecentlyAddedPlanId] = useState<number | null>(null);
 
     useEffect(() => {
         const getDayPlanList = async () => {
@@ -16,15 +17,22 @@ const WindowContainer = ({ id, type, setOpenWindow }: OpenWindow) => {
         }
 
         getDayPlanList();
-    }, [id])
+    }, [id, recentlyAddedPlanId])
 
     return (
         <section className={`window-container ${type}`} onClick={() => setOpenWindow!({ isActive: false })}>
             <div className='type-container' onClick={event => event.stopPropagation()}>
                 {dayPlanList.length ?
-                    <RenderDayPlans planList={dayPlanList} setOpenWindow={setOpenWindow} id={id!} />
+                    <RenderDayPlans
+                        setRecentlyAddedPlanId={setRecentlyAddedPlanId}
+                        planList={dayPlanList}
+                        setOpenWindow={setOpenWindow}
+                        id={id!} />
                     :
-                    <EmptyPlans empty={true} setOpenWindow={setOpenWindow} id={id!} />}
+                    <EmptyPlans
+                        setRecentlyAddedPlanId={setRecentlyAddedPlanId}
+                        setOpenWindow={setOpenWindow}
+                        id={id!} />}
             </div>
         </section>
     )

@@ -1,14 +1,7 @@
 import React, { createContext, useState, ReactNode, useContext } from 'react';
 import DataRequests from './DataRequests';
 import { LanguageContext } from './LanguageContext';
-
-interface DatePickerContextInterface {
-    isDatePickerActive: boolean;
-    date: string;
-    setDate?: (value: string) => void;
-    openDatePicker?: (value: boolean) => void;
-}
-
+import { DatePickerContextInterface, Date } from '../utils/interfaces';
 
 interface UseDatePickerContextInterface {
     children: ReactNode;
@@ -17,14 +10,16 @@ interface UseDatePickerContextInterface {
 export const DatePickerContext = createContext<DatePickerContextInterface>(
     {
         isDatePickerActive: false,
-        date: ''
+        date: {
+            date: ''
+        }
     }
 );
 
 export const UseDatePickerContext = ({ children }: UseDatePickerContextInterface) => {
     const { language } = useContext(LanguageContext)
     const [isDatePickerActive, openDatePicker] = useState<boolean>(false);
-    const [date, setDate] = useState<string>(DataRequests.getCurrentDate(language));
+    const [date, setDate] = useState<Date>({ date: DataRequests.getCurrentDate(language) });
 
     return (
         <DatePickerContext.Provider value={{ isDatePickerActive, openDatePicker, date, setDate }}>

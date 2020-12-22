@@ -1,5 +1,23 @@
-import { PlanTypes } from './enums';
+import { DatePickerOptions, OptionTypes, PlanTypes } from './enums';
 import { Plans } from './requestsInterfaces';
+
+export interface OptionActiveInterface {
+    id?: number;
+    date: string;
+    dateValue: string;
+    language: string;
+    setDefaultValues?: () => void;
+    setOptionActiveType: (value: OptionTypes) => void;
+    setOpenWindow?: (value: OpenWindowProperties) => void;
+}
+
+export interface AddDayDesktop {
+    id: number;
+    taskDescription: string;
+    setTaskDescription: (value: string) => void;
+    setDefaultValues: () => void;
+    setRecentlyAddedPlanId: (value: number) => void;
+}
 
 export interface inputData {
     startDate: string;
@@ -7,6 +25,28 @@ export interface inputData {
     content: string;
     startDateTime?: string;
     day?: string;
+}
+
+export interface Date {
+    date?: string;
+    option?: DatePickerOptions;
+    startDate?: string;
+    endDate?: string;
+}
+
+
+export interface DatePickerContextInterface {
+    isDatePickerActive: boolean;
+    date: Date;
+    setDate?: (value: Date) => void;
+    openDatePicker?: (value: boolean) => void;
+}
+
+
+export interface EmpPlans {
+    setOpenWindow: any;
+    id: number;
+    setRecentlyAddedPlanId: any;
 }
 
 export interface QuestionContent {

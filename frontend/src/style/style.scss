@@ -69,16 +69,64 @@
                     }
                 }
 
-                .empty-plans{
-                    .chevron{
-                        background-image: url('../images/chevron-dark-theme.png');
+                .empty-plans-container{
+                    .option-active{
+                        .cancel{
+                            background-image: url("../images/cancel-dark-theme.png");
+                        }
                     }
 
-                    .desktop-default-button{
-                        &.two{
-                            border-color: white;
-                            background-color: #707070;
-                            cursor: pointer;
+                    .empty-plans{
+                        .chevron{
+                            background-image: url('../images/chevron-dark-theme.png');
+                        }
+    
+                        .desktop-default-button{
+                            &.two{
+                                border-color: white;
+                                background-color: #707070;
+                                cursor: pointer;
+                            }
+                        }
+                    }
+
+                    &.add{
+                        .add-entry{
+                            .dates{
+                                .desktop-default-button{
+
+                                    &.fulfilled,&:hover{
+                                        color: white;
+                                        border-color: white;
+                                    }
+                                }
+                            }
+
+                            .content{
+                                textarea{
+                                    color: black;
+
+                                    &.fulfilled{
+                                        color: black;
+                                        border-color: white;
+                                    }
+
+                                    &:hover{
+                                        border-color: white;
+                                    }
+
+                                    &:focus{
+                                        border-color: white;
+                                    }
+                                }
+                            }
+
+                            .add-task-button{
+                                &.true{
+                                    background-color: #707070;
+                                    border-color: white;
+                                }
+                            }
                         }
                     }
                 }
@@ -1735,51 +1783,171 @@ form{
             background-color: white;
             border-radius: 15px;
             height: fit-content;
+            padding-bottom: 20px;
 
-            .empty-plans{
-                display: flex;
-                flex-direction: row;
-                align-items: center;
-                justify-content: space-between;
-                padding: 20px 10px 20px;
+            .empty-plans-container{
+                // height: auto;
+                overflow: hidden;
 
-                div{
+                .option-active{
                     display: flex;
-                    flex-direction: column;
+                    flex-direction: row;
+                    justify-content: center;
+                    border-bottom: 1px solid lightgray;
                     align-items: center;
+                    position: relative;
 
                     p{
-                        padding: 0;
+                        padding: 20px;
+                        font-size: 24px;
+                    }
 
-                        &.date{
-                            font-size: 18px;
-                            padding: 10px 0;
+                    .cancel{
+                        position: absolute;
+                        top: 50%;
+                        right: 30px;
+                        transform: translateY(-50%);
+                        width: 30px;
+                        height: 30px;
+                        background-image: url('../images/cancel.png');
+                        background-size: contain;
+                        background-repeat: no-repeat;
+                        cursor: pointer;
+                    }
+                }
+
+                .empty-plans{
+                    display: flex;
+                    flex-direction: row;
+                    align-items: center;
+                    justify-content: space-between;
+                    padding: 20px 10px 20px;
+    
+                    div{
+                        display: flex;
+                        flex-direction: column;
+                        align-items: center;
+    
+                        p{
+                            padding: 0;
+    
+                            &.date{
+                                font-size: 18px;
+                                padding: 10px 0;
+                            }
+                        }
+                    }
+    
+                    p{
+                        padding: 20px;
+                        cursor: pointer;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+    
+                        .chevron{
+                            display: block;
+                            width: 40px;
+                            height: 20px;
+                            background-position: center;
+                            background-size: contain;
+                            background-repeat: no-repeat;
+                            background-image: url('../images/chevron.png');
+                            transition: all .2s linear;
+                            transform: rotate(90deg);
+        
+                            &.next{
+                                transform: rotate(-90deg);
+                            }
                         }
                     }
                 }
 
-                p{
-                    padding: 20px;
-                    cursor: pointer;
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
+                &.add{
+                    .add-entry{
+                        height: fit-content;
+                        // transform: translateY(0);
+                        display: flex;
+                        flex-direction: column;
 
-                    .chevron{
-                        display: block;
-                        width: 40px;
-                        height: 20px;
-                        background-position: center;
-                        background-size: contain;
-                        background-repeat: no-repeat;
-                        background-image: url('../images/chevron.png');
-                        transition: all .2s linear;
-                        transform: rotate(90deg);
-    
-                        &.next{
-                            transform: rotate(-90deg);
+                        .dates{
+                            display: flex;
+                            flex-direction: row;
+                            justify-content: space-around;
+                            padding: 20px 20px 10px;
+
+                            .desktop-default-button{
+                                color: lightgray;
+                                border-color: lightgray;
+                                margin: 0 10px;
+                                cursor: pointer;
+
+                                &.fulfilled{
+                                    color: black;
+                                    border-color: black;
+                                }
+
+                                &:hover{
+                                    color: black;
+                                    border-color: black;
+                                }
+                            }
+                        }
+
+                        .content{
+                            display: flex;
+                            justify-content: center;
+                            align-items: center;
+                            width: 100%;
+                            height: 100px;
+
+                            textarea{
+                                border: 1px solid lightgray;
+                                border-radius: 15px;
+                                outline: unset;
+                                width: 80%;
+                                height: fit-content;
+                                font-size: 18px;
+                                padding: 10px;
+                                overflow-y: hidden;
+                                resize: none;
+
+                                &.fulfilled{
+                                    color: black;
+                                    border-color: black;
+                                }
+
+                                &:hover{
+                                    border-color: black;
+                                }
+
+                                &:focus{
+                                    border-color: black;
+                                }
+                            }
+                        }
+
+                        .add-task-button{
+                            margin: 20px auto;
+                            cursor: pointer;
+
+                            &.false{
+                                background-color: lightgray;
+                                border-color: lightgray;
+                            }
                         }
                     }
+                }
+    
+                .add-entry{
+                    z-index: -1;
+                    width: 100%;
+                    height: 0;
+                    transition: all .3s linear;
+                }
+
+                .option-active ~ .add-entry{
+                    border-bottom: 1px solid lightgray;
                 }
             }
 
