@@ -54,6 +54,12 @@
     background-color: var(--dark_mode-background-color);
     color: white;
 
+    .welcome-page-desktop{
+        .header{
+            color: black;
+        }
+    }
+
     .home-page-content{
         background-color: #707070;
         .window-container{
