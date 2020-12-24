@@ -16,7 +16,7 @@ const EmptyPlans = ({ setOpenWindow, id, setRecentlyAddedPlanId }: EmpPlans) => 
     const [taskDescription, setTaskDescription] = useState<string>('');
 
     const setDefaultValues = () => {
-        setDate!({ ...date, startDate: '', endDate: '' });
+        setDate!({ ...date, startDate: '' });
         setTaskDescription('');
     }
 

@@ -30,8 +30,6 @@ const DateTimePicker = () => {
             setDate!({ ...date, date: `01-${setMonthValue(monthName) < 10 ? `0${setMonthValue(monthName)}` : setMonthValue(monthName)}-${year}` });
         else if (date.option === DatePickerOptions.STARTDATE)
             setDate!({ ...date, startDate: `${hours < 10 ? `0${hours}` : hours}:${minutes < 10 ? `0${minutes}` : minutes}` });
-        else if (date.option === DatePickerOptions.ENDDATE)
-            setDate!({ ...date, endDate: `${hours < 10 ? `0${hours}` : hours}:${minutes < 10 ? `0${minutes}` : minutes}` })
 
         openDatePicker!(false);
     }
@@ -67,7 +65,7 @@ const DateTimePicker = () => {
                                         {month}
                                     </p>)
                             }
-                            {(date.option === DatePickerOptions.STARTDATE || date.option === DatePickerOptions.ENDDATE) &&
+                            {date.option === DatePickerOptions.STARTDATE &&
                                 renderTable(24).map(hour =>
                                     <p
                                         onClick={() => setHours(hour)}
@@ -81,7 +79,7 @@ const DateTimePicker = () => {
                     <div className='years-container'>
                         <div className='years'>
                             {date.option === DatePickerOptions.SELECTDATE && renderYears()}
-                            {(date.option === DatePickerOptions.STARTDATE || date.option === DatePickerOptions.ENDDATE) &&
+                            {date.option === DatePickerOptions.STARTDATE &&
                                 renderTable(60).map(minute =>
                                     <p
                                         onClick={() => setMinutes(minute)}
@@ -96,8 +94,8 @@ const DateTimePicker = () => {
                 <div className='bottom-info'>
                     <p className='time'>
                         {date.option === DatePickerOptions.SELECTDATE && `${monthName} ${year}`}
-                        {(date.option === DatePickerOptions.STARTDATE || date.option === DatePickerOptions.ENDDATE) &&
-                            `${hours < 10 ? `0${hours}` : hours} ${minutes < 10 ? `0${minutes}` : minutes}`}
+                        {date.option === DatePickerOptions.STARTDATE &&
+                            `${hours < 10 ? `0${hours}` : hours} : ${minutes < 10 ? `0${minutes}` : minutes}`}
                     </p>
                     <button className='set-time desktop-default-button' onClick={setTime}>Zaaktualizuj</button>
                 </div>

@@ -31,7 +31,6 @@ export interface Date {
     date?: string;
     option?: DatePickerOptions;
     startDate?: string;
-    endDate?: string;
 }
 
 

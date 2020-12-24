@@ -14,7 +14,7 @@ export const formatDate = (date: string, language: string) => {
     return `${day} ${setMonthName(month, language)} ${year}`;
 }
 
-export const checkIfCanSendRequest = (startDate: string, endDate: string, task: string): boolean => Boolean(startDate && endDate && task);
+export const checkIfCanSendRequest = (startDate: string, task: string): boolean => Boolean(startDate && task);
 
 export const checkIfDateIsLowerThanCurrentDate = (date: string, language: string, setOptionActiveType: (value: OptionTypes) => void) => {
     const numberOfSeconds = new Date(date).getTime() / 1000;

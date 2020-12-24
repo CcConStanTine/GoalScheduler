@@ -19,7 +19,6 @@ const RenderDayPlans = ({ planList, setOpenWindow, id, setRecentlyAddedPlanId }:
                     <div className='entry-data-container'>
                         <div>
                             <p>{languagePack[language].VIEWENTRY.startTime}<span>{startDate}</span></p>
-                            <p>{languagePack[language].VIEWENTRY.endTime}<span>{endDate}</span></p>
                             <p>{languagePack[language].VIEWENTRY.description}<span>{content}</span></p>
                         </div>
                         <div className='options'>

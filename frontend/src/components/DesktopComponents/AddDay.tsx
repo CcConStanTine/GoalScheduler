@@ -9,12 +9,12 @@ const AddDay = ({ setDefaultValues, setRecentlyAddedPlanId, id, taskDescription,
     const { openDatePicker, setDate, date } = useContext(DatePickerContext);
 
     const addDay = async () => {
-        const { startDate, endDate } = date;
+        const { startDate } = date;
 
         const { dayPlanId } = await DataRequests.addPlanByPlanTypeAndId(PlanTypes.DAY, id,
             {
                 startDate: startDate!,
-                endDate: endDate!,
+                endDate: '23:59:59',
                 content: taskDescription
             });
 
@@ -32,13 +32,6 @@ const AddDay = ({ setDefaultValues, setRecentlyAddedPlanId, id, taskDescription,
                     }}
                     className={`desktop-default-button ${date.startDate && 'fulfilled'}`}>{date.startDate ? date.startDate : 'Godzina rozpoczęcia'}
                 </button>
-                <button
-                    onClick={() => {
-                        openDatePicker!(true);
-                        setDate!({ ...date, option: DatePickerOptions.ENDDATE })
-                    }}
-                    className={`desktop-default-button ${date.endDate && 'fulfilled'}`}>{date.endDate ? date.endDate : 'Godzina zakończenia'}
-                </button>
             </div>
             <div className='content'>
                 <textarea
@@ -48,8 +41,8 @@ const AddDay = ({ setDefaultValues, setRecentlyAddedPlanId, id, taskDescription,
                     onChange={event => setTaskDescription(event.target.value)}></textarea>
             </div>
             <button onClick={addDay}
-                disabled={!checkIfCanSendRequest(date.startDate!, date.endDate!, taskDescription)}
-                className={`desktop-default-button two add-task-button ${checkIfCanSendRequest(date.startDate!, date.endDate!, taskDescription)}`}>Add Task</button>
+                disabled={!checkIfCanSendRequest(date.startDate!, taskDescription)}
+                className={`desktop-default-button two add-task-button ${checkIfCanSendRequest(date.startDate!, taskDescription)}`}>Add Task</button>
         </div>
     )
 }
