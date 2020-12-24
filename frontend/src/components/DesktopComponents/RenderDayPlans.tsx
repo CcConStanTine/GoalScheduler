@@ -5,12 +5,17 @@ import languagePack from '../../utils/languagePack';
 import { FaPen, FaTrash } from 'react-icons/fa'
 import EmptyPlans from './EmptyPlans';
 
-const RenderDayPlans = ({ planList, setOpenWindow, id, setRecentlyAddedPlanId }: any) => {
-    const { language } = useContext(LanguageContext)
+const RenderDayPlans = ({ planList, setOpenWindow, id, setRecentlyAddedPlanId, setDeleteWindow }: any) => {
+    const { language } = useContext(LanguageContext);
+
+    const editPlan = () => {
+        console.log('edit');
+    }
+
     return (
         <div className='day-plans'>
             <EmptyPlans setOpenWindow={setOpenWindow} id={id} setRecentlyAddedPlanId={setRecentlyAddedPlanId} />
-            {planList.map(({ dayPlanId, startDate, endDate, content, fulfilled }: EditEntryParams) =>
+            {planList.map(({ dayPlanId, startDate, content, fulfilled }: EditEntryParams) =>
                 <details className='question-container entry-container' key={dayPlanId} open>
                     <summary>
                         <span className='content'>{content}</span>
@@ -22,8 +27,8 @@ const RenderDayPlans = ({ planList, setOpenWindow, id, setRecentlyAddedPlanId }:
                             <p>{languagePack[language].VIEWENTRY.description}<span>{content}</span></p>
                         </div>
                         <div className='options'>
-                            <span onClick={() => console.log('edit')}><FaPen /></span>
-                            <span onClick={() => console.log('delete')}><FaTrash /></span>
+                            <span onClick={editPlan}><FaPen /></span>
+                            <span onClick={() => setDeleteWindow({ isActive: true, id: dayPlanId })}><FaTrash /></span>
                         </div>
                     </div>
                 </details>

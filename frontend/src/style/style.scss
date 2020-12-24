@@ -137,6 +137,18 @@
                     }
                 }
             }
+
+            .delete-container{
+                .delete-window{
+                    background-color: #707070;
+                    border: 1px solid white;
+
+                    .desktop-default-button.two{
+                        background-color: #707070;
+                        border-color: white;
+                    }
+                }
+            }
         }
 
         .calendar-container{
@@ -1960,6 +1972,7 @@ form{
             .day-plans{
                 display: flex;
                 flex-direction: column;
+                position: relative;
 
                 .empty-plans{
                     padding-bottom: 20px;
@@ -2022,6 +2035,40 @@ form{
                             margin-left: 10px;
                             font-weight: bold;
                         }
+                    }
+                }
+            }
+        }
+
+        .delete-container{
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            .delete-window{
+                display: flex;
+                flex-direction: column;
+                background-color: white;
+                border-radius: 15px;
+                display: flex;
+                align-items: center;
+                padding: 20px;
+
+                div{
+                    margin-top: 10px;
+                    display: flex;
+                    flex-direction: row;
+                    justify-content: space-around;
+
+                    button{
+                        margin: 10px;
+                        cursor: pointer;
                     }
                 }
             }
