@@ -3,20 +3,43 @@ import { Plans } from './requestsInterfaces';
 
 export interface OptionActiveInterface {
     id?: number;
-    date: string;
     dateValue: string;
-    language: string;
     setDefaultValues?: () => void;
     setOptionActiveType: (value: OptionTypes) => void;
     setOpenWindow?: (value: OpenWindowProperties) => void;
+    setEdit?: (value: EditDayDesktop) => void;
+}
+
+export interface DeleteWindowInterface {
+    isActive: boolean;
+    id: null | number;
+}
+
+export interface DeleteMessage {
+    setDeleteWindow: (value: DeleteWindowInterface) => void;
+    deleteWindow: DeleteWindowInterface;
+}
+
+export interface EditDayDesktop {
+    isActive: boolean;
+    taskDescription: string;
+    startDate: string;
+    id: null | number;
 }
 
 export interface AddDayDesktop {
     id: number;
-    taskDescription: string;
-    setTaskDescription: (value: string) => void;
-    setDefaultValues: () => void;
     setRecentlyAddedPlanId: (value: number) => void;
+    setOptionActiveType: (value: OptionTypes) => void;
+    edit: EditDayDesktop;
+    setEdit: (value: EditDayDesktop) => void;
+}
+
+export interface RenderDayPlansInterface {
+    planList: any;
+    setDeleteWindow: (value: DeleteWindowInterface) => void;
+    setEdit: (value: EditDayDesktop) => void;
+    setOptionActiveType: (value: OptionTypes) => void;
 }
 
 export interface inputData {
@@ -46,6 +69,10 @@ export interface EmpPlans {
     setOpenWindow: any;
     id: number;
     setRecentlyAddedPlanId: any;
+    edit: EditDayDesktop;
+    setEdit: (value: EditDayDesktop) => void;
+    optionActiveType: OptionTypes;
+    setOptionActiveType: (value: OptionTypes) => void;
 }
 
 export interface QuestionContent {

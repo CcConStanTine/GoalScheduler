@@ -1,7 +1,7 @@
 import React from 'react';
 import DataRequests from "../../authentication/DataRequests";
-import { OptionTypes } from "../../utils/enums";
-import { DateSequences, DateTypes } from "../../utils/interfaces";
+import { NavigationOptions, OptionTypes } from "../../utils/enums";
+import { DateSequences, DateTypes, OpenWindowTypes } from "../../utils/interfaces";
 import languagePack from "../../utils/languagePack";
 import { setMonthName } from "../OtherEntriesFunctions";
 
@@ -24,3 +24,13 @@ export const checkIfDateIsLowerThanCurrentDate = (date: string, language: string
         onClick={() => setOptionActiveType(OptionTypes.ADD)}
         className='desktop-default-button two'>{languagePack[language].ADD.addTask}</button>
 }
+
+export const navigationButton = (setOpenWindow: any, id: number, option: NavigationOptions) => (
+    <p onClick={option === NavigationOptions.PREVIOUS ?
+        () => setOpenWindow({ isActive: true, id: --id!, type: OpenWindowTypes.SHOW })
+        :
+        () => setOpenWindow({ isActive: true, id: ++id!, type: OpenWindowTypes.SHOW })
+    }>
+        <span className={`chevron ${option}`}></span>
+    </p>
+)

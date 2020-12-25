@@ -1,20 +1,15 @@
 import React, { useContext } from 'react';
 import { LanguageContext } from '../../authentication/LanguageContext';
-import { EditEntryParams } from '../../utils/interfaces';
+import { EditEntryParams, RenderDayPlansInterface } from '../../utils/interfaces';
 import languagePack from '../../utils/languagePack';
-import { FaPen, FaTrash } from 'react-icons/fa'
-import EmptyPlans from './EmptyPlans';
+import { FaPen, FaTrash } from 'react-icons/fa';
+import { OptionTypes } from '../../utils/enums';
 
-const RenderDayPlans = ({ planList, setOpenWindow, id, setRecentlyAddedPlanId, setDeleteWindow }: any) => {
+const RenderDayPlans = ({ planList, setDeleteWindow, setEdit, setOptionActiveType }: RenderDayPlansInterface) => {
     const { language } = useContext(LanguageContext);
-
-    const editPlan = () => {
-        console.log('edit');
-    }
 
     return (
         <div className='day-plans'>
-            <EmptyPlans setOpenWindow={setOpenWindow} id={id} setRecentlyAddedPlanId={setRecentlyAddedPlanId} />
             {planList.map(({ dayPlanId, startDate, content, fulfilled }: EditEntryParams) =>
                 <details className='question-container entry-container' key={dayPlanId} open>
                     <summary>
@@ -27,8 +22,11 @@ const RenderDayPlans = ({ planList, setOpenWindow, id, setRecentlyAddedPlanId, s
                             <p>{languagePack[language].VIEWENTRY.description}<span>{content}</span></p>
                         </div>
                         <div className='options'>
-                            <span onClick={editPlan}><FaPen /></span>
-                            <span onClick={() => setDeleteWindow({ isActive: true, id: dayPlanId })}><FaTrash /></span>
+                            <span onClick={() => {
+                                setEdit({ isActive: true, startDate: startDate!, taskDescription: content!, id: dayPlanId! })
+                                setOptionActiveType(OptionTypes.ADD);
+                            }}><FaPen /></span>
+                            <span onClick={() => setDeleteWindow({ isActive: true, id: dayPlanId! })}><FaTrash /></span>
                         </div>
                     </div>
                 </details>

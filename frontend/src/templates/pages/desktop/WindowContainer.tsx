@@ -1,26 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import DataRequests from '../../../authentication/DataRequests';
-import { OpenWindow } from '../../../utils/interfaces';
-import { PlanTypes } from '../../../utils/enums';
+import { DeleteWindowInterface, EditDayDesktop, OpenWindow } from '../../../utils/interfaces';
+import { OptionTypes, PlanTypes } from '../../../utils/enums';
 import EmptyPlans from '../../../components/DesktopComponents/EmptyPlans';
 import RenderDayPlans from '../../../components/DesktopComponents/RenderDayPlans';
-
-interface DeleteWindow {
-    isActive: boolean;
-    id: null | number;
-}
+import DeleteWindow from '../../../components/DesktopComponents/DeleteWindow';
 
 const WindowContainer = ({ id, type, setOpenWindow }: OpenWindow) => {
     const [dayPlanList, setDayPlanList] = useState([]);
     const [recentlyAddedPlanId, setRecentlyAddedPlanId] = useState<number | null>(null);
-    const [deleteWindow, setDeleteWindow] = useState<DeleteWindow>({ isActive: false, id: null });
-
-    const deleteTask = async () => {
-        const { status } = await DataRequests.deletePlanByTypeAndId(PlanTypes.DAY, deleteWindow.id!);
-
-        if (!status)
-            return setDeleteWindow({ isActive: false, id: null });
-    }
+    const [deleteWindow, setDeleteWindow] = useState<DeleteWindowInterface>({ isActive: false, id: null });
+    const [edit, setEdit] = useState<EditDayDesktop>({ isActive: false, startDate: '', taskDescription: '', id: null });
+    const [optionActiveType, setOptionActiveType] = useState<OptionTypes>(OptionTypes.DEFAULT);
 
     useEffect(() => {
         const getDayPlanList = async () => {
@@ -35,37 +26,25 @@ const WindowContainer = ({ id, type, setOpenWindow }: OpenWindow) => {
     return (
         <section className={`window-container ${type}`} onClick={() => setOpenWindow!({ isActive: false })}>
             <div className='type-container' onClick={event => event.stopPropagation()}>
-                {dayPlanList.length ?
-                    <RenderDayPlans
-                        setDeleteWindow={setDeleteWindow}
-                        setRecentlyAddedPlanId={setRecentlyAddedPlanId}
-                        planList={dayPlanList}
-                        setOpenWindow={setOpenWindow}
-                        id={id!} />
-                    :
-                    <EmptyPlans
-                        setRecentlyAddedPlanId={setRecentlyAddedPlanId}
-                        setOpenWindow={setOpenWindow}
-                        id={id!} />}
+                <EmptyPlans
+                    setOpenWindow={setOpenWindow}
+                    id={id!}
+                    setRecentlyAddedPlanId={setRecentlyAddedPlanId}
+                    edit={edit}
+                    setEdit={setEdit}
+                    setOptionActiveType={setOptionActiveType}
+                    optionActiveType={optionActiveType}
+                />
+
+                {dayPlanList.length ? <RenderDayPlans
+                    setDeleteWindow={setDeleteWindow}
+                    planList={dayPlanList}
+                    setEdit={setEdit}
+                    setOptionActiveType={setOptionActiveType}
+                /> : null}
             </div>
-            {deleteWindow.isActive &&
-                <div className='delete-container' onClick={event => {
-                    setDeleteWindow({ isActive: false, id: null });
-                    event.stopPropagation();
-                }}>
-                    <div className='delete-window' onClick={event => event.stopPropagation()}>
-                        <p>Are you sure you want to delete this task?</p>
-                        <div>
-                            <button
-                                onClick={deleteTask}
-                                className='desktop-default-button two'>Yes</button>
-                            <button
-                                onClick={() => setDeleteWindow({ isActive: false, id: null })}
-                                className='desktop-default-button two'>No</button>
-                        </div>
-                    </div>
-                </div>
-            }
+
+            {deleteWindow.isActive && <DeleteWindow deleteWindow={deleteWindow} setDeleteWindow={setDeleteWindow} />}
         </section>
     )
 }
