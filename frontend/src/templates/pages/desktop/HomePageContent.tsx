@@ -60,7 +60,10 @@ const HomePageContent = () => {
 
             <div className='calendar-container'>
                 {languagePack[language].DAYS.daysAsAnArray.map(day => <p key={day} className='day_number'>{day}</p>)}
-                {dayList.length && renderDays(dayList, setContextMenu, setOpenWindow)}
+                {dayList.length ? renderDays(dayList, setContextMenu, setOpenWindow)
+                    :
+                    <p className='loading-calendar'>Wczytywanie kalendarza</p>
+                }
                 {contextMenu.isActive &&
                     <ContextMenuContainer
                         setContextMenu={setContextMenu}

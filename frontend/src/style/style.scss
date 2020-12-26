@@ -1702,6 +1702,12 @@ form{
         // background-color: #00B3DF;
         flex-wrap: wrap;
 
+        .loading-calendar{
+            width: 80%;
+            text-align: center;
+            margin: 0 auto;
+        }
+
         .context-menu{
             width: 150px;
             position: absolute;
@@ -1749,6 +1755,10 @@ form{
             background-color: rgb(240, 240, 240);
             transition: all .1s linear;
             outline: unset;
+
+            &:nth-child(7n),&:nth-child(13),&:nth-child(20),&:nth-child(27),&:nth-child(34){
+                background-color: rgb(220,220,220);
+            }
 
             .dot-container{
                 display: flex;
