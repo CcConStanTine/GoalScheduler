@@ -5,7 +5,6 @@ import {
     ReturnPlans,
     ReturnTypeDataById,
     Plans,
-    ReturnTypeData,
     DeleteOrChange,
 } from '../utils/requestsInterfaces';
 import { dateTimeTypes } from '../utils/variables';
