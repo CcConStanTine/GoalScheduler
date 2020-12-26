@@ -4,11 +4,6 @@ import { Questions, selectLanguageInterface } from './interfaces';
 export const appName = "MySchedule";
 export const appLogo = AppImage;
 
-export const AccountFormTypes = {
-    CREATE: 'create',
-    LOGIN: 'login',
-};
-
 export const AccountFormErrorTypes = {
     REQUIRED: 'this field is required',
     PATTERN: 'this field contains of inappropriate sign',

@@ -1,6 +1,6 @@
 import React, { useState, useContext } from 'react';
 import { useForm } from "react-hook-form";
-import { AccountFormTypes } from '../utils/variables';
+import { AccountFormTypes } from '../utils/enums';
 import languagePack from '../utils/languagePack';
 import { accountFormInterface, registerUser, loginUser } from '../utils/interfaces';
 import DataRequests from '../authentication/DataRequests';

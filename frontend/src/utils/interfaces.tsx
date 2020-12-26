@@ -448,6 +448,17 @@ interface days {
     daysAsAnArray: string[];
 }
 
+interface welcomePageDesktopOptions {
+    title: string;
+    info: string;
+    header: string;
+}
+
+interface welcomePageDesktop {
+    SIGNUP: welcomePageDesktopOptions;
+    SIGNIN: welcomePageDesktopOptions;
+}
+
 export interface languageInterface {
     [key: string]: {
         WELCOME: welcome;
@@ -462,6 +473,7 @@ export interface languageInterface {
         EDIT: editEntry;
         PROFILE: profile;
         HELP: help;
+        WELCOMEPAGEDESKTOP: welcomePageDesktop;
         GLOBAL: global;
         MONTHS: months;
         DAYS: days;

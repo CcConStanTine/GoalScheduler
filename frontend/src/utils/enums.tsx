@@ -22,5 +22,15 @@ export enum NavigationOptions {
 };
 
 export enum ScreenSizes {
-    Mobile = 900,
+    MOBILE = 900,
+};
+
+export enum WelcomePageDesktopActiveTypes {
+    SIGNIN = '',
+    SIGNUP = 'right-panel-active',
+};
+
+export enum AccountFormTypes {
+    CREATE = 'create',
+    LOGIN = 'login'
 };

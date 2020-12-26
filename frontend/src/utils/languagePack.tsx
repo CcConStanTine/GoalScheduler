@@ -97,6 +97,18 @@ const languagePack: languageInterface = {
         HELP: {
             title: 'Help',
         },
+        WELCOMEPAGEDESKTOP: {
+            SIGNUP: {
+                title: 'Sign Up',
+                header: 'Welcome Back!',
+                info: 'To keep connected with us please login with your personal info',
+            },
+            SIGNIN: {
+                title: 'Sign In',
+                header: 'Hello, Friend!',
+                info: 'Enter your personal details and start journey with us',
+            }
+        },
         GLOBAL: {
             appName: `${appName}`,
             yearPlan: 'Year Plan',
@@ -228,6 +240,18 @@ const languagePack: languageInterface = {
         },
         HELP: {
             title: 'Pomoc',
+        },
+        WELCOMEPAGEDESKTOP: {
+            SIGNUP: {
+                title: 'Zaloguj się',
+                header: 'Witaj ponownie',
+                info: 'Podaj swoje dane logowania',
+            },
+            SIGNIN: {
+                title: 'Zarejestruj się',
+                header: 'Witaj podróżniku',
+                info: 'Dołącz do nas i odkryj możliwości na nowo',
+            }
         },
         GLOBAL: {
             appName: `${appName}`,
