@@ -66,6 +66,8 @@ export interface ReturnPlans extends FailedResponse {
 }
 
 export interface ReturnTypeDataById extends FailedResponse {
+    id?: number | string;
+    empty: boolean;
     dayId?: number;
     dayName?: string;
     dayDate?: string;
@@ -75,6 +77,7 @@ export interface ReturnTypeDataById extends FailedResponse {
     yearId?: number;
     yearNumber?: number;
     leapYear?: boolean;
+    planList?: number;
     // map?: any;
     // filter?: any;
     // indexOf?: any;

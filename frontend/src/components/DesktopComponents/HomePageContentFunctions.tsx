@@ -1,4 +1,6 @@
 import React from 'react';
+import DataRequests from '../../authentication/DataRequests';
+import { PlanTypes } from '../../utils/enums';
 import { OpenWindowTypes } from "../../utils/interfaces";
 import { ReturnTypeData, ReturnTypeDataById } from "../../utils/requestsInterfaces";
 
@@ -29,6 +31,18 @@ export const renderDays = (dayList: ReturnTypeData | [], setContextMenu: any, se
 
     let timer: number;
 
+    const renderDots = (number: number) => {
+        const dots = [];
+
+        for (let i = 0; i < number; i++) {
+            dots.push(i);
+        }
+
+        return <div className='dot-container'>
+            {dots.map((dot: number) => <span className='dot' key={dot}></span>)}
+        </div>
+    }
+
     const pressedDayButton = (dayId: number) => {
         timer = window.setTimeout(() => {
             setOpenWindow({ isActive: true, id: dayId, type: OpenWindowTypes.SHOW })
@@ -37,24 +51,24 @@ export const renderDays = (dayList: ReturnTypeData | [], setContextMenu: any, se
 
     const releaseDayButton = () => clearTimeout(timer)
 
-
     for (let i = 0; i < firstDayOfTheMonth; i++) {
         dayTable.push({ empty: true, id: `day${i}` });
     };
 
     dayList.forEach((element: ReturnTypeDataById) => dayTable.push(element));
 
-    return dayTable.map(({ dayId, empty, id }: any, index: number) => <button
+    return dayTable.map(({ id, empty, plansNumber }: any, index: number) => <button
         disabled={empty}
         className={empty ? 'day empty' : 'day'}
         onMouseUp={() => releaseDayButton()}
-        onMouseDown={() => pressedDayButton(dayId)}
-        onClick={() => setOpenWindow({ isActive: true, id: dayId, type: OpenWindowTypes.SHOW })}
+        onMouseDown={() => pressedDayButton(id)}
+        onClick={() => setOpenWindow({ isActive: true, id: id, type: OpenWindowTypes.SHOW })}
         onContextMenu={event => {
             event.preventDefault();
-            setContextMenu({ pageX: event.pageX - 20, pageY: event.pageY - 20, id: dayId, isActive: true })
+            setContextMenu({ pageX: event.pageX - 20, pageY: event.pageY - 20, id, isActive: true })
         }}
-        key={empty ? id : dayId}>
+        key={empty ? id : id}>
         {empty ? null : index - firstDayOfTheMonth + 1}
+        {Boolean(plansNumber) && renderDots(plansNumber)}
     </button>);
-};
+}

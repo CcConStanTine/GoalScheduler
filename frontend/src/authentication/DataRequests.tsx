@@ -94,7 +94,7 @@ class DataRequests extends UserCredentialsRequests {
     public getPlanByTypeAndId = (type: PlanTypes, id: number): Promise<ReturnPlans> =>
         this.handleRequests(RequestsMethods.GET, this.getScheduleValue(`${type}_plans/${id}`));
 
-    public getTypeDataByDate = (type: PlanTypes, date: string): Promise<ReturnTypeData> =>
+    public getTypeDataByDate = (type: PlanTypes, date: string) =>
         this.handleRequests(RequestsMethods.GET, this.getScheduleValue(`${type}s?local_date=${this.validateDate(date)}`));
 
     public getTypeDataById = (type: PlanTypes, id: number): Promise<ReturnTypeDataById> =>

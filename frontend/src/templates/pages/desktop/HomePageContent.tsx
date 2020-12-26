@@ -31,7 +31,19 @@ const HomePageContent = () => {
             const _date = DataRequests.convertDate(DateTypes.REQUEST, date.date!);
             const plans = await DataRequests.getTypeDataByDate(PlanTypes.DAY, _date);
 
-            setDayList(plans);
+            const plansWithData: any = [];
+
+            const checkIfThisDayHaveAPlan = async (id: number) => {
+                const planList = await DataRequests.getTypePlansByTypeAndId(PlanTypes.DAY, id);
+
+                return planList.length;
+            }
+
+            for (const { dayId, dayName } of plans) {
+                plansWithData.push({ id: dayId, dayName: dayName, plansNumber: await checkIfThisDayHaveAPlan(dayId) });
+            }
+
+            setDayList(plansWithData);
         }
 
         getPlans();
