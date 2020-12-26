@@ -1064,6 +1064,7 @@ form{
         letter-spacing: 1px;
         text-transform: uppercase;
         transition: transform 80ms ease-in;
+        cursor: pointer;
     
     &:active {
         transform: scale(0.95);
@@ -1756,7 +1757,7 @@ form{
             transition: all .1s linear;
             outline: unset;
 
-            &:nth-child(7n),&:nth-child(13),&:nth-child(20),&:nth-child(27),&:nth-child(34){
+            &:nth-child(7n),&:nth-child(13),&:nth-child(20),&:nth-child(27),&:nth-child(34),&:nth-child(41){
                 background-color: rgb(220,220,220);
             }
 

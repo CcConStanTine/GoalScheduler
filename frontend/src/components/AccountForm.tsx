@@ -81,7 +81,7 @@ const AccountForm = ({ type, headerSignUp, headerLogIn, mobile }: accountFormInt
         DataRequests.setLocalStorageValues(userData);
         setLoading!(false);
 
-        if (userData.token && setLoggedIn) return setLoggedIn(DataRequests.getCurrentUser);
+        if (userData.token && setLoggedIn) return setLoggedIn(DataRequests.getCurrentUser());
 
         const message = userData.status ? languagePack[language].WELCOME.errorLoggedIn : languagePack[language].WELCOME.logginIn;
         return setLoginMessage(message)

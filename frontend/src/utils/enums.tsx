@@ -19,4 +19,8 @@ export enum OptionTypes {
 export enum NavigationOptions {
     PREVIOUS = "previous",
     NEXT = "next",
-}
+};
+
+export enum ScreenSizes {
+    Mobile = 900,
+};

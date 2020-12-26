@@ -10,6 +10,25 @@ export interface OptionActiveInterface {
     setEdit?: (value: EditDayDesktop) => void;
 }
 
+export interface UserContext {
+    email?: string;
+    firstName?: string;
+    lastName?: string;
+    nick?: string;
+    token?: string;
+    userId?: number;
+    userPhoto?: string;
+}
+
+export interface AppContextInterface {
+    userContext?: UserContext;
+    setLoggedIn?: (value: UserContext) => void;
+}
+
+export interface ReturnWindowDimension {
+    width: number;
+};
+
 export interface DeleteWindowInterface {
     isActive: boolean;
     id: null | number;

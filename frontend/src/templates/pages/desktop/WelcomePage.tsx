@@ -32,8 +32,8 @@ const WelcomePage = (): JSX.Element => {
             </div>
             <footer className={active}>
                 <ul>
-                    <li>Sign in</li>
-                    <li>Create account</li>
+                    <li onClick={() => setActive('')}>Sign in</li>
+                    <li onClick={() => setActive('right-panel-active')}>Create account</li>
                     <li>Features</li>
                     <li>Privacy & Safety</li>
                     <li>Contact</li>
