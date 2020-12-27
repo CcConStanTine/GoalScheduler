@@ -1,5 +1,5 @@
 import React from 'react';
-import { DesktopDisplayOptions } from '../../utils/interfaces';
+import { DesktopDisplayOptions } from '../../utils/enums';
 import HomePage from '../../templates/pages/desktop/HomePageContent';
 import HelpPage from '../../templates/pages/desktop/HelpPage';
 import ProfilePage from '../../templates/pages/desktop/ProfilePage';

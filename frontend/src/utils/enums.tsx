@@ -34,3 +34,10 @@ export enum AccountFormTypes {
     CREATE = 'create',
     LOGIN = 'login'
 };
+
+export enum DesktopDisplayOptions {
+    HOME = 'home',
+    PROFILE = 'profile',
+    HELP = 'help',
+    SETTINGS = 'settings',
+};

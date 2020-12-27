@@ -1,8 +1,9 @@
 import React from 'react';
 import DataRequests from '../../authentication/DataRequests';
 import { PlanTypes } from '../../utils/enums';
-import { OpenWindowTypes } from "../../utils/interfaces";
+import { DateSequences, DateTypes, OpenWindowTypes } from "../../utils/interfaces";
 import { ReturnTypeData, ReturnTypeDataById } from "../../utils/requestsInterfaces";
+import { setMonthName } from '../OtherEntriesFunctions';
 
 export const getDayValue = (dayName: string) => {
     switch (dayName) {
@@ -72,3 +73,33 @@ export const renderDays = (dayList: ReturnTypeData | [], setContextMenu: any, se
         {Boolean(plansNumber) && renderDots(plansNumber)}
     </button>);
 }
+
+export const setDateValue = (date: string, language: string) => {
+    const monthName = setMonthName(DataRequests.getSequenceFromDate(date, DateSequences.MONTH), language);
+    const year = DataRequests.getSequenceFromDate(date, DateSequences.YEAR);
+
+    return `${monthName} ${year}`;
+};
+
+export const checkIfThisDayHaveAPlan = async (id: number) => {
+    const planList = await DataRequests.getTypePlansByTypeAndId(PlanTypes.DAY, id);
+
+    return planList.length;
+};
+
+export const getActualPlans = async (date: string): Promise<ReturnTypeData> => {
+    const _date = DataRequests.convertDate(DateTypes.REQUEST, date);
+    const plans = await DataRequests.getTypeDataByDate(PlanTypes.DAY, _date);
+
+    return plans;
+};
+
+export const generatePlansInfo = async (plans: any) => {
+    const plansInfo: any = [];
+
+    for (const { dayId: id, dayName } of plans) {
+        plansInfo.push({ id, dayName, plansNumber: await checkIfThisDayHaveAPlan(id) });
+    }
+
+    return plansInfo;
+};

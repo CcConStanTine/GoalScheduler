@@ -1,16 +1,16 @@
 import React, { useContext } from 'react';
 import { FaHome, FaUser, FaInfoCircle, FaCog, FaSignOutAlt } from 'react-icons/fa';
-import { DesktopDisplayOptions } from '../../utils/interfaces';
+import { DesktopDisplayOptions } from '../../utils/enums';
 import DataRequests from '../../authentication/DataRequests';
 import { AppContext } from '../../authentication/AppContext';
 import { LanguageContext } from '../../authentication/LanguageContext';
 import languagePack from '../../utils/languagePack';
 
 interface MenuInterface {
-    onClick: any;
+    onClick: (value: DesktopDisplayOptions) => void;
 }
 
-const Menu = ({ onClick }: MenuInterface) => {
+const Menu = ({ onClick }: MenuInterface): JSX.Element => {
     const { setLoggedIn } = useContext(AppContext);
     const { language } = useContext(LanguageContext);
 

@@ -19,6 +19,9 @@ const languagePack: languageInterface = {
             continueWithoutSigningIn: 'Continue Without Signing In',
             errorLoggedIn: 'Username or Password might be wrong',
             userRegisterSuccessfuly: 'User registered successfully',
+            contact: 'Contact',
+            features: 'Features',
+            privacyAndSafety: 'Privacy & Safety',
         },
         HOME: {
             title: 'Home',
@@ -121,6 +124,7 @@ const languagePack: languageInterface = {
             wrongPassword: 'Password is wrong',
             save: 'save',
             cancel: 'Cancel',
+            loadingCalendar: 'Loading calendar',
         },
         EDIT: {
             title: 'Edit',
@@ -163,6 +167,9 @@ const languagePack: languageInterface = {
             continueWithoutSigningIn: 'Kontynuuj bez logowania się',
             errorLoggedIn: 'Pseudonim lub hasło są błędne',
             userRegisterSuccessfuly: 'Zarejestrowany',
+            contact: 'Kontakt',
+            features: 'Funkcjonalności',
+            privacyAndSafety: 'Prywatność i bezpieczeństwo',
         },
         HOME: {
             title: 'Kalendarz',
@@ -265,6 +272,7 @@ const languagePack: languageInterface = {
             wrongPassword: 'Hasło jest błędne',
             save: 'Zapisz',
             cancel: 'Anuluj',
+            loadingCalendar: 'Wczytywanie kalendarza',
         },
         EDIT: {
             title: 'Edytuj',

@@ -15,7 +15,7 @@ const WelcomePage = (): JSX.Element => {
                     <AccountForm type={AccountFormTypes.CREATE} headerSignUp={languagePack[language].WELCOME.createAccount} mobile={false} />
                 </div>
                 <div className="form-container sign-in-container">
-                    <AccountForm type={AccountFormTypes.LOGIN} headerLogIn={languagePack[language].WELCOMEPAGEDESKTOP.SIGNIN.title} mobile={false} />
+                    <AccountForm type={AccountFormTypes.LOGIN} headerLogIn={languagePack[language].WELCOMEPAGEDESKTOP.SIGNUP.title} mobile={false} />
                 </div>
                 <div className="overlay-container">
                     <div className="overlay">
@@ -23,14 +23,14 @@ const WelcomePage = (): JSX.Element => {
                             <h1>{languagePack[language].WELCOMEPAGEDESKTOP.SIGNIN.header}</h1>
                             <p>{languagePack[language].WELCOMEPAGEDESKTOP.SIGNIN.info}</p>
                             <button className="desktop-default-button" onClick={() => setActive(WelcomePageDesktopActiveTypes.SIGNIN)}>
-                                {languagePack[language].WELCOMEPAGEDESKTOP.SIGNIN.title}
+                                {languagePack[language].WELCOMEPAGEDESKTOP.SIGNUP.title}
                             </button>
                         </div>
                         <div className="overlay-panel overlay-right">
                             <h1>{languagePack[language].WELCOMEPAGEDESKTOP.SIGNUP.header}</h1>
                             <p>{languagePack[language].WELCOMEPAGEDESKTOP.SIGNUP.info}</p>
                             <button className="desktop-default-button" onClick={() => setActive(WelcomePageDesktopActiveTypes.SIGNUP)}>
-                                {languagePack[language].WELCOMEPAGEDESKTOP.SIGNUP.title}
+                                {languagePack[language].WELCOMEPAGEDESKTOP.SIGNIN.title}
                             </button>
                         </div>
                     </div>
@@ -40,9 +40,9 @@ const WelcomePage = (): JSX.Element => {
                 <ul>
                     <li onClick={() => setActive(WelcomePageDesktopActiveTypes.SIGNIN)}>{languagePack[language].WELCOMEPAGEDESKTOP.SIGNIN.title}</li>
                     <li onClick={() => setActive(WelcomePageDesktopActiveTypes.SIGNUP)}>{languagePack[language].WELCOME.createAccount}</li>
-                    <li>Features</li>
-                    <li>Privacy & Safety</li>
-                    <li>Contact</li>
+                    <li>{languagePack[language].WELCOME.features}</li>
+                    <li>{languagePack[language].WELCOME.privacyAndSafety}</li>
+                    <li>{languagePack[language].WELCOME.contact}</li>
                 </ul>
             </footer>
         </section >

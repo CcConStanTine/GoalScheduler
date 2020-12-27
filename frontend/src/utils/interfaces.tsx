@@ -108,13 +108,6 @@ export interface Questions {
     [key: string]: renderQues
 };
 
-
-export enum DesktopDisplayOptions {
-    HOME = 'home',
-    PROFILE = 'profile',
-    HELP = 'help',
-    SETTINGS = 'settings',
-}
 export interface EmailInterface {
     newEmail: string;
     currentEmail: string;
@@ -308,6 +301,9 @@ interface welcome {
     continueWithoutSigningIn: string;
     errorLoggedIn: string;
     userRegisterSuccessfuly: string;
+    features: string;
+    privacyAndSafety: string;
+    contact: string;
 }
 
 export enum DateSequences {
@@ -412,6 +408,7 @@ interface global {
     wrongPassword: string;
     save: string;
     cancel: string;
+    loadingCalendar: string;
 }
 
 interface months {
