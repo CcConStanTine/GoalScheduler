@@ -1,7 +1,19 @@
 import AppImage from '../images/app_logo.png';
 import { Questions, selectLanguageInterface } from './interfaces';
 
-export const appName = "MySchedule";
+export const DeleteWindowDefaultValues = {
+    isActive: false,
+    id: null
+}
+
+export const EditDayDesktopDefaultValues = {
+    isActive: false,
+    startDate: '',
+    taskDescription: '',
+    id: null
+}
+
+export const appName = "Goal Schedule";
 export const appLogo = AppImage;
 
 export const AccountFormErrorTypes = {
@@ -55,12 +67,12 @@ export const AddEntryPageDefaultValues = {
 
 export const userQuestions: Questions = {
     'en-US': [{
-        title: 'Dlaczego tak długo zajmuje wczytanie aplikacji',
-        answer: 'Jest to uzależnione od połączenia internetowego, każde zapytanie wysyłane jest do bazdy danych, z której zwracana jest odpowiedź.'
+        title: 'Why do app take so long to load',
+        answer: 'It depends on connection between you and database.'
     }],
     'pl-PL': [{
         title: 'Dlaczego tak długo zajmuje wczytanie aplikacji',
-        answer: 'Jest to uzależnione od połączenia internetowego, każde zapytanie wysyłane jest do bazdy danych, z której zwracana jest odpowiedź.'
+        answer: 'Jest to uzależnione od połączenia pomiędzy Twoją aplikacją a bazą danych.'
     }]
 }
 

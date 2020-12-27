@@ -5,42 +5,42 @@ import { LanguageContext } from '../../authentication/LanguageContext';
 import { DatePickerOptions, OptionTypes, PlanTypes } from '../../utils/enums';
 import { AddDayDesktop } from '../../utils/interfaces';
 import languagePack from '../../utils/languagePack';
+import { EditDayDesktopDefaultValues } from '../../utils/variables';
 import { checkIfCanSendRequest } from './EmptyPlansFunction';
 
-const AddDay = ({ setRecentlyAddedPlanId, id, edit, setOptionActiveType, setEdit }: AddDayDesktop) => {
+const AddOrEditDay = ({ setRecentlyAddedPlanId, id, edit, setOptionActiveType, setEdit }: AddDayDesktop) => {
     const { openDatePicker, setDate, date } = useContext(DatePickerContext);
     const [taskDescription, setTaskDescription] = useState<string>('');
     const { language } = useContext(LanguageContext);
 
-    const editDay = async () => {
-
-        const { dayPlanId } = await DataRequests.changePlanByType(PlanTypes.DAY, edit.id!,
-            {
-                content: taskDescription,
-                startDate: date.startDate!,
-                endDate: '23:59:59'
-            })
-
-        setRecentlyAddedPlanId(dayPlanId!);
+    const setDefaultValues = (dayPlanId: number) => {
+        setRecentlyAddedPlanId(dayPlanId);
         setTaskDescription('');
         setDate!({ ...date, startDate: '' });
-        setEdit({ isActive: false, id: null, startDate: '', taskDescription: '' });
+    }
+
+    const setEditDefaultValues = () => {
+        setEdit(EditDayDesktopDefaultValues);
         setOptionActiveType(OptionTypes.DEFAULT);
     }
 
-    const addDay = async () => {
+    const handleDayByType = async (type: OptionTypes) => {
         const { startDate } = date;
 
-        const { dayPlanId } = await DataRequests.addPlanByPlanTypeAndId(PlanTypes.DAY, id,
-            {
-                startDate: startDate!,
-                endDate: '23:59:59',
-                content: taskDescription
-            });
+        const data = {
+            startDate: startDate!,
+            endDate: '23:59:59',
+            content: taskDescription,
+        };
 
-        setRecentlyAddedPlanId(dayPlanId!);
-        setTaskDescription('');
-        setDate!({ ...date, startDate: '' });
+        const { dayPlanId } = type === OptionTypes.ADD ?
+            await DataRequests.addPlanByPlanTypeAndId(PlanTypes.DAY, id, data)
+            :
+            await DataRequests.changePlanByType(PlanTypes.DAY, edit.id!, data);
+
+        setDefaultValues(dayPlanId!);
+
+        type === OptionTypes.EDIT && setEditDefaultValues();
     }
 
     useEffect(() => {
@@ -73,7 +73,8 @@ const AddDay = ({ setRecentlyAddedPlanId, id, edit, setOptionActiveType, setEdit
                     placeholder='Opis planu'
                     onChange={event => setTaskDescription(event.target.value)}></textarea>
             </div>
-            <button onClick={edit.isActive ? editDay : addDay}
+            <button
+                onClick={() => edit.isActive ? handleDayByType(OptionTypes.EDIT) : handleDayByType(OptionTypes.ADD)}
                 disabled={!checkIfCanSendRequest(date.startDate!, taskDescription)}
                 className={`desktop-default-button two add-task-button ${checkIfCanSendRequest(date.startDate!, taskDescription)}`}>
                 {edit.isActive ? languagePack[language].EDIT.title : languagePack[language].ADD.addTask}
@@ -82,4 +83,4 @@ const AddDay = ({ setRecentlyAddedPlanId, id, edit, setOptionActiveType, setEdit
     )
 }
 
-export default AddDay;
+export default AddOrEditDay;

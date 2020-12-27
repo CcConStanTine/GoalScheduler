@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import DataRequests from '../../../authentication/DataRequests';
 import { DeleteWindowInterface, EditDayDesktop, OpenWindow } from '../../../utils/interfaces';
 import { OptionTypes, PlanTypes } from '../../../utils/enums';
+import { DeleteWindowDefaultValues, EditDayDesktopDefaultValues } from '../../../utils/variables';
 import EmptyPlans from '../../../components/DesktopComponents/EmptyPlans';
 import RenderDayPlans from '../../../components/DesktopComponents/RenderDayPlans';
 import DeleteWindow from '../../../components/DesktopComponents/DeleteWindow';
@@ -9,8 +10,8 @@ import DeleteWindow from '../../../components/DesktopComponents/DeleteWindow';
 const WindowContainer = ({ id, type, setOpenWindow }: OpenWindow) => {
     const [dayPlanList, setDayPlanList] = useState([]);
     const [recentlyAddedPlanId, setRecentlyAddedPlanId] = useState<number | null>(null);
-    const [deleteWindow, setDeleteWindow] = useState<DeleteWindowInterface>({ isActive: false, id: null });
-    const [edit, setEdit] = useState<EditDayDesktop>({ isActive: false, startDate: '', taskDescription: '', id: null });
+    const [deleteWindow, setDeleteWindow] = useState<DeleteWindowInterface>(DeleteWindowDefaultValues);
+    const [edit, setEdit] = useState<EditDayDesktop>(EditDayDesktopDefaultValues);
     const [optionActiveType, setOptionActiveType] = useState<OptionTypes>(OptionTypes.DEFAULT);
 
     useEffect(() => {

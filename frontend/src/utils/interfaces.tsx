@@ -99,13 +99,13 @@ export interface QuestionContent {
     answer: string | JSX.Element;
 }
 
-export interface renderQues {
+export interface RenderQues {
     [key: number]: QuestionContent
     map: any;
 }
 
 export interface Questions {
-    [key: string]: renderQues
+    [key: string]: RenderQues;
 };
 
 export interface EmailInterface {
@@ -344,6 +344,8 @@ interface settings {
     changeEmail: string;
     changeUserPhoto: string;
     signOut: string;
+    userLanguageInfo: string;
+    themeInfo: string;
 }
 
 interface viewEntry {

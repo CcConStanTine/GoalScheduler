@@ -3,9 +3,9 @@ import { LanguageContext } from '../../../authentication/LanguageContext';
 import RenderHeader from '../../../components/DesktopComponents/RenderHeader';
 import languagePack from '../../../utils/languagePack';
 import { userQuestions } from '../../../utils/variables';
-import renderHelpQuestion from '../../../components/DesktopComponents/RenderHelpQuestions';
+import renderHelpQuestion from '../../../components/DesktopComponents/renderUserQuestionOrOptions';
 
-const HelpPage = () => {
+const HelpPage = (): JSX.Element => {
     const { language } = useContext(LanguageContext);
 
     return (

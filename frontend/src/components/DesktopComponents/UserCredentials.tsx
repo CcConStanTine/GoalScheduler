@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import { FaUser, FaSignature, FaEnvelope } from 'react-icons/fa';
 import { AppContext } from '../../authentication/AppContext';
 
-const UserCredentials = () => {
+const UserCredentials = (): JSX.Element => {
     const { userContext } = useContext(AppContext);
 
     return (

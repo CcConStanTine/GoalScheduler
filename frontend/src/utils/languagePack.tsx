@@ -48,6 +48,8 @@ const languagePack: languageInterface = {
             changeEmail: 'Change Email',
             changeUserPhoto: 'Change User Photo',
             signOut: 'Sign Out',
+            userLanguageInfo: 'Change the language GoalScheduer is displayed in. In the future there will more options to select',
+            themeInfo: 'Change theme of the application.',
         },
         VIEWENTRY: {
             title: 'View',
@@ -196,6 +198,8 @@ const languagePack: languageInterface = {
             changeEmail: 'Zmień e-mail',
             changeUserPhoto: 'Zmień obraz',
             signOut: 'Wyloguj się',
+            userLanguageInfo: 'Zmień język aplikacji. Aktualnie dostępne są tylko dwie wersje językowe, planujemy dodać ich trochę więcej',
+            themeInfo: 'Wybierz tryb wyświetlania aplikacji.',
         },
         VIEWENTRY: {
             title: 'Podgląd',

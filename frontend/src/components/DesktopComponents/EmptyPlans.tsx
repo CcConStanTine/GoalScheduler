@@ -2,13 +2,12 @@ import React, { useEffect, useState } from 'react';
 import DataRequests from '../../authentication/DataRequests';
 import { PlanTypes } from '../../utils/enums';
 import { EmpPlans } from '../../utils/interfaces';
-import AddDay from './AddDay';
+import AddOrEditDay from './AddOrEditDay';
 import EmptyPlansInfoAndNavigation from './EmptyPlansInfoAndNavigation';
 import OptionActive from './OptionActive';
 
 const EmptyPlans = ({ setOpenWindow, id, setRecentlyAddedPlanId, edit, setEdit, optionActiveType, setOptionActiveType }: EmpPlans) => {
     const [dateValue, setDateValue] = useState<string>('');
-
 
     useEffect(() => {
         const getDateById = async () => {
@@ -36,7 +35,7 @@ const EmptyPlans = ({ setOpenWindow, id, setRecentlyAddedPlanId, edit, setEdit, 
                     setOpenWindow={setOpenWindow}
                 />
             }
-            <AddDay
+            <AddOrEditDay
                 id={id}
                 setRecentlyAddedPlanId={setRecentlyAddedPlanId}
                 setOptionActiveType={setOptionActiveType}

@@ -5,7 +5,7 @@ interface Header {
     date?: JSX.Element;
 }
 
-const RenderHeader = ({ header, date }: Header) => (
+const RenderHeader = ({ header, date }: Header): JSX.Element => (
     <div className='entry-container title'>
         <h1>{header}</h1>
         {date}

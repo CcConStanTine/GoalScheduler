@@ -5,7 +5,7 @@ import languagePack from '../../../utils/languagePack';
 import UserOptions from '../../../components/DesktopComponents/UserOptions';
 import UserCredentials from '../../../components/DesktopComponents/UserCredentials';
 
-const ProfilePage = () => {
+const ProfilePage = (): JSX.Element => {
     const { language } = useContext(LanguageContext);
 
     return (

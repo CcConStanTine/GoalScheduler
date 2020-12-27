@@ -5,7 +5,7 @@ import UserLanguage from '../../../components/DesktopComponents/UserLanguage';
 import RenderHeader from '../../../components/DesktopComponents/RenderHeader';
 import NightMode from '../../../components/DesktopComponents/NightMode';
 
-const SettingsPage = () => {
+const SettingsPage = (): JSX.Element => {
     const { language } = useContext(LanguageContext);
 
     return (

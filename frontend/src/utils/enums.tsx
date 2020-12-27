@@ -41,3 +41,13 @@ export enum DesktopDisplayOptions {
     HELP = 'help',
     SETTINGS = 'settings',
 };
+
+export enum ApplicationThemeOptions {
+    DARK = 'darktheme',
+    LIGHT = 'lighttheme',
+};
+
+export enum ApplicationThemesColours {
+    DARK = '#707070',
+    LIGHT = '#fff',
+};

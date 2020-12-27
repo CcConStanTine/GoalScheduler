@@ -17,7 +17,7 @@ const renderTable = (index: number) => {
     return table;
 }
 
-const DateTimePicker = () => {
+const DateTimePicker = (): JSX.Element => {
     const { openDatePicker, setDate, date } = useContext(DatePickerContext);
     const { language } = useContext(LanguageContext);
     const [minutes, setMinutes] = useState(new Date().getMinutes());
@@ -26,6 +26,7 @@ const DateTimePicker = () => {
     const [year, setYear] = useState<number>(DataRequests.getSequenceFromDate(date.date!, DateSequences.YEAR));
 
     const setTime = () => {
+        //add checkpoint for pl-eng month names;
         if (date.option === DatePickerOptions.SELECTDATE)
             setDate!({ ...date, date: `01-${setMonthValue(monthName) < 10 ? `0${setMonthValue(monthName)}` : setMonthValue(monthName)}-${year}` });
         else if (date.option === DatePickerOptions.STARTDATE)
