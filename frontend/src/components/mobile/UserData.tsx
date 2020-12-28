@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { AppContext } from '../authentication/AppContext';
-import DataRequests from '../authentication/DataRequests';
+import { AppContext } from '../../authentication/AppContext';
+import DataRequests from '../../authentication/DataRequests';
 
 const UserData = () => {
     const { userContext } = useContext(AppContext);

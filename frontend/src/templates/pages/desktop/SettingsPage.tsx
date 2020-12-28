@@ -1,9 +1,9 @@
 import React, { useContext } from 'react';
 import languagePack from '../../../utils/languagePack';
 import { LanguageContext } from '../../../authentication/LanguageContext';
-import UserLanguage from '../../../components/DesktopComponents/UserLanguage';
-import RenderHeader from '../../../components/DesktopComponents/RenderHeader';
-import NightMode from '../../../components/DesktopComponents/NightMode';
+import UserLanguage from '../../../components/desktop/UserLanguage';
+import RenderHeader from '../../../components/desktop/RenderHeader';
+import NightMode from '../../../components/desktop/NightMode';
 
 const SettingsPage = (): JSX.Element => {
     const { language } = useContext(LanguageContext);

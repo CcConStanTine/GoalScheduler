@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import { ThemeContext } from '../../authentication/ThemeContext';
 import { LanguageContext } from '../../authentication/LanguageContext';
-import checkUsedTheme from './../CheckUserTheme';
+import checkUsedTheme from '../mobile/CheckUserTheme';
 import { ApplicationThemeOptions } from '../../utils/enums';
 import languagePack from '../../utils/languagePack';
 

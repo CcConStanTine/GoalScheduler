@@ -1,9 +1,9 @@
 import React, { useContext } from 'react';
 import { FaChevronRight, FaChevronLeft } from 'react-icons/fa';
-import { setPlaceholderValue } from './OtherEntriesFunctions';
-import { navigationTypes } from '../utils/variables';
-import { LanguageContext } from '../authentication/LanguageContext';
-import { entriesNavigation } from '../utils/interfaces';
+import { setPlaceholderValue } from '../global/OtherEntriesFunctions';
+import { navigationTypes } from '../../utils/variables';
+import { LanguageContext } from '../../authentication/LanguageContext';
+import { entriesNavigation } from '../../utils/interfaces';
 
 const RenderEntriesDateNavigation = ({ entryType, onClick, date }: entriesNavigation): JSX.Element => {
     const { language } = useContext(LanguageContext);

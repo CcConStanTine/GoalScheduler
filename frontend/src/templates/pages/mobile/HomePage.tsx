@@ -5,9 +5,9 @@ import DataRequests from '../../../authentication/DataRequests';
 import { PageNavigationTypes } from '../../../utils/variables';
 import { PlanTypes } from '../../../utils/enums';
 import languagePack from '../../../utils/languagePack';
-import NavigationBar from '../../../components/NavigationBar';
-import RenderPlanEntries from '../../../components/RenderPlanEntries';
-import HomePageOtherEntries from '../../../components/HomePageOtherEntries';
+import NavigationBar from '../../../components/mobile/NavigationBar';
+import RenderPlanEntries from '../../../components/mobile/RenderPlanEntries';
+import HomePageOtherEntries from '../../../components/mobile/HomePageOtherEntries';
 
 const HomePage = (): JSX.Element => {
     const { setLoggedIn } = useContext(AppContext);

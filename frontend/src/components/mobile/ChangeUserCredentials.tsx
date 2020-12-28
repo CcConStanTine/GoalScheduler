@@ -1,5 +1,5 @@
 import React from 'react';
-import { ChangeUserCredentialsTypes } from '../utils/variables';
+import { ChangeUserCredentialsTypes } from '../../utils/variables';
 import { FaUser, FaKey, FaEnvelope, FaPortrait } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 

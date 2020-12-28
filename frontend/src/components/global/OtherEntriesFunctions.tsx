@@ -1,8 +1,8 @@
-import { EntriesPlanType, navigationTypes } from '../utils/variables';
-import languagePack from '../utils/languagePack';
-import { dateParams } from '../utils/interfaces';
-import DataRequests from '../authentication/DataRequests';
-import { PlanTypes } from '../utils/enums';
+import { EntriesPlanType, navigationTypes } from '../../utils/variables';
+import languagePack from '../../utils/languagePack';
+import { dateParams } from '../../utils/interfaces';
+import DataRequests from '../../authentication/DataRequests';
+import { PlanTypes } from '../../utils/enums';
 
 export const getActualDateAsAObject = () => {
     const date = new Date();

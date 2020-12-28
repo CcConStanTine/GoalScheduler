@@ -1,9 +1,9 @@
 import React from 'react';
 import { Switch, Route, Redirect } from 'react-router-dom';
 
-import AppTabs from '../templates/routes/AppTabs';
-import WelcomePage from '../templates/routes/WelcomePage';
-import NotFoundPage from '../templates/pages/mobile/NotFoundPage';
+import AppTabs from '../../templates/routes/AppTabs';
+import WelcomePage from '../../templates/routes/WelcomePage';
+import NotFoundPage from '../../templates/pages/mobile/NotFoundPage';
 
 const App = () => (
   <Switch>

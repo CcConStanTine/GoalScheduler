@@ -3,9 +3,9 @@ import { AppContext } from '../../../authentication/AppContext';
 import { DatePickerContext } from '../../../authentication/DatePicker';
 import DataRequests from '../../../authentication/DataRequests';
 import { DesktopDisplayOptions } from '../../../utils/enums';
-import RenderHomeContentByDisplay from '../../../components/DesktopComponents/RenderHomeContentByDisplay';
-import Menu from '../../../components/DesktopComponents/Menu';
-import DateTimePicker from '../../../components/DesktopComponents/DateTimePicker';
+import RenderHomeContentByDisplay from '../../../components/desktop/RenderHomeContentByDisplay';
+import Menu from '../../../components/desktop/Menu';
+import DateTimePicker from '../../../components/desktop/DateTimePicker';
 
 const HomePage = (): JSX.Element => {
     const { setLoggedIn } = useContext(AppContext);

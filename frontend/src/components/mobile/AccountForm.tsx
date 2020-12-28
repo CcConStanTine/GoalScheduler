@@ -1,13 +1,13 @@
 import React, { useState, useContext } from 'react';
 import { useForm } from "react-hook-form";
-import { AccountFormTypes } from '../utils/enums';
-import languagePack from '../utils/languagePack';
-import { accountFormInterface, registerUser, loginUser } from '../utils/interfaces';
-import DataRequests from '../authentication/DataRequests';
+import { AccountFormTypes } from '../../utils/enums';
+import languagePack from '../../utils/languagePack';
+import { accountFormInterface, registerUser, loginUser } from '../../utils/interfaces';
+import DataRequests from '../../authentication/DataRequests';
 import renderAccountFormInputs from './RenderAccountFormInputs';
-import { AppContext } from '../authentication/AppContext';
-import { LanguageContext } from '../authentication/LanguageContext';
-import { LoadingPageContext } from '../authentication/LoadingPageContext';
+import { AppContext } from '../../authentication/AppContext';
+import { LanguageContext } from '../../authentication/LanguageContext';
+import { LoadingPageContext } from '../../authentication/LoadingPageContext';
 
 const AccountForm = ({ type, headerSignUp, headerLogIn, mobile }: accountFormInterface): JSX.Element => {
     const { register, handleSubmit, errors } = useForm();

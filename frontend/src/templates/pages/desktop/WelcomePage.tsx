@@ -1,6 +1,6 @@
 import React, { useContext, useState } from 'react';
 import { LanguageContext } from '../../../authentication/LanguageContext';
-import AccountForm from '../../../components/AccountForm';
+import AccountForm from '../../../components/mobile/AccountForm';
 import { AccountFormTypes, WelcomePageDesktopActiveTypes } from '../../../utils/enums';
 import languagePack from '../../../utils/languagePack';
 

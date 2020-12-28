@@ -1,8 +1,8 @@
 import React, { useContext, useState } from 'react';
-import { languageOptions } from '../utils/variables';
-import languagePack from '../utils/languagePack';
+import { languageOptions } from '../../utils/variables';
+import languagePack from '../../utils/languagePack';
 import { FaGlobeEurope } from 'react-icons/fa';
-import { LanguageContext } from '../authentication/LanguageContext'
+import { LanguageContext } from '../../authentication/LanguageContext'
 import { IonPicker } from '@ionic/react';
 import { PickerColumn } from "@ionic/core";
 

@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
-import { LanguageContext } from '../authentication/LanguageContext';
-import languagePack from '../utils/languagePack';
+import { LanguageContext } from '../../authentication/LanguageContext';
+import languagePack from '../../utils/languagePack';
 
 interface configWindow {
     type: string;

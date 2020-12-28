@@ -4,7 +4,7 @@ import { LanguageContext } from '../../authentication/LanguageContext';
 import { DatePickerOptions } from '../../utils/enums';
 import { DatePickerTimeValues } from '../../utils/interfaces';
 import languagePack from '../../utils/languagePack';
-import { setMonthValue } from '../OtherEntriesFunctions';
+import { setMonthValue } from '../global/OtherEntriesFunctions';
 
 interface BottomInfo {
     timeValues: DatePickerTimeValues;

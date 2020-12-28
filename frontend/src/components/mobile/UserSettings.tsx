@@ -1,11 +1,11 @@
 import React, { useContext } from 'react';
-import { LanguageContext } from '../authentication/LanguageContext'
+import { LanguageContext } from '../../authentication/LanguageContext'
 import NightMode from './NightMode';
 import UserLanguage from './UserLanguage';
 import ChangeUserCredentials from './ChangeUserCredentials';
 import SignOut from './SignOut';
-import { ChangeUserCredentialsTypes } from '../utils/variables';
-import languagePack from '../utils/languagePack';
+import { ChangeUserCredentialsTypes } from '../../utils/variables';
+import languagePack from '../../utils/languagePack';
 
 const UserSettings = () => {
     const { language } = useContext(LanguageContext);

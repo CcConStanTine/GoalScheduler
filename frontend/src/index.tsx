@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './style/style.scss';
-import App from './components/App';
+import App from './components/global/App';
 import '@ionic/react/css/core.css';
 import { UseLoadingContext } from './authentication/LoadingPageContext';
 import { UseThemeContext } from './authentication/ThemeContext';

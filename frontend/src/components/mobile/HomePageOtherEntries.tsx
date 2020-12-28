@@ -2,13 +2,13 @@ import React, { useEffect, useState, useContext } from 'react';
 import renderPlanEntries from './RenderPlanEntries';
 import RenderEntriesNavigation from './RenderEntriesNavigation';
 import RenderEntriesDateNavigation from './RenderEntriesDateNavigation';
-import { getActualDateAsAObject, getDataByType } from './OtherEntriesFunctions';
-import { dateParams, entryParams } from '../utils/interfaces';
-import DataRequests from '../authentication/DataRequests';
-import { LanguageContext } from '../authentication/LanguageContext';
+import { getActualDateAsAObject, getDataByType } from '../global/OtherEntriesFunctions';
+import { dateParams, entryParams } from '../../utils/interfaces';
+import DataRequests from '../../authentication/DataRequests';
+import { LanguageContext } from '../../authentication/LanguageContext';
 import { Link } from 'react-router-dom';
-import languagePack from '../utils/languagePack';
-import { PlanTypes } from '../utils/enums';
+import languagePack from '../../utils/languagePack';
+import { PlanTypes } from '../../utils/enums';
 
 const HomePageOtherEntries = (): JSX.Element => {
     const [date, setDate] = useState<dateParams>(getActualDateAsAObject());

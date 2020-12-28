@@ -3,7 +3,7 @@ import DataRequests from '../../authentication/DataRequests';
 import { PlanTypes } from '../../utils/enums';
 import { DateSequences, DateTypes, OpenWindowTypes } from "../../utils/interfaces";
 import { ReturnTypeData, ReturnTypeDataById } from "../../utils/requestsInterfaces";
-import { setMonthName } from '../OtherEntriesFunctions';
+import { setMonthName } from '../global/OtherEntriesFunctions';
 
 export const getDayValue = (dayName: string) => {
     switch (dayName) {

@@ -3,10 +3,10 @@ import { AppContext } from '../../../authentication/AppContext';
 import { LanguageContext } from '../../../authentication/LanguageContext';
 import DataRequests from '../../../authentication/DataRequests';
 import { useForm } from "react-hook-form";
-import renderAccountFormInputs from '../../../components/RenderAccountFormInputs';
+import renderAccountFormInputs from '../../../components/mobile/RenderAccountFormInputs';
 import { PageNavigationTypes } from '../../../utils/variables';
 import languagePack from '../../../utils/languagePack';
-import NavigationBar from '../../../components/NavigationBar';
+import NavigationBar from '../../../components/mobile/NavigationBar';
 import { EmailInterface } from '../../../utils/interfaces';
 
 interface Username {

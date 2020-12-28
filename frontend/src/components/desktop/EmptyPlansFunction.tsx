@@ -3,7 +3,7 @@ import DataRequests from "../../authentication/DataRequests";
 import { NavigationOptions, OptionTypes } from "../../utils/enums";
 import { DateSequences, DateTypes, OpenWindowTypes } from "../../utils/interfaces";
 import languagePack from "../../utils/languagePack";
-import { setMonthName } from "../OtherEntriesFunctions";
+import { setMonthName } from "../global/OtherEntriesFunctions";
 
 export const formatDate = (date: string, language: string) => {
     const convertedDate = DataRequests.convertDate(DateTypes.NORMAL, date);

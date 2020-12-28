@@ -1,8 +1,8 @@
 import React, { useContext } from 'react';
-import DataRequests from '../authentication/DataRequests';
-import { AppContext } from '../authentication/AppContext';
-import { LanguageContext } from '../authentication/LanguageContext';
-import languagePack from '../utils/languagePack';
+import DataRequests from '../../authentication/DataRequests';
+import { AppContext } from '../../authentication/AppContext';
+import { LanguageContext } from '../../authentication/LanguageContext';
+import languagePack from '../../utils/languagePack';
 import { FaSignOutAlt } from 'react-icons/fa';
 
 const SignOut = () => {

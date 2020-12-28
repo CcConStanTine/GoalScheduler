@@ -1,13 +1,13 @@
 import React, { useContext, useEffect, useState } from 'react';
-import RenderHeader from '../../../components/DesktopComponents/RenderHeader';
+import RenderHeader from '../../../components/desktop/RenderHeader';
 import { LanguageContext } from '../../../authentication/LanguageContext';
 import { DatePickerContext } from '../../../authentication/DatePicker';
 import { ContextMenu, OpenWindow } from '../../../utils/interfaces';
 import { ReturnTypeData, } from '../../../utils/requestsInterfaces';
 import { DatePickerOptions } from '../../../utils/enums';
 import languagePack from '../../../utils/languagePack';
-import ContextMenuContainer from '../../../components/DesktopComponents/ContextMenuContainer';
-import { generatePlansInfo, getActualPlans, renderDays, setDateValue } from '../../../components/DesktopComponents/HomePageContentFunctions';
+import ContextMenuContainer from '../../../components/desktop/ContextMenuContainer';
+import { generatePlansInfo, getActualPlans, renderDays, setDateValue } from '../../../components/desktop/HomePageContentFunctions';
 import WindowContainer from './WindowContainer';
 
 const HomePageContent = (): JSX.Element => {

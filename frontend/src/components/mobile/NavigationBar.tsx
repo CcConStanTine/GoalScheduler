@@ -1,7 +1,7 @@
 import React from 'react';
 import { FaChevronLeft, FaPlus, FaEllipsisV, FaTrash } from 'react-icons/fa';
 import { Link } from 'react-router-dom'
-import { appName, PageNavigationTypes } from '../utils/variables';
+import { appName, PageNavigationTypes } from '../../utils/variables';
 import { useHistory } from 'react-router-dom';
 
 interface Navigation {

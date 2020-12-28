@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import { appLogo, appName } from '../../../utils/variables';
 import languagePack from '../../../utils/languagePack';
-import AccountForm from '../../../components/AccountForm';
+import AccountForm from '../../../components/mobile/AccountForm';
 import { LanguageContext } from '../../../authentication/LanguageContext';
 import { AccountFormTypes } from '../../../utils/enums';
 

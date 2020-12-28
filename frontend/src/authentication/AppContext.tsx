@@ -1,7 +1,7 @@
 import React, { useState, useEffect, createContext, ReactNode, useContext } from 'react';
 import { LoadingPageContext } from './LoadingPageContext';
 import DataRequests from './DataRequests';
-import LoaderPage from '../components/Loader';
+import LoaderPage from '../components/mobile/Loader';
 import { AppContextInterface, UserContext } from '../utils/interfaces';
 
 interface UseAppContextInterface {

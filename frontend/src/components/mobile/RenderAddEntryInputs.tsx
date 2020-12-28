@@ -1,12 +1,12 @@
 import React, { useEffect } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import { IonDatetime, IonTextarea } from '@ionic/react';
-import DataRequests from '../authentication/DataRequests';
-import { inputData, FormatDate, AddEntry } from '../utils/interfaces';
-import { Plans } from '../utils/requestsInterfaces';
+import DataRequests from '../../authentication/DataRequests';
+import { inputData, FormatDate, AddEntry } from '../../utils/interfaces';
+import { Plans } from '../../utils/requestsInterfaces';
 import { useHistory } from 'react-router-dom';
-import { AddEntryPageDefaultValues as defaultValues, EntriesPlanType, dateTimeTypes } from '../utils/variables';
-import { PlanTypes } from '../utils/enums';
+import { AddEntryPageDefaultValues as defaultValues, EntriesPlanType, dateTimeTypes } from '../../utils/variables';
+import { PlanTypes } from '../../utils/enums';
 
 const formatDate = (data: inputData, type: string): FormatDate => {
     const { startDate, endDate, day, content } = data;

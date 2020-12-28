@@ -1,9 +1,9 @@
 import React, { useContext } from 'react';
 import { PageNavigationTypes } from '../../../utils/variables';
 import languagePack from '../../../utils/languagePack';
-import NavigationBar from '../../../components/NavigationBar';
-import UserData from '../../../components/UserData';
-import UserSettings from '../../../components/UserSettings';
+import NavigationBar from '../../../components/mobile/NavigationBar';
+import UserData from '../../../components/mobile/UserData';
+import UserSettings from '../../../components/mobile/UserSettings';
 import { LanguageContext } from '../../../authentication/LanguageContext';
 
 const SettingsPage = (): JSX.Element => {

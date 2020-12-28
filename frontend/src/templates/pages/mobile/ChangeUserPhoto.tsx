@@ -5,8 +5,8 @@ import { LanguageContext } from '../../../authentication/LanguageContext';
 import DataRequests from '../../../authentication/DataRequests';
 import { PageNavigationTypes } from '../../../utils/variables';
 import languagePack from '../../../utils/languagePack';
-import NavigationBar from '../../../components/NavigationBar';
-import LoaderPage from '../../../components/Loader';
+import NavigationBar from '../../../components/mobile/NavigationBar';
+import LoaderPage from '../../../components/mobile/Loader';
 
 interface UserPhoto {
   mobile?: boolean

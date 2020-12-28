@@ -1,6 +1,6 @@
 import React from 'react';
-import { checkErrorTypeInterface, inputDataInterface, renderAccountDataInterface } from '../utils/interfaces';
-import { AccountFormErrorTypes } from '../utils/variables';
+import { checkErrorTypeInterface, inputDataInterface, renderAccountDataInterface } from '../../utils/interfaces';
+import { AccountFormErrorTypes } from '../../utils/variables';
 
 const checkErrorType = ({ type }: checkErrorTypeInterface) => {
     if (type === 'required') return AccountFormErrorTypes.REQUIRED;

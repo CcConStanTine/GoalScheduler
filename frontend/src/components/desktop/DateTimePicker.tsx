@@ -2,7 +2,7 @@ import React, { useContext, useState } from 'react';
 import { DatePickerContext } from '../../authentication/DatePicker';
 import { LanguageContext } from '../../authentication/LanguageContext';
 import DataRequests from '../../authentication/DataRequests';
-import { setMonthName } from '../OtherEntriesFunctions';
+import { setMonthName } from '../global/OtherEntriesFunctions';
 import { DatePickerTimeValues, DateSequences } from '../../utils/interfaces';
 import DateTimePickerBottomInfo from './DateTimePickerBottomInfo';
 import RenderDatePickerContent from './RenderDatePickerContent';

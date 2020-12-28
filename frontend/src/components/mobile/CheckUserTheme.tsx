@@ -1,4 +1,4 @@
-import { ApplicationThemeOptions, ApplicationThemesColours } from "../utils/enums";
+import { ApplicationThemeOptions, ApplicationThemesColours } from "../../utils/enums";
 
 const checkUsedTheme = (theme: string): void => {
     const rootClassList = document.getElementById('root')?.classList;

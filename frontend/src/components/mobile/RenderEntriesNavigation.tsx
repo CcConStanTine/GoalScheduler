@@ -1,9 +1,9 @@
 import React, { useContext } from 'react';
-import languagePack from '../utils/languagePack';
-import { EntriesPlanType } from '../utils/variables';
-import { setActiveClassName, getDateAsAString } from './OtherEntriesFunctions';
-import { LanguageContext } from '../authentication/LanguageContext';
-import { entriesNavigation } from '../utils/interfaces';
+import languagePack from '../../utils/languagePack';
+import { EntriesPlanType } from '../../utils/variables';
+import { setActiveClassName, getDateAsAString } from '../global/OtherEntriesFunctions';
+import { LanguageContext } from '../../authentication/LanguageContext';
+import { entriesNavigation } from '../../utils/interfaces';
 
 const RenderEntriesNavigation = ({ entryType, onClick, date }: entriesNavigation) => {
     const { language } = useContext(LanguageContext);

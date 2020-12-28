@@ -1,10 +1,10 @@
 import React, { useContext } from 'react';
-import languagePack from '../utils/languagePack';
+import languagePack from '../../utils/languagePack';
 import { FaMoon } from 'react-icons/fa';
-import { ThemeContext } from '../authentication/ThemeContext';
-import { LanguageContext } from '../authentication/LanguageContext';
+import { ThemeContext } from '../../authentication/ThemeContext';
+import { LanguageContext } from '../../authentication/LanguageContext';
 import checkUsedTheme from './CheckUserTheme';
-import { ApplicationThemeOptions } from '../utils/enums';
+import { ApplicationThemeOptions } from '../../utils/enums';
 
 const NightMode = () => {
     const { theme, setTheme } = useContext(ThemeContext);

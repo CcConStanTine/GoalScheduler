@@ -3,9 +3,9 @@ import DataRequests from '../../../authentication/DataRequests';
 import { DeleteWindowInterface, EditDayDesktop, OpenWindow } from '../../../utils/interfaces';
 import { OptionTypes, PlanTypes } from '../../../utils/enums';
 import { DeleteWindowDefaultValues, EditDayDesktopDefaultValues } from '../../../utils/variables';
-import EmptyPlans from '../../../components/DesktopComponents/EmptyPlans';
-import RenderDayPlans from '../../../components/DesktopComponents/RenderDayPlans';
-import DeleteWindow from '../../../components/DesktopComponents/DeleteWindow';
+import EmptyPlans from '../../../components/desktop/EmptyPlans';
+import RenderDayPlans from '../../../components/desktop/RenderDayPlans';
+import DeleteWindow from '../../../components/desktop/DeleteWindow';
 
 const WindowContainer = ({ id, type, setOpenWindow }: OpenWindow) => {
     const [dayPlanList, setDayPlanList] = useState([]);
