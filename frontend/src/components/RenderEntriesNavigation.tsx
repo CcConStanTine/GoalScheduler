@@ -10,7 +10,7 @@ const RenderEntriesNavigation = ({ entryType, onClick, date }: entriesNavigation
 
     const handleOnClickValue = (type: string) => {
         if (date)
-            return onClick(type, getDateAsAString(date!));
+            return onClick(type, getDateAsAString(date!, language));
 
         return onClick(type);
     }

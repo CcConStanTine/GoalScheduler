@@ -114,6 +114,9 @@ const languagePack: languageInterface = {
                 info: 'Enter your personal details and start journey with us',
             }
         },
+        TIMEPICKER: {
+            update: 'Update date',
+        },
         GLOBAL: {
             appName: `${appName}`,
             yearPlan: 'Year Plan',
@@ -263,6 +266,9 @@ const languagePack: languageInterface = {
                 header: 'Witaj podróżniku',
                 info: 'Dołącz do nas i odkryj możliwości na nowo',
             }
+        },
+        TIMEPICKER: {
+            update: 'Zaaktualizuj',
         },
         GLOBAL: {
             appName: `${appName}`,

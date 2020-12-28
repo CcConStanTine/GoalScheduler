@@ -18,7 +18,7 @@ const HomePageOtherEntries = (): JSX.Element => {
     const { language } = useContext(LanguageContext)
 
     const changeEntry = async (sign: string): Promise<void> => {
-        const { _id, _date, plans } = await getDataByType(entryType, sign, id!, date);
+        const { _id, _date, plans } = await getDataByType(entryType, sign, id!, date, language);
         setId(_id);
         setDate(_date);
 

@@ -10,12 +10,12 @@ export const getActualDateAsAObject = () => {
     return { year: date.getFullYear(), month: date.getMonth() + 1, day: date.getDate() };
 }
 
-export const getDateAsAString = (date: dateParams, monthName?: string) => {
+export const getDateAsAString = (date: dateParams, monthName?: string, language?: string) => {
     const { year, month, day } = date;
     let _month = month;
 
     if (monthName)
-        _month = setMonthValue(monthName);
+        _month = setMonthValue(monthName, language!);
 
     const monthValue = _month < 10 ? `0${_month}` : _month;
 
@@ -57,7 +57,7 @@ export const setActiveClassName = (type: string, entryType: string) => {
     return null;
 };
 
-const getPlansByEntryType = async (type: PlanTypes, data: any, date: dateParams) => {
+const getPlansByEntryType = async (type: PlanTypes, data: any, date: dateParams, language: string) => {
     const { yearId, yearNumber, monthName, dayDate } = data;
 
     if (type === EntriesPlanType.YEAR) {
@@ -67,8 +67,8 @@ const getPlansByEntryType = async (type: PlanTypes, data: any, date: dateParams)
         return { plans, typeValue };
     }
     else if (type === EntriesPlanType.MONTH) {
-        const plans = await DataRequests.getTypePlans(type, getDateAsAString(date, monthName));
-        const typeValue = setMonthValue(monthName);
+        const plans = await DataRequests.getTypePlans(type, getDateAsAString(date, monthName, language));
+        const typeValue = setMonthValue(monthName, language);
 
         return { plans, typeValue }
     }
@@ -79,11 +79,11 @@ const getPlansByEntryType = async (type: PlanTypes, data: any, date: dateParams)
     return { plans, typeValue }
 }
 
-export const getDataByType = async (type: PlanTypes, sign: string, id: number, date: dateParams) => {
-    const planList = await DataRequests.getTypeDataByDate(type, getDateAsAString(date));
+export const getDataByType = async (type: PlanTypes, sign: string, id: number, date: dateParams, language: string) => {
+    const planList = await DataRequests.getTypeDataByDate(type, getDateAsAString(date, language));
     const data = await DataRequests.getTypeDataById(type, setIdValue(sign, type, id!, planList));
 
-    const { plans, typeValue } = await getPlansByEntryType(type, data, date);
+    const { plans, typeValue } = await getPlansByEntryType(type, data, date, language);
     let tempId;
     if (type === EntriesPlanType.DAY)
         tempId = data.dayId;
@@ -96,4 +96,4 @@ export const getDataByType = async (type: PlanTypes, sign: string, id: number, d
 
 export const setMonthName = (monthNumber: number, language: string) => languagePack[language].MONTHS.namesTable[monthNumber - 1];
 
-export const setMonthValue = (monthName: string) => languagePack['en-US'].MONTHS.namesTable.map(month => month.toUpperCase()).indexOf(monthName.toUpperCase()) + 1;
+export const setMonthValue = (monthName: string, language: string) => languagePack[language].MONTHS.namesTable.map(month => month.toUpperCase()).indexOf(monthName.toUpperCase()) + 1;

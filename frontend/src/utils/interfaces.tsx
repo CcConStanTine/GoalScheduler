@@ -39,6 +39,13 @@ export interface DeleteMessage {
     deleteWindow: DeleteWindowInterface;
 }
 
+export interface DatePickerTimeValues {
+    minutes: number;
+    hours: number;
+    monthName: string;
+    year: number;
+}
+
 export interface EditDayDesktop {
     isActive: boolean;
     taskDescription: string;
@@ -255,6 +262,11 @@ export interface ContextMenuProperties {
     isActive: boolean;
 }
 
+export interface PickerContent {
+    timeValues: DatePickerTimeValues;
+    setDateValues: (value: DatePickerTimeValues) => void;
+};
+
 export interface ContextMenu {
     setOpenWindow?: (value: OpenWindowProperties) => void;
     setContextMenu?: (value: ContextMenuProperties) => void;
@@ -458,6 +470,10 @@ interface welcomePageDesktop {
     SIGNIN: welcomePageDesktopOptions;
 }
 
+interface timePicker {
+    update: string;
+}
+
 export interface languageInterface {
     [key: string]: {
         WELCOME: welcome;
@@ -473,6 +489,7 @@ export interface languageInterface {
         PROFILE: profile;
         HELP: help;
         WELCOMEPAGEDESKTOP: welcomePageDesktop;
+        TIMEPICKER: timePicker;
         GLOBAL: global;
         MONTHS: months;
         DAYS: days;

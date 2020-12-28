@@ -16,6 +16,13 @@ export enum OptionTypes {
     DEFAULT = ''
 };
 
+export enum TimePickerOptions {
+    MINUTE = 'minute',
+    HOUR = 'hour',
+    MONTH = 'month',
+    YEAR = 'year',
+};
+
 export enum NavigationOptions {
     PREVIOUS = "previous",
     NEXT = "next",
