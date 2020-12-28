@@ -14,11 +14,22 @@ export const UseAppContext = ({ children }: UseAppContextInterface) => {
     const { loading, setLoading } = useContext(LoadingPageContext);
     const [userContext, setLoggedIn] = useState<UserContext>({});
 
+    const checkIfTokenExpired = async () => {
+        const userInfo = await DataRequests.getCurrentUserInfo();
+
+        if (userInfo.status)
+            return false;
+
+        return userInfo;
+    }
+
     useEffect(() => {
         const getUserData = async () => {
             const { token } = DataRequests.getCurrentUser();
-            const userInfo = token && await DataRequests.getCurrentUserInfo();
-            setLoggedIn({ token, ...userInfo });
+            const userInfo = token && await checkIfTokenExpired();
+
+            userInfo && setLoggedIn({ token, ...userInfo });
+
             setLoading!(false);
         }
         getUserData()
