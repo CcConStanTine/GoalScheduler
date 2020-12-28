@@ -1,5 +1,4 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat&display=swap');
-@import url('https://css.gg/chevron-down.css');
 
 *{
     margin: 0;
@@ -10,7 +9,6 @@
 
 :root{
     --dark_mode-background-color: #707070;
-    --dm-dark-mode-bgc: #707070;
     --lt-dark-mode-bgc: black;
     --language-bgc: rgb(22, 163, 22);
     --change-username-bgc: rgb(255,0,0);
@@ -20,6 +18,15 @@
     --change-userphoto-bgc: brown;
     --closed-task-color: red;
     --open-task-color: green;
+    --dark-mode-font-color: white;
+    --default-font-color: black;
+    --dark-mode-border-color: white;
+    --empty-day-border-color: #888;
+    --empty-day-background-color: #888;
+    --dark-mode-weekends-background-color: #505050;
+    --dark-mode-alternative-background-color: white;
+    --dark-mode-context-menu-hover-bgc: #444;
+    --dark-mode-dot-color: lightgray;
 }
 
 .loader{
@@ -52,25 +59,24 @@
 
 .darktheme{
     background-color: var(--dark_mode-background-color);
-    color: white;
+    color: var(--dark-mode-font-color);
 
     .welcome-page-desktop{
         .header{
-            color: black;
+            color: var(--default-font-color);
         }
     }
 
     .home-page-content{
-        background-color: #707070;
         .window-container{
             .type-container{
-                background-color: #707070;
-                border: 1px solid white;
+                background-color: var(--dark_mode-background-color);;
+                border: 1px solid var(--dark-mode-border-color);
 
                 .day-plans{
                     .question-container{
                         &::after{
-                            background-color: white;
+                            background-color: var(--dark-mode-alternative-background-color);
                         }
                     }
                 }
@@ -89,8 +95,8 @@
     
                         .desktop-default-button{
                             &.two{
-                                border-color: white;
-                                background-color: #707070;
+                                border-color: var(--dark-mode-border-color);
+                                background-color: var(--dark_mode-background-color);;
                                 cursor: pointer;
                             }
                         }
@@ -102,35 +108,30 @@
                                 .desktop-default-button{
 
                                     &.fulfilled,&:hover{
-                                        color: white;
-                                        border-color: white;
+                                        color: var(--dark-mode-font-color);
+                                        border-color: var(--dark-mode-border-color);
                                     }
                                 }
                             }
 
                             .content{
                                 textarea{
-                                    color: black;
+                                    color: var(--default-font-color);
 
                                     &.fulfilled{
-                                        color: black;
-                                        border-color: white;
+                                        color: var(--default-font-color);
                                     }
 
-                                    &:hover{
-                                        border-color: white;
-                                    }
-
-                                    &:focus{
-                                        border-color: white;
+                                    &:hover,&:focus, &.fulfilled{
+                                        border-color:var(--dark-mode-border-color); 
                                     }
                                 }
                             }
 
                             .add-task-button{
                                 &.true{
-                                    background-color: #707070;
-                                    border-color: white;
+                                    background-color: var(--dark_mode-background-color);
+                                    border-color: var(--dark-mode-border-color);;
                                 }
                             }
                         }
@@ -140,12 +141,12 @@
 
             .delete-container{
                 .delete-window{
-                    background-color: #707070;
-                    border: 1px solid white;
+                    background-color: var(--dark_mode-background-color);
+                    border: 1px solid var(--dark-mode-border-color);
 
                     .desktop-default-button.two{
-                        background-color: #707070;
-                        border-color: white;
+                        background-color: var(--dark_mode-background-color);
+                        border-color: var(--dark-mode-border-color);;
                     }
                 }
             }
@@ -153,36 +154,40 @@
 
         .calendar-container{
             .context-menu{
-                background-color: #707070;
+                background-color: var(--dark_mode-background-color);
 
                 p{
                     &:hover{
-                        background-color: #444;
+                        background-color: var(--dark-mode-context-menu-hover-bgc);
                     }
                 }
             }
 
             .day{
-                background-color: #707070;
-                color: white;
+                background-color: var(--dark_mode-background-color);
+                color: var(--dark-mode-font-color);
+
+                &:nth-child(7n - 1), &:nth-child(7n){
+                    background-color: var(--dark-mode-weekends-background-color);
+                }
 
                 .dot-container{
                     .dot{
-                        background-color: lightgray;
+                        background-color: var(--dark-mode-dot-color);
                     }
                 }
 
                 &.empty{
-                    background-color: #888;
-                    border-color: #888;
+                    background-color: var(--empty-day-background-color);
+                    border-color: var(--empty-day-border-color);
 
                     &:hover{
-                        border-color: #888;
+                        border-color: var(--empty-day-border-color);
                     }
                 }
 
                 &:hover{
-                    border-color: white;
+                    border-color: var(--dark-mode-border-color);
                 }
             }
         }
@@ -190,16 +195,16 @@
 
     .desktop-date-time-picker-container{
         .date-time-picker{
-            background-color: #707070;
-            border: 1px solid white;
+            background-color: var(--dark_mode-background-color);
+            border: 1px solid var(--dark-mode-border-color);
 
             .date-selection{
                 .months-container,.years-container{
                     .months,.years{
                         p{
                             &.active{
-                                border-color: white;
-                                color: white;
+                                border-color: var(--dark-mode-border-color);
+                                color: var(--dark-mode-font-color);
                                 font-weight: bold;
                             }
                         }
@@ -209,8 +214,8 @@
 
             .bottom-info{
                 .desktop-default-button{
-                    border-color: white;
-                    background-color: #707070;
+                    border-color: var(--dark-mode-border-color);
+                    background-color: var(--dark_mode-background-color);
                 }
             }
         }
@@ -220,7 +225,7 @@
         background-color: var(--dark_mode-background-color);
 
         svg{
-            color: white;
+            color: var(--dark-mode-font-color);
         }
     }
 
@@ -228,7 +233,7 @@
         .entries{
             .entry{
                 svg{
-                    color: white;
+                    color: var(--dark-mode-font-color);
                 }
             }
         }
@@ -251,14 +256,14 @@
             div{
                 aside{
                     a{
-                        color: white;
+                        color: var(--dark-mode-font-color);
                     }
                 }
 
                 &.night-mode{
                     aside{
                         svg{
-                            background-color: var(--dm-dark-mode-bgc);
+                            background-color: var(--dark_mode-background-color);
                         }
                     }
                     .toggle-icon{
@@ -266,7 +271,7 @@
                         overflow: auto;
     
                         &.on{
-                            fill: white;
+                            fill: var(--dark-mode-font-color);
                         }
                     }
                 }
@@ -282,36 +287,32 @@
             background-color: rgba(0,0,0,0.7);
 
             .message-container{
-                background-color: #333;
+                background-color: var(--dark-mode-context-menu-hover-bgc);
             }
         }
     }
 
     .home-page-desktop{
-        background-color: #707070;
+        background-color: var(--dark_mode-background-color);
 
         aside{
             ul{
-                background-color: #444;
+                background-color: var(--dark-mode-context-menu-hover-bgc);
             }
         }
     }
 
     .settings-page-desktop,.profile-page-desktop, .help-page-desktop,.home-page-content{
-        background-color: #707070;
+        background-color: var(--dark_mode-background-color);
         
         .entry-container{
-            &::before{
-                background-color: white;
-            }
-    
-            &::after{
-                background-color: white;
+            &::before, &::after{
+                background-color: var(--dark-mode-alternative-background-color);
             }
     
             &.title{
                 &::before{
-                    background-color: white;
+                    background-color: var(--dark-mode-alternative-background-color);
                 }
             }
 
@@ -1757,8 +1758,8 @@ form{
             transition: all .1s linear;
             outline: unset;
 
-            &:nth-child(7n),&:nth-child(13),&:nth-child(20),&:nth-child(27),&:nth-child(34),&:nth-child(41){
-                background-color: rgb(220,220,220);
+            &:nth-child(7n - 1), &:nth-child(7n){
+                background-color:rgb(220,220,220);
             }
 
             .dot-container{
