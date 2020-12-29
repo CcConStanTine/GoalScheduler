@@ -1,16 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import DataRequests from '../../../authentication/DataRequests';
-import { DeleteWindowInterface, EditDayDesktop, OpenWindow } from '../../../utils/interfaces';
+import { DeleteWindowInterface, EditDayDesktop, OpenWindow, FulfilledWindowInterface } from '../../../utils/interfaces';
 import { OptionTypes, PlanTypes } from '../../../utils/enums';
-import { DeleteWindowDefaultValues, EditDayDesktopDefaultValues } from '../../../utils/variables';
+import { DeleteWindowDefaultValues, EditDayDesktopDefaultValues, FulfilledWindowDefaultValues } from '../../../utils/variables';
 import EmptyPlans from '../../../components/desktop/EmptyPlans';
 import RenderDayPlans from '../../../components/desktop/RenderDayPlans';
 import DeleteWindow from '../../../components/desktop/DeleteWindow';
+import FulfilledWindow from '../../../components/desktop/FulfilledWindow';
 
 const WindowContainer = ({ id, type, setOpenWindow }: OpenWindow) => {
     const [dayPlanList, setDayPlanList] = useState([]);
     const [recentlyAddedPlanId, setRecentlyAddedPlanId] = useState<number | null>(null);
     const [deleteWindow, setDeleteWindow] = useState<DeleteWindowInterface>(DeleteWindowDefaultValues);
+    const [fulfilledWindow, setFulfilledWindow] = useState<FulfilledWindowInterface>(FulfilledWindowDefaultValues);
     const [edit, setEdit] = useState<EditDayDesktop>(EditDayDesktopDefaultValues);
     const [optionActiveType, setOptionActiveType] = useState<OptionTypes>(OptionTypes.DEFAULT);
 
@@ -22,7 +24,7 @@ const WindowContainer = ({ id, type, setOpenWindow }: OpenWindow) => {
         }
 
         getDayPlanList();
-    }, [id, recentlyAddedPlanId, deleteWindow])
+    }, [id, recentlyAddedPlanId, deleteWindow, fulfilledWindow])
 
     return (
         <section className={`window-container ${type}`} onClick={() => setOpenWindow!({ isActive: false })}>
@@ -38,6 +40,7 @@ const WindowContainer = ({ id, type, setOpenWindow }: OpenWindow) => {
                 />
 
                 {dayPlanList.length ? <RenderDayPlans
+                    setFulfilledWindow={setFulfilledWindow}
                     setDeleteWindow={setDeleteWindow}
                     planList={dayPlanList}
                     setEdit={setEdit}
@@ -46,6 +49,7 @@ const WindowContainer = ({ id, type, setOpenWindow }: OpenWindow) => {
             </div>
 
             {deleteWindow.isActive && <DeleteWindow deleteWindow={deleteWindow} setDeleteWindow={setDeleteWindow} />}
+            {fulfilledWindow.isActive && <FulfilledWindow fulfilledWindow={fulfilledWindow} setFulfilledWindow={setFulfilledWindow} />}
         </section>
     )
 }

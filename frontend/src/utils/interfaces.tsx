@@ -29,9 +29,20 @@ export interface ReturnWindowDimension {
     width: number;
 };
 
+export interface FulfilledWindowInterface {
+    isActive: boolean;
+    id: null | number;
+    fulfilled: boolean;
+}
+
 export interface DeleteWindowInterface {
     isActive: boolean;
     id: null | number;
+}
+
+export interface FulfilledMessage {
+    setFulfilledWindow: (value: FulfilledWindowInterface) => void;
+    fulfilledWindow: FulfilledWindowInterface;
 }
 
 export interface DeleteMessage {
@@ -66,6 +77,7 @@ export interface RenderDayPlansInterface {
     setDeleteWindow: (value: DeleteWindowInterface) => void;
     setEdit: (value: EditDayDesktop) => void;
     setOptionActiveType: (value: OptionTypes) => void;
+    setFulfilledWindow: (value: FulfilledWindowInterface) => void;
 }
 
 export interface inputData {

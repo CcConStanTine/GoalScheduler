@@ -78,6 +78,36 @@
                         &::after{
                             background-color: var(--dark-mode-alternative-background-color);
                         }
+
+                        .entry-data-container{
+                            div{
+                                &.finished{
+                                    color: gray;
+
+                                    .finished-info{
+                                        color: white;
+                                        border-color: var(--dark-mode-border-color);
+
+                                        &:hover{
+                                            background-color: var(--dark-mode-context-menu-hover-bgc);
+                                            border-color: var(--dark-mode-context-menu-hover-bgc);
+                                        }
+                                    }
+                                }
+
+                                &.options{
+                                    span{
+                                        &.fulfilled{
+                                            background-image: url('../images/not-fulfilled-dark-theme.png');
+                                        }
+                        
+                                        &.not-fulfilled{
+                                            background-image: url('../images/fulfilled-dark-theme.png');
+                                        }
+                                    }
+                                }
+                            }
+                        }
                     }
                 }
 
@@ -2005,14 +2035,51 @@ form{
                             display: flex;
                             flex-direction: column;
 
+                            &.finished{
+                                color: lightgray;
+
+                                .finished-info{
+                                    margin-top: 10px;
+                                    color: black;
+                                    font-weight: bold;
+                                    border: 1px solid black;
+                                    padding: 10px;
+                                    text-align: center;
+                                    width: 350px;
+
+                                    &:hover{
+                                        color: white;
+                                        background-color: navy;
+                                        cursor: normal;
+                                        border-color: navy;
+                                    }
+                                }
+                            }
+
                             &.options{
                                 display: flex;
                                 flex-direction: column;
                                 justify-content: space-around;
+                                align-items: center;
 
                                 span{
                                     padding: 15px 12px;
                                     cursor: pointer;
+
+                                    &.fulfilled,&.not-fulfilled{
+                                        padding: unset;
+                                        width: 30px;
+                                        height: 30px;
+                                        background-position: center;
+                                        background-size: contain;
+                                        margin-bottom: 10px;
+
+                                        background-image: url('../images/not-fulfilled.png');
+                                    }
+
+                                    &.not-fulfilled{
+                                        background-image: url('../images/fulfilled.png');
+                                    }
                                 }
                             }
                         }

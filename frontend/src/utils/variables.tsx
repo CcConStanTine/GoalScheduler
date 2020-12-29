@@ -6,6 +6,12 @@ export const DeleteWindowDefaultValues = {
     id: null
 }
 
+export const FulfilledWindowDefaultValues = {
+    isActive: false,
+    id: null,
+    fulfilled: false,
+}
+
 export const EditDayDesktopDefaultValues = {
     isActive: false,
     startDate: '',
