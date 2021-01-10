@@ -57,10 +57,15 @@ class DataRequests extends UserCredentialsRequests {
 
     public getCurrentDate = (language?: string): string => {
         const date = new Date();
-        if (language)
-            return `${date.getDate() < 10 ? `0${date.getDate()}` : date.getDate()}-${date.getMonth() + 1}-${date.getFullYear()}`;
 
-        return `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate() < 10 ? `0${date.getDate()}` : date.getDate()}`;
+        const day = date.getDate() < 10 ? `0${date.getDate()}` : date.getDate();
+        const month = date.getMonth() + 1 < 10 ? `0${date.getMonth() + 1}` : date.getMonth() + 1;
+        const year = date.getFullYear();
+
+        if (language)
+            return `${day}-${month}-${year}`;
+
+        return `${year}-${month}-${day}`;
     }
 
     public addPlanByPlanType = async (type: PlanTypes, data: inputData): Promise<Plans> => {
