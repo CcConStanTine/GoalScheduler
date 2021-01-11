@@ -38,7 +38,7 @@ const WelcomePage = (): JSX.Element => {
             </div>
             <footer className={active}>
                 <ul>
-                    <li onClick={() => setActive(WelcomePageDesktopActiveTypes.SIGNIN)}>{languagePack[language].WELCOMEPAGEDESKTOP.SIGNIN.title}</li>
+                    <li onClick={() => setActive(WelcomePageDesktopActiveTypes.SIGNIN)}>{languagePack[language].WELCOMEPAGEDESKTOP.SIGNUP.title}</li>
                     <li onClick={() => setActive(WelcomePageDesktopActiveTypes.SIGNUP)}>{languagePack[language].WELCOME.createAccount}</li>
                     <li>{languagePack[language].WELCOME.features}</li>
                     <li>{languagePack[language].WELCOME.privacyAndSafety}</li>
