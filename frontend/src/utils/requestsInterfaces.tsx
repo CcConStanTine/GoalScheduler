@@ -89,6 +89,7 @@ export interface ReturnTypeData extends FailedResponse {
     findIndex: any;
     forEach: any;
     length: any;
+    find: any;
 }
 
 export interface AuthConfig {

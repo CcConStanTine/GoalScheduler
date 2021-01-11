@@ -100,6 +100,8 @@ export interface DatePickerContextInterface {
     date: Date;
     setDate?: (value: Date) => void;
     openDatePicker?: (value: boolean) => void;
+    isLoaderActive: boolean;
+    setLoaderActive?: (value: boolean) => void;
 }
 
 

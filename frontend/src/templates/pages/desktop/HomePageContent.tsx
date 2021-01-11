@@ -7,12 +7,13 @@ import { ReturnTypeData, } from '../../../utils/requestsInterfaces';
 import { DatePickerOptions } from '../../../utils/enums';
 import languagePack from '../../../utils/languagePack';
 import ContextMenuContainer from '../../../components/desktop/ContextMenuContainer';
-import { generatePlansInfo, getActualPlans, renderDays, setDateValue } from '../../../components/desktop/HomePageContentFunctions';
+import { generatePlansInfo, getActualPlans, renderDays, setDateValue, checkLoaderStatus } from '../../../components/desktop/HomePageContentFunctions';
 import WindowContainer from './WindowContainer';
+import LoaderForCalendar from '../../../components/desktop/LoaderForCalendar';
 
 const HomePageContent = (): JSX.Element => {
     const { language } = useContext(LanguageContext);
-    const { isDatePickerActive, openDatePicker, date, setDate } = useContext(DatePickerContext);
+    const { isDatePickerActive, openDatePicker, date, setDate, setLoaderActive, isLoaderActive } = useContext(DatePickerContext);
     const [dayList, setDayList] = useState<ReturnTypeData | []>([]);
     const [contextMenu, setContextMenu] = useState<ContextMenu>({ isActive: false });
     const [openWindow, setOpenWindow] = useState<OpenWindow>({ isActive: false });
@@ -22,11 +23,15 @@ const HomePageContent = (): JSX.Element => {
             const plans = await getActualPlans(date.date!);
             const plansInfo = await generatePlansInfo(plans);
 
+            const status = checkLoaderStatus(dayList, plansInfo);
+            if (status)
+                setLoaderActive!(false);
+
             setDayList(plansInfo);
         }
 
         getPlans();
-    }, [date]);
+    }, [date, setLoaderActive, dayList]);
 
     const handleCalendarDate = () => {
         openDatePicker!(!isDatePickerActive);
@@ -45,7 +50,7 @@ const HomePageContent = (): JSX.Element => {
             <div className='calendar-container'>
                 {languagePack[language].DAYS.daysAsAnArray.map(day => <p key={day} className='day_number'>{day}</p>)}
                 {dayList.length ?
-                    renderDays(dayList, setContextMenu, setOpenWindow)
+                    isLoaderActive ? <LoaderForCalendar /> : renderDays(dayList, setContextMenu, setOpenWindow)
                     :
                     <p className='loading-calendar'>{languagePack[language].GLOBAL.loadingCalendar}</p>
                 }

@@ -10,6 +10,7 @@ interface UseDatePickerContextInterface {
 export const DatePickerContext = createContext<DatePickerContextInterface>(
     {
         isDatePickerActive: false,
+        isLoaderActive: false,
         date: {
             date: ''
         }
@@ -19,10 +20,11 @@ export const DatePickerContext = createContext<DatePickerContextInterface>(
 export const UseDatePickerContext = ({ children }: UseDatePickerContextInterface) => {
     const { language } = useContext(LanguageContext)
     const [isDatePickerActive, openDatePicker] = useState<boolean>(false);
+    const [isLoaderActive, setLoaderActive] = useState<boolean>(false);
     const [date, setDate] = useState<Date>({ date: DataRequests.getCurrentDate(language) });
 
     return (
-        <DatePickerContext.Provider value={{ isDatePickerActive, openDatePicker, date, setDate }}>
+        <DatePickerContext.Provider value={{ isDatePickerActive, openDatePicker, date, setDate, isLoaderActive, setLoaderActive }}>
             {children}
         </DatePickerContext.Provider>
     )

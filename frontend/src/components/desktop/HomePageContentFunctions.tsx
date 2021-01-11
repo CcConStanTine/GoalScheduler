@@ -103,3 +103,12 @@ export const generatePlansInfo = async (plans: any) => {
 
     return plansInfo;
 };
+
+export const checkLoaderStatus = (previousTable: ReturnTypeData | [], currentTable: ReturnTypeData): Boolean => {
+    if (previousTable.length !== currentTable.length)
+        return true;
+    else if (!currentTable.find((plan: any, index: number) => plan.id === previousTable[index].id))
+        return true
+
+    return false;
+}
