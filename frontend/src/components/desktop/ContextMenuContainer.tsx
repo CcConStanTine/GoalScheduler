@@ -10,8 +10,6 @@ const ContextMenuContainer = ({ pageY, pageX, setOpenWindow, id, setContextMenu 
             setOpenWindow!({ isActive: true, id, type: OpenWindowTypes.SHOW });
             setContextMenu!({ isActive: false });
         }}>Pokaż dzień</p>
-        <p>Edytuj dzień</p>
-        <p>Usuń wpisy</p>
     </div>
 );
 
