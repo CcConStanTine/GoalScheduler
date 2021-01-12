@@ -329,7 +329,7 @@ interface welcome {
     userRegisterSuccessfuly: string;
     features: string;
     privacyAndSafety: string;
-    contact: string;
+    credits: string;
 }
 
 export enum DateSequences {
@@ -477,6 +477,7 @@ interface welcomePageDesktopOptions {
     title: string;
     info: string;
     header: string;
+    secondInfo: string;
 }
 
 interface welcomePageDesktop {

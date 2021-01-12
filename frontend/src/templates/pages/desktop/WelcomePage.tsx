@@ -26,7 +26,7 @@ const WelcomePage = (): JSX.Element => {
                             <p>{languagePack[language].WELCOMEPAGEDESKTOP.SIGNIN.info}</p>
                             <img src={WelcomeRegisterPhoto} alt="register person" />
                             <div>
-                                <p>Masz już konto?</p>
+                                <p>{languagePack[language].WELCOMEPAGEDESKTOP.SIGNIN.secondInfo}</p>
                                 <button className="desktop-default-button" onClick={() => setActive(WelcomePageDesktopActiveTypes.SIGNIN)}>
                                     {languagePack[language].WELCOMEPAGEDESKTOP.SIGNUP.title}
                                 </button>
@@ -37,7 +37,7 @@ const WelcomePage = (): JSX.Element => {
                             <p>{languagePack[language].WELCOMEPAGEDESKTOP.SIGNUP.info}</p>
                             <img src={WelcomeLoginPhoto} alt="login person" />
                             <div>
-                                <p>Nie posiadasz konta?</p>
+                                <p>{languagePack[language].WELCOMEPAGEDESKTOP.SIGNUP.secondInfo}</p>
                                 <button className="desktop-default-button" onClick={() => setActive(WelcomePageDesktopActiveTypes.SIGNUP)}>
                                     {languagePack[language].WELCOMEPAGEDESKTOP.SIGNIN.title}
                                 </button>
@@ -52,7 +52,7 @@ const WelcomePage = (): JSX.Element => {
                     <li onClick={() => setActive(WelcomePageDesktopActiveTypes.SIGNUP)}>{languagePack[language].WELCOME.createAccount}</li>
                     <li>{languagePack[language].WELCOME.features}</li>
                     <li>{languagePack[language].WELCOME.privacyAndSafety}</li>
-                    <li>Credits</li>
+                    <li>{languagePack[language].WELCOME.credits}</li>
                 </ul>
             </footer>
         </section >

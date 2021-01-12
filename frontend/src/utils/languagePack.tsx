@@ -19,7 +19,7 @@ const languagePack: languageInterface = {
             continueWithoutSigningIn: 'Continue Without Signing In',
             errorLoggedIn: 'Username or Password might be wrong',
             userRegisterSuccessfuly: 'User registered successfully',
-            contact: 'Contact',
+            credits: 'Credits',
             features: 'Features',
             privacyAndSafety: 'Privacy & Safety',
         },
@@ -107,11 +107,13 @@ const languagePack: languageInterface = {
                 title: 'Sign Up',
                 header: 'Welcome Back!',
                 info: 'To keep connected with us please login with your personal info',
+                secondInfo: "Don't have a account?"
             },
             SIGNIN: {
                 title: 'Sign In',
                 header: 'Hello, Friend!',
                 info: 'Enter your personal details and start journey with us',
+                secondInfo: "Already have a account?",
             }
         },
         TIMEPICKER: {
@@ -172,7 +174,7 @@ const languagePack: languageInterface = {
             continueWithoutSigningIn: 'Kontynuuj bez logowania się',
             errorLoggedIn: 'Pseudonim lub hasło są błędne',
             userRegisterSuccessfuly: 'Zarejestrowany',
-            contact: 'Kontakt',
+            credits: 'Dodatkowe informacje',
             features: 'Funkcjonalności',
             privacyAndSafety: 'Prywatność i bezpieczeństwo',
         },
@@ -260,11 +262,13 @@ const languagePack: languageInterface = {
                 title: 'Zaloguj się',
                 header: 'Witaj ponownie',
                 info: 'Podaj swoje dane logowania',
+                secondInfo: 'Nie posiadasz konta?',
             },
             SIGNIN: {
                 title: 'Zarejestruj się',
                 header: 'Witaj podróżniku',
                 info: 'Dołącz do nas i odkryj możliwości na nowo',
+                secondInfo: 'Masz już konto?',
             }
         },
         TIMEPICKER: {
