@@ -1111,6 +1111,10 @@ form{
     display: flex;
     justify-content: center;
 
+    .desktop-default-button{
+        margin-top: 10px;
+    }
+
     .important{
         position: absolute;
         top: 15%;
@@ -1130,7 +1134,6 @@ form{
     }
     
     p {
-        font-size: 14px;
         font-weight: 100;
         line-height: 20px;
         letter-spacing: 0.5px;
@@ -1143,7 +1146,6 @@ form{
     
     a {
         color: #333;
-        font-size: 14px;
         text-decoration: none;
         margin: 15px 0;
     }
@@ -1233,6 +1235,14 @@ form{
                     width: 50%;
                     transform: translateX(0);
                     transition: transform 0.6s ease-in-out;
+
+                    .desktop-default-button{
+                        margin-top: 0;
+                    }
+
+                    img{
+                        height: 40%;
+                    }
 
                     .ghost {
                         background-color: transparent;

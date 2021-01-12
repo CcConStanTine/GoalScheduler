@@ -3,6 +3,8 @@ import { LanguageContext } from '../../../authentication/LanguageContext';
 import AccountForm from '../../../components/mobile/AccountForm';
 import { AccountFormTypes, WelcomePageDesktopActiveTypes } from '../../../utils/enums';
 import languagePack from '../../../utils/languagePack';
+import WelcomeLoginPhoto from '../../../images/welcome_login.png';
+import WelcomeRegisterPhoto from '../../../images/welcome_register.png';
 
 const WelcomePage = (): JSX.Element => {
     const [active, setActive] = useState<WelcomePageDesktopActiveTypes>(WelcomePageDesktopActiveTypes.SIGNIN);
@@ -22,16 +24,24 @@ const WelcomePage = (): JSX.Element => {
                         <div className="overlay-panel overlay-left">
                             <h1>{languagePack[language].WELCOMEPAGEDESKTOP.SIGNIN.header}</h1>
                             <p>{languagePack[language].WELCOMEPAGEDESKTOP.SIGNIN.info}</p>
-                            <button className="desktop-default-button" onClick={() => setActive(WelcomePageDesktopActiveTypes.SIGNIN)}>
-                                {languagePack[language].WELCOMEPAGEDESKTOP.SIGNUP.title}
-                            </button>
+                            <img src={WelcomeRegisterPhoto} alt="register person" />
+                            <div>
+                                <p>Masz już konto?</p>
+                                <button className="desktop-default-button" onClick={() => setActive(WelcomePageDesktopActiveTypes.SIGNIN)}>
+                                    {languagePack[language].WELCOMEPAGEDESKTOP.SIGNUP.title}
+                                </button>
+                            </div>
                         </div>
                         <div className="overlay-panel overlay-right">
                             <h1>{languagePack[language].WELCOMEPAGEDESKTOP.SIGNUP.header}</h1>
                             <p>{languagePack[language].WELCOMEPAGEDESKTOP.SIGNUP.info}</p>
-                            <button className="desktop-default-button" onClick={() => setActive(WelcomePageDesktopActiveTypes.SIGNUP)}>
-                                {languagePack[language].WELCOMEPAGEDESKTOP.SIGNIN.title}
-                            </button>
+                            <img src={WelcomeLoginPhoto} alt="login person" />
+                            <div>
+                                <p>Nie posiadasz konta?</p>
+                                <button className="desktop-default-button" onClick={() => setActive(WelcomePageDesktopActiveTypes.SIGNUP)}>
+                                    {languagePack[language].WELCOMEPAGEDESKTOP.SIGNIN.title}
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -42,7 +52,7 @@ const WelcomePage = (): JSX.Element => {
                     <li onClick={() => setActive(WelcomePageDesktopActiveTypes.SIGNUP)}>{languagePack[language].WELCOME.createAccount}</li>
                     <li>{languagePack[language].WELCOME.features}</li>
                     <li>{languagePack[language].WELCOME.privacyAndSafety}</li>
-                    <li>{languagePack[language].WELCOME.contact}</li>
+                    <li>Credits</li>
                 </ul>
             </footer>
         </section >
