@@ -25,3 +25,5 @@ yarn-error.log*
 .firebaserc
 firebase-debug.log
 .firebase
+
+.env

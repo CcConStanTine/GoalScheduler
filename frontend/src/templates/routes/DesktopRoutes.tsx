@@ -4,7 +4,7 @@ import HomePage from '../pages/desktop/HomePage';
 
 const MobileRoutes = (): JSX.Element => (
     <>
-        <Route exact path="/app/home" component={HomePage}></Route>
+        <Route exact path="/app/home" component={HomePage} />
     </>
 );
 

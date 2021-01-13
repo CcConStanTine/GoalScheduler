@@ -1,10 +1,8 @@
-import axios from 'axios';
+import { api } from '../utils/api';
 import { registerUser, loginUser } from '../utils/interfaces';
 import { RequestsMethods, UserValues } from '../utils/requestsInterfaces';
 
 class AppConfig {
-    private readonly serverAddress: string = "https://goalscheduler.herokuapp.com";
-    private readonly axiosType = "Bearer";
     private token: string;
     private userId: number;
     private username: string;
@@ -16,10 +14,7 @@ class AppConfig {
     };
 
     protected UploadFileWithProgessBar = async (url: string, data: FormData, config: any) => {
-        axios.defaults.baseURL = `${this.serverAddress}/`;
-        axios.defaults.headers.common['Authorization'] = `${this.axiosType} ${this.token}`;
-
-        axios.put(url, data, config)
+        api.put(url, data, config)
             .then(function (res) {
                 return res.data;
             })
@@ -27,10 +22,7 @@ class AppConfig {
     }
 
     protected handleRequests = async (method: RequestsMethods, url: string, data?: object | FormData | loginUser | registerUser) => {
-        axios.defaults.baseURL = `${this.serverAddress}/`;
-        axios.defaults.headers.common['Authorization'] = `${this.axiosType} ${this.token}`;
-
-        return axios({ method, url, data })
+        return api({ method, url, data })
             .then(({ data }) => data)
             .catch(({ response }) => response.data);
     }
