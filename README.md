@@ -1,5 +1,8 @@
 ## <strong>GoalScheduler 📔</strong>
 
+### Try it out!
+
+The project is alive (<a href="https://goal-scheduler.web.app/welcome">click there</a>), the front-side still lack of some features described below, but the MVP is on!
 ### Project description
 
 Web REST application mirroring a real-life goal planner with some fancy features which computers are able to do. 
