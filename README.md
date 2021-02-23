@@ -30,3 +30,5 @@ Functionalities of actual version (v2.0):
 </div>
 
 ### Contributors
+1. [Paweł Karpiel](mailto:pawel21599@gmail.com) as [CcConStanTine](https://github.com/CcConStanTine) - project initiator, backend developer
+2. [Konrad Dulęba](mailto:kon.duleba@gmail.com) as [konradduleba](https://github.com/konradduleba) - frontend developer
