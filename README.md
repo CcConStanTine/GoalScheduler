@@ -12,7 +12,7 @@ Project went through 2 major reworks, where the last one was updating it from ve
 
 ### Project functionalities
 
-Functionalities of actual version (v2.0):
+Functionalities of actual backend version (v2.0):
 - registration - create your account, adjust your profile with informaction or your profile image :)
 - logging in - log in to be sure that noone is able to see your personal plans (security is working properly - there is no chance of calling/modyfying/deleting other user's resources!)
 - creating, modifying or deleting long-term/year/month/week/day plans - add your plans to schedule, set their importance and urgency so you won't be able to miss them, monitor, modify or check them as fulfilled
