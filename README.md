@@ -8,7 +8,7 @@ The project is alive (<a href="https://goal-scheduler.web.app/welcome">click the
 Web REST application mirroring a real-life goal planner with some fancy features which computers are able to do. 
 Sign in, plan your future and let the appication summaraize your days, weeks, month or year plans and even rate them with rating algorithm. 
 
-Project went through 2 major reworks, where the last one was updating it from version 1.0 to 2.0. 
+Project went through 2 major reworks, where the last one was updating it from version 1.0 to 2.0. .
 
 ### Project functionalities
 
